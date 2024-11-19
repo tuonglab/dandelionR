@@ -7,9 +7,9 @@
 .class.check(input, must)
 }
 \arguments{
-\item{must}{the type we need}
+\item{input}{the input need to be check}
 
-\item{check}{the input need to be check}
+\item{must}{the type we need}
 }
 \description{
 check whether the input is with the correct class

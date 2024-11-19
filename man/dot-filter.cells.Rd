@@ -20,7 +20,12 @@ data after combineTCR， contain both vdj and seq}
 \item{filter_pattern}{character string, optional ",|None|No_contig" by default}
 
 \item{remove_missing}{bool, True by default
-If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.}
+\itemize{
+\item If true, will remove cells with contigs matching the filter from the object.
+\item If False, will mask them with a uniform value dependent on the column name.
+@import rlang
+@import SingleCellExperiment
+}}
 }
 \value{
 filtered SingleCellExperiment object according to the parameter.

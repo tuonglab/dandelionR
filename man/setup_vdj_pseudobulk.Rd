@@ -25,39 +25,31 @@ setup_vdj_pseudobulk(
 )
 }
 \arguments{
-\item{sce}{SingleCellExperiment object,
-vdj data should be contained in colData for filtering}
+\item{sce}{SingleCellExperiment object, vdj data should be contained in colData for filtering}
 
-\item{mode_option}{optional,
-mode for extraction the V(D)J genes.}
+\item{mode_option}{optional, mode for extraction the V(D)J genes.}
 
 \item{already.productive}{logical, whether the data is already filtered by productivity.}
 
 \item{productive_cols}{character vector, names of colData used in productivity filtering, with NULL by default}
 
-\item{productive_vj}{logical, with TRUE by default.
-Option in productivity filtering.  If True, cell will only be kept if the main VJ chain is productive}
+\item{productive_vj}{logical, with TRUE by default. Option in productivity filtering.  If True, cell will only be kept if the main VJ chain is productive}
 
-\item{productive_vdj}{logical, with TRUE by default.
-Option in productivity filtering.  If True, cell will only be kept if the main VDJ chain is productive}
+\item{productive_vdj}{logical, with TRUE by default. Option in productivity filtering.  If True, cell will only be kept if the main VDJ chain is productive}
 
-\item{allowed_chain_status}{character vectors, optional, if specified,
-the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
+\item{allowed_chain_status}{character vectors, optional, if specified, the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
 
 \item{subsetby}{character, with NULL by default, name of one colData provided for sub-setting.}
 
 \item{groups}{character vector, with NULL by default, condition for sub-setting}
 
-\item{extract_cols}{character vector, with NULL by default
-colData names where VDJ/VJ information is stored, these colData will be used instead of the standard colData}
+\item{extract_cols}{character vector, with NULL by default. colData names where VDJ/VJ information is stored, these colData will be used instead of the standard colData}
 
 \item{filter_pattern}{character, optional, with ",|None|No_contig" by default.}
 
-\item{check_vj_mapping}{character vector, optional.
-elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.}
+\item{check_vj_mapping}{character vector, optional. elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.}
 
-\item{check_vdj_mapping}{character vector, optional.
-elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.}
+\item{check_vdj_mapping}{character vector, optional. elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.}
 
 \item{check_extract_cols_mapping}{character vecter, with NULL by default}
 

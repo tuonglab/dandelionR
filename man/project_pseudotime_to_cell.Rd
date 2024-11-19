@@ -11,7 +11,7 @@ project_pseudotime_to_cell(adata, pb_adata, term_state, suffix = "")
 
 \item{pb_adata}{pseudobulk data}
 
-\item{suffix}{suffix to be added after the added column names, default ""}
+\item{suffix}{suffix to be added after the added column names, default ''}
 
 \item{term_states}{vector of terminal states with branch_probabilities to be transferred}
 }
