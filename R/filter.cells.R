@@ -6,7 +6,10 @@
 #' @param col_n mode for extraction the V(D)J genes.
 #' @param filter_pattern character string, optional ",|None|No_contig" by default
 #' @param remove_missing bool, True by default
-#' If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.
+#'  - If true, will remove cells with contigs matching the filter from the object. 
+#'  - If False, will mask them with a uniform value dependent on the column name.
+#'  @import rlang
+#'  @import SingleCellExperiment
 #' @return filtered SingleCellExperiment object according to the parameter.
 .filter.cells<- function(sce,
                          col_n,

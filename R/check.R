@@ -1,9 +1,10 @@
 #' .class.check
 #' 
 #' check whether the input is with the correct class
-#' @param check the input need to be check
+#' @param input the input need to be check
 #' @param must the type we need
 #' @import methods
+#' @import rlang
 .class.check <- function(input,must)
 {
   if(is.null(input))
@@ -18,8 +19,10 @@
 #' .type.check
 #' 
 #' check whether the input has the correct type
-#' @param check the input need to be check
+#' @param input the input need to be check
 #' @param must the type we need
+#' @import methods
+#' @import rlang
 .type.check <- function(input,must)
 {
   if(is.null(input))

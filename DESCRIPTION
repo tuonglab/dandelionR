@@ -30,4 +30,5 @@ Collate:
 Imports:
     SingleCellExperiment,
     rlang,
-    miloR
+    miloR,
+    methods

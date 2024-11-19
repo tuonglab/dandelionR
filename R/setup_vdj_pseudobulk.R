@@ -55,6 +55,8 @@
 #'      - If False, will mask them with a uniform value dependent on the column name.
 #' @include check.R
 #' @include filter.cells.R
+#' @import SingleCellExperiment
+#' @import rlang
 #' @return filtered SingleCellExperiment object
 #' @export
 setup_vdj_pseudobulk<-function(sce,
