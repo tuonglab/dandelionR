@@ -29,4 +29,5 @@ Collate:
     'vdj_pseudobulk.R'
 Imports:
     SingleCellExperiment,
-    rlang
+    rlang,
+    miloR

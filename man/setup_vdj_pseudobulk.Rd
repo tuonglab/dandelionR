@@ -7,20 +7,20 @@
 setup_vdj_pseudobulk(
   sce,
   mode_option = c("abT", "gdT", "B"),
+  already.productive = TRUE,
   productive_cols = NULL,
-  productive_vdj = TRUE,
   productive_vj = TRUE,
+  productive_vdj = TRUE,
   allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception",
     "Orphan VDJ", "Orphan VDJ-exception"),
   subsetby = NULL,
   groups = NULL,
   extract_cols = NULL,
   filter_pattern = ",|None|No_cotig",
-  check_vdj_mapping = c("v_call", "j_call"),
   check_vj_mapping = c("v_call", "j_call"),
+  check_vdj_mapping = c("v_call", "j_call"),
   check_extract_cols_mapping = NULL,
   remove_missing = TRUE,
-  already.productive = TRUE,
   ...
 )
 }
@@ -31,48 +31,43 @@ vdj data should be contained in colData for filtering}
 \item{mode_option}{optional,
 mode for extraction the V(D)J genes.}
 
-\item{productive_cols}{character vector, names of colData used in productivity filtering, NULL by default}
+\item{already.productive}{logical, whether the data is already filtered by productivity.}
 
-\item{productive_vdj}{logical, TRUE by default
-Option in productivity filtering. If True, cell will only be kept if the main VDJ chain is productive}
+\item{productive_cols}{character vector, names of colData used in productivity filtering, with NULL by default}
 
-\item{productive_vj}{logical, TRUE by default
-Option in productivity filtering. If True, cell will only be kept if the main VJ chain is productive}
+\item{productive_vj}{logical, with TRUE by default.
+Option in productivity filtering.  If True, cell will only be kept if the main VJ chain is productive}
+
+\item{productive_vdj}{logical, with TRUE by default.
+Option in productivity filtering.  If True, cell will only be kept if the main VDJ chain is productive}
 
 \item{allowed_chain_status}{character vectors, optional, if specified,
-the element should come from c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
+the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
 
-\item{subsetby}{character, NULL by default, name of one colData provided for subsetting.}
+\item{subsetby}{character, with NULL by default, name of one colData provided for sub-setting.}
 
-\item{groups}{character vector, NULL by default, condition for subsetting}
+\item{groups}{character vector, with NULL by default, condition for sub-setting}
 
-\item{extract_cols}{character vector, NULL by default
-column names where VDJ/VJ information is stored so that this will be used instead of the standard columns}
+\item{extract_cols}{character vector, with NULL by default
+colData names where VDJ/VJ information is stored, these colData will be used instead of the standard colData}
 
-\item{filter_pattern}{character string, optional ",|None|No_contig" by default
-pattern to filter form object. If NULL, does not filter}
+\item{filter_pattern}{character, optional, with ",|None|No_contig" by default.}
 
-\item{check_vdj_mapping}{character vector, optional
-elements should come from c("v_call", "j_call")
-Only columns in the argument will be checked for unclear mapping(contain comma) in VDJ calls}
+\item{check_vj_mapping}{character vector, optional.
+elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.}
 
-\item{check_vj_mapping}{character vector, optional
-elements should come from c("v_call", "j_call")
-Only columns in the argument will be checked for unclear mapping(contain comma) in VJ calls}
+\item{check_vdj_mapping}{character vector, optional.
+elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.}
 
-\item{check_extract_cols_mapping}{character vecter, NULL by default
-Only columns in the argument will be checked for unclear mapping (containing comma) in columns specified in extract_cols}
+\item{check_extract_cols_mapping}{character vecter, with NULL by default}
 
-\item{remove_missing}{bool, True by default
-If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.}
-
-\item{already.productive}{logical, whether the data is already filtered by productivity.}
+\item{remove_missing}{bool, True by default}
 }
 \value{
 filtered SingleCellExperiment object
 }
 \description{
-Function for data preprocessing, filtering the data based on productivity, chain status, subset data, extract main TCR, and remove the unmapping data
+Function for data preprocessing. This function will filters the data based on productivity, chain status, subsets data, extracts main v(d)j, and removes the unmapping data
 }
 \details{
 data will undergo several process, including productivity filtering, chain status filtering, subseting, main TCR extracting, and unmapping data removing.
@@ -103,6 +98,28 @@ data will undergo several process, including productivity filtering, chain statu
 \item parameters for \strong{subsetting}: subsetby, groups
 \itemize{
 \item subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with {groups} feature in {subsetby} will be used for computing the VDJ feature space
+}
+\item parameter for \strong{main v(d)j extraction}: extract_cols
+\item parameters for \strong{unmapping filtering}:
+\itemize{
+\item filter_pattern
+\itemize{
+\item pattern to be filtered form object.
+\item If is set to be NULL, the unmaping filtering procees won't start
+}
+\item check_vj_mapping, check_vdj_mapping
+\itemize{
+\item only colData specified by these arguments (check_vj_mapping and check_vdj_mapping) will be checked for unclear mappings
+}
+\item check_extract_cols_mapping, related to extract_cols
+\itemize{
+\item Only colData specified by the argument will be checked for unclear mapping, the colData should first specified by extract_cols
+}
+\item remove_missing
+\itemize{
+\item If true, will remove cells with contigs matching the filter from the object.
+\item If False, will mask them with a uniform value dependent on the column name.
+}
 }
 }
 }

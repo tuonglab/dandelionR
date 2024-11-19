@@ -12,5 +12,5 @@
 \item{check}{the input need to be check}
 }
 \description{
-check whether the input has the correct type
+check whether the input is with the correct class
 }

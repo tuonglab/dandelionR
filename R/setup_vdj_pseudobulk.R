@@ -1,34 +1,29 @@
 #' setup_vdj_pseudobulk
 #' 
-#' Function for data preprocessing, filtering the data based on productivity, chain status, subset data, extract main TCR, and remove the unmapping data
+#' Function for data preprocessing. This function will filters the data based on productivity, chain status, subsets data, extracts main v(d)j, and removes the unmapping data
 #' @param sce SingleCellExperiment object, 
 #'  vdj data should be contained in colData for filtering
 #' @param mode_option optional, 
 #' mode for extraction the V(D)J genes.
 #' @param already.productive logical, whether the data is already filtered by productivity. 
-#' @param productive_cols character vector, names of colData used in productivity filtering, NULL by default
-#' @param productive_vdj logical, TRUE by default
-#' Option in productivity filtering. If True, cell will only be kept if the main VDJ chain is productive
-#' @param productive_vj logical, TRUE by default
-#' Option in productivity filtering. If True, cell will only be kept if the main VJ chain is productive
+#' @param productive_cols character vector, names of colData used in productivity filtering, with NULL by default
+#' @param productive_vj logical, with TRUE by default.  
+#' Option in productivity filtering.  If True, cell will only be kept if the main VJ chain is productive
+#' @param productive_vdj logical, with TRUE by default.  
+#' Option in productivity filtering.  If True, cell will only be kept if the main VDJ chain is productive
 #' @param allowed_chain_status character vectors, optional, if specified, 
-#' the element should come from c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")
-#' @param subsetby character, NULL by default, name of one colData provided for subsetting.
-#' @param groups character vector, NULL by default, condition for subsetting
-#' @param extract_cols character vector, NULL by default
-#' column names where VDJ/VJ information is stored so that this will be used instead of the standard columns
-#' @param filter_pattern character string, optional ",|None|No_contig" by default
-#' pattern to filter form object. If NULL, does not filter
-#' @param check_vdj_mapping character vector, optional
-#' elements should come from c("v_call", "j_call")
-#' Only columns in the argument will be checked for unclear mapping(contain comma) in VDJ calls
-#' @param check_vj_mapping character vector, optional
-#' elements should come from c("v_call", "j_call")
-#' Only columns in the argument will be checked for unclear mapping(contain comma) in VJ calls 
-#' @param check_extract_cols_mapping character vecter, NULL by default
-#' Only columns in the argument will be checked for unclear mapping (containing comma) in columns specified in extract_cols
+#' the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")
+#' @param subsetby character, with NULL by default, name of one colData provided for sub-setting.
+#' @param groups character vector, with NULL by default, condition for sub-setting
+#' @param extract_cols character vector, with NULL by default  
+#' colData names where VDJ/VJ information is stored, these colData will be used instead of the standard colData
+#' @param filter_pattern character, optional, with ",|None|No_contig" by default. 
+#' @param check_vj_mapping character vector, optional. 
+#' elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.
+#' @param check_vdj_mapping character vector, optional. 
+#' elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.
+#' @param check_extract_cols_mapping character vecter, with NULL by default
 #' @param remove_missing bool, True by default
-#' If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.
 #' @details
 #' data will undergo several process, including productivity filtering, chain status filtering, subseting, main TCR extracting, and unmapping data removing.
 #' - parameters for **productivity filtering**:
@@ -46,25 +41,37 @@
 #'  - parameter for **chain status filtering**: allowed_chain_status, chain status to be kept
 #'  - parameters for **subsetting**: subsetby, groups
 #'    - subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with {groups} feature in {subsetby} will be used for computing the VDJ feature space
-#'  
+#'  - parameter for **main v(d)j extraction**: extract_cols
+#'  - parameters for **unmapping filtering**:
+#'    - filter_pattern
+#'      - pattern to be filtered form object.
+#'      - If is set to be NULL, the unmaping filtering procees won't start
+#'    - check_vj_mapping, check_vdj_mapping
+#'      - only colData specified by these arguments (check_vj_mapping and check_vdj_mapping) will be checked for unclear mappings
+#'    - check_extract_cols_mapping, related to extract_cols
+#'      - Only colData specified by the argument will be checked for unclear mapping, the colData should first specified by extract_cols
+#'    - remove_missing
+#'      - If true, will remove cells with contigs matching the filter from the object. 
+#'      - If False, will mask them with a uniform value dependent on the column name.
 #' @include check.R
+#' @include filter.cells.R
 #' @return filtered SingleCellExperiment object
 #' @export
 setup_vdj_pseudobulk<-function(sce,
          mode_option = c("abT","gdT","B"),
+         already.productive = TRUE,
          productive_cols = NULL,
-         productive_vdj = TRUE,
          productive_vj = TRUE,
+         productive_vdj = TRUE,
          allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
          subsetby = NULL,
          groups = NULL,
          extract_cols = NULL,
          filter_pattern = ",|None|No_cotig",
-         check_vdj_mapping = c("v_call","j_call"),
          check_vj_mapping = c("v_call","j_call"),
+         check_vdj_mapping = c("v_call","j_call"),
          check_extract_cols_mapping = NULL,
          remove_missing = TRUE,
-         already.productive = TRUE,
          ...
 )
 {
@@ -105,7 +112,7 @@ setup_vdj_pseudobulk<-function(sce,
         
         cnumber1 <- dim(sce)[2]
         filtered <- cnumber0 - cnumber1
-        message(paste(filtered,"of cell filtered"))
+        message(paste(filtered,"of cells filtered"))
       }
       else
       {
@@ -125,7 +132,7 @@ setup_vdj_pseudobulk<-function(sce,
       
       cnumber1 <- dim(sce)[2]
       filtered <- cnumber0 - cnumber1
-      message(paste(filtered,"of cell filtered"))
+      message(paste(filtered,"of cells filtered"))
     }
   }
 
@@ -145,7 +152,7 @@ setup_vdj_pseudobulk<-function(sce,
     
     cnumber1 <- dim(sce)[2]
     filtered <- cnumber0 - cnumber1
-    message(paste(filtered,"of cell filtered"))
+    message(paste(filtered,"of cells filtered"))
   }
   
   
@@ -159,7 +166,7 @@ setup_vdj_pseudobulk<-function(sce,
     
     cnumber1 <- dim(sce)[2]
     filtered <- cnumber0 - cnumber1
-    message(paste(filtered,"of cell filtered"))
+    message(paste(filtered,"of cells filtered"))
   }  
   
   
@@ -219,7 +226,7 @@ setup_vdj_pseudobulk<-function(sce,
     }
     else
     {
-      if(!is.null(extract_cols)) 
+      if(is.null(extract_cols)) 
       {
         if(!is.null(check_vdj_mapping)) {
           extr_cols <- c(extr_cols, paste(check_vdj_mapping,"VDJ_main",sep = "_"))
@@ -229,19 +236,27 @@ setup_vdj_pseudobulk<-function(sce,
       }
       else
       {
-        if(is.null(check_extract_cols_mapping)) extr_cols <- check_extract_cols_mapping
+        if(!is.null(check_extract_cols_mapping)) extr_cols <- check_extract_cols_mapping
       }
     }
     if(!is.null(extr_cols))
+    {
+      message(paste0("Filtering cells from ",paste(extr_cols,collapse = ", "),"..."), appendLF = FALSE)
+      cnumber0 <- dim(sce)[2]
+      
       sce <- Reduce(function(x, y) {
         .filter.cells(sce = x, col_n = y, filter_pattern = filter_pattern, remove_missing = remove_missing)
       },
       extr_cols,
       init = sce
       )
+      
+      cnumber1 <- dim(sce)[2]
+      filtered <- cnumber0 - cnumber1
+      message(paste(filtered,"of cells filtered"))
+    }
   }
+  message(paste(dim(sce)[2],"of cells remain."))
   return(sce)  
-  
-  
 }
 

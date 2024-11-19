@@ -14,14 +14,15 @@
                          remove_missing = TRUE
 )
 {
-  # find filter pattern hits in our column of interest
-  temp <- colData(sce)[col_n]
-  temp <- as.data.frame(temp@listData)
-  mask<- grep(filter_pattern, temp[,1])
   if(ncol(sce)<1)
   {
     abort("None colnmn remains, please check whether the filtering option is correct.")
   }
+  
+  # find filter pattern hits in our column of interest
+  temp <- colData(sce)[col_n]
+  temp <- as.data.frame(temp@listData)
+  mask<- grep(filter_pattern, temp[,1])
   
   if(remove_missing)
   {

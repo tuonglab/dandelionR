@@ -2,7 +2,7 @@
 % Please edit documentation in R/check.R
 \name{.type.check}
 \alias{.type.check}
-\title{.type_check}
+\title{.type.check}
 \usage{
 .type.check(input, must)
 }
