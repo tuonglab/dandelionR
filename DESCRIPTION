@@ -27,3 +27,6 @@ Collate:
     'setup_vdj_pseudobulk.R'
     'terminal.state.from.markov.chain.R'
     'vdj_pseudobulk.R'
+Imports:
+    SingleCellExperiment,
+    rlang

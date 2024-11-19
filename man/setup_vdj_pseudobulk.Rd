@@ -10,10 +10,10 @@ setup_vdj_pseudobulk(
   productive_cols = NULL,
   productive_vdj = TRUE,
   productive_vj = TRUE,
-  subsetby = NULL,
-  groups = NULL,
   allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception",
     "Orphan VDJ", "Orphan VDJ-exception"),
+  subsetby = NULL,
+  groups = NULL,
   extract_cols = NULL,
   filter_pattern = ",|None|No_cotig",
   check_vdj_mapping = c("v_call", "j_call"),
@@ -26,23 +26,12 @@ setup_vdj_pseudobulk(
 }
 \arguments{
 \item{sce}{SingleCellExperiment object,
-vdj data should contained in colData for filtering}
+vdj data should be contained in colData for filtering}
 
-\item{mode_option}{optional
-mode for extraction the V(D)J genes.
-\itemize{
-\item for productive filtering, function will check colData(s) named productive_{mode_option}_{type}, where type should be "VDJ" or "VJ" or both, depending on productive_vj and productive_vdj.
-\itemize{
-\item If set as "NULL", the function needs the option "extract_cols" to be specified
-}
-\item for
-}}
+\item{mode_option}{optional,
+mode for extraction the V(D)J genes.}
 
-\item{productive_cols}{paramter used in productivity filtering, NULL by default
-\itemize{
-\item colData names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
-\item must be be specified when productivity filtering is need to conduct and mode_option is NULL.
-}}
+\item{productive_cols}{character vector, names of colData used in productivity filtering, NULL by default}
 
 \item{productive_vdj}{logical, TRUE by default
 Option in productivity filtering. If True, cell will only be kept if the main VDJ chain is productive}
@@ -50,20 +39,12 @@ Option in productivity filtering. If True, cell will only be kept if the main VD
 \item{productive_vj}{logical, TRUE by default
 Option in productivity filtering. If True, cell will only be kept if the main VJ chain is productive}
 
-\item{subsetby}{character, NULL by default
-\itemize{
-\item name of one colData provided for subsetting. The subsetting process will only start when both groups and subsetby are provided.
-\item If provided, only the cell with {subsetby} feature in {groups} will be used for computing the VDJ feature space
-}}
+\item{allowed_chain_status}{character vectors, optional, if specified,
+the element should come from c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
 
-\item{groups}{character vector, NULL by default
-\itemize{
-\item condition for subsetting
-\item If provided, only the following groups/ categories will be used for computing the VDJ feature space
-}}
+\item{subsetby}{character, NULL by default, name of one colData provided for subsetting.}
 
-\item{allowed_chain_status}{character vectors, optional
-element should come from c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
+\item{groups}{character vector, NULL by default, condition for subsetting}
 
 \item{extract_cols}{character vector, NULL by default
 column names where VDJ/VJ information is stored so that this will be used instead of the standard columns}
@@ -85,15 +66,43 @@ Only columns in the argument will be checked for unclear mapping (containing com
 \item{remove_missing}{bool, True by default
 If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.}
 
-\item{already.productive}{logical. Whether the data is already filtered by productivity.
-\itemize{
-\item If true, the function will skip the productivity filtering
-\item If false, retain only productive entries in columns specified by mode_option or productive_cols
-}}
+\item{already.productive}{logical, whether the data is already filtered by productivity.}
 }
 \value{
 filtered SingleCellExperiment object
 }
 \description{
-filtering the data based on productivity, chain status, and subset data. ....
+Function for data preprocessing, filtering the data based on productivity, chain status, subset data, extract main TCR, and remove the unmapping data
+}
+\details{
+data will undergo several process, including productivity filtering, chain status filtering, subseting, main TCR extracting, and unmapping data removing.
+\itemize{
+\item parameters for \strong{productivity filtering}:
+\itemize{
+\item already.productive
+\itemize{
+\item If true, the function will skip the productivity filtering
+\item If false, retain only productive entries in columns specified by mode_option or productive_cols
+}
+\item mode_option
+\itemize{
+\item function will check colData(s) named \verb{productive_\{mode_option\}_\{type\}}, where type should be "VDJ" or "VJ" or both, depending on values of productive_vj and productive_vdj.
+\item If set as "NULL", the function needs the option "extract_cols" to be specified
+}
+\item productive_cols
+\itemize{
+\item must be be specified when productivity filtering is need to conduct and mode_option is NULL.
+\item where VDJ/VJ information is stored so that this will be used instead of the standard columns.
+}
+\item productive_vj, productive_vdj
+\itemize{
+\item If True, cell will only be kept if the main V(D)J chain is productive
+}
+}
+\item parameter for \strong{chain status filtering}: allowed_chain_status, chain status to be kept
+\item parameters for \strong{subsetting}: subsetby, groups
+\itemize{
+\item subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with {groups} feature in {subsetby} will be used for computing the VDJ feature space
+}
+}
 }
