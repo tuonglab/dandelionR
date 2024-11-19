@@ -21,15 +21,18 @@ markov_probability(
 
 \item{dpt}{DPT object}
 
-\item{terminal_state}{}
+\item{terminal_state}{the index of the terminal state}
 
-\item{root_cell}{}
+\item{root_cell}{the index of the root state}
 
 \item{num_waypoints}{integer
 Number of waypoints to sample. 500L by default}
 
 \item{scale_components}{logical
 If True, the components will be scale}
+}
+\value{
+milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 }
 \description{
 Construct markov chain and calculate probabilities

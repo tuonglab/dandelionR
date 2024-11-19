@@ -2,7 +2,7 @@
 #' 
 #' function to compute entropy and branch probabilities
 #' @param wp_data Multi scale data of the waypoints
-#' @param terminal_states
+#' @param terminal_states the index of the terminal state
 #' @param knn. number of nearest neighbors for graph construction
 #' @param n_jobs number of jobs for parallel processing
 #' @param pseudotime pseudotime ordering of cells

@@ -16,6 +16,8 @@ differentiation_probabilities(
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}
 
+\item{terminal_states}{the index of the terminal state}
+
 \item{knn.}{number of nearest neighbors for graph construction}
 
 \item{n_jobs}{number of jobs for parallel processing}

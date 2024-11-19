@@ -6,6 +6,9 @@
 \usage{
 .get.pbs.obs(pbs, obs_to_take, milo)
 }
+\value{
+pbs_obs
+}
 \description{
 Helper function to create the new pseudobulk object's coldata.
 }

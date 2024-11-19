@@ -25,7 +25,7 @@
 #' @param extract_cols list of str
 #' c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main") by default
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
-#' @result SingleCellEXperiment
+#' @return SingleCellEXperiment
 #' @export
 vdj.pseudobulk<-function(milo,
                          pbs = NULL,

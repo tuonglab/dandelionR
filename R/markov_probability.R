@@ -8,9 +8,9 @@
 #' @param num_waypoints integer
 #' Number of waypoints to sample. 500L by default
 #' @param dpt DPT object
-#' @param terminal_state 
-#' @param root_cell 
-#' @return 
+#' @param terminal_state the index of the terminal state
+#' @param root_cell the index of the root state
+#' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @export
 markov_probability <- function(milo, diffusionmap,dpt,terminal_state, root_cell ,scale_componet = TRUE, num_waypoints = 500  )
 {

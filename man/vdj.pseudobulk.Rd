@@ -51,6 +51,9 @@ Column names where VDJ/VJ information is stored so that this will be used instea
 Note: only when you set extract_cols to NULL, will this argument be considered!
 Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.}
 }
+\value{
+SingleCellEXperiment
+}
 \description{
 making pseudobulk vdj feature space
 }

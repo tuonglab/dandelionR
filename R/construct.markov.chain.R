@@ -1,10 +1,10 @@
 #' .construct.markov.chain
 #' 
 #' markov chain construction
-#' @param wp_data
+#' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
-#' @param pseudotime description
-#' @result
+#' @param pseudotime pseudotime ordering of cells
+#' @return transition matrix of the markov chain
 .construct.markov.chain <- function(wp_data, knn., pseudotime, waypoints)
 {
   message("Markov chain construction...")

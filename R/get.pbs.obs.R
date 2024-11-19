@@ -1,7 +1,7 @@
 #' .get.pbs.obs
 #' 
 #' Helper function to create the new pseudobulk object's coldata. 
-#' @result pbs_obs
+#' @return pbs_obs
 .get.pbs.obs <- function(pbs,obs_to_take, milo) 
 {
   # prepare per-pseudobulk calls of specified metadata columns

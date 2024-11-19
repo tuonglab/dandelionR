@@ -7,9 +7,14 @@
 .construct.markov.chain(wp_data, knn., pseudotime, waypoints)
 }
 \arguments{
+\item{wp_data}{Multi scale data of the waypoints}
+
 \item{knn.}{Number of nearest neighbors for graph construction}
 
-\item{pseudotime}{description}
+\item{pseudotime}{pseudotime ordering of cells}
+}
+\value{
+transition matrix of the markov chain
 }
 \description{
 markov chain construction
