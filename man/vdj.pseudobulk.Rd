@@ -37,17 +37,17 @@ Optional obs column(s) to identify the most common value of for each pseudobulk.
 If True, will scale the counts of each V(D)J gene group to 1 for each pseudobulk.}
 
 \item{renormalise}{bool, False by default
-If True, will re-scale the counts of each V(D)J gene group to 1 for each pseudobulk with any "missing" calls removed.
+If True, will re-scale the counts of each V(D)J gene group to 1 for each pseudobulk with any 'missing' calls removed.
 Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_missing set to False.}
 
 \item{min_count}{int, 1 by default
-Pseudobulks with fewer than these many non-"missing" calls in a V(D)J gene group will have their non-"missing" calls set to 0 for that group. Relevant with normalise as True.}
+Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.}
 
 \item{extract_cols}{list of str
-c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main") by default
+c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main') by default
 Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.}
 
-\item{mode_option, }{must be one element of the vector c("B","abT","gdT"), "abT" by default
+\item{mode_option, }{must be one element of the vector c('B','abT','gdT'), 'abT' by default
 Note: only when you set extract_cols to NULL, will this argument be considered!
 Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.}
 }
