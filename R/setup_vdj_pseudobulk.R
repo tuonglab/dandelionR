@@ -179,7 +179,7 @@ setup_vdj_pseudobulk<-function(sce,
       else{
         suffix <- c("VDJ", "VJ")
         extr_cols <- as.vector(outer(prefix, suffix, function(x,y) paste0(x,y)))
-        extr_cols <- extract_cols[extr_cols != paste0("d_call_", "VJ")]
+        extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
       }
       message(paste0("Extract main TCR from ",paste(extr_cols,collapse = ", "),"..."), appendLF = FALSE)
       sce <- Reduce(function(data, ex_col){
@@ -188,16 +188,19 @@ setup_vdj_pseudobulk<-function(sce,
         colData(data)[[paste(ex_col,"main",sep = "_")]]<-vapply(strtem, `[`,1, FUN.VALUE = character(1))
         data
       }, extr_cols,init = sce) 
+      message("Complete.")
     }
   }
   else
   {
+    message(paste0("Extract main TCR from ",paste(extract_cols,collapse = ", "),"..."), appendLF = FALSE)
     sce <- Reduce(function(data, ex_col){
       tem <- colData(data)[[ex_col]]
       strtem <- strsplit(as.character(tem),"\\|")
       colData(data)[[paste(ex_col,"main",sep = "_")]]<-vapply(strtem, `[`,1, FUN.VALUE = character(1))
       data
-    }, extract_cols,init = sce)     
+    }, extract_cols,init = sce)
+    message("Complete.")
   }
   
   
