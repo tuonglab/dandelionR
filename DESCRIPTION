@@ -10,3 +10,20 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Collate: 
+    'check.R'
+    'construct.markov.chain.R'
+    'determ.multiscale.space.R'
+    'differentiation_probabilities.R'
+    'filter.cells.R'
+    'get.pbs.R'
+    'get.pbs.obs.R'
+    'markov_probability.R'
+    'max.min.sampling.R'
+    'milo.umap.R'
+    'minmax.scale.R'
+    'project_probability.R'
+    'project_pseudotime_to_cell.R'
+    'setup_vdj_pseudobulk.R'
+    'terminal.state.from.markov.chain.R'
+    'vdj_pseudobulk.R'

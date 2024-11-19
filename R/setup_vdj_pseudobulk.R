@@ -1,24 +1,31 @@
 #' setup_vdj_pseudobulk
 #' 
-#' 
-#' @param sce SingleCellExperiment object, adata in python
-#' data after combineTCR， contain both vdj and seq
-#' @param already.productive Whether the data is filtered by productive. If false, retain only productive entries based on specified mode
+#' filtering the data based on productivity, chain status, and subset data. ....
+#' @param sce SingleCellExperiment object, 
+#' vdj data should contained in colData for filtering
+#' @param already.productive logical. Whether the data is already filtered by productivity. 
+#'  - If true, the function will skip the productivity filtering
+#'  - If false, retain only productive entries in columns specified by mode_option or productive_cols
 #' @param mode_option optional
 #' mode for extraction the V(D)J genes.
-#' If set as "NULL", the function needs the option "extract_cols" to be specified
-#' @param productive_cols NULL by default
-#' column names where VDJ/VJ information is stored so that this will be used instead of the standard columns
+#'  - for productive filtering, function will check colData(s) named productive_{mode_option}_{type}, where type should be "VDJ" or "VJ" or both, depending on productive_vj and productive_vdj.
+#'    - If set as "NULL", the function needs the option "extract_cols" to be specified
+#'  - for 
+#' @param productive_cols paramter used in productivity filtering, NULL by default
+#'  - colData names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
+#'  - must be be specified when productivity filtering is need to conduct and mode_option is NULL. 
 #' @param productive_vdj logical, TRUE by default
-#' If True, cell will only be kept if the main VDJ chain is productive
+#' Option in productivity filtering. If True, cell will only be kept if the main VDJ chain is productive
 #' @param productive_vj logical, TRUE by default
-#' If True, cell will only be kept if the main VJ chain is productive
-#' @param groups character vector, NULL by default
-#' If provided, only the following groups/ categories will be used for computing the VDJ feature space
-#' @param subsetby character, NULL by default
-#' If provided, only the groups/categories in this column will be used for computing the VDJ feature space
+#' Option in productivity filtering. If True, cell will only be kept if the main VJ chain is productive
 #' @param allowed_chain_status character vectors, optional
 #' element should come from c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")
+#' @param subsetby character, NULL by default
+#'  - name of one colData provided for subsetting. The subsetting process will only start when both groups and subsetby are provided.
+#'  - If provided, only the cell with {subsetby} feature in {groups} will be used for computing the VDJ feature space
+#' @param groups character vector, NULL by default
+#'  - condition for subsetting
+#'  - If provided, only the following groups/ categories will be used for computing the VDJ feature space
 #' @param extract_cols character vector, NULL by default
 #' column names where VDJ/VJ information is stored so that this will be used instead of the standard columns
 #' @param filter_pattern character string, optional ",|None|No_contig" by default
@@ -33,6 +40,8 @@
 #' Only columns in the argument will be checked for unclear mapping (containing comma) in columns specified in extract_cols
 #' @param remove_missing bool, True by default
 #' If true, will remove cells with contigs matching the filter from the object. If False, will mask them with a uniform value dependent on the column name.
+#' @include check.R
+#' 
 #' @return filtered SingleCellExperiment object
 #' @export
 setup_vdj_pseudobulk<-function(sce,
@@ -74,19 +83,18 @@ setup_vdj_pseudobulk<-function(sce,
   
   # filtering
   ## retain only productive entries based on specified mode
+  message("Productivity filtering...")
   if(!already.productive)
   {
     if(is.null(mode_option))
     {
-      if(!is.null(mode_option))
+      if(!is.null(productive_cols))
       {
-        if(!is.null(productive_cols))
-        {
-          sce <- Reduce(function(data, p_col){
-            idx<- substr(colData(data)[[p_col]],start = 1, stop = 1) == "T"
-            data[,idx]
-          }, productive_cols, init = sce)
-        }
+        message(paste("checking column(s) from", paste(productive_cols, collapse = ", ")))
+        sce <- Reduce(function(data, p_col){
+          idx<- substr(colData(data)[[p_col]],start = 1, stop = 1) == "T"
+          data[,idx]
+        }, productive_cols, init = sce)
       }
       else
       {
@@ -96,6 +104,7 @@ setup_vdj_pseudobulk<-function(sce,
     else
     {
       produ_col <- paste("productive",mode_option,c("VDJ","VJ"),sep = "_")[c(productive_vdj,productive_vj)]
+      message(paste("checking column(s) from", paste(produ_col, collapse = ", ")))
       sce <- Reduce(function(data, p_col){
         idx <- substr(colData(data)[[p_col]],start = 1, stop = 1) == "T"
         data[,idx]
@@ -107,6 +116,7 @@ setup_vdj_pseudobulk<-function(sce,
   ## retain only cells with allowed chain status
   if(!is.null(allowed_chain_status))
   {
+    message("checking allowed chain status")
     idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
     if(!any(idx))
     {
