@@ -4,11 +4,11 @@
 #' @param milo milo object or SingleCellExperiment object
 #' @param pbs Optional binary matrix with cells as rows and pseudobulk groups as columns,
 #'  - if milo is a milo object, no need to provide
-#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk
-#' @param obs_to_bulk str or a list of str, NULL by default
-#' Optional obs column(s) to group pseudobulks into; if multiple are provided, they will be combined
-#' if milo is a milo object, no need to provide
-#' if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk
+#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
+#' @param col_to_bulk character or character vector, NULL by default
+#' Optional colData column(s) to generate pbs, if multiple are provided, they will be combined
+#'  - if milo is a milo object, no need to provide
+#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
 #' @param obs_to_take str or a list of str, NULL by default
 #' Optional obs column(s) to identify the most common value of for each pseudobulk.
 #' @param normalise bool, True by default
@@ -21,8 +21,8 @@
 #' @param mode_option, must be one element of the vector c('B','abT','gdT'), 'abT' by default
 #' Note: only when you set extract_cols to NULL, will this argument be considered!
 #' Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.
-#' @param extract_cols list of str
-#' c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main') by default
+#' @param extract_cols character vector
+#' with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
 #' @return SingleCellExperiment object ...
 #' @include check.R
@@ -30,18 +30,24 @@
 #' @import SingleCellExperiment
 #' @import Matrix
 #' @export
-vdj_pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = NULL,
-  normalise = TRUE, renormalise = FALSE, min_count = 1L, extract_cols = c("v_call_abT_VDJ_main",
-    "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"), mode_option = c("abT",
-    "gdT", "B")) {
-  
+vdj_pseudobulk <- function(
+    milo, 
+    pbs = NULL, 
+    col_to_bulk = NULL, 
+    extract_cols = c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"), 
+    mode_option = c("abT", "gdT", "B"),
+    obs_to_take = NULL,
+    normalise = TRUE, 
+    renormalise = FALSE, 
+    min_count = 1L
+    ) {
   # type check
   if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
     abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
   }
   .class.check(pbs, "Matrix")
-  if (!all(obs_to_bulk %in% names(colData(milo_object))))
-    abort("Inappropriate argument value: \nobs_to_bulk should within the name of coldata of milo")
+  if (!all(col_to_bulk %in% names(colData(milo_object))))
+    abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
   if (!all(obs_to_take %in% names(colData(milo_object))))
     abort("Inappropriate argument value: \nobs_to_take should within the name of coldata of milo")
   .type.check(normalise, "logical")
@@ -51,12 +57,9 @@ vdj_pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   .type.check(mode_option, "character")
   mode_option <- match.arg(mode_option)
   .type.check(extract_cols, "character")
-
-
   # determ the value of pbs
   if (is(milo, "Milo"))
-    pbs <- nhoods(milo_object) else pbs <- .get.pbs(pbs, obs_to_bulk, milo)
-
+    pbs <- nhoods(milo_object) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
   # set the column used in caculation
   if (is.null(extract_cols)) {
     if (is.null(mode_option)) {
@@ -68,7 +71,6 @@ vdj_pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
         "_call_VJ_main"), all.col.n)]
     }
   }
-
   # perform matrix multiplication of pseudobulks by cell matrix by a cells by
   # VJs matrix strat off by creating the cell by VJs matix skip the prefix
   # stuff as the VJ genes will be unique in the columns
