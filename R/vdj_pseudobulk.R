@@ -31,6 +31,7 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   normalise = TRUE, renormalise = FALSE, min_count = 1L, extract_cols = c("v_call_abT_VDJ_main",
     "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"), mode_option = c("abT",
     "gdT", "B")) {
+  
   # type check
   if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
     abort("uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")

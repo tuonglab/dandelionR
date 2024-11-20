@@ -78,7 +78,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
   if (!already.productive) {
     if (is.null(mode_option)) {
       if (!is.null(productive_cols)) {
-        message(paste("checking productivity column(s) from", paste(productive_cols,
+        message(paste("Checking productivity from", paste(productive_cols,
           collapse = ", "), "..."), appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
         sce <- Reduce(function(data, p_col) {
@@ -94,7 +94,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     } else {
       produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(productive_vdj,
         productive_vj)]
-      message(paste("checking column(s) from", paste(produ_col, collapse = ", "),
+      message(paste("Checking productivity from", paste(produ_col, collapse = ", "),
         "..."), appendLF = FALSE)
       cnumber0 <- dim(sce)[2]
       sce <- Reduce(function(data, p_col) {

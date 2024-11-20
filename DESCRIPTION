@@ -30,4 +30,6 @@ Imports:
     SingleCellExperiment,
     rlang,
     miloR,
-    methods
+    methods,
+    Seurat,
+    igraph

@@ -6,23 +6,25 @@
 \usage{
 milo.umap(
   milo,
-  slot_name = "UMAP_graph",
+  slot_name = "UMAP_knngraph",
   n.neighbors = 50L,
   metric = "euclidean"
 )
 }
 \arguments{
-\item{milo}{the milo object need to conduct umap on}
+\item{milo}{the milo object with knn graph that needed to conduct umap on.}
 
-\item{slot_name}{the slot name in reducedim where the result store}
+\item{slot_name}{character, with default "UMAP_knngraph".
+The slot name in reduceDim where the result store}
 
-\item{n.neighbors}{the number of neighboring points used}
+\item{n.neighbors}{integer, with default 50L.
+the number of neighboring points used}
 
-\item{metric}{the choice of metric used to measure distance}
+\item{metric}{character, the choice of metric used to measure distance}
 }
 \value{
 milo object with umap reduction
 }
 \description{
-conduct the umap on the knn graph in umap
+use function RunUMAP from Seurat to conduct the umap on the knn graph in milo object
 }
