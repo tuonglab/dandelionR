@@ -1,18 +1,21 @@
-#' milo.umap
+#' milo_umap
 #'
-#' use function RunUMAP from Seurat to conduct the umap on the knn graph in milo object
+#' use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 #' @param milo the milo object with knn graph that needed to conduct umap on.
 #' @param slot_name character, with default "UMAP_knngraph". 
-#'    The slot name in reduceDim where the result store
+#'  - The slot name in reduceDim where the result store
 #' @param n.neighbors integer, with default 50L.
-#'    the number of neighboring points used
-#' @param metric character, the choice of metric used to measure distance
+#'  - the number of neighboring points used
+#'  - parameter of RunUMAP, checking its document for further detail
+#' @param metric character, with default "euclidean"
+#'  - the choice of metric used to measure distance
+#'  - parameter of RunUMAP, checking its document for further detail
 #' @return milo object with umap reduction
 #' @import igraph
 #' @import SingleCellExperiment
 #' @import Seurat
 #' @export
-milo.umap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
+milo_umap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
   requireNamespace("miloR")
   # get the graph's adjacency matrix
   graphm <- as_adjacency_matrix(miloR::graph(milo))
