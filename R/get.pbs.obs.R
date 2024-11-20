@@ -2,6 +2,7 @@
 #'
 #' Helper function to create the new pseudobulk object's coldata.
 #' @return pbs_obs
+#' @import Matrix
 .get.pbs.obs <- function(pbs, obs_to_take, milo) {
   # prepare per-pseudobulk calls of specified metadata columns
   if (!is.null(obs_to_take)) {
@@ -11,7 +12,7 @@
       fa <- data.frame(fa)
       anno.dummies <- model.matrix(~. - 1, data = fa, contrasts.arg = lapply(fa,
         contrasts, contrasts = FALSE))
-      anno.count <- t(pbs) %*% anno.dummies  # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
+      anno.count <- Matrix::t(pbs) %*% anno.dummies  # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
       anno.sum <- apply(anno.count, 1, sum)
       anno.frac <- anno.count/anno.sum
       anno.frac <- DataFrame(anno.frac)

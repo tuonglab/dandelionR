@@ -19,7 +19,7 @@ Collate:
     'get.pbs.obs.R'
     'markov_probability.R'
     'max.min.sampling.R'
-    'milo.umap.R'
+    'milo_umap.R'
     'minmax.scale.R'
     'project_probability.R'
     'project_pseudotime_to_cell.R'

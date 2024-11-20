@@ -25,7 +25,11 @@
 #' @param extract_cols list of str
 #' c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main') by default
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
-#' @return SingleCellEXperiment
+#' @return SingleCellExperiment object ...
+#' @include check.R
+#' @import mathods
+#' @import SingleCellExperiment
+#' @import Matrix
 #' @export
 vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = NULL,
   normalise = TRUE, renormalise = FALSE, min_count = 1L, extract_cols = c("v_call_abT_VDJ_main",
@@ -34,7 +38,7 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   
   # type check
   if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
-    abort("uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
+    abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
   }
   .class.check(pbs, "Matrix")
   if (!all(obs_to_bulk %in% names(colData(milo_object))))
@@ -43,16 +47,16 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
     abort("Inappropriate argument value: \nobs_to_take should within the name of coldata of milo")
   .type.check(normalise, "logical")
   .type.check(renormalise, "logical")
+  .type.check(min_count, "numeric")
   min_count <- as.integer(min_count)
   .type.check(mode_option, "character")
   mode_option <- match.arg(mode_option)
   .type.check(extract_cols, "character")
 
 
-
   # determ the value of pbs
   if (is(milo, "Milo"))
-    pbs = milo@nhoods else pbs = .get.pbs(pbs, obs_to_bulk, milo)
+    pbs = nhoods(milo_object) else pbs = .get.pbs(pbs, obs_to_bulk, milo)
 
   # set the column used in caculation
   if (is.null(extract_cols)) {
@@ -76,7 +80,8 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   one_hot_encoded <- model.matrix(~. - 1, data = vjs0, contrasts.arg = lapply(vjs0,
     contrasts, contrasts = FALSE))  # prevent reference level
   colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-  pseudo_vdj_feature <- t(t(one_hot_encoded) %*% pbs)  #  pseudobulk x vdj
+  pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  pseudobulk x vdj
+  
   # this is an dgeMatrix, which cannot coerce to data.frame, go ahead first.
   if (normalise) {
     ## identify any missing calls inserted by the setup, will end with _missing
@@ -110,12 +115,12 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   # pseudo_vdj_feature
   pbs.obs <- .get.pbs.obs(pbs, obs_to_take = obs_to_take, milo = milo)
   # create a new SingelCellExperiment object as result
-  pb.sce <- SingleCellExperiment(assay = SimpleList(X = t(pseudo_vdj_feature)),
+  pb.sce <- SingleCellExperiment(assay = SimpleList(X = Matrix::t(pseudo_vdj_feature)),
     rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.obs)
   # store pseudobulk assignment, as a sparse for storage efficiency transpose
   # as the original matrix is cells x pseudobulks
 
   pb.milo <- Milo(pb.sce)
-  nhoods(pb.milo) <- t(nhoods(milo))
+  nhoods(pb.milo) <- Matrix::t(nhoods(milo))
   return(pb.milo)
 }
