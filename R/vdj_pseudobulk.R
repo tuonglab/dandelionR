@@ -2,10 +2,9 @@
 #'
 #' making pseudobulk vdj feature space
 #' @param milo milo object or SingleCellExperiment object
-#' @param pbs matrix
-#' Optional binary matrix with cells as rows and pseudobulk groups as columns,
-#' if milo is a milo object, no need to provide
-#' if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk
+#' @param pbs Optional binary matrix with cells as rows and pseudobulk groups as columns,
+#'  - if milo is a milo object, no need to provide
+#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk
 #' @param obs_to_bulk str or a list of str, NULL by default
 #' Optional obs column(s) to group pseudobulks into; if multiple are provided, they will be combined
 #' if milo is a milo object, no need to provide
@@ -27,11 +26,11 @@
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
 #' @return SingleCellExperiment object ...
 #' @include check.R
-#' @import mathods
+#' @import methods
 #' @import SingleCellExperiment
 #' @import Matrix
 #' @export
-vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = NULL,
+vdj_pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = NULL,
   normalise = TRUE, renormalise = FALSE, min_count = 1L, extract_cols = c("v_call_abT_VDJ_main",
     "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"), mode_option = c("abT",
     "gdT", "B")) {
@@ -56,7 +55,7 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
 
   # determ the value of pbs
   if (is(milo, "Milo"))
-    pbs = nhoods(milo_object) else pbs = .get.pbs(pbs, obs_to_bulk, milo)
+    pbs <- nhoods(milo_object) else pbs <- .get.pbs(pbs, obs_to_bulk, milo)
 
   # set the column used in caculation
   if (is.null(extract_cols)) {
@@ -121,6 +120,6 @@ vdj.pseudobulk <- function(milo, pbs = NULL, obs_to_bulk = NULL, obs_to_take = N
   # as the original matrix is cells x pseudobulks
 
   pb.milo <- Milo(pb.sce)
-  nhoods(pb.milo) <- Matrix::t(nhoods(milo))
+  nhoods(pb.milo) <- Matrix::t(pbs)
   return(pb.milo)
 }
