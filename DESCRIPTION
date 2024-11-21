@@ -40,4 +40,5 @@ Imports:
     stats,
     bluster,
     spam,
+    BiocGenerics,
     purrr

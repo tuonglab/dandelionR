@@ -11,9 +11,9 @@ project_probability(diffusionmap, waypoints, probabilities, t = 1, ...)
 
 \item{waypoints}{index of waypoints}
 
-\item{t}{diffusion time}
+\item{probabilities}{waypoints' probabilities, result from markov chain}
 
-\item{probabilites}{waypoints' probabilities, result from markov chain}
+\item{t}{diffusion time}
 }
 \value{
 each pseudobulk's probabilites

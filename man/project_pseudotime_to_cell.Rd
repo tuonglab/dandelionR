@@ -4,16 +4,16 @@
 \alias{project_pseudotime_to_cell}
 \title{project_pseudotime_to_cell}
 \usage{
-project_pseudotime_to_cell(adata, pb_adata, term_state, suffix = "")
+project_pseudotime_to_cell(adata, pb_adata, term_states, suffix = "")
 }
 \arguments{
 \item{adata}{SingleCellExperiment object}
 
 \item{pb_adata}{pseudobulk data}
 
-\item{suffix}{suffix to be added after the added column names, default ''}
-
 \item{term_states}{vector of terminal states with branch_probabilities to be transferred}
+
+\item{suffix}{suffix to be added after the added column names, default ''}
 }
 \value{
 subset of adata where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData

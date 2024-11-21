@@ -21,7 +21,7 @@ differentiation_probabilities(
 
 \item{pseudotime}{pseudotime ordering of cells}
 
-\item{use_early_cell_as_start}{bool}
+\item{waypoints}{integer vector, index of selected waypoint used to construct markov chain}
 }
 \value{
 probabilities

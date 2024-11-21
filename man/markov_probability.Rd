@@ -10,7 +10,7 @@ markov_probability(
   diffusiontime,
   terminal_state,
   root_cell,
-  scale_componet = TRUE,
+  scale_componets = TRUE,
   num_waypoints = 500
 )
 }

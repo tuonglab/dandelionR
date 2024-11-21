@@ -22,6 +22,7 @@
 #' @param must the type we need
 #' @import methods
 #' @import rlang
+#' @import BiocGenerics
 .type.check <- function(input, must) {
   if (is.null(input))
     return()

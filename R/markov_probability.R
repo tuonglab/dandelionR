@@ -13,12 +13,13 @@
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determ.multiscale.space.R
 #' @import S4Vectors
+#' @import SingleCellExperiment
 #' @export
 markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
-  scale_componet = TRUE, num_waypoints = 500) {
+  scale_componets = TRUE, num_waypoints = 500) {
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
-  if (scale_componet)
+  if (scale_componets)
     multiscale <- .minmax.scale(multiscale)
   # sample waypoints to construct markov chain
   waypoints <- .max.min.sampling(multiscale, num_waypoints = 500)

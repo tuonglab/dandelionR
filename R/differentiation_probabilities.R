@@ -5,7 +5,7 @@
 #' @param terminal_states integer, NULL by default. The index of the terminal state.
 #' @param knn. integer, 30L by default. Number of nearest neighbors for graph construction.
 #' @param pseudotime pseudotime ordering of cells
-#' @param use_early_cell_as_start bool
+#' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @return probabilities
 #' @import MASS
 #' @import Matrix

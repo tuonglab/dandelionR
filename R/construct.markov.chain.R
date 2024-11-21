@@ -4,6 +4,7 @@
 #' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
+#' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @return transition matrix of the markov chain
 #' @import bluster
 #' @import igraph

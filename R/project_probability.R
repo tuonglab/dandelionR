@@ -3,7 +3,7 @@
 #' project the probabilities from Markov chain to each pseudobulk
 #' @param diffusionmap diffusion map, used to reconstruct diffustion distance matrix
 #' @param waypoints index of waypoints
-#' @param probabilites waypoints' probabilities, result from markov chain
+#' @param probabilities waypoints' probabilities, result from markov chain
 #' @param t diffusion time
 #' @return each pseudobulk's probabilites
 #' @import stats

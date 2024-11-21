@@ -48,9 +48,9 @@ vdj_pseudobulk <- function(
     abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
   }
   .class.check(pbs, "Matrix")
-  if (!all(col_to_bulk %in% names(colData(milo_object))))
+  if (!all(col_to_bulk %in% names(colData(milo))))
     abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
-  if (!all(col_to_take %in% names(colData(milo_object))))
+  if (!all(col_to_take %in% names(colData(milo))))
     abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
   .type.check(normalise, "logical")
   .type.check(renormalise, "logical")
@@ -61,7 +61,7 @@ vdj_pseudobulk <- function(
   .type.check(extract_cols, "character")
   # determ the value of pbs
   if (is(milo, "Milo"))
-    pbs <- nhoods(milo_object) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
+    pbs <- nhoods(milo) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
   # set the column used in caculation
   if (is.null(extract_cols)) {
     if (is.null(mode_option)) {
