@@ -28,6 +28,10 @@ Collate:
     'vdj_pseudobulk.R'
 Imports:
     SingleCellExperiment,
+    MASS,
+    Matrix,
+    S4Vectors,
+    destiny,
     rlang,
     miloR,
     methods,

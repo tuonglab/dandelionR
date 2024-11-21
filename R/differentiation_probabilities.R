@@ -8,7 +8,6 @@
 #' @param use_early_cell_as_start bool
 #' @return probabilities
 #' @import MASS
-#' @import package
 #' @import Matrix
 differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. = 30L,
                                           pseudotime, waypoints) {
