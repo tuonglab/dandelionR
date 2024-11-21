@@ -4,8 +4,18 @@
 \alias{.get.pbs}
 \title{.get.pbs}
 \usage{
-.get.pbs(pbs, obs_to_bulk, milo)
+.get.pbs(pbs, col_to_bulk, milo)
+}
+\arguments{
+\item{pbs}{pbs parameter provided by vdj_pseudobulk(),  cells by pseudobulks matrix or NULL}
+
+\item{col_to_bulk}{col_to_bulk parameter provided by vdj_pseudobulk(), column's name of colData from milo}
+
+\item{milo}{SingleCellExperiment object}
+}
+\value{
+a cell x pseudobulk matrix
 }
 \description{
-Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking. Use the pbs and obs_to_bulk inputs to vdj_pseudobulk() and gex_pseudobulk()
+Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking.
 }

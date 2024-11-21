@@ -9,7 +9,7 @@
 #' Optional colData column(s) to generate pbs, if multiple are provided, they will be combined
 #'  - if milo is a milo object, no need to provide
 #'  - if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
-#' @param obs_to_take str or a list of str, NULL by default
+#' @param col_to_take str or a list of str, NULL by default
 #' Optional obs column(s) to identify the most common value of for each pseudobulk.
 #' @param normalise bool, True by default
 #'  If True, will scale the counts of each V(D)J gene group to 1 for each pseudobulk.
@@ -29,6 +29,8 @@
 #' @import methods
 #' @import SingleCellExperiment
 #' @import Matrix
+#' @import stats
+#' @import miloR
 #' @export
 vdj_pseudobulk <- function(
     milo, 
@@ -36,7 +38,7 @@ vdj_pseudobulk <- function(
     col_to_bulk = NULL, 
     extract_cols = c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"), 
     mode_option = c("abT", "gdT", "B"),
-    obs_to_take = NULL,
+    col_to_take = NULL,
     normalise = TRUE, 
     renormalise = FALSE, 
     min_count = 1L
@@ -48,8 +50,8 @@ vdj_pseudobulk <- function(
   .class.check(pbs, "Matrix")
   if (!all(col_to_bulk %in% names(colData(milo_object))))
     abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
-  if (!all(obs_to_take %in% names(colData(milo_object))))
-    abort("Inappropriate argument value: \nobs_to_take should within the name of coldata of milo")
+  if (!all(col_to_take %in% names(colData(milo_object))))
+    abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
   .type.check(normalise, "logical")
   .type.check(renormalise, "logical")
   .type.check(min_count, "numeric")
@@ -79,11 +81,9 @@ vdj_pseudobulk <- function(
   vjs0[] <- lapply(vjs0, function(x) if (!is.factor(x))
     as.factor(x) else x)
   one_hot_encoded <- model.matrix(~. - 1, data = vjs0, contrasts.arg = lapply(vjs0,
-    contrasts, contrasts = FALSE))  # prevent reference level
+    stats::contrasts, contrasts = FALSE))  # prevent reference level
   colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-  pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  pseudobulk x vdj
-  
-  # this is an dgeMatrix, which cannot coerce to data.frame, go ahead first.
+  pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
   if (normalise) {
     ## identify any missing calls inserted by the setup, will end with _missing
     ## negate as we want to actually remove them later
@@ -93,12 +93,12 @@ vdj_pseudobulk <- function(
     for (col_n in extract_cols) {
       # identify columns holding genes belonging to the category and then
       # normalise the values to 1 for each pseudobulk
-      group.mask <- colnames(pseudo_vdj_feature) %in% unique(milo@colData[[col_n]])
-
+      group.mask <- colnames(pseudo_vdj_feature) %in% unique(colData(milo)[[col_n]])
       # identify the defined (non-missing) calls for the group
       group.define.mask <- define.mask & group.mask
       # compute sum of of non-missing values for each pseudobulk for this
       # category and compare to the min_count
+      
       define.count <- apply(pseudo_vdj_feature[, group.define.mask], 1, sum)
       defined.min.counts <- define.count >= min_count
       # normalise the pseudobulks
@@ -112,15 +112,14 @@ vdj_pseudobulk <- function(
       pseudo_vdj_feature[!defined.min.counts, group.define.mask] <- 0
     }
   }
-  # create obs for the new pesudobulk object milo@metadata$feature.space <-
+  # create colData for the new pesudobulk object milo@metadata$feature.space <-
   # pseudo_vdj_feature
-  pbs.obs <- .get.pbs.obs(pbs, obs_to_take = obs_to_take, milo = milo)
+  pbs.col <- .get.pbs.col(pbs, col_to_take = col_to_take, milo = milo)
   # create a new SingelCellExperiment object as result
   pb.sce <- SingleCellExperiment(assay = SimpleList(X = Matrix::t(pseudo_vdj_feature)),
-    rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.obs)
+    rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col)
   # store pseudobulk assignment, as a sparse for storage efficiency transpose
   # as the original matrix is cells x pseudobulks
-
   pb.milo <- Milo(pb.sce)
   nhoods(pb.milo) <- Matrix::t(pbs)
   return(pb.milo)

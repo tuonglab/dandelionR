@@ -7,14 +7,14 @@
 vdj_pseudobulk(
   milo,
   pbs = NULL,
-  obs_to_bulk = NULL,
-  obs_to_take = NULL,
-  normalise = TRUE,
-  renormalise = FALSE,
-  min_count = 1L,
+  col_to_bulk = NULL,
   extract_cols = c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main",
     "j_call_abT_VJ_main"),
-  mode_option = c("abT", "gdT", "B")
+  mode_option = c("abT", "gdT", "B"),
+  col_to_take = NULL,
+  normalise = TRUE,
+  renormalise = FALSE,
+  min_count = 1L
 )
 }
 \arguments{
@@ -23,15 +23,25 @@ vdj_pseudobulk(
 \item{pbs}{Optional binary matrix with cells as rows and pseudobulk groups as columns,
 \itemize{
 \item if milo is a milo object, no need to provide
-\item if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk
+\item if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
 }}
 
-\item{obs_to_bulk}{str or a list of str, NULL by default
-Optional obs column(s) to group pseudobulks into; if multiple are provided, they will be combined
-if milo is a milo object, no need to provide
-if milo is a SingleCellExperiment object, user should only provide either pbs or obs_to_bulk}
+\item{col_to_bulk}{character or character vector, NULL by default
+Optional colData column(s) to generate pbs, if multiple are provided, they will be combined
+\itemize{
+\item if milo is a milo object, no need to provide
+\item if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
+}}
 
-\item{obs_to_take}{str or a list of str, NULL by default
+\item{extract_cols}{character vector
+with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
+Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.}
+
+\item{mode_option, }{must be one element of the vector c('B','abT','gdT'), 'abT' by default
+Note: only when you set extract_cols to NULL, will this argument be considered!
+Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.}
+
+\item{col_to_take}{str or a list of str, NULL by default
 Optional obs column(s) to identify the most common value of for each pseudobulk.}
 
 \item{normalise}{bool, True by default
@@ -43,14 +53,6 @@ Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_m
 
 \item{min_count}{int, 1 by default
 Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.}
-
-\item{extract_cols}{list of str
-c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main') by default
-Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.}
-
-\item{mode_option, }{must be one element of the vector c('B','abT','gdT'), 'abT' by default
-Note: only when you set extract_cols to NULL, will this argument be considered!
-Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.}
 }
 \value{
 SingleCellExperiment object ...

@@ -16,7 +16,7 @@ Collate:
     'differentiation_probabilities.R'
     'filter.cells.R'
     'get.pbs.R'
-    'get.pbs.obs.R'
+    'get.pbs.col.R'
     'markov_probability.R'
     'max.min.sampling.R'
     'milo_umap.R'
@@ -32,4 +32,5 @@ Imports:
     miloR,
     methods,
     Seurat,
-    igraph
+    igraph,
+    stats
