@@ -2,21 +2,20 @@
 #'
 #' Construct markov chain and calculate probabilities
 #' @param milo milo or SingelCellExperiment object, used to store the result
-#' @param diffusionmap DiffusionMap object
-#' @param scale_components logical
-#' If True, the components will be scale
-#' @param num_waypoints integer
-#' Number of waypoints to sample. 500L by default
-#' @param dpt DPT object
+#' @param diffusionmap DiffusionMap object corresponds to milo
+#' @param scale_components logical, If True, the components will be scale
+#' @param num_waypoints integer, Number of waypoints to sample. 500L by default
+#' @param diffusiontime numeric vector, contain the difussion time of each pseudobulk
 #' @param terminal_state the index of the terminal state
 #' @param root_cell the index of the root state
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
+#' @include determ.multiscale.space.R
 #' @export
-markov_probability <- function(milo, diffusionmap, dpt, terminal_state, root_cell,
+markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
   scale_componet = TRUE, num_waypoints = 500) {
-
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
+  
   if (scale_componet)
     multiscale <- .minmax.scale(multiscale)
 
@@ -26,13 +25,13 @@ markov_probability <- function(milo, diffusionmap, dpt, terminal_state, root_cel
 
   # calculate probabilities
   probabilities <- differentiation_probabilities(multiscale[waypoints, ], terminal_states = terminal_state,
-    pseudotime = dpt[[paste0("DPT", root_cell)]], waypoints = waypoints)
+    pseudotime = diffusiontime, waypoints = waypoints)
 
   # project probabilities from waypoints to each pseudobulk
   probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
 
   # store the result into milo
-  new_coldata <- DataFrame(dpt[[paste0("DPT", root_cell)]], probabilities_proj[,
+  new_coldata <- DataFrame(diffusiontime, probabilities_proj[,
     1], probabilities_proj[, 2])
   colnames(new_coldata) <- c("pseudotime", names(terminal_state))
 
