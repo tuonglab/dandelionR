@@ -1,14 +1,18 @@
 #' markov_probability
 #'
-#' Construct markov chain and calculate probabilities
+#' Preprocessing data and Construct markov chain and calculate probabilities
 #' @param milo milo or SingelCellExperiment object, used to store the result
 #' @param diffusionmap DiffusionMap object corresponds to milo
 #' @param scale_components logical, If True, the components will be scale
-#' @param num_waypoints integer, Number of waypoints to sample. 500L by default
+#' @param num_waypoints integer, 500L by default. 
+#' - Number of waypoints to sample to construct markov chain. 
 #' @param diffusiontime numeric vector, contain the difussion time of each pseudobulk
 #' @param terminal_state the index of the terminal state
 #' @param root_cell the index of the root state
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
+#' @details
+#' The preprocessing process contain data scaling and waypoints selecting
+#' 
 #' @include determ.multiscale.space.R
 #' @export
 markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
@@ -17,11 +21,9 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   multiscale <- .determine.multiscale.space(diffusionmap)
   if (scale_componet)
     multiscale <- .minmax.scale(multiscale)
-
   # sample waypoints to construct markov chain
   waypoints <- .max.min.sampling(multiscale, num_waypoints = 500)
   waypoints <- unique(c(root_cell, waypoints, terminal_state))
-
   # calculate probabilities
   probabilities <- differentiation_probabilities(multiscale[waypoints, ], terminal_states = terminal_state,
     pseudotime = diffusiontime, waypoints = waypoints)

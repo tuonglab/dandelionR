@@ -1,15 +1,14 @@
 #' differentiation_entropy
 #'
-#' function to compute entropy and branch probabilities
+#' function to compute branch probabilities using markov chain
 #' @param wp_data Multi scale data of the waypoints
-#' @param terminal_states the index of the terminal state
-#' @param knn. number of nearest neighbors for graph construction
-#' @param n_jobs number of jobs for parallel processing
+#' @param terminal_states integer, NULL by default. The index of the terminal state.
+#' @param knn. integer, 30L by default. Number of nearest neighbors for graph construction.
 #' @param pseudotime pseudotime ordering of cells
 #' @param use_early_cell_as_start bool
-#' @return entropy and probabilities
-differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. = 30,
-  n_jobs = -1, pseudotime, waypoints) {
+#' @return probabilities
+differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. = 30L,
+                                          pseudotime, waypoints) {
   T_ = .construct.markov.chain(wp_data, 30, pseudotime, waypoints)
 
   # identify terminal states if not specified
