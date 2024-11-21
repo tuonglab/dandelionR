@@ -32,7 +32,7 @@
 #'      - If True, cell will only be kept if the main V(D)J chain is productive
 #'  - parameter for **chain status filtering**: allowed_chain_status, chain status to be kept
 #'  - parameters for **subsetting**: subsetby, groups
-#'    - subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with {groups} feature in {subsetby} will be used for computing the VDJ feature space
+#'    - subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with \{groups\} feature in \{subsetby\} will be used for computing the VDJ feature space
 #'  - parameter for **main v(d)j extraction**: extract_cols
 #'  - parameters for **unmapping filtering**:
 #'    - filter_pattern
