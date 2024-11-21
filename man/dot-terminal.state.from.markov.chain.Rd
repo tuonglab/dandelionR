@@ -6,6 +6,15 @@
 \usage{
 .terminal.state.from.markov.chain(Transmat, wp_data, pseudotime, waypoints)
 }
+\arguments{
+\item{Transmat}{Transition matrix}
+
+\item{wp_data}{Multi scale data of the waypoints}
+
+\item{pseudotime}{numeric vector, pseudotime of each pseudobulk}
+
+\item{waypoints}{integer vector, waypoint selected to construct markov chain.}
+}
 \value{
 terminal_state
 }

@@ -8,11 +8,12 @@
 #' @import bluster
 #' @import igraph
 #' @import Matrix
+#' @import purrr
 .construct.markov.chain <- function(wp_data, knn., pseudotime, waypoints) {
   message("Markov chain construction...")
   pseudotime <- pseudotime[waypoints]
   # construct kNN graph
-  nbrs <- makeKNNGraph(wp_data, k = knn.)
+  nbrs <- bluster::makeKNNGraph(wp_data, k = knn.)
   ## calculate distance of each edge
   distance_m <- as.matrix(stats::dist(wp_data))
   E(nbrs)$weight <- sapply(E(nbrs), function(e) {

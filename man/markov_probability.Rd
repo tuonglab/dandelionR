@@ -7,7 +7,7 @@
 markov_probability(
   milo,
   diffusionmap,
-  dpt,
+  diffusiontime,
   terminal_state,
   root_cell,
   scale_componet = TRUE,
@@ -17,23 +17,25 @@ markov_probability(
 \arguments{
 \item{milo}{milo or SingelCellExperiment object, used to store the result}
 
-\item{diffusionmap}{DiffusionMap object}
+\item{diffusionmap}{DiffusionMap object corresponds to milo}
 
-\item{dpt}{DPT object}
+\item{diffusiontime}{numeric vector, contain the difussion time of each pseudobulk}
 
 \item{terminal_state}{the index of the terminal state}
 
 \item{root_cell}{the index of the root state}
 
-\item{num_waypoints}{integer
-Number of waypoints to sample. 500L by default}
+\item{num_waypoints}{integer, 500L by default.
+\itemize{
+\item Number of waypoints to sample to construct markov chain.
+}}
 
-\item{scale_components}{logical
-If True, the components will be scale}
+\item{scale_components}{logical,
+If True, the components will be scale before constructing markov chain}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 }
 \description{
-Construct markov chain and calculate probabilities
+Preprocessing data and Construct markov chain and calculate probabilities
 }

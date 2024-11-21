@@ -7,8 +7,7 @@
 differentiation_probabilities(
   wp_data,
   terminal_states = NULL,
-  knn. = 30,
-  n_jobs = -1,
+  knn. = 30L,
   pseudotime,
   waypoints
 )
@@ -16,19 +15,17 @@ differentiation_probabilities(
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}
 
-\item{terminal_states}{the index of the terminal state}
+\item{terminal_states}{integer, NULL by default. The index of the terminal state.}
 
-\item{knn.}{number of nearest neighbors for graph construction}
-
-\item{n_jobs}{number of jobs for parallel processing}
+\item{knn.}{integer, 30L by default. Number of nearest neighbors for graph construction.}
 
 \item{pseudotime}{pseudotime ordering of cells}
 
 \item{use_early_cell_as_start}{bool}
 }
 \value{
-entropy and probabilities
+probabilities
 }
 \description{
-function to compute entropy and branch probabilities
+function to compute branch probabilities using markov chain
 }

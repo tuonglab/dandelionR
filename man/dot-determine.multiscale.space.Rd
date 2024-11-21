@@ -9,9 +9,10 @@
 \arguments{
 \item{diffusionmap}{DiffusionMap object}
 
-\item{n_eigs}{integer
-Number of eigen vectors to use.
-If NULL is specified, the number of eigen vectors will be determined using the eigen gap. Default is NULL.}
+\item{n_eigs}{integer, default is NULL. Number of eigen vectors to use.
+\itemize{
+\item If is not specified, the number of eigen vectors will be determined using the eigen gap.
+}}
 }
 \value{
 dataframe

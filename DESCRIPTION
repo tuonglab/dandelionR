@@ -33,4 +33,7 @@ Imports:
     methods,
     Seurat,
     igraph,
-    stats
+    stats,
+    bluster,
+    spam,
+    purrr

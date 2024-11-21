@@ -7,34 +7,29 @@
 #' @param pseudotime pseudotime ordering of cells
 #' @param use_early_cell_as_start bool
 #' @return probabilities
+#' @import MASS
+#' @import package
+#' @import Matrix
 differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. = 30L,
                                           pseudotime, waypoints) {
   T_ = .construct.markov.chain(wp_data, 30, pseudotime, waypoints)
-
   # identify terminal states if not specified
   if (is.null(terminal_states)) {
-    terminal_states <- .terminal.state.from.markov.chain()
+    terminal_states <- .terminal.state.from.markov.chain(T_, wp_data, pseudotime, waypoints)
   }
-
   abs_states_idx <- which(waypoints %in% terminal_states)
   T_[abs_states_idx, ] <- 0
   T_ <- Reduce(function(matri, x) {
     matri[x, x] <- 1
     matri
   }, x = abs_states_idx, init = T_)
-  # T_[abs_states_idx,abs_states_idx] <- 1 Fundamental matrix and absorption
-  # probabilities
   message("Computing fundamental matrix and absorption probabilities...")
   # Transition states
   trans_states_idx = which(!(waypoints %in% terminal_states))
-
   # Q matrix
   Q = T_[-abs_states_idx, -abs_states_idx]
-
   # Fundamental matrix
   mat = diag(dim(Q)[[1]]) - Q
-
-
   N <- tryCatch({
     solve(mat)
   }, error = function(cnd) {
@@ -43,18 +38,12 @@ differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. 
     ginv(as.matrix(mat))
   })
   R <- T_[trans_states_idx, abs_states_idx]
-
-
   # absorbing probabilities:
-
   probabilities <- N %*% R
   probabilities@x[probabilities@x < 0] <- 0
-
   # add terminal states
   probabilities <- rbind(probabilities, T_[abs_states_idx, abs_states_idx])
   probabilities <- probabilities[order(c(trans_states_idx, abs_states_idx)), ]
-
   return(probabilities)
-
 }
 

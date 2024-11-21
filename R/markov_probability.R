@@ -3,17 +3,16 @@
 #' Preprocessing data and Construct markov chain and calculate probabilities
 #' @param milo milo or SingelCellExperiment object, used to store the result
 #' @param diffusionmap DiffusionMap object corresponds to milo
-#' @param scale_components logical, If True, the components will be scale
+#' @param scale_components logical, 
+#' If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. 
 #' - Number of waypoints to sample to construct markov chain. 
 #' @param diffusiontime numeric vector, contain the difussion time of each pseudobulk
 #' @param terminal_state the index of the terminal state
 #' @param root_cell the index of the root state
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
-#' @details
-#' The preprocessing process contain data scaling and waypoints selecting
-#' 
 #' @include determ.multiscale.space.R
+#' @import S4Vectors
 #' @export
 markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
   scale_componet = TRUE, num_waypoints = 500) {
@@ -27,16 +26,12 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   # calculate probabilities
   probabilities <- differentiation_probabilities(multiscale[waypoints, ], terminal_states = terminal_state,
     pseudotime = diffusiontime, waypoints = waypoints)
-
   # project probabilities from waypoints to each pseudobulk
   probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
-
   # store the result into milo
   new_coldata <- DataFrame(diffusiontime, probabilities_proj[,
     1], probabilities_proj[, 2])
   colnames(new_coldata) <- c("pseudotime", names(terminal_state))
-
-
   # prevent same name in colData
   idx <- names(colData(milo)) %in% colnames(new_coldata)
   if (any(idx)) {
@@ -60,8 +55,6 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
       }
     }
   }
-
-
   colData(milo) <- cbind(colData(milo), new_coldata)
   return(milo)
 }
