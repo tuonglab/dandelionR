@@ -15,7 +15,6 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   scale_componet = TRUE, num_waypoints = 500) {
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
-  
   if (scale_componet)
     multiscale <- .minmax.scale(multiscale)
 
