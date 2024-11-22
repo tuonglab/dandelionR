@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - { os: macos-latest }
+          - { os: ubuntu-latest }
     runs-on: ${{ matrix.config.os }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
