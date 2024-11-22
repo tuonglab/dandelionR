@@ -4,7 +4,7 @@
 \alias{project_probability}
 \title{project_probabilty}
 \usage{
-project_probability(diffusionmap, waypoints, probabilities, t = 1, ...)
+project_probability(diffusionmap, waypoints, probabilities, t = 1)
 }
 \arguments{
 \item{diffusionmap}{diffusion map, used to reconstruct diffustion distance matrix}

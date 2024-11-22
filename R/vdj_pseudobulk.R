@@ -60,7 +60,7 @@ vdj_pseudobulk <- function(
   mode_option <- match.arg(mode_option)
   .type.check(extract_cols, "character")
   # determ the value of pbs
-  if (is(milo, "Milo"))
+  if (methods::is(milo, "Milo"))
     pbs <- miloR::nhoods(milo) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
   # set the column used in caculation
   if (is.null(extract_cols)) {
@@ -118,8 +118,9 @@ vdj_pseudobulk <- function(
   # pseudo_vdj_feature
   pbs.col <- .get.pbs.col(pbs, col_to_take = col_to_take, milo = milo)
   # create a new SingelCellExperiment object as result
-  pb.sce <- SingleCellExperiment(assay = SimpleList(X = Matrix::t(pseudo_vdj_feature)),
-    rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col)
+  requireNamespace("S4Vectors")
+  pb.sce <- SingleCellExperiment(assay = S4Vectors::SimpleList(X = Matrix::t(pseudo_vdj_feature)),
+    rowData = S4Vectors::DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col)
   # store pseudobulk assignment, as a sparse for storage efficiency transpose
   # as the original matrix is cells x pseudobulks
   pb.milo <- Milo(pb.sce)

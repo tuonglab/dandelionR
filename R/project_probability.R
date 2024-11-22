@@ -6,7 +6,7 @@
 #' @param probabilities waypoints' probabilities, result from markov chain
 #' @param t diffusion time
 #' @return each pseudobulk's probabilites
-project_probability <- function(diffusionmap, waypoints, probabilities, t = 1, ...) {
+project_probability <- function(diffusionmap, waypoints, probabilities, t = 1) {
   message("Project probabilites from waypoints to each pseudobulk...")
   # Extract eigenvalues and eigenvectors from the DiffusionMap
   requireNamespace("destiny")

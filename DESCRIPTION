@@ -26,15 +26,15 @@ Collate:
     'setup_vdj_pseudobulk.R'
     'vdj_pseudobulk.R'
 Imports:
-    SingleCellExperiment
-Suggests:
     SingleCellExperiment,
+    SummarizedExperiment,
+    miloR
+Suggests:
     MASS,
     Matrix,
     S4Vectors,
     destiny,
     rlang,
-    miloR,
     methods,
     Seurat,
     igraph,

@@ -20,8 +20,7 @@ setup_vdj_pseudobulk(
   check_vj_mapping = c("v_call", "j_call"),
   check_vdj_mapping = c("v_call", "j_call"),
   check_extract_cols_mapping = NULL,
-  remove_missing = TRUE,
-  ...
+  remove_missing = TRUE
 )
 }
 \arguments{

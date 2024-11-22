@@ -47,18 +47,18 @@
 .get.pbs.col <- function(pbs, col_to_take, milo) {
   # prepare per-pseudobulk calls of specified metadata columns
   if (!is.null(col_to_take)) {
-    pbs.col <- DataFrame()
+    requireNamespace("S4Vectors")
+    pbs.col <- S4Vectors::DataFrame()
     for (anno_col in col_to_take) {
       fa <- as.factor(colData(milo)[[anno_col]])
       fa <- data.frame(fa)
       requireNamespace("stats")
       anno.dummies <- stats::model.matrix(~. - 1, data = fa, contrasts.arg = lapply(fa,
-                                                                             contrasts, contrasts = FALSE))
+                                                                                    stats::contrasts, contrasts = FALSE))
       requireNamespace("Matrix")
       anno.count <- Matrix::t(pbs) %*% anno.dummies  # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
       anno.sum <- apply(anno.count, 1, sum)
       anno.frac <- anno.count/anno.sum
-      requireNamespace("S4Vectors")
       anno.frac <- S4Vectors::DataFrame(anno.frac)
       colnames(anno.frac) <- colnames(anno.dummies)
       pbs.col[anno_col] <- colnames(anno.frac)[apply(anno.frac, 1, which.max)]

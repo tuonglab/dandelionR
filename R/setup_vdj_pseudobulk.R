@@ -56,7 +56,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
   subsetby = NULL, groups = NULL, extract_cols = NULL, filter_pattern = ",|None|No_cotig",
   check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
-  check_extract_cols_mapping = NULL, remove_missing = TRUE, ...) {
+  check_extract_cols_mapping = NULL, remove_missing = TRUE) {
   # check if the data type is correct
   .class.check(sce, "SingleCellExperiment")
   mode_option <- match.arg(mode_option)

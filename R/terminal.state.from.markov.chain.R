@@ -17,7 +17,7 @@
   ranks <- abs(Re(vecs[, which.max(Re(vals)), drop = FALSE]))
   # cutoff and intersection with the boundary cells
   requireNamespace("stats")
-  cutoff <- stats::qnorm(0.9999, mean = median(ranks), sd = median(abs(ranks - median(ranks))))
+  cutoff <- stats::qnorm(0.9999, mean = stats::median(ranks), sd = stats::median(abs(ranks - stats::median(ranks))))
   # connect components of cells beyond cutoff
   cells <- which(ranks > cutoff)
   # Find connected componets
@@ -25,7 +25,8 @@
   graph <- igraph::graph_from_adjacency_matrix(Transmat[cells, cells], weighted = TRUE,
     mode = "directed")
   components_g <- igraph::components(graph)
-  cells <- unlist(map(.x = 1:components_g$no, .f = ~{
+  requireNamespace("purrr")
+  cells <- unlist(purrr::map(.x = 1:components_g$no, .f = ~{
     nodes_in_component <- which(components_g$membership == .x)
     id <- which.max(pseudotime[nodes_in_component])
     nodes_in_component[id]
