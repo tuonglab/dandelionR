@@ -43,7 +43,9 @@ Suggests:
     bluster,
     spam,
     BiocGenerics,
-    purrr
+    purrr,
+    knitr
+VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
 Depends: 
