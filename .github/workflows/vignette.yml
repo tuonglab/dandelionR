@@ -37,6 +37,8 @@ jobs:
             ${{ runner.OS }}-r-cache-
 
       - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: pkgdown
 
       - name: Install package
         run: R CMD INSTALL .
