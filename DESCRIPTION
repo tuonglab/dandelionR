@@ -46,3 +46,6 @@ Suggests:
     purrr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
+Depends: 
+    R (>= 2.10)
+LazyData: true
