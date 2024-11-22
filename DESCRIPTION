@@ -44,3 +44,5 @@ Suggests:
     spam,
     BiocGenerics,
     purrr
+URL: https://www.github.com/tuonglab/dandelionR/
+BugReports: https://www.github.com/tuonglab/dandelionR/issues
