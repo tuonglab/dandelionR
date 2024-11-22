@@ -5,9 +5,6 @@
 #' @param pseudotime numeric vector, pseudotime of each pseudobulk
 #' @param waypoints integer vector, waypoint selected to construct markov chain.
 #' @return terminal_state
-#' @import stats
-#' @import igraph
-#' @import spam
 .terminal.state.from.markov.chain <- function(Transmat, wp_data, pseudotime, waypoints) {
   print("No terminal state provided, indentification of terminal states....")
   # Identify terminal states dm_boudaries
@@ -19,11 +16,13 @@
   dm_boudaries <- unique(apply(Transmat, 2, which.max), apply(Transmat, 2, which.min))
   ranks <- abs(Re(vecs[, which.max(Re(vals)), drop = FALSE]))
   # cutoff and intersection with the boundary cells
-  cutoff <- qnorm(0.9999, mean = median(ranks), sd = median(abs(ranks - median(ranks))))
+  requireNamespace("stats")
+  cutoff <- stats::qnorm(0.9999, mean = median(ranks), sd = median(abs(ranks - median(ranks))))
   # connect components of cells beyond cutoff
   cells <- which(ranks > cutoff)
   # Find connected componets
-  graph <- graph_from_adjacency_matrix(Transmat[cells, cells], weighted = TRUE,
+  requireNamespace("igraph")
+  graph <- igraph::graph_from_adjacency_matrix(Transmat[cells, cells], weighted = TRUE,
     mode = "directed")
   components_g <- igraph::components(graph)
   cells <- unlist(map(.x = 1:components_g$no, .f = ~{
@@ -33,8 +32,9 @@
   }))
   # Nearest diffusion map boundaries
   terminal_states <- c()
+  requireNamespace("spam")
   for (i in cells) {
-    dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
+    dists <- spam::nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
     terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
   }
   unique(terminal_states)

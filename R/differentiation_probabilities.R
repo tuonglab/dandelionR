@@ -7,8 +7,8 @@
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @return probabilities
-#' @import MASS
-#' @import Matrix
+#' @include construct.markov.chain.R
+#' @include terminal.state.from.markov.chain.R
 differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. = 30L,
                                           pseudotime, waypoints) {
   T_ = .construct.markov.chain(wp_data, 30, pseudotime, waypoints)
@@ -29,12 +29,14 @@ differentiation_probabilities <- function(wp_data, terminal_states = NULL, knn. 
   Q = T_[-abs_states_idx, -abs_states_idx]
   # Fundamental matrix
   mat = diag(dim(Q)[[1]]) - Q
+  requireNamespace("Matrix")
+  requireNamespace("MASS")
   N <- tryCatch({
-    solve(mat)
+    Matrix::solve(mat)
   }, error = function(cnd) {
     warning("Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix")
     warning("Or you can re-run this function to reconstruct the markov chain")
-    ginv(as.matrix(mat))
+    MASS::ginv(as.matrix(mat))
   })
   R <- T_[trans_states_idx, abs_states_idx]
   # absorbing probabilities:

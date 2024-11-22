@@ -12,6 +12,10 @@
 #' @param root_cell the index of the root state
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determ.multiscale.space.R
+#' @include minmax.scale.R
+#' @include max.min.sampling.R
+#' @include differentiation_probabilities.R
+#' @include project_probability.R
 #' @import SingleCellExperiment
 #' @export
 markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,

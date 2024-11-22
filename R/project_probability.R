@@ -6,12 +6,12 @@
 #' @param probabilities waypoints' probabilities, result from markov chain
 #' @param t diffusion time
 #' @return each pseudobulk's probabilites
-#' @import stats
 project_probability <- function(diffusionmap, waypoints, probabilities, t = 1, ...) {
   message("Project probabilites from waypoints to each pseudobulk...")
   # Extract eigenvalues and eigenvectors from the DiffusionMap
-  eigenvalues <- eigenvalues(diffusionmap)  # vector of eigenvalues
-  eigenvectors <- eigenvectors(diffusionmap)  # matrix of eigenvectors (each column is an eigenvector)
+  requireNamespace("destiny")
+  eigenvalues <- destiny::eigenvalues(diffusionmap)  # vector of eigenvalues
+  eigenvectors <- destiny::eigenvectors(diffusionmap)  # matrix of eigenvectors (each column is an eigenvector)
   # Set diffusion time `t` and the number of components `K` to use
   t <- 1  # diffusion time
   K <- min(length(eigenvalues), ncol(eigenvectors))  # use available components
@@ -30,7 +30,8 @@ project_probability <- function(diffusionmap, waypoints, probabilities, t = 1, .
   # `D_diffusion` is now the diffusion distance matrix
   Dif <- D_diffusion[, waypoints]
   D_ravel <- as.vector(Dif)
-  sdv <- sd(D_ravel) * 1.06 * (length(D_ravel)^(-1/5))
+  requireNamespace("stats")
+  sdv <- stats::sd(D_ravel) * 1.06 * (length(D_ravel)^(-1/5))
   W = exp(-0.5 * ((Dif/sdv)^2))
   W = W/apply(W, 1, sum)
   prob <- W %*% probabilities

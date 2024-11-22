@@ -8,7 +8,7 @@
 #' @param remove_missing bool, True by default
 #'  - If true, will remove cells with contigs matching the filter from the object.
 #'  - If False, will mask them with a uniform value dependent on the column name.
-#'  @import SingleCellExperiment
+#' @import SingleCellExperiment
 #' @return filtered SingleCellExperiment object according to the parameter.
 .filter.cells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
   requireNamespace("rlang")
