@@ -1,6 +1,6 @@
 Package: dandelionR
 Title: Single-cell Immune Repertoire Trajectory Analysis in R
-Version: 0.0.0.9000
+Version: 0.99.0
 Authors@R:
     c(person(given="Jiawei", family="Yu", email = "jiawei.yu@uq.edu.au", role = c("aut", "cre")),
       person(given="Kelvin", family="Tuong", email = "z.tuong@uq.edu.au", role = c("aut"), comment = c(ORCID = "0000-0002-6735-6808")))
