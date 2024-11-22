@@ -11,19 +11,19 @@
 #'  - the choice of metric used to measure distance
 #'  - parameter of RunUMAP, checking its document for further detail
 #' @return milo object with umap reduction
-#' @import igraph
 #' @import SingleCellExperiment
-#' @import Seurat
 #' @export
 milo_umap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
   requireNamespace("miloR")
+  requireNamespace("igraph")
   # get the graph's adjacency matrix
-  graphm <- as_adjacency_matrix(miloR::graph(milo))
+  graphm <- igraph::as_adjacency_matrix(miloR::graph(milo))
   # inherit the names of each row
   rownames(graphm) <- rownames(colData(milo))
   colnames(graphm) <- rownames(colData(milo))
   # conduct umap
-  umap <- RunUMAP(graphm, n.neighbors = n.neighbors, metric = metric)
+  requireNamespace("Seurat")
+  umap <- Seurat::RunUMAP(graphm, n.neighbors = n.neighbors, metric = metric)
   reducedDim(milo, slot_name) <- umap@cell.embeddings
   milo
 }

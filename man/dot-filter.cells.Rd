@@ -23,7 +23,6 @@ data after combineTCR， contain both vdj and seq}
 \itemize{
 \item If true, will remove cells with contigs matching the filter from the object.
 \item If False, will mask them with a uniform value dependent on the column name.
-@import rlang
 @import SingleCellExperiment
 }}
 }

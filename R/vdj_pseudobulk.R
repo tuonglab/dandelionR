@@ -26,10 +26,8 @@
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
 #' @return SingleCellExperiment object ...
 #' @include check.R
-#' @import methods
+#' @include get.pbs.R
 #' @import SingleCellExperiment
-#' @import Matrix
-#' @import stats
 #' @import miloR
 #' @export
 vdj_pseudobulk <- function(
@@ -44,14 +42,16 @@ vdj_pseudobulk <- function(
     min_count = 1L
     ) {
   # type check
-  if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
-    abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
+  requireNamespace("methods")
+  requireNamespace("rlang")
+  if (!methods::is(milo, "Milo") && !methods::is(milo, "SingleCellExperiment")) {
+    rlang::abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
   }
   .class.check(pbs, "Matrix")
   if (!all(col_to_bulk %in% names(colData(milo))))
-    abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
+    rlang::abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
   if (!all(col_to_take %in% names(colData(milo))))
-    abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
+    rlang::abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
   .type.check(normalise, "logical")
   .type.check(renormalise, "logical")
   .type.check(min_count, "numeric")
@@ -61,7 +61,7 @@ vdj_pseudobulk <- function(
   .type.check(extract_cols, "character")
   # determ the value of pbs
   if (is(milo, "Milo"))
-    pbs <- nhoods(milo) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
+    pbs <- miloR::nhoods(milo) else pbs <- .get.pbs(pbs, col_to_bulk, milo)
   # set the column used in caculation
   if (is.null(extract_cols)) {
     if (is.null(mode_option)) {
@@ -80,9 +80,11 @@ vdj_pseudobulk <- function(
   ## model.matrix need factor input
   vjs0[] <- lapply(vjs0, function(x) if (!is.factor(x))
     as.factor(x) else x)
-  one_hot_encoded <- model.matrix(~. - 1, data = vjs0, contrasts.arg = lapply(vjs0,
+  requireNamespace("stats")
+  one_hot_encoded <- stats::model.matrix(~. - 1, data = vjs0, contrasts.arg = lapply(vjs0,
     stats::contrasts, contrasts = FALSE))  # prevent reference level
   colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
+  requireNamespace("Matrix")
   pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
   if (normalise) {
     ## identify any missing calls inserted by the setup, will end with _missing

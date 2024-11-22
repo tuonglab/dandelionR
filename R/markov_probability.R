@@ -12,7 +12,6 @@
 #' @param root_cell the index of the root state
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determ.multiscale.space.R
-#' @import S4Vectors
 #' @import SingleCellExperiment
 #' @export
 markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
@@ -30,7 +29,8 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   # project probabilities from waypoints to each pseudobulk
   probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
   # store the result into milo
-  new_coldata <- DataFrame(diffusiontime, probabilities_proj[,
+  requireNamespace("S4Vectors")
+  new_coldata <- S4Vectors::DataFrame(diffusiontime, probabilities_proj[,
     1], probabilities_proj[, 2])
   colnames(new_coldata) <- c("pseudotime", names(terminal_state))
   # prevent same name in colData

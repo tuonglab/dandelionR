@@ -48,7 +48,7 @@
 #' @include check.R
 #' @include filter.cells.R
 #' @import SingleCellExperiment
-#' @import rlang
+#' @import SummarizedExperiment
 #' @return filtered SingleCellExperiment object
 #' @export
 setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
@@ -58,7 +58,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
   check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
   check_extract_cols_mapping = NULL, remove_missing = TRUE, ...) {
   # check if the data type is correct
-  .type.check(sce, "SingleCellExperiment")
+  .class.check(sce, "SingleCellExperiment")
   mode_option <- match.arg(mode_option)
   .type.check(productive_cols, "character")
   .type.check(productive_vdj, "logical")
@@ -75,6 +75,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
   .type.check(remove_missing, "logical")
 
   # filtering retain only productive entries based on specified mode
+  requireNamespace("rlang")
   if (!already.productive) {
     if (is.null(mode_option)) {
       if (!is.null(productive_cols)) {
@@ -89,7 +90,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
         filtered <- cnumber0 - cnumber1
         message(paste(filtered, "of cells filtered"))
       } else {
-        abort("When mode_option is NULL, the productive_cols must be specified.")
+        rlang::abort("When mode_option is NULL, the productive_cols must be specified.")
       }
     } else {
       produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(productive_vdj,
@@ -112,7 +113,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     cnumber0 <- dim(sce)[2]
     idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
     if (!any(idx)) {
-      abort(paste("Unsuitable allowed_chain_status,\n The current allowed_chain_status:",
+      rlang::abort(paste("Unsuitable allowed_chain_status,\n The current allowed_chain_status:",
         paste(allowed_chain_status, collapse = ", "), ".\n While the chain status in the dataset:",
         paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")))
     }
