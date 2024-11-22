@@ -29,6 +29,8 @@ jobs:
         with:
           use-public-rspm: true
 
+      - uses: r-lib/actions/setup-pandoc@v2
+
       - id: bioc
         name: Check bioc version
         run: |
