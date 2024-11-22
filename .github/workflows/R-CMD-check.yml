@@ -12,7 +12,13 @@ on:
 
 jobs:
   R-CMD-check:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - { os: ubuntu-latest }
+          - { os: macos-latest }
+          - { os: windows-latest }
+    runs-on: ${{ matrix.config.os }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
