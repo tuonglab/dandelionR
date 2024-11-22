@@ -32,6 +32,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /home/runner/work/_temp/Library
+          key: ${{ runner.OS }}-r-cache-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: |
+            ${{ runner.OS }}-r-cache-
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
