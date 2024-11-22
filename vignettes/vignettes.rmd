@@ -39,17 +39,17 @@ This is a work in progress, so please feel free to open an issue if you encounte
 
 ## load data
 load the demo data
-```{r}
+```{r, eval = FALSE}
 demo_pseudo_rds <- dandelionR::demo_pseudo_rds
 ```
 
 ## filter the data
 subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
-```{r}
+```{r, eval = FALSE}
 demo_pseudo_rds <- setup_vdj_pseudobulk(demo_pseudo_rds, already.productive = FALSE)
 ```
 plot the filtered data
-```{r}
+```{r, eval = FALSE}
 library(scater)
 plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
 ```
