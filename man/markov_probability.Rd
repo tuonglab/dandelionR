@@ -10,7 +10,7 @@ markov_probability(
   diffusiontime,
   terminal_state,
   root_cell,
-  scale_componets = TRUE,
+  scale_components = TRUE,
   num_waypoints = 500
 )
 }
@@ -25,13 +25,13 @@ markov_probability(
 
 \item{root_cell}{the index of the root state}
 
+\item{scale_components}{logical,
+If True, the components will be scale before constructing markov chain}
+
 \item{num_waypoints}{integer, 500L by default.
 \itemize{
 \item Number of waypoints to sample to construct markov chain.
 }}
-
-\item{scale_components}{logical,
-If True, the components will be scale before constructing markov chain}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in its colData

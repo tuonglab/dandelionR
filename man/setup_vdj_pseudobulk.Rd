@@ -89,7 +89,7 @@ data will undergo several process, including productivity filtering, chain statu
 \item parameter for \strong{chain status filtering}: allowed_chain_status, chain status to be kept
 \item parameters for \strong{subsetting}: subsetby, groups
 \itemize{
-\item subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with {groups} feature in {subsetby} will be used for computing the VDJ feature space
+\item subsetting process will only be conducted when both parameters are provided. After subsetting, only the cell with \{groups\} feature in \{subsetby\} will be used for computing the VDJ feature space
 }
 \item parameter for \strong{main v(d)j extraction}: extract_cols
 \item parameters for \strong{unmapping filtering}:
