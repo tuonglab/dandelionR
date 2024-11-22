@@ -17,6 +17,8 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest }
+    retry:
+      max_attempts: 10
     runs-on: ${{ matrix.config.os }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
