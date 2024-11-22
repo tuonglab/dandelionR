@@ -70,16 +70,25 @@
 <div class="section level1">
 <div class="page-header"><h1 id="dandelionr">dandelionR<a class="anchor" aria-label="anchor" href="#dandelionr"></a>
 </h1></div>
-<p>Welcome to <code>dandelionR</code>! <code>dandelionR</code> is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in <a href="https://www.github.com/zktuong/dandelion" class="external-link"><code>dandelion</code></a>. It provides all the necessary tools to interface with <a href="https://github.com/ncborcherding/scRepertoire" class="external-link"><code>scRepertoire</code></a> and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the <a href="https://github.com/dpeerlab/Palantir" class="external-link">palantir</a> python package.</p>
+<p>Welcome to <code>dandelionR</code>!</p>
+<p><code>dandelionR</code> is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in <a href="https://www.github.com/zktuong/dandelion" class="external-link"><code>dandelion</code></a>.</p>
+<p>It provides all the necessary tools to interface with <a href="https://github.com/ncborcherding/scRepertoire" class="external-link"><code>scRepertoire</code></a> and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the <a href="https://github.com/dpeerlab/Palantir" class="external-link">palantir</a> python package.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>dandelionR</code> from GitHub with: <code>{r, eval = FALSE} if (!requireNamespace("devtools", quietly = TRUE))     install.packages("devtools") if (!requireNamespace("BiocManager", quietly = TRUE))     install.packages("BiocManager") devtools::install_github('tuonglab/dandelionR', dependencies = TRUE)</code></p>
+<p>You can install <code>dandelionR</code> from GitHub with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'tuonglab/dandelionR'</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p><code>{r, message = FALSE, warning = FALSE} library(dandelionR)</code></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.github.com/tuonglab/dandelionR/" class="external-link">dandelionR</a></span><span class="op">)</span></span></code></pre></div>
 <p>This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.</p>
 </div>
 </div>
