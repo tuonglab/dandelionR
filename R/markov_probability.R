@@ -47,12 +47,12 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
       if (answer == "n") {
         while (any(names(colData(milo)) %in% colnames(new_coldata))) colnames(new_coldata) <- paste0(colnames(new_coldata),
           "_new")
-        message(paste("The data will stored in", paste(colnames(new_coldata),
-          collapse = ", ")))
+          msg <- paste(colnames(new_coldata), collapse = ", ")
+        message(sprintf("The data will stored in %s", msg))
         break
       } else if (answer == "y") {
-        message(paste0("Overwriting ", paste(names(colData(milo))[idx], collapse = ", "),
-          "..."))
+        msg <- paste(names(colData(milo))[idx], collapse = ", ")
+        message(sprintf("Overwriting %s ...", msg))
         colData(milo) <- colData(milo)[!idx]
         break
       } else {
