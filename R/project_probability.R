@@ -32,8 +32,8 @@ project_probability <- function(diffusionmap, waypoints, probabilities, t = 1) {
   D_ravel <- as.vector(Dif)
   requireNamespace("stats")
   sdv <- stats::sd(D_ravel) * 1.06 * (length(D_ravel)^(-1/5))
-  W = exp(-0.5 * ((Dif/sdv)^2))
-  W = W/apply(W, 1, sum)
+  W <- exp(-0.5 * ((Dif/sdv)^2))
+  W <- W/apply(W, 1, sum)
   prob <- W %*% probabilities
   return(prob)
 }

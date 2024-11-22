@@ -15,7 +15,7 @@ project_pseudotime_to_cell <- function(adata, pb_adata, term_states, suffix = ""
   # leave out cells that do not blongs to any neighbourhood
   nhoodsum <- apply(nhoods(pb_adata), 2, sum)
   cdata <- adata[, nhoodsum > 0]
-  print(paste(sum(nhoodsum == 0), "number of cells removed due to not belonging to any neighbourhood"))
+  message(sprintf("%d number of cells removed due to not belonging to any neighbourhood", sum(nhoodsum == 0)))
   # for each cell pesudotime_mean is the average of the pseudobulks the cell is
   # in, weighted by 1/ neighbourhood size
   nhoods_cdata <- nhood[, nhoodsum > 0]

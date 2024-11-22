@@ -13,7 +13,7 @@
 .filter.cells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
   requireNamespace("rlang")
   if (ncol(sce) < 1) {
-    rlang::abort("None colnmn remains, please check whether the filtering option is correct.")
+    rlang::abort("None column remains, please check whether the filtering option is correct.")
   }
   # find filter pattern hits in our column of interest
   temp <- colData(sce)[col_n]
@@ -23,7 +23,7 @@
     sce <- sce[, setdiff(1:ncol(sce), mask)]
   } else {
     # uniformly mask the filter pattern hits
-    colData(sce)[mask, col_n] <- paste0(col_n, "_missing")
+    colData(sce)[mask, col_n] <- sprintf("%s_missing", col_n)
   }
   return(sce)
 }

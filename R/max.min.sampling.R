@@ -13,7 +13,7 @@
   no.iterations <- as.integer(num_waypoints/ncol(data))
   waypoints <- c()
   # Sample along each componet
-  N = nrow(data)
+  N <- nrow(data)
   for (ind in colnames(data)) {
     vecs <- data[, ind]
     iter.set <- sample(1:N, 1)

@@ -65,12 +65,12 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
   .type.check(productive_vj, "logical")
   .type.check(subsetby, "character")
   .type.check(groups, "character")
-  allowed_chain_status <- match.arg(allowed_chain_status, several.ok = T)
+  allowed_chain_status <- match.arg(allowed_chain_status, several.ok = TRUE)
   .type.check(extract_cols, "character")
   .type.check(filter_pattern, "character")
   check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
-    several.ok = T)
-  check_vj_mapping <- match.arg(check_vj_mapping, several.ok = T)
+    several.ok = TRUE)
+  check_vj_mapping <- match.arg(check_vj_mapping, several.ok = TRUE)
   .type.check(check_extract_cols_mapping, "character")
   .type.check(remove_missing, "logical")
 
@@ -79,8 +79,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
   if (!already.productive) {
     if (is.null(mode_option)) {
       if (!is.null(productive_cols)) {
-        message(paste("Checking productivity from", paste(productive_cols,
-          collapse = ", "), "..."), appendLF = FALSE)
+        msg <- paste(productive_cols, collapse = ", ")
+        message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
         sce <- Reduce(function(data, p_col) {
           idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
@@ -88,15 +88,15 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
         }, productive_cols, init = sce)
         cnumber1 <- dim(sce)[2]
         filtered <- cnumber0 - cnumber1
-        message(paste(filtered, "of cells filtered"))
+        message(sprintf("%d of cells filtered", filtered))
       } else {
         rlang::abort("When mode_option is NULL, the productive_cols must be specified.")
       }
     } else {
       produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(productive_vdj,
         productive_vj)]
-      message(paste("Checking productivity from", paste(produ_col, collapse = ", "),
-        "..."), appendLF = FALSE)
+      msg <- paste(produ_col, collapse = ", ")
+      message(sprintf("Checking productivity from %s ...", msg), appendLF = FALSE)
       cnumber0 <- dim(sce)[2]
       sce <- Reduce(function(data, p_col) {
         idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
@@ -104,7 +104,7 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
       }, produ_col, init = sce)
       cnumber1 <- dim(sce)[2]
       filtered <- cnumber0 - cnumber1
-      message(paste(filtered, "of cells filtered"))
+      message(sprintf("%d of cells filtered", filtered))
     }
   }
   ## retain only cells with allowed chain status
@@ -113,26 +113,27 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     cnumber0 <- dim(sce)[2]
     idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
     if (!any(idx)) {
-      rlang::abort(paste("Unsuitable allowed_chain_status,\n The current allowed_chain_status:",
-        paste(allowed_chain_status, collapse = ", "), ".\n While the chain status in the dataset:",
-        paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")))
+      allowed_cs <- paste(allowed_chain_status, collapse = ", ")
+      current_cs <- paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")
+      rlang::abort(sprintf("Unsuitable allowed_chain_status,\n The current allowed_chain_status: %s.\n While the chain status in the dataset: %s.", allowed_cs, current_cs))        
     }
     sce <- sce[, idx]
     cnumber1 <- dim(sce)[2]
     filtered <- cnumber0 - cnumber1
-    message(paste(filtered, "of cells filtered"))
+    message(sprintf("%d of cells filtered", filtered))
   }
   ## subset sce by subsetby and groups
   if (!is.null(groups) && !is.null(subsetby)) {
-    message(paste("Subsetting data with", paste(as.character(substitute(groups))[-1],
-      collapse = ", "), "in", as.character(substitute(subsetby)), "..."), appendLF = FALSE)
+    msg1 <- paste(as.character(substitute(groups))[-1], collapse = ", ")
+    msg2 <- as.character(substitute(subsetby))
+    message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
     cnumber0 <- dim(sce)[2]
     idx <- Reduce(`|`, lapply(groups, function(i) colData(sce)[[subsetby]] %in%
       i))
     sce <- sce[, idx]
     cnumber1 <- dim(sce)[2]
     filtered <- cnumber0 - cnumber1
-    message(paste(filtered, "of cells filtered"))
+    message(sprintf("%d of cells filtered", filtered))
   }
   ## extract main VDJ from specified columns
   if (is.null(extract_cols)) {
@@ -153,8 +154,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
           y)))
         extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
       }
-      message(paste0("Extract main TCR from ", paste(extr_cols, collapse = ", "),
-        "..."), appendLF = FALSE)
+      msg <- paste(extr_cols, collapse = ", ")
+      message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
       sce <- Reduce(function(data, ex_col) {
         tem <- colData(data)[[ex_col]]
         strtem <- strsplit(as.character(tem), "\\|")
@@ -165,8 +166,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
       message("Complete.")
     }
   } else {
-    message(paste0("Extract main TCR from ", paste(extract_cols, collapse = ", "),
-      "..."), appendLF = FALSE)
+    msg <- paste(extract_cols, collapse = ", ")
+    message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
     sce <- Reduce(function(data, ex_col) {
       tem <- colData(data)[[ex_col]]
       strtem <- strsplit(as.character(tem), "\\|")
@@ -203,8 +204,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
       }
     }
     if (!is.null(extr_cols)) {
-      message(paste0("Filtering cells from ", paste(extr_cols, collapse = ", "),
-        "..."), appendLF = FALSE)
+      msg <- paste(extr_cols, collapse = ", ")
+      message(sprintf("Filtering cells from %s ...", msg), appendLF = FALSE)
       cnumber0 <- dim(sce)[2]
       sce <- Reduce(function(x, y) {
         .filter.cells(sce = x, col_n = y, filter_pattern = filter_pattern,
@@ -212,10 +213,10 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
       }, extr_cols, init = sce)
       cnumber1 <- dim(sce)[2]
       filtered <- cnumber0 - cnumber1
-      message(paste(filtered, "of cells filtered"))
+      message(sprintf("%d of cells filtered", filtered))
     }
   }
-  message(paste(dim(sce)[2], "of cells remain."))
+  message(sprintf("%d of cells remain.", dim(sce)[2]))
   return(sce)
 }
 

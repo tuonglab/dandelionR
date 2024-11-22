@@ -19,7 +19,8 @@
     return(pbs)
   }
   if (!is.null(col_to_bulk)) {
-    message(paste0("Generating pseudobulks according to colData ",paste(col_to_bulk,collapse = ", "),"..."),appendLF = FALSE)
+    .col_to_bulk <= paste0(col_to_bulk, collapse = ", ")
+    message(sprintf("Generating pseudobulks according to colData %s ...", .col_to_bulk), appendLF = FALSE)
     tobulk <- lapply(col_to_bulk, function(x) {
       colData(milo)[[x]]
     })
@@ -32,7 +33,7 @@
     requireNamespace("Matrix")
     tobulk <- Matrix::Matrix(tobulk, sparse = TRUE)
     message("Complete")
-    message(paste("The number of pseudobulk is",dim(tobulk)[2]))
+    message(sprintf("The number of pseudobulks is %d", dim(tobulk)[2]))
     return(tobulk)
   }
 }

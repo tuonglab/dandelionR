@@ -6,7 +6,7 @@
 #' @param waypoints integer vector, waypoint selected to construct markov chain.
 #' @return terminal_state
 .terminal.state.from.markov.chain <- function(Transmat, wp_data, pseudotime, waypoints) {
-  print("No terminal state provided, indentification of terminal states....")
+  message("No terminal state provided, indentification of terminal states....")
   # Identify terminal states dm_boudaries
   n <- min(dim(Transmat))
   ei <- eigen(t(Transmat))

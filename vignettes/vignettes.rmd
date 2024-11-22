@@ -1,5 +1,5 @@
 ---
-title: "dandelionR"
+title: "Single-cell Immune Repertoire Trajectory Analysis with dandelionR"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
@@ -7,13 +7,13 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-# dandelionR
+# Foreword
 
 Welcome to `dandelionR`!
 
-`dandelionR` is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in [`dandelion`](https://www.github.com/zktuong/dandelion). 
+`dandelionR` is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in [dandelion](https://www.github.com/zktuong/dandelion). 
 
-It provides all the necessary tools to interface with [`scRepertoire`](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
+It provides all the necessary tools to interface with [scRepertoire](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -59,4 +59,11 @@ plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
 ```
 
 ## format transferring
+
 ### milo object constructing and neighbour graph construction
+
+## session info
+
+```{r, message = FALSE, warning = FALSE}
+sessionInfo()
+```

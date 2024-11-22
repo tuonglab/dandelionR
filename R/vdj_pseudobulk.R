@@ -76,7 +76,7 @@ vdj_pseudobulk <- function(
   # perform matrix multiplication of pseudobulks by cell matrix by a cells by
   # VJs matrix strat off by creating the cell by VJs matix skip the prefix
   # stuff as the VJ genes will be unique in the columns
-  vjs0 = data.frame(colData(milo)[extract_cols])
+  vjs0 <- data.frame(colData(milo)[extract_cols])
   ## model.matrix need factor input
   vjs0[] <- lapply(vjs0, function(x) if (!is.factor(x))
     as.factor(x) else x)
