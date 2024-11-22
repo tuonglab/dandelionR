@@ -1,14 +1,15 @@
 Package: dandelionR
 Title: Single-cell Immune Repertoire Trajectory Analysis in R
-Version: 0.0.0.9000
+Version: 0.99.0
 Authors@R:
-    c(person(given="Jiawei", family="Yu", email = "jiawei.yu@uq.edu.au", role = c("aut", "cre")),
+    c(person(given="Jiawei", family="Yu", email = "jiawei.yu@uq.edu.au", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-9170-7881")),
       person(given="Kelvin", family="Tuong", email = "z.tuong@uq.edu.au", role = c("aut"), comment = c(ORCID = "0000-0002-6735-6808")))
 Description: dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides all the necessary tools to interface with scRepertoire and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the palantir python package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+biocViews: Software, ImmunoOncology, SingleCell
 Collate:
     'check.R'
     'construct.markov.chain.R'
@@ -42,4 +43,11 @@ Suggests:
     bluster,
     spam,
     BiocGenerics,
-    purrr
+    purrr,
+    knitr
+VignetteBuilder: knitr
+URL: https://www.github.com/tuonglab/dandelionR/
+BugReports: https://www.github.com/tuonglab/dandelionR/issues
+Depends: 
+    R (>= 2.10)
+LazyData: true

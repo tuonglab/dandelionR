@@ -1,6 +1,6 @@
-# MIT License
+MIT License
 
-Copyright (c) 2024 dandelionR Authors; Computational Immunology Group
+Copyright (c) 2024 Jiawei Yu and Zewen Kelvin Tuong
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
