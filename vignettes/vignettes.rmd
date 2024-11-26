@@ -44,7 +44,7 @@ This is a work in progress, so please feel free to open an issue if you encounte
 ## load data
 load the demo data
 ```{r, eval = FALSE}
-demo_pseudo_rds <- dandelionR::demo_pseudo_rds
+data("demo_pseudo_rds")
 ```
 
 ## filter the data
@@ -61,6 +61,105 @@ plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
 ## format transferring
 
 ### milo object constructing and neighbour graph construction
+
+use miloR to create pseudobulks. Construct neighbor graph with many neighbors. Sample the representative neighbours form the objects.
+
+```{r}
+library(miloR)
+traj_milo <- Milo(demo_pseudo_rds) 
+milo_object <- buildGraph(traj_milo, k = 50, d=20, reduced.dim="X_scvi") 
+milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
+```
+## conduct umap on neighbor graph
+
+```{r}
+milo_object <- milo_umap(milo_object)
+```
+```{r}
+plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
+```
+
+### pseudobulk
+
+construct vdj feature space
+
+```{r}
+pb.milo <- vdj_pseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
+
+# pbs = milo_object@nhoods
+pb.milo<-runPCA(pb.milo, assay.type = "X")
+```
+
+```{r}
+plotPCA(pb.milo,color_by = "anno_lvl_2_final_clean")
+```
+
+### define root and branch tips
+```{r}
+pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
+branch.tips <- c(which.max(pca[2,]),which.min(pca[2,]))
+names(branch.tips)<-c("CD8+T","CD4+T")
+root <- which.min(pca[1,])
+```
+
+### make diffusion map
+```{r}
+library(destiny)
+dm <- DiffusionMap(t(pca),n_pcs=50, n_eigs = 10) # have transition matrix in slot transitions
+```
+
+### compute diffussion pseudotime
+```{r}
+dif.pse <- DPT(dm, tips = c(root,branch.tips),w_width = 0.1)
+```
+
+```{r}
+DPTroot <- paste0("DPT",root)
+colors <- colorRampPalette(c("#03346E","#6EACDA", "white", "darkred"))(80)
+plot(reducedDims(pb.milo)$PCA,  col = colors[cut(dif.pse[[DPTroot]],breaks=80)], pch=16, asp = 1)
+library(fields)
+image.plot(legend.only = TRUE, 
+           zlim = range(dif.pse[[DPTroot]], na.rm = TRUE),  # 设置伪时间的范围
+           col = colors,  # 与点颜色相同的渐变颜色条
+           legend.lab = "Pseudotime")
+```
+
+## Markov chain construction, store the result in pb.milo
+
+```{r}
+diffusiontime <- dif.pse[[DPTroot]]
+pb.milo <- markov_probability(pb.milo, dm, diffusiontime = diffusiontime, branch.tips, root)
+```
+
+```{r}
+colors <- colorRampPalette(c("#03346E","#6EACDA", "white", "darkred"))(80)
+plot(reducedDims(pb.milo)$PCA,  col = colors[cut(colData(pb.milo)[[names(branch.tips)[1]]],breaks=80)], pch=16, asp = 1)
+
+image.plot(legend.only = TRUE, 
+           zlim = range(colData(pb.milo)[[names(branch.tips)[1]]], na.rm = TRUE),  
+           col = colors,  
+           legend.lab = "Pseudotime")  
+plot(reducedDims(pb.milo)$PCA,  col = colors[cut(colData(pb.milo)[[names(branch.tips)[2]]],breaks=80)], pch=16, asp = 1)
+
+image.plot(legend.only = TRUE, 
+           zlim = range(colData(pb.milo)[[names(branch.tips)[2]]], na.rm = TRUE),  
+           col = colors,  
+           legend.lab = "Pseudotime") 
+```
+
+# Transfer
+
+### project pseudobulk data to each cell
+```{r}
+cdata<- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
+```
+```{r}
+plotUMAP(cdata,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
+plotUMAP(cdata,color_by = "pseudotime",dimred = "UMAP_knngraph")
+plotUMAP(cdata,color_by = "CD4+T",dimred = "UMAP_knngraph")
+plotUMAP(cdata,color_by = "CD8+T",dimred = "UMAP_knngraph")
+```
+
 
 ## session info
 
