@@ -44,7 +44,7 @@ This is a work in progress, so please feel free to open an issue if you encounte
 ## load data
 load the demo data
 ```{r, eval = FALSE}
-data("demo_pseudo_rds")
+data("demo_pseudo_rds", package = "DandelionR")
 ```
 
 ## filter the data
