@@ -35,7 +35,7 @@ devtools::install_github('tuonglab/dandelionR', dependencies = TRUE)
 
 ## Usage
 
-```{r, message = FALSE, warning = FALSE}
+```{r, warning = FALSE}
 library(dandelionR)
 ```
 
@@ -43,17 +43,17 @@ This is a work in progress, so please feel free to open an issue if you encounte
 
 ## load data
 load the demo data
-```{r, eval = FALSE}
+```{r, warning = FALSE}
 data("demo_pseudo_rds", package = "dandelionR")
 ```
 
 ## filter the data
 subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
-```{r, eval = FALSE}
+```{r, warning = FALSE}
 demo_pseudo_rds <- setup_vdj_pseudobulk(demo_pseudo_rds, already.productive = FALSE)
 ```
 plot the filtered data
-```{r, eval = FALSE}
+```{r, warning = FALSE}
 library(scater)
 plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
 ```
@@ -64,7 +64,7 @@ plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
 
 use miloR to create pseudobulks. Construct neighbor graph with many neighbors. Sample the representative neighbours form the objects.
 
-```{r}
+```{r, warning = FALSE}
 library(miloR)
 traj_milo <- Milo(demo_pseudo_rds) 
 milo_object <- buildGraph(traj_milo, k = 50, d=20, reduced.dim="X_scvi") 
@@ -72,11 +72,11 @@ milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 ```
 ## conduct umap on neighbor graph
 
-```{r}
+```{r, warning = FALSE}
 milo_object <- milo_umap(milo_object)
 ```
 ```{r}
-scater::plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
+plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
 ```
 
 ### pseudobulk
@@ -84,22 +84,10 @@ scater::plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_
 construct vdj feature space
 
 ```{r}
-cat("Column names in milo_object:\n")
-library(SummarizedExperiment)
-print("anno_lvl_2_final_clean" %in% names(colData(milo_object)))
+pb.milo <- vdj_pseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
 
-```
-
-
-
-```{r}
-pb.milo <- dandelionR::vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
-```
-
-
-```{r}
-
-pb.milo <- scater::runPCA(pb.milo, assay.type = "X")
+# pbs = milo_object@nhoods
+pb.milo<-runPCA(pb.milo, assay.type = "X")
 ```
 
 ```{r}
@@ -176,6 +164,6 @@ plotUMAP(cdata,color_by = "CD8+T",dimred = "UMAP_knngraph")
 
 ## session info
 
-```{r, message = FALSE, warning = FALSE}
+```{r, warning = FALSE}
 sessionInfo()
 ```
