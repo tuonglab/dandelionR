@@ -44,18 +44,18 @@ This is a work in progress, so please feel free to open an issue if you encounte
 ## load data
 load the demo data
 ```{r, warning = FALSE}
-data(demo_pseudo_rds)
+data(sce_vdj)
 ```
 
 ## filter the data
 subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
 ```{r, warning = FALSE}
-demo_pseudo_rds <- setup_vdj_pseudobulk(demo_pseudo_rds, already.productive = FALSE)
+sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
 ```
 plot the filtered data
 ```{r, warning = FALSE}
 library(scater)
-plotUMAP(demo_pseudo_rds,color_by = "anno_lvl_2_final_clean")
+plotUMAP(sce_vdj,color_by = "anno_lvl_2_final_clean")
 ```
 
 ## format transferring
@@ -66,7 +66,7 @@ use miloR to create pseudobulks. Construct neighbor graph with many neighbors. S
 
 ```{r, warning = FALSE}
 library(miloR)
-traj_milo <- Milo(demo_pseudo_rds) 
+traj_milo <- Milo(sce_vdj) 
 milo_object <- buildGraph(traj_milo, k = 50, d=20, reduced.dim="X_scvi") 
 milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 ```
