@@ -44,7 +44,7 @@ This is a work in progress, so please feel free to open an issue if you encounte
 ## load data
 load the demo data
 ```{r, eval = FALSE}
-data("demo_pseudo_rds", package = "DandelionR")
+data("demo_pseudo_rds", package = "dandelionR")
 ```
 
 ## filter the data
@@ -76,7 +76,7 @@ milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 milo_object <- milo_umap(milo_object)
 ```
 ```{r}
-plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
+scater::plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
 ```
 
 ### pseudobulk
@@ -84,10 +84,22 @@ plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph
 construct vdj feature space
 
 ```{r}
-pb.milo <- vdj_pseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
+cat("Column names in milo_object:\n")
+library(SummarizedExperiment)
+print("anno_lvl_2_final_clean" %in% names(colData(milo_object)))
 
-# pbs = milo_object@nhoods
-pb.milo<-runPCA(pb.milo, assay.type = "X")
+```
+
+
+
+```{r}
+pb.milo <- dandelionR::vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+```
+
+
+```{r}
+
+pb.milo <- scater::runPCA(pb.milo, assay.type = "X")
 ```
 
 ```{r}
@@ -96,6 +108,7 @@ plotPCA(pb.milo,color_by = "anno_lvl_2_final_clean")
 
 ### define root and branch tips
 ```{r}
+library(SingleCellExperiment)
 pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
 branch.tips <- c(which.max(pca[2,]),which.min(pca[2,]))
 names(branch.tips)<-c("CD8+T","CD4+T")
