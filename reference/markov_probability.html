@@ -59,6 +59,7 @@
 <span>  <span class="va">diffusionmap</span>,</span>
 <span>  <span class="va">terminal_state</span>,</span>
 <span>  <span class="va">root_cell</span>,</span>
+<span>  <span class="va">pseudotime_key</span>,</span>
 <span>  scale_components <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  num_waypoints <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -84,18 +85,16 @@
 <dd><p>the index of the root state</p></dd>
 
 
+<dt id="arg-pseudotime-key">pseudotime_key<a class="anchor" aria-label="anchor" href="#arg-pseudotime-key"></a></dt>
+<dd><p>the column name in the colData that holds the inferred pseudotime</p></dd>
+
+
 <dt id="arg-scale-components">scale_components<a class="anchor" aria-label="anchor" href="#arg-scale-components"></a></dt>
-<dd><p>logical,
-If True, the components will be scale before constructing markov chain</p></dd>
+<dd><p>logical, If True, the components will be scale before constructing markov chain</p></dd>
 
 
 <dt id="arg-num-waypoints">num_waypoints<a class="anchor" aria-label="anchor" href="#arg-num-waypoints"></a></dt>
-<dd><p>integer, 500L by default.</p><ul><li><p>Number of waypoints to sample to construct markov chain.</p></li>
-</ul></dd>
-
-
-<dt id="arg-diffusiontime">diffusiontime<a class="anchor" aria-label="anchor" href="#arg-diffusiontime"></a></dt>
-<dd><p>numeric vector, contain the difussion time of each pseudobulk</p></dd>
+<dd><p>integer, 500L by default. Number of waypoints to sample to construct markov chain.</p></dd>
 
 </dl></div>
     <div id="value">
