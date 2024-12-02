@@ -48,6 +48,7 @@ Suggests:
     scater,
     Seurat,
     spam,
+    RColorBrewer,
     stats
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/

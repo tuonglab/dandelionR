@@ -18,8 +18,9 @@
 #' @include project_probability.R
 #' @import SingleCellExperiment
 #' @export
-markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
+markov_probability <- function(milo, diffusionmap, terminal_state, root_cell,
   scale_components = TRUE, num_waypoints = 500) {
+  diffusiontime <- milo$pseudotime
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
   if (scale_components)
@@ -34,9 +35,9 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
   # store the result into milo
   requireNamespace("S4Vectors")
-  new_coldata <- S4Vectors::DataFrame(diffusiontime, probabilities_proj[,
+  new_coldata <- S4Vectors::DataFrame(probabilities_proj[,
     1], probabilities_proj[, 2])
-  colnames(new_coldata) <- c("pseudotime", names(terminal_state))
+  colnames(new_coldata) <- c(names(terminal_state))
   # prevent same name in colData
   idx <- names(colData(milo)) %in% colnames(new_coldata)
   if (any(idx)) {
