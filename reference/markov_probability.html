@@ -57,7 +57,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">markov_probability</span><span class="op">(</span></span>
 <span>  <span class="va">milo</span>,</span>
 <span>  <span class="va">diffusionmap</span>,</span>
-<span>  <span class="va">diffusiontime</span>,</span>
 <span>  <span class="va">terminal_state</span>,</span>
 <span>  <span class="va">root_cell</span>,</span>
 <span>  scale_components <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -77,10 +76,6 @@
 <dd><p>DiffusionMap object corresponds to milo</p></dd>
 
 
-<dt id="arg-diffusiontime">diffusiontime<a class="anchor" aria-label="anchor" href="#arg-diffusiontime"></a></dt>
-<dd><p>numeric vector, contain the difussion time of each pseudobulk</p></dd>
-
-
 <dt id="arg-terminal-state">terminal_state<a class="anchor" aria-label="anchor" href="#arg-terminal-state"></a></dt>
 <dd><p>the index of the terminal state</p></dd>
 
@@ -97,6 +92,10 @@ If True, the components will be scale before constructing markov chain</p></dd>
 <dt id="arg-num-waypoints">num_waypoints<a class="anchor" aria-label="anchor" href="#arg-num-waypoints"></a></dt>
 <dd><p>integer, 500L by default.</p><ul><li><p>Number of waypoints to sample to construct markov chain.</p></li>
 </ul></dd>
+
+
+<dt id="arg-diffusiontime">diffusiontime<a class="anchor" aria-label="anchor" href="#arg-diffusiontime"></a></dt>
+<dd><p>numeric vector, contain the difussion time of each pseudobulk</p></dd>
 
 </dl></div>
     <div id="value">
