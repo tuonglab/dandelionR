@@ -30,6 +30,10 @@ if (!requireNamespace("devtools", quietly = TRUE))
     install.packages("devtools")
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
+if (!requireNamespace("scater", quietly = TRUE)) # only for the tutorial
+    BiocManager::install("scater")
+if (!requireNamespace("fields", quietly = TRUE)) # only for the tutorial
+    install.packages("fields")
 devtools::install_github('tuonglab/dandelionR', dependencies = TRUE)
 ```
 
@@ -37,6 +41,8 @@ devtools::install_github('tuonglab/dandelionR', dependencies = TRUE)
 
 ```{r, warning = FALSE}
 library(dandelionR)
+library(scater)
+library(fields)
 ```
 
 This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.
@@ -54,7 +60,6 @@ sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
 ```
 plot the filtered data
 ```{r, warning = FALSE}
-library(scater)
 plotUMAP(sce_vdj,color_by = "anno_lvl_2_final_clean")
 ```
 
@@ -118,7 +123,6 @@ dif.pse <- DPT(dm, tips = c(root,branch.tips),w_width = 0.1)
 DPTroot <- paste0("DPT",root)
 colors <- colorRampPalette(c("#03346E","#6EACDA", "white", "darkred"))(80)
 plot(reducedDims(pb.milo)$PCA,  col = colors[cut(dif.pse[[DPTroot]],breaks=80)], pch=16, asp = 1)
-library(fields)
 image.plot(legend.only = TRUE, 
            zlim = range(dif.pse[[DPTroot]], na.rm = TRUE),  # 设置伪时间的范围
            col = colors,  # 与点颜色相同的渐变颜色条

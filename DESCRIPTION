@@ -24,6 +24,7 @@ Collate:
     'markov_probability.R'
     'milo_umap.R'
     'project_pseudotime_to_cell.R'
+    'sce_vdj.R'
     'setup_vdj_pseudobulk.R'
     'vdj_pseudobulk.R'
 Imports:
@@ -32,6 +33,8 @@ Imports:
     SummarizedExperiment
 Suggests:
     BiocGenerics,
+    scater,
+    fields,
     bluster,
     destiny,
     igraph,
