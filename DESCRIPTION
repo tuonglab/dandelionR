@@ -42,6 +42,7 @@ Suggests:
     purrr,
     rlang,
     S4Vectors,
+    scater,
     Seurat,
     spam,
     stats
