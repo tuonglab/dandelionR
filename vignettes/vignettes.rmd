@@ -44,8 +44,8 @@ library(scater)
 
 This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.
 
-## load data
-load the demo data
+## Load data
+Load the demo data
 ```{r, warning = FALSE}
 data(sce_vdj)
 ```
@@ -55,7 +55,7 @@ set.seed(100)
 ```
 
 
-## filter the data
+## Filter the data
 subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
 ```{r, warning = FALSE}
 sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
@@ -65,9 +65,7 @@ plot the filtered data
 plotUMAP(sce_vdj,color_by = "anno_lvl_2_final_clean")
 ```
 
-## format transferring
-
-### milo object constructing and neighbour graph construction
+## Milo object constructing and neighbour graph construction
 
 use miloR to create pseudobulks. Construct neighbor graph with many neighbors. Sample the representative neighbours form the objects.
 
@@ -77,7 +75,7 @@ traj_milo <- Milo(sce_vdj)
 milo_object <- buildGraph(traj_milo, k = 50, d=20, reduced.dim="X_scvi") 
 milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 ```
-## conduct umap on neighbor graph
+### Construct umap on milo neighbor graph
 
 ```{r, warning = FALSE}
 milo_object <- milo_umap(milo_object)
@@ -86,10 +84,7 @@ milo_object <- milo_umap(milo_object)
 plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
 ```
 
-### pseudobulk
-
-construct vdj feature space
-
+## Construct pseudobulked VDJ feature space
 ```{r}
 pb.milo <- vdj_pseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
 
@@ -101,52 +96,65 @@ pb.milo<-runPCA(pb.milo, assay.type = "X")
 plotPCA(pb.milo,color_by = "anno_lvl_2_final_clean")
 ```
 
-### define root and branch tips
+## TCR trajectory inference using Absorbing Markov Chain
+
+### Define root and branch tips
 ```{r}
 library(SingleCellExperiment)
-pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))  # extract the PCA matrix
-branch.tips <- c(which.max(pca[2,]),which.min(pca[2,])) # define the CD8 terminal cell as the top-most cell and CD4 terminal cell as the bottom-most cell
-names(branch.tips)<-c("CD8+T","CD4+T")
-root <- which.min(pca[1,]) # define the start of our trajectory as the left-most cell
+
+# extract the PCA matrix
+pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
+# define the CD8 terminal cell as the top-most cell and CD4 terminal cell as the bottom-most cell
+branch.tips <- c(which.max(pca[2,]), which.min(pca[2,])) 
+names(branch.tips) <- c("CD8+T", "CD4+T")
+# define the start of our trajectory as the left-most cell
+root <- which.min(pca[1,])
 ```
 
-### make diffusion map
+### Construct diffusion map
 ```{r}
 library(destiny)
-dm <- DiffusionMap(t(pca),n_pcs=50, n_eigs = 10) # have transition matrix in slot transitions
+# Run diffusion map on the PCA
+dm <- DiffusionMap(t(pca),n_pcs=50, n_eigs = 10)
 ```
 
-### compute diffussion pseudotime
+### Compute diffussion pseudotime on diffusion map
 ```{r}
-dif.pse <- DPT(dm, tips = c(root,branch.tips),w_width = 0.1)
+dif.pse <- DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 ```
 
 ```{r, message=FALSE}
-DPTroot <- paste0("DPT",root)
+# the root is automatically called DPT + index of the root cell 
+DPTroot <- paste0("DPT", root)
+# store pseudotime in milo object
 pb.milo$pseudotime <- dif.pse[[DPTroot]]
+# set the colours for pseudotime
 pal <- colorRampPalette(rev((RColorBrewer::brewer.pal(9, "RdYlBu"))))(255)
 plotPCA(pb.milo, color_by = "pseudotime") + scale_colour_gradientn(colours = pal)
 ```
 
-## Markov chain construction, store the result in pb.milo
+### Markov chain construction on the pseudobulk VDJ feature space
 
 ```{r}
-diffusiontime <- dif.pse[[DPTroot]]
-pb.milo <- markov_probability(pb.milo, dm, branch.tips, root)
+pb.milo <- markov_probability(
+  milo=pb.milo, 
+  diffusionmap=dm, 
+  terminal_state=branch.tips, 
+  root_cell=root, 
+  pseudotime_key="pseudotime")
 ```
-
+### Visualising branch probabilities
 ```{r, message=FALSE}
 plotPCA(pb.milo,  color_by = "CD8+T") + scale_color_gradientn(colors = pal)
 plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 ```
+## Transfer
 
-# Transfer
-
-### project pseudobulk data to each cell
+### Project pseudobulk data to each cell
 ```{r}
 cdata<- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
 ```
-
+### Visualise the trajectory data on a per cell basis
 ```{r, message=FALSE}
 plotUMAP(cdata,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
 plotUMAP(cdata,color_by = "pseudotime",dimred = "UMAP_knngraph") + scale_color_gradientn(colors = pal)
@@ -155,7 +163,7 @@ plotUMAP(cdata,color_by = "CD8+T",dimred = "UMAP_knngraph") + scale_color_gradie
 ```
 
 
-## session info
+## Session info
 
 ```{r, warning = FALSE}
 sessionInfo()
