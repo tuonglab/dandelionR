@@ -36,7 +36,7 @@ setup_vdj_pseudobulk(
 
 \item{productive_vdj}{logical, with TRUE by default. Option in productivity filtering.  If True, cell will only be kept if the main VDJ chain is productive}
 
-\item{allowed_chain_status}{character vectors, optional, if specified, the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")}
+\item{allowed_chain_status}{character vectors, optional, if specified, the element should within c('single pair','Extra pair', 'Extra pair-exceptipn', 'Orphan VDJ','Orphan VDJ-exception')}
 
 \item{subsetby}{character, with NULL by default, name of one colData provided for sub-setting.}
 
@@ -44,11 +44,11 @@ setup_vdj_pseudobulk(
 
 \item{extract_cols}{character vector, with NULL by default. colData names where VDJ/VJ information is stored, these colData will be used instead of the standard colData}
 
-\item{filter_pattern}{character, optional, with ",|None|No_contig" by default.}
+\item{filter_pattern}{character, optional, with ',|None|No_contig' by default.}
 
-\item{check_vj_mapping}{character vector, optional. elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.}
+\item{check_vj_mapping}{character vector, optional. elements should come from c('v_call', 'j_call'), with c('v_call', 'j_call') by default.}
 
-\item{check_vdj_mapping}{character vector, optional. elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.}
+\item{check_vdj_mapping}{character vector, optional. elements should come from c('v_call','d_call', 'j_call'), with c('v_call', 'j_call') by default.}
 
 \item{check_extract_cols_mapping}{character vecter, with NULL by default}
 
@@ -72,8 +72,8 @@ data will undergo several process, including productivity filtering, chain statu
 }
 \item mode_option
 \itemize{
-\item function will check colData(s) named \verb{productive_\{mode_option\}_\{type\}}, where type should be "VDJ" or "VJ" or both, depending on values of productive_vj and productive_vdj.
-\item If set as "NULL", the function needs the option "extract_cols" to be specified
+\item function will check colData(s) named \verb{productive_\{mode_option\}_\{type\}}, where type should be 'VDJ' or 'VJ' or both, depending on values of productive_vj and productive_vdj.
+\item If set as 'NULL', the function needs the option 'extract_cols' to be specified
 }
 \item productive_cols
 \itemize{
