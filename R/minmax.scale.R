@@ -6,6 +6,6 @@
 .minmax.scale <- function(data) {
     maxv <- apply(data, 2, max)
     minv <- apply(data, 2, min)
-    data_scale <- apply(data, 1, `-`, minv)/(maxv - minv)
+    data_scale <- apply(data, 1, `-`, minv) / (maxv - minv)
     t(data_scale)
 }

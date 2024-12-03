@@ -21,7 +21,8 @@
     if (!is.null(col_to_bulk)) {
         msg <- paste0(col_to_bulk, collapse = ", ")
         message(sprintf("Generating pseudobulks according to colData %s ...", msg),
-            appendLF = FALSE)
+            appendLF = FALSE
+        )
         tobulk <- lapply(col_to_bulk, function(x) {
             colData(milo)[[x]]
         })
@@ -29,7 +30,7 @@
         tobulk <- as.data.frame(tobulk)
         tobulk <- as.data.frame(apply(tobulk, 1, paste, collapse = ",", simplify = FALSE))
         requireNamespace("stats")
-        tobulk <- stats::model.matrix(~t(tobulk) - 1)
+        tobulk <- stats::model.matrix(~ t(tobulk) - 1)
         colnames(tobulk) <- gsub("t\\(tobulk\\)", "", colnames(tobulk))
         requireNamespace("Matrix")
         tobulk <- Matrix::Matrix(tobulk, sparse = TRUE)
@@ -43,7 +44,7 @@
 #'
 #' Helper function to create the new pseudobulk object's coldata.
 #' @param pbs dgeMatrix, cell x pseudobulk binary matrix
-#' @param col_to_take character vector, names of colData of milo that need to be processed  
+#' @param col_to_take character vector, names of colData of milo that need to be processed
 #' @param milo Milo or SingleCellExperiment object
 #' @return pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object as colData of vdj x pseudobulk assays
 .get.pbs.col <- function(pbs, col_to_take, milo) {
@@ -55,12 +56,14 @@
             fa <- as.factor(colData(milo)[[anno_col]])
             fa <- data.frame(fa)
             requireNamespace("stats")
-            anno.dummies <- stats::model.matrix(~. - 1, data = fa, contrasts.arg = lapply(fa,
-                stats::contrasts, contrasts = FALSE))
+            anno.dummies <- stats::model.matrix(~ . - 1, data = fa, contrasts.arg = lapply(fa,
+                stats::contrasts,
+                contrasts = FALSE
+            ))
             requireNamespace("Matrix")
-            anno.count <- Matrix::t(pbs) %*% anno.dummies  # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
+            anno.count <- Matrix::t(pbs) %*% anno.dummies # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
             anno.sum <- apply(anno.count, 1, sum)
-            anno.frac <- anno.count/anno.sum
+            anno.frac <- anno.count / anno.sum
             anno.frac <- S4Vectors::DataFrame(anno.frac)
             colnames(anno.frac) <- colnames(anno.dummies)
             pbs.col[anno_col] <- colnames(anno.frac)[apply(anno.frac, 1, which.max)]

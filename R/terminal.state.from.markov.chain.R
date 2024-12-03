@@ -23,11 +23,13 @@
     cells <- which(ranks > cutoff)
     # Find connected componets
     requireNamespace("igraph")
-    graph <- igraph::graph_from_adjacency_matrix(Transmat[cells, cells], weighted = TRUE,
-        mode = "directed")
+    graph <- igraph::graph_from_adjacency_matrix(Transmat[cells, cells],
+        weighted = TRUE,
+        mode = "directed"
+    )
     components_g <- igraph::components(graph)
     requireNamespace("purrr")
-    cells <- unlist(purrr::map(.x = seq_len(components_g$no), .f = ~{
+    cells <- unlist(purrr::map(.x = seq_len(components_g$no), .f = ~ {
         nodes_in_component <- which(components_g$membership == .x)
         id <- which.max(pseudotime[nodes_in_component])
         nodes_in_component[id]

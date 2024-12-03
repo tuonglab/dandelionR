@@ -2,7 +2,7 @@
 #'
 #' use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 #' @param milo the milo object with knn graph that needed to conduct umap on.
-#' @param slot_name character, with default 'UMAP_knngraph'. 
+#' @param slot_name character, with default 'UMAP_knngraph'.
 #'  - The slot name in reduceDim where the result store
 #' @param n.neighbors integer, with default 50L.
 #'  - the number of neighboring points used

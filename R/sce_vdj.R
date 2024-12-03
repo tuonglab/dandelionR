@@ -1,4 +1,4 @@
-#' demo data used in vignettes 
+#' demo data used in vignettes
 #'
 #' sce_vdj - A down-sampled demo data from Suo et al 2024 Nature Biotechnology. See \url{https://www.nature.com/articles/s41587-023-01734-7}
 #' @docType data
@@ -8,7 +8,7 @@
 #'  \item{\code{assays}}{Currently only contains 'logcounts'}
 #'  \item{\code{colData}}{
 #'    A \code{DataFrame} containing metadata about each sample, corresponding to obs in AnnData for python.\cr
-#'    Below only describe the column used in the vignette: 
+#'    Below only describe the column used in the vignette:
 #'    \describe{
 #'      \item{\code{productive_(mode)_VDJ}, \code{productive_(mode)_VJ}}{
 #'        factor containing the information about whether the heavy/light chain is productive
@@ -38,4 +38,3 @@
 #' @examples
 #' data(sce_vdj)
 "sce_vdj"
-

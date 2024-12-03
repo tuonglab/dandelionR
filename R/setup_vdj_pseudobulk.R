@@ -51,9 +51,12 @@
 #' @import SummarizedExperiment
 #' @return filtered SingleCellExperiment object
 #' @export
-setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
-    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = c("Single pair",
-        "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
+setup_vdj_pseudobulk <- function(
+    sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
+    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = c(
+        "Single pair",
+        "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"
+    ),
     subsetby = NULL, groups = NULL, extract_cols = NULL, filter_pattern = ",|None|No_cotig",
     check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
     check_extract_cols_mapping = NULL, remove_missing = TRUE) {
@@ -69,7 +72,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     .type.check(extract_cols, "character")
     .type.check(filter_pattern, "character")
     check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
-        several.ok = TRUE)
+        several.ok = TRUE
+    )
     check_vj_mapping <- match.arg(check_vj_mapping, several.ok = TRUE)
     .type.check(check_extract_cols_mapping, "character")
     .type.check(remove_missing, "logical")
@@ -83,8 +87,8 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
                 message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
                 cnumber0 <- dim(sce)[2]
                 sce <- Reduce(function(data, p_col) {
-                  idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
-                  data[, idx]
+                    idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
+                    data[, idx]
                 }, productive_cols, init = sce)
                 cnumber1 <- dim(sce)[2]
                 filtered <- cnumber0 - cnumber1
@@ -93,8 +97,10 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
                 rlang::abort("When mode_option is NULL, the productive_cols must be specified.")
             }
         } else {
-            produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(productive_vdj,
-                productive_vj)]
+            produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(
+                productive_vdj,
+                productive_vj
+            )]
             msg <- paste(produ_col, collapse = ", ")
             message(sprintf("Checking productivity from %s ...", msg), appendLF = FALSE)
             cnumber0 <- dim(sce)[2]
@@ -115,8 +121,10 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
         if (!any(idx)) {
             allowed_cs <- paste(allowed_chain_status, collapse = ", ")
             current_cs <- paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")
-            rlang::abort(sprintf("Unsuitable allowed_chain_status,\n The current allowed_chain_status: %s.\n While the chain status in the dataset: %s.",
-                allowed_cs, current_cs))
+            rlang::abort(sprintf(
+                "Unsuitable allowed_chain_status,\n The current allowed_chain_status: %s.\n While the chain status in the dataset: %s.",
+                allowed_cs, current_cs
+            ))
         }
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
@@ -129,8 +137,10 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
         msg2 <- as.character(substitute(subsetby))
         message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
-        idx <- Reduce(`|`, lapply(groups, function(i) colData(sce)[[subsetby]] %in%
-            i))
+        idx <- Reduce(`|`, lapply(groups, function(i) {
+            colData(sce)[[subsetby]] %in%
+                i
+        }))
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
         filtered <- cnumber0 - cnumber1
@@ -139,20 +149,33 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     ## extract main VDJ from specified columns
     if (is.null(extract_cols)) {
         if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
-            v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce)))
-                "v_call_genotyped_" else "v_call_"
+            v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
+                "v_call_genotyped_"
+            } else {
+                "v_call_"
+            }
             prefix <- c(v_call, "d_call_", "j_call_")
             if (!is.null(mode_option)) {
                 # can be pack as another function
                 suffix <- c("_VDJ", "_VJ")
-                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) paste0(x,
-                  mode_option, y)))
-                extr_cols <- extr_cols[extr_cols != paste0("d_call_", mode_option,
-                  "_VJ")]
+                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
+                    paste0(
+                        x,
+                        mode_option, y
+                    )
+                }))
+                extr_cols <- extr_cols[extr_cols != paste0(
+                    "d_call_", mode_option,
+                    "_VJ"
+                )]
             } else {
                 suffix <- c("VDJ", "VJ")
-                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) paste0(x,
-                  y)))
+                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
+                    paste0(
+                        x,
+                        y
+                    )
+                }))
                 extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
             }
             msg <- paste(extr_cols, collapse = ", ")
@@ -161,7 +184,9 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
                 tem <- colData(data)[[ex_col]]
                 strtem <- strsplit(as.character(tem), "\\|")
                 colData(data)[[paste(ex_col, "main", sep = "_")]] <- vapply(strtem,
-                  `[`, 1, FUN.VALUE = character(1))
+                    `[`, 1,
+                    FUN.VALUE = character(1)
+                )
                 data
             }, extr_cols, init = sce)
             message("Complete.")
@@ -173,7 +198,9 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
             tem <- colData(data)[[ex_col]]
             strtem <- strsplit(as.character(tem), "\\|")
             colData(data)[[paste(ex_col, "main", sep = "_")]] <- vapply(strtem, `[`,
-                1, FUN.VALUE = character(1))
+                1,
+                FUN.VALUE = character(1)
+            )
             data
         }, extract_cols, init = sce)
         message("Complete.")
@@ -184,24 +211,28 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
         if (!is.null(mode_option)) {
             if (!is.null(check_vdj_mapping)) {
                 extr_cols <- c(extr_cols, paste(check_vdj_mapping, mode_option, "VDJ_main",
-                  sep = "_"))
+                    sep = "_"
+                ))
             }
             if (!is.null(check_vj_mapping)) {
                 extr_cols <- c(extr_cols, paste(check_vj_mapping, mode_option, "VJ_main",
-                  sep = "_"))
+                    sep = "_"
+                ))
             }
         } else {
             if (is.null(extract_cols)) {
                 if (!is.null(check_vdj_mapping)) {
-                  extr_cols <- c(extr_cols, paste(check_vdj_mapping, "VDJ_main",
-                    sep = "_"))
+                    extr_cols <- c(extr_cols, paste(check_vdj_mapping, "VDJ_main",
+                        sep = "_"
+                    ))
                 }
                 if (!is.null(check_vj_mapping)) {
-                  extr_cols <- c(extr_cols, paste(check_vj_mapping, "VJ_main", sep = "_"))
+                    extr_cols <- c(extr_cols, paste(check_vj_mapping, "VJ_main", sep = "_"))
                 }
             } else {
-                if (!is.null(check_extract_cols_mapping))
-                  extr_cols <- check_extract_cols_mapping
+                if (!is.null(check_extract_cols_mapping)) {
+                    extr_cols <- check_extract_cols_mapping
+                }
             }
         }
         if (!is.null(extr_cols)) {
@@ -209,8 +240,10 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
             message(sprintf("Filtering cells from %s ...", msg), appendLF = FALSE)
             cnumber0 <- dim(sce)[2]
             sce <- Reduce(function(x, y) {
-                .filter.cells(sce = x, col_n = y, filter_pattern = filter_pattern,
-                  remove_missing = remove_missing)
+                .filter.cells(
+                    sce = x, col_n = y, filter_pattern = filter_pattern,
+                    remove_missing = remove_missing
+                )
             }, extr_cols, init = sce)
             cnumber1 <- dim(sce)[2]
             filtered <- cnumber0 - cnumber1
@@ -220,4 +253,3 @@ setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), alread
     message(sprintf("%d of cells remain.", dim(sce)[2]))
     return(sce)
 }
-

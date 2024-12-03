@@ -21,6 +21,6 @@
     use_eigs <- seq(1, n_eigs)
     eigenvect <- eigenvect[, use_eigs]
     eigenval <- eigenval[use_eigs]
-    multis <- apply(eigenvect, 1, `*`, (eigenval/(1 - eigenval)))
+    multis <- apply(eigenvect, 1, `*`, (eigenval / (1 - eigenval)))
     return(data.frame(t(multis)))
 }

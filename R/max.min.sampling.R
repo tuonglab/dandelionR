@@ -7,7 +7,7 @@
 #' @return Series reprenting the sampled waypoints
 .max.min.sampling <- function(data, num_waypoints) {
     message("Sampling and flocking waypoints...")
-    no.iterations <- as.integer(num_waypoints/ncol(data))
+    no.iterations <- as.integer(num_waypoints / ncol(data))
     waypoints <- c()
     # Sample along each componet
     N <- nrow(data)
