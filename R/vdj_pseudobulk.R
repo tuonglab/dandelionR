@@ -29,6 +29,14 @@
 #' @include get.pbs.R
 #' @import SingleCellExperiment
 #' @import miloR
+#' @examples
+#' 
+#' # load data
+#' data(exmilo_up)
+#' vdj_pseudobulk(exmilo_up, col_to_take = "anno_lvl_2_final_clean")
+#' 
+#' 
+#' 
 #' @export
 vdj_pseudobulk <- function(
     milo, 
