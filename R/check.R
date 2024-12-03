@@ -9,7 +9,8 @@
     if (is.null(input))
         return()
     if (!methods::is(input, must)) {
-        rlang::abort(sprintf("The '%s' must be %s, not %s", as.character(substitute(input)), must, class(input)))
+        rlang::abort(sprintf("The '%s' must be %s, not %s", as.character(substitute(input)),
+            must, class(input)))
     }
 }
 
@@ -26,6 +27,7 @@
     if (!methods::is(input, must)) {
         requireNamespace("rlang")
         requireNamespace("BiocGenerics")
-        rlang::abort(sprintf("The '%s' must be %s, not %s", as.character(substitute(input)), must, BiocGenerics::type(input)))
+        rlang::abort(sprintf("The '%s' must be %s, not %s", as.character(substitute(input)),
+            must, BiocGenerics::type(input)))
     }
 }

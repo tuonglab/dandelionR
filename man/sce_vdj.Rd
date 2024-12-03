@@ -14,7 +14,7 @@ Below only describe the column used in the vignette:
 \describe{
 \item{\code{productive_(mode)_VDJ}, \code{productive_(mode)_VJ}}{
 factor containing the information about whether the heavy/light chain is productive
-mode: mode for extraction of the V(D)J genes, could be "abT"(TCRαβ), "gdT"(TCRγδ) or "B"(BCR)
+mode: mode for extraction of the V(D)J genes, could be 'abT'(TCRαβ), 'gdT'(TCRγδ) or 'B'(BCR)
 }
 \item{Gene segment fields}{
 with a pattern like \code{(v/d/j)_call_(mode)_(VDJ/VJ)}\cr For example:
