@@ -62,6 +62,8 @@
 #' exsce<-setup_vdj_pseudobulk(sce = exsce,
 #'                             mode_option = "abT",  # set the mode to αβTCR
 #'                             already.productive = FALSE) # need to filter the unproductive cells
+#' # check the remaining dim
+#' dim(exsce)
 #'                              
 #' @export
 setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,

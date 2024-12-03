@@ -38,16 +38,17 @@ milo object with umap reduction
 use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 }
 \examples{
-# generate example milo data
-ex <- matrix(runif(100000)*100,nrow=100)
-exx <- SingleCellExperiment::SingleCellExperiment(
-assay = list(counts = ex, logcounts=log1p(ex))) 
-exmilo <- miloR::Milo(exx)
-# caculate knn graph
-exmilo<-scater::runPCA(exmilo, assay.type = "logcounts", ncomponents = 20L)
-exmilo <- miloR:: buildGraph(exmilo, k = 10L, d =20L)
-exmlo <- miloR::makeNhoods(exmilo, k=10L, d=20L)
-rownames(colData(exmilo)) <- 1:ncol(exmilo)
+
+# load denpendency 
+library(miloR)
+
+# load example data
+data(exmilo)
+
+# Construct UMAP
 exmilo <- milo_umap(exmilo, n.neighbors = 10L, metric = "euclidean")
+
+# visualize the result
+scater::plotUMAP(exmlio,dimred = "UMAP_knngraph")
 
 }

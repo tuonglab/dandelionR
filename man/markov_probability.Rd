@@ -7,15 +7,16 @@
 markov_probability(
   milo,
   diffusionmap,
+  diffustiontime = NULL,
   terminal_state,
   root_cell,
-  pseudotime_key,
+  pseudotime_key = "pseudotime",
   scale_components = TRUE,
   num_waypoints = 500
 )
 }
 \arguments{
-\item{milo}{milo or SingelCellExperiment object, used to store the result}
+\item{milo}{milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter}
 
 \item{diffusionmap}{DiffusionMap object corresponds to milo}
 
@@ -28,10 +29,16 @@ markov_probability(
 \item{scale_components}{logical, If True, the components will be scale before constructing markov chain}
 
 \item{num_waypoints}{integer, 500L by default. Number of waypoints to sample to construct markov chain.}
+
+\item{diffusiontime}{if milo do not restore pseudotime, use this parameter to transfer it to function}
 }
 \value{
-milo or SinglCellExperiment object with pseudotime, probabilities in its colData
+milo or SinglCellExperiment object, probabilities in its colData
 }
 \description{
 Preprocessing data and Construct markov chain and calculate probabilities
+}
+\examples{
+# example code
+
 }

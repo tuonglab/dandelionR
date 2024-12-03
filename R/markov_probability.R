@@ -1,14 +1,15 @@
 #' markov_probability
 #'
 #' Preprocessing data and Construct markov chain and calculate probabilities
-#' @param milo milo or SingelCellExperiment object, used to store the result
+#' @param milo milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter
 #' @param diffusionmap DiffusionMap object corresponds to milo
+#' @param diffusiontime if milo do not restore pseudotime, use this parameter to transfer it to function
 #' @param terminal_state the index of the terminal state
 #' @param root_cell the index of the root state
 #' @param pseudotime_key the column name in the colData that holds the inferred pseudotime
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain. 
-#' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
+#' @return milo or SinglCellExperiment object, probabilities in its colData
 #' @include determ.multiscale.space.R
 #' @include minmax.scale.R
 #' @include max.min.sampling.R
@@ -16,9 +17,24 @@
 #' @include project_probability.R
 #' @import SingleCellExperiment
 #' @export
-markov_probability <- function(milo, diffusionmap, terminal_state, root_cell, pseudotime_key,
+#' @examples
+#' # example code
+#' 
+markov_probability <- function(milo, diffusionmap, diffustiontime = NULL, terminal_state, root_cell, pseudotime_key = "pseudotime",
   scale_components = TRUE, num_waypoints = 500) {
-  diffusiontime <- milo[[pseudotime_key]]
+  if(is.null(milo[[pseudotime_key]]))
+  {
+    requireNamespace("rlang")
+    if(is.null(diffusiontime))
+    {
+      rlang::abort(paste("Missing pseudotime data. This data can be either stored in",deparse(substitute(milo)),"or provided by parameter diffusionmap"))
+    }
+  }
+  else
+  {
+    diffusiontime <- milo[[pseudotime_key]]
+  }
+  
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
   if (scale_components)
