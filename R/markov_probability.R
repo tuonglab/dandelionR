@@ -3,13 +3,11 @@
 #' Preprocessing data and Construct markov chain and calculate probabilities
 #' @param milo milo or SingelCellExperiment object, used to store the result
 #' @param diffusionmap DiffusionMap object corresponds to milo
-#' @param scale_components logical, 
-#' If True, the components will be scale before constructing markov chain
-#' @param num_waypoints integer, 500L by default. 
-#' - Number of waypoints to sample to construct markov chain. 
-#' @param diffusiontime numeric vector, contain the difussion time of each pseudobulk
 #' @param terminal_state the index of the terminal state
 #' @param root_cell the index of the root state
+#' @param pseudotime_key the column name in the colData that holds the inferred pseudotime
+#' @param scale_components logical, If True, the components will be scale before constructing markov chain
+#' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain. 
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determ.multiscale.space.R
 #' @include minmax.scale.R
@@ -18,8 +16,9 @@
 #' @include project_probability.R
 #' @import SingleCellExperiment
 #' @export
-markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state, root_cell,
+markov_probability <- function(milo, diffusionmap, terminal_state, root_cell, pseudotime_key,
   scale_components = TRUE, num_waypoints = 500) {
+  diffusiontime <- milo[[pseudotime_key]]
   # scale data
   multiscale <- .determine.multiscale.space(diffusionmap)
   if (scale_components)
@@ -34,9 +33,9 @@ markov_probability <- function(milo, diffusionmap, diffusiontime, terminal_state
   probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
   # store the result into milo
   requireNamespace("S4Vectors")
-  new_coldata <- S4Vectors::DataFrame(diffusiontime, probabilities_proj[,
+  new_coldata <- S4Vectors::DataFrame(probabilities_proj[,
     1], probabilities_proj[, 2])
-  colnames(new_coldata) <- c("pseudotime", names(terminal_state))
+  colnames(new_coldata) <- c(names(terminal_state))
   # prevent same name in colData
   idx <- names(colData(milo)) %in% colnames(new_coldata)
   if (any(idx)) {
