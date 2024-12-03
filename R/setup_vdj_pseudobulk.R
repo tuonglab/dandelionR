@@ -50,7 +50,6 @@
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @return filtered SingleCellExperiment object
-#' @export
 #' @examples
 #' 
 #' # load data
@@ -64,7 +63,7 @@
 #'                             mode_option = "abT",  # set the mode to αβTCR
 #'                             already.productive = FALSE) # need to filter the unproductive cells
 #'                              
-#' 
+#' @export
 setup_vdj_pseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
   productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = c("Single pair",
     "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
