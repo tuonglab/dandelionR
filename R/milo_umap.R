@@ -14,16 +14,14 @@
 #' @import SingleCellExperiment
 #' @examples
 #' # generate example milo object
-#' ex <- matrix(runif(100000)*100,nrow=100)
-#' exsce <- SingleCellExperiment::SingleCellExperiment(
-#' assay = list(counts = ex, logcounts=log1p(ex))) 
+#' exsce <- data(exsce)
 #' exmilo <- miloR::Milo(exsce)
 #' 
 #' # caculate knn graph
 #' exmilo<-scater::runPCA(exmilo, assay.type = "logcounts", ncomponents = 20L)
+#' rownames(SummarizedExperiment::colData(exmilo)) <- 1:ncol(exmilo)
 #' exmilo <- miloR:: buildGraph(exmilo, k = 10L, d =20L)
-#' exmlo <- miloR::makeNhoods(exmilo, k=10L, d=20L)
-#' rownames(colData(exmilo)) <- 1:ncol(exmilo)
+#' exmilo <- miloR::makeNhoods(exmilo, k=10L, d=20L)
 #' 
 #' # constuct umap
 #' exmilo <- milo_umap(exmilo, n.neighbors = 10L, metric = "euclidean")
