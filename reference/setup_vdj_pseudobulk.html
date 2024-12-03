@@ -103,7 +103,7 @@
 
 
 <dt id="arg-allowed-chain-status">allowed_chain_status<a class="anchor" aria-label="anchor" href="#arg-allowed-chain-status"></a></dt>
-<dd><p>character vectors, optional, if specified, the element should within c("single pair","Extra pair", "Extra pair-exceptipn", "Orphan VDJ","Orphan VDJ-exception")</p></dd>
+<dd><p>character vectors, optional, if specified, the element should within c('single pair','Extra pair', 'Extra pair-exceptipn', 'Orphan VDJ','Orphan VDJ-exception')</p></dd>
 
 
 <dt id="arg-subsetby">subsetby<a class="anchor" aria-label="anchor" href="#arg-subsetby"></a></dt>
@@ -119,15 +119,15 @@
 
 
 <dt id="arg-filter-pattern">filter_pattern<a class="anchor" aria-label="anchor" href="#arg-filter-pattern"></a></dt>
-<dd><p>character, optional, with ",|None|No_contig" by default.</p></dd>
+<dd><p>character, optional, with ',|None|No_contig' by default.</p></dd>
 
 
 <dt id="arg-check-vj-mapping">check_vj_mapping<a class="anchor" aria-label="anchor" href="#arg-check-vj-mapping"></a></dt>
-<dd><p>character vector, optional. elements should come from c("v_call", "j_call"), with c("v_call", "j_call") by default.</p></dd>
+<dd><p>character vector, optional. elements should come from c('v_call', 'j_call'), with c('v_call', 'j_call') by default.</p></dd>
 
 
 <dt id="arg-check-vdj-mapping">check_vdj_mapping<a class="anchor" aria-label="anchor" href="#arg-check-vdj-mapping"></a></dt>
-<dd><p>character vector, optional. elements should come from c("v_call","d_call", "j_call"), with c("v_call", "j_call") by default.</p></dd>
+<dd><p>character vector, optional. elements should come from c('v_call','d_call', 'j_call'), with c('v_call', 'j_call') by default.</p></dd>
 
 
 <dt id="arg-check-extract-cols-mapping">check_extract_cols_mapping<a class="anchor" aria-label="anchor" href="#arg-check-extract-cols-mapping"></a></dt>
@@ -147,8 +147,8 @@
     <p>data will undergo several process, including productivity filtering, chain status filtering, subseting, main TCR extracting, and unmapping data removing.</p><ul><li><p>parameters for <strong>productivity filtering</strong>:</p><ul><li><p>already.productive</p><ul><li><p>If true, the function will skip the productivity filtering</p></li>
 <li><p>If false, retain only productive entries in columns specified by mode_option or productive_cols</p></li>
 </ul></li>
-<li><p>mode_option</p><ul><li><p>function will check colData(s) named <code>productive_{mode_option}_{type}</code>, where type should be "VDJ" or "VJ" or both, depending on values of productive_vj and productive_vdj.</p></li>
-<li><p>If set as "NULL", the function needs the option "extract_cols" to be specified</p></li>
+<li><p>mode_option</p><ul><li><p>function will check colData(s) named <code>productive_{mode_option}_{type}</code>, where type should be 'VDJ' or 'VJ' or both, depending on values of productive_vj and productive_vdj.</p></li>
+<li><p>If set as 'NULL', the function needs the option 'extract_cols' to be specified</p></li>
 </ul></li>
 <li><p>productive_cols</p><ul><li><p>must be be specified when productivity filtering is need to conduct and mode_option is NULL.</p></li>
 <li><p>where VDJ/VJ information is stored so that this will be used instead of the standard columns.</p></li>
