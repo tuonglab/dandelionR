@@ -17,9 +17,6 @@
 #' @include project_probability.R
 #' @import SingleCellExperiment
 #' @export
-#' @examples
-#' # example code
-#' 
 markov_probability <- function(milo, diffusionmap, diffustiontime = NULL, terminal_state, root_cell, pseudotime_key = "pseudotime",
   scale_components = TRUE, num_waypoints = 500) {
   if(is.null(milo[[pseudotime_key]]))
