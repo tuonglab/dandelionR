@@ -12,6 +12,20 @@
 #'  - parameter of RunUMAP, checking its document for further detail
 #' @return milo object with umap reduction
 #' @import SingleCellExperiment
+#' @examples
+#' 
+#' # load denpendency 
+#' library(miloR)
+#' 
+#' # load example data
+#' data(exmilo)
+#' 
+#' # Construct UMAP
+#' exmilo <- milo_umap(exmilo, n.neighbors = 10L, metric = "euclidean")
+#' 
+#' # visualize the result
+#' scater::plotUMAP(exmlio,dimred = "UMAP_knngraph")
+#' 
 #' @export
 milo_umap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
     requireNamespace("miloR")
