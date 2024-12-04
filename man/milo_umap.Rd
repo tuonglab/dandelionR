@@ -14,7 +14,7 @@ milo_umap(
 \arguments{
 \item{milo}{the milo object with knn graph that needed to conduct umap on.}
 
-\item{slot_name}{character, with default "UMAP_knngraph".
+\item{slot_name}{character, with default 'UMAP_knngraph'.
 \itemize{
 \item The slot name in reduceDim where the result store
 }}
@@ -25,7 +25,7 @@ milo_umap(
 \item parameter of RunUMAP, checking its document for further detail
 }}
 
-\item{metric}{character, with default "euclidean"
+\item{metric}{character, with default 'euclidean'
 \itemize{
 \item the choice of metric used to measure distance
 \item parameter of RunUMAP, checking its document for further detail

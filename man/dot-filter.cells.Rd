@@ -17,7 +17,7 @@ data after combineTCR， contain both vdj and seq}
 
 \item{col_n}{mode for extraction the V(D)J genes.}
 
-\item{filter_pattern}{character string, optional ",|None|No_contig" by default}
+\item{filter_pattern}{character string, optional ',|None|No_contig' by default}
 
 \item{remove_missing}{bool, True by default
 \itemize{
