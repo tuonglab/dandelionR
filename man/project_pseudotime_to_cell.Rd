@@ -4,22 +4,22 @@
 \alias{project_pseudotime_to_cell}
 \title{project_pseudotime_to_cell}
 \usage{
-project_pseudotime_to_cell(adata, pb_adata, term_states, suffix = "")
+project_pseudotime_to_cell(milo, pb_milo, term_states, suffix = "")
 }
 \arguments{
-\item{adata}{SingleCellExperiment object}
+\item{milo}{SingleCellExperiment or milo object}
 
-\item{pb_adata}{pseudobulk data}
+\item{pb_milo}{pseudobulk data}
 
 \item{term_states}{vector of terminal states with branch_probabilities to be transferred}
 
 \item{suffix}{suffix to be added after the added column names, default ''}
 }
 \value{
-subset of adata where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
+subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 }
 \description{
-Function to project pseudotime & branch probabilities from pb.milo (pseudobulk) to adata (cell).
+Function to project pseudotime & branch probabilities from pb.milo (pseudobulk) to milo (cell).
 }
 \examples{
 # load data

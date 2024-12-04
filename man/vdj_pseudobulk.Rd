@@ -55,7 +55,7 @@ Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_m
 Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.}
 }
 \value{
-SingleCellExperiment object ...
+milo object stores vdj feature space.
 }
 \description{
 making pseudobulk vdj feature space

@@ -24,7 +24,7 @@
 #' @param extract_cols character vector
 #' with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
-#' @return SingleCellExperiment object ...
+#' @return milo object stores vdj feature space.
 #' @include check.R
 #' @include get.pbs.R
 #' @import SingleCellExperiment
