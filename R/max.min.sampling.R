@@ -4,15 +4,12 @@
 #'
 #' @param data data matrix along which to sample the waypoints, usually diffusion components
 #' @param num_waypoints number of waypoints to sample
-#' @param seed Random number generator seed to find initial guess.
 #' @return Series reprenting the sampled waypoints
-.max.min.sampling <- function(data, num_waypoints, seed = NULL) {
+.max.min.sampling <- function(data, num_waypoints) {
   message("Sampling and flocking waypoints...")
-  if (!is.null(seed))
-    set.seed(seed)
   no.iterations <- as.integer(num_waypoints/ncol(data))
   waypoints <- c()
-  # Sample along each componet
+  # Sample along each component
   N <- nrow(data)
   for (ind in colnames(data)) {
     vecs <- data[, ind]

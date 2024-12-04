@@ -4,14 +4,12 @@
 \alias{.max.min.sampling}
 \title{.max.min.sampling}
 \usage{
-.max.min.sampling(data, num_waypoints, seed = NULL)
+.max.min.sampling(data, num_waypoints)
 }
 \arguments{
 \item{data}{data matrix along which to sample the waypoints, usually diffusion components}
 
 \item{num_waypoints}{number of waypoints to sample}
-
-\item{seed}{Random number generator seed to find initial guess.}
 }
 \value{
 Series reprenting the sampled waypoints
