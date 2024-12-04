@@ -32,10 +32,21 @@
 #' @examples
 #' 
 #' # load data
-#' data(exmilo_up)
-#' vdj_pseudobulk(exmilo_up, col_to_take = "anno_lvl_2_final_clean")
+#' data(sce_vdj)
+#' # get knn graph
+#' library(miloR)
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
+#' traj_milo <- Milo(sce_vdj)
+#' milo <- buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo <- makeNhoods(milo, reduced_dims = "X_scvi", d = 20)
 #' 
 #' 
+#' vdj_pseudobulk(milo, col_to_take = "anno_lvl_2_final_clean")
+#' 
+#' # visualization
+#' library(scater)
+#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
 #' 
 #' @export
 vdj_pseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(

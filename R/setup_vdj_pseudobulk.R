@@ -53,17 +53,15 @@
 #' @examples
 #' 
 #' # load data
-#' data(exsce)
+#' data(sce_vdj)
 #' # check the dimension
-#' dim(exsce)
-#' 
-#' 
+#' dim(sce_vdj)
 #' # filtered the data
-#' exsce<-setup_vdj_pseudobulk(sce = exsce,
+#' sce_vdj<-setup_vdj_pseudobulk(sce = sce_vdj,
 #'                             mode_option = "abT",  # set the mode to αβTCR
 #'                             already.productive = FALSE) # need to filter the unproductive cells
 #' # check the remaining dim
-#' dim(exsce)
+#' dim(sce_vdj)
 #'                              
 #' @export
 setup_vdj_pseudobulk <- function(
