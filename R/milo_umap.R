@@ -29,7 +29,7 @@
 #' milo <- milo_umap(milo, n.neighbors = 10L, metric = "euclidean")
 #' 
 #' # visualize the result
-#' scater::plotUMAP(mlio,dimred = "UMAP_knngraph")
+#' scater::plotUMAP(milo,dimred = "UMAP_knngraph")
 #' 
 #' @export
 milo_umap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
