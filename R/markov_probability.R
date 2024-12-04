@@ -59,9 +59,8 @@ markov_probability <- function(
     repeat {
       answer <- readline(prompt = "Do you want to overwrite the column? (y/n): ")
       if (answer == "n") {
-        while (any(names(colData(milo)) %in% colnames(new_coldata))) colnames(new_coldata) <- paste0(colnames(new_coldata),
-          "_new")
-          msg <- paste(colnames(new_coldata), collapse = ", ")
+        while (any(names(colData(milo)) %in% colnames(new_coldata))) {colnames(new_coldata) <- paste0(colnames(new_coldata), "_new")}
+        msg <- paste(colnames(new_coldata), collapse = ", ")
         message(sprintf("The data will stored in %s", msg))
         break
       } else if (answer == "y") {
