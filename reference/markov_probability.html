@@ -214,10 +214,13 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Project probabilites from waypoints to each pseudobulk...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#visualization of the results</span></span></span>
-<span class="r-in"><span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> unable to find an inherited method for function ‘plotPCA’ for signature ‘object = "Milo"’</span>
-<span class="r-in"><span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> unable to find an inherited method for function ‘plotPCA’ for signature ‘object = "Milo"’</span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: scuttle</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ggplot2</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'pal' not found</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'pal' not found</span>
 </code></pre></div>
     </div>
   </div>

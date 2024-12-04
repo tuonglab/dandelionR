@@ -174,14 +174,14 @@ neighbors. Sample the representative neighbours form the objects.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/milo_umap.html">milo_umap</a></span><span class="op">(</span><span class="va">milo_object</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: Seurat</span></span>
-<span><span class="co">#&gt; 05:19:33 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
-<span><span class="co">#&gt; 05:19:33 Read 8524 rows of sparse distance matrix</span></span>
-<span><span class="co">#&gt; 05:19:33 Finding nearest neighbors from sparse matrix</span></span>
-<span><span class="co">#&gt; 05:19:41 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 50</span></span>
-<span><span class="co">#&gt; 05:19:41 8524 smooth knn distance failures</span></span>
-<span><span class="co">#&gt; 05:19:43 Initializing from normalized Laplacian + noise (using RSpectra)</span></span>
-<span><span class="co">#&gt; 05:19:43 Commencing optimization for 500 epochs, with 544394 positive edges</span></span>
-<span><span class="co">#&gt; 05:20:39 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 05:42:30 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
+<span><span class="co">#&gt; 05:42:30 Read 8524 rows of sparse distance matrix</span></span>
+<span><span class="co">#&gt; 05:42:30 Finding nearest neighbors from sparse matrix</span></span>
+<span><span class="co">#&gt; 05:42:38 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 50</span></span>
+<span><span class="co">#&gt; 05:42:38 8524 smooth knn distance failures</span></span>
+<span><span class="co">#&gt; 05:42:40 Initializing from normalized Laplacian + noise (using RSpectra)</span></span>
+<span><span class="co">#&gt; 05:42:40 Commencing optimization for 500 epochs, with 544394 positive edges</span></span>
+<span><span class="co">#&gt; 05:43:35 Optimization finished</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">milo_object</span>,color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>,dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignettes_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
