@@ -62,6 +62,7 @@ root_cell=root,
 pseudotime_key="pseudotime")
 
 #visualization of the results
+library(scater)
 plotPCA(pb.milo,  color_by = "CD8+T") + scale_color_gradientn(colors = pal)
 plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 }
