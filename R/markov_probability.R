@@ -16,6 +16,32 @@
 #' @include differentiation_probabilities.R
 #' @include project_probability.R
 #' @import SingleCellExperiment
+#' @examples
+#' # load data
+#' data(pb.milo)
+#' library(SingleCellExperiment)
+#' branch.tips <- c(540,54)
+#' names(branch.tips) <- c("CD8+T", "CD4+T")
+#' root <- 222
+#' DPTroot <- paste0("DPT", root)
+#' # extract pca
+#' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
+#' # Run diffusion map on the PCA
+#' library(destiny)
+#' dm <- DiffusionMap(t(pca),n_pcs=50, n_eigs = 10)
+#' dif.pse <- DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
+#' pb.milo$pseudotime <- dif.pse[[DPTroot]]
+#' 
+#' pb.milo <- markov_probability(
+#' milo=pb.milo, 
+#' diffusionmap=dm, 
+#' terminal_state=branch.tips, 
+#' root_cell=root, 
+#' pseudotime_key="pseudotime")
+#' 
+#' #visualization of the results
+#' plotPCA(pb.milo,  color_by = "CD8+T") + scale_color_gradientn(colors = pal)
+#' plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 #' @export
 markov_probability <- function(
     milo, diffusionmap, diffustiontime = NULL, terminal_state, root_cell,

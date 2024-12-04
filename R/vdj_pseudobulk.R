@@ -153,7 +153,7 @@ vdj_pseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = 
     # create a new SingelCellExperiment object as result
     requireNamespace("S4Vectors")
     pb.sce <- SingleCellExperiment(
-        assay = S4Vectors::SimpleList(X = Matrix::t(pseudo_vdj_feature)),
+        assay = S4Vectors::SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
         rowData = S4Vectors::DataFrame(row.names = colnames(pseudo_vdj_feature)),
         colData = pbs.col
     )

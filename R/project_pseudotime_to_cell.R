@@ -9,6 +9,10 @@
 #' @import miloR
 #' @import SingleCellExperiment
 #'
+#' @examples
+#' # load data
+#' 
+#' 
 #' @export
 project_pseudotime_to_cell <- function(adata, pb_adata, term_states, suffix = "") {
     nhood <- nhoods(pb_adata) # peudobulk x cells

@@ -10,7 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 biocViews: Software, ImmunoOncology, SingleCell
-LazyDataCompression:xz
+LazyDataCompression: xz
 Collate:
     'check.R'
     'construct.markov.chain.R'
@@ -24,6 +24,7 @@ Collate:
     'minmax.scale.R'
     'markov_probability.R'
     'milo_umap.R'
+    'pb.milo.R'
     'project_pseudotime_to_cell.R'
     'sce_vdj.R'
     'setup_vdj_pseudobulk.R'
@@ -55,3 +56,4 @@ URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
 Depends: 
     R (>= 4.4.0)
+LazyData: true

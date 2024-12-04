@@ -21,3 +21,8 @@ subset of adata where cell that do not belong to any neighbourhood are removed a
 \description{
 Function to project pseudotime & branch probabilities from pb.milo (pseudobulk) to adata (cell).
 }
+\examples{
+# load data
+
+
+}
