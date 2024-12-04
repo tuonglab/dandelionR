@@ -44,7 +44,7 @@
 #' plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 #' @export
 markov_probability <- function(
-    milo, diffusionmap, diffustiontime = NULL, terminal_state, root_cell,
+    milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,
     pseudotime_key = "pseudotime", 
     scale_components = TRUE, num_waypoints = 500) {
   if(is.null(milo[[pseudotime_key]]))
