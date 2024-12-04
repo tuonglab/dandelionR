@@ -10,7 +10,7 @@
   # Identify terminal states dm_boudaries
   n <- min(dim(Transmat))
   ei <- eigen(t(Transmat))
-  idx <- order(Re(ei$values), decreasing = TRUE)[1:10]
+  idx <- order(Re(ei$values), decreasing = TRUE)[seq_len(10)]
   vals <- Re(ei$values[idx])
   vecs <- ei$vectors[, idx]
   dm_boudaries <- unique(apply(Transmat, 2, which.max), apply(Transmat, 2, which.min))
@@ -26,7 +26,7 @@
     mode = "directed")
   components_g <- igraph::components(graph)
   requireNamespace("purrr")
-  cells <- unlist(purrr::map(.x = 1:components_g$no, .f = ~{
+  cells <- unlist(purrr::map(.x = seq_len(components_g$no), .f = ~{
     nodes_in_component <- which(components_g$membership == .x)
     id <- which.max(pseudotime[nodes_in_component])
     nodes_in_component[id]

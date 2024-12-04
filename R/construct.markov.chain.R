@@ -15,16 +15,20 @@
   ## calculate distance of each edge
   distance_m <- as.matrix(stats::dist(wp_data))
   requireNamespace("igraph")
-  igraph::E(nbrs)$weight <- sapply(igraph::E(nbrs), function(e) {
-    ### Get the nodes connected by each edge
-    nodes <- igraph::ends(nbrs, e)
-    node1 <- as.numeric(nodes[1])
-    node2 <- as.numeric(nodes[2])
+  
+  ## Modified to remove sapply()
+  edge_indices <- igraph::ends(nbrs, igraph::E(nbrs))
+  ### Get the nodes connected by each edge
+  weights <- vapply(seq_len(nrow(edge_indices)), function(i) {
+    node1 <- as.numeric(edge_indices[i, 1])
+    node2 <- as.numeric(edge_indices[i, 2])
     ### Use the distance matrix to get the distance between the two nodes
     distance_m[node1, node2]
-  })
-  ## generate weighted adjacent matrix of this knn graph
+  }, numeric(1))
   
+  igraph::E(nbrs)$weight <- weights
+  
+  ## generate weighted adjacent matrix of this knn graph
   KNN <- igraph::as_adjacency_matrix(nbrs, attr = "weight")
   ## generate the index of each neighbor
   idx <- KNN@p
@@ -50,12 +54,12 @@
     function(.x, .y, .z) {
       .z[.x < .y]
     })
-  for (i in 1:length(waypoints)) {
+  for (i in seq_len(waypoints)) {
     if (length(KNN[i, rem_edges[[i]]]))
       KNN[i, rem_edges[[i]]] <- 0
   }
   # determine the indice and update adjacency matrix
-  cell_mapping <- 1:length(waypoints)
+  cell_mapping <- seq_len(length(waypoints))
   requireNamespace("Matrix")
   ids <- Matrix::summary(KNN)
   # anisotropic Diffusion Kernel
