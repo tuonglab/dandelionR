@@ -57,9 +57,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">markov_probability</span><span class="op">(</span></span>
 <span>  <span class="va">milo</span>,</span>
 <span>  <span class="va">diffusionmap</span>,</span>
+<span>  diffustiontime <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">terminal_state</span>,</span>
 <span>  <span class="va">root_cell</span>,</span>
-<span>  <span class="va">pseudotime_key</span>,</span>
+<span>  pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span>,</span>
 <span>  scale_components <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  num_waypoints <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -70,7 +71,7 @@
 
 
 <dl><dt id="arg-milo">milo<a class="anchor" aria-label="anchor" href="#arg-milo"></a></dt>
-<dd><p>milo or SingelCellExperiment object, used to store the result</p></dd>
+<dd><p>milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter</p></dd>
 
 
 <dt id="arg-diffusionmap">diffusionmap<a class="anchor" aria-label="anchor" href="#arg-diffusionmap"></a></dt>
@@ -96,12 +97,22 @@
 <dt id="arg-num-waypoints">num_waypoints<a class="anchor" aria-label="anchor" href="#arg-num-waypoints"></a></dt>
 <dd><p>integer, 500L by default. Number of waypoints to sample to construct markov chain.</p></dd>
 
+
+<dt id="arg-diffusiontime">diffusiontime<a class="anchor" aria-label="anchor" href="#arg-diffusiontime"></a></dt>
+<dd><p>if milo do not restore pseudotime, use this parameter to transfer it to function</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>milo or SinglCellExperiment object with pseudotime, probabilities in its colData</p>
+    <p>milo or SinglCellExperiment object, probabilities in its colData</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example code</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
