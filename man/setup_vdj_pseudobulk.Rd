@@ -114,3 +114,8 @@ data will undergo several process, including productivity filtering, chain statu
 }
 }
 }
+\examples{
+sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+                                already.productive = FALSE)
+
+}

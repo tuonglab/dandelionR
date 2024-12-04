@@ -37,3 +37,15 @@ milo object with umap reduction
 \description{
 use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 }
+\examples{
+sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+                                already.productive = FALSE)
+# Build Milo Object                                 
+traj_milo <- miloR::Milo(sce_vdj)
+milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+
+# Construct UMAP on Milo Neighbor Graph
+milo_object <- milo_umap(milo_object)
+
+}

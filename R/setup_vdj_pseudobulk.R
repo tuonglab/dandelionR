@@ -45,6 +45,11 @@
 #'    - remove_missing
 #'      - If true, will remove cells with contigs matching the filter from the object.
 #'      - If False, will mask them with a uniform value dependent on the column name.
+#'      
+#' @examples
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#'                                 already.productive = FALSE)
+#' 
 #' @include check.R
 #' @include filter.cells.R
 #' @import SingleCellExperiment

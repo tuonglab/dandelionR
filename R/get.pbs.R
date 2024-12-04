@@ -19,7 +19,7 @@
     return(pbs)
   }
   if (!is.null(col_to_bulk)) {
-    msg <= paste0(col_to_bulk, collapse = ", ")
+    msg <- paste0(col_to_bulk, collapse = ", ")
     message(sprintf("Generating pseudobulks according to colData %s ...", msg), appendLF = FALSE)
     tobulk <- lapply(col_to_bulk, function(x) {
       colData(milo)[[x]]

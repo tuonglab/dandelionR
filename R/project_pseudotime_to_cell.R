@@ -5,6 +5,38 @@
 #' @param pb_adata pseudobulk data
 #' @param term_states vector of terminal states with branch_probabilities to be transferred
 #' @param suffix suffix to be added after the added column names, default ''
+#' @examples
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#'                                 already.productive = FALSE)
+#' # Build Milo Object                                 
+#' traj_milo <- miloR::Milo(sce_vdj)
+#' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+#' 
+#' # Construct Pseudobulked VDJ Feature Space
+#' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+#' pbs = milo_object@nhoods
+#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' 
+#' # Define root and branch tips
+#' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
+#' branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
+#' names(branch.tips) <- c("CD8+T", "CD4+T")
+#' root <- which.min(pca[1, ])
+#' 
+#' # Construct Diffusion Map
+#' dm <- DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
+#' 
+#' #Markov Chain Construction 
+#' pb.milo <- markov_probability(milo = pb.milo, 
+#'                               diffusionmap = dm, 
+#'                               terminal_state = branch.tips, 
+#'                               root_cell = root, 
+#'                               pseudotime_key = "pseudotime")
+#' 
+#' # Project Pseudobulk Data
+#' cdata <- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
+#' 
 #' @return subset of adata where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 #' @import miloR
 #' @import SingleCellExperiment

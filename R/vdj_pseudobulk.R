@@ -24,6 +24,18 @@
 #' @param extract_cols character vector
 #' with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
+#'  
+#' @examples
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#'                                 already.productive = FALSE)
+#' # Build Milo Object                                 
+#' traj_milo <- miloR::Milo(sce_vdj)
+#' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+#' 
+#' # Construct pseudobulked VDJ feature space
+#' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+#'                                         
 #' @return SingleCellExperiment object ...
 #' @include check.R
 #' @include get.pbs.R
