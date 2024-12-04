@@ -9,7 +9,7 @@
 #' @param pseudotime_key the column name in the colData that holds the inferred pseudotime
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
-#' @return milo or SinglCellExperiment object, with probabilities in its colData
+#' @return milo or SinglCellExperiment object with probabilities in its colData
 #' @include determ.multiscale.space.R
 #' @include minmax.scale.R
 #' @include max.min.sampling.R
