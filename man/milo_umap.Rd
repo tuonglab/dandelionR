@@ -54,6 +54,6 @@ milo <- makeNhoods(milo, reduced_dims = "X_scvi", d = 20)
 milo <- milo_umap(milo, n.neighbors = 10L, metric = "euclidean")
 
 # visualize the result
-scater::plotUMAP(mlio,dimred = "UMAP_knngraph")
+scater::plotUMAP(milo,dimred = "UMAP_knngraph")
 
 }
