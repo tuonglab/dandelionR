@@ -45,7 +45,7 @@
 #' 
 #' # visualization
 #' library(scater)
-#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' pb.milo <- runPCA(pb.milo, assay.type = "Feature_space")
 #' plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
 #' 
 #' @export
