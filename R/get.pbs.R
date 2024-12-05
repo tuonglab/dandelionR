@@ -64,6 +64,7 @@
             anno.count <- Matrix::t(pbs) %*% anno.dummies # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
             anno.sum <- apply(anno.count, 1, sum)
             anno.frac <- anno.count / anno.sum
+            anno.frac <- as.matrix(anno.frac)
             anno.frac <- S4Vectors::DataFrame(anno.frac)
             colnames(anno.frac) <- colnames(anno.dummies)
             pbs.col[anno_col] <- colnames(anno.frac)[apply(anno.frac, 1, which.max)]
