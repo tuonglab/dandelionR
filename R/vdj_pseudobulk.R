@@ -24,11 +24,30 @@
 #' @param extract_cols character vector
 #' with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
-#' @return SingleCellExperiment object ...
+#' @return milo object stores vdj feature space.
 #' @include check.R
 #' @include get.pbs.R
 #' @import SingleCellExperiment
 #' @import miloR
+#' @examples
+#' 
+#' # load data
+#' data(sce_vdj)
+#' # get knn graph
+#' library(miloR)
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
+#' traj_milo <- Milo(sce_vdj)
+#' milo <- buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo <- makeNhoods(milo, reduced_dims = "X_scvi", d = 20)
+#' 
+#' 
+#' vdj_pseudobulk(milo, col_to_take = "anno_lvl_2_final_clean")
+#' 
+#' # visualization
+#' library(scater)
+#' pb.milo <- runPCA(pb.milo, assay.type = "Feature_space")
+#' plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
+#' 
 #' @export
 vdj_pseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(
                                "v_call_abT_VDJ_main",
@@ -134,7 +153,7 @@ vdj_pseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = 
     # create a new SingelCellExperiment object as result
     requireNamespace("S4Vectors")
     pb.sce <- SingleCellExperiment(
-        assay = S4Vectors::SimpleList(X = Matrix::t(pseudo_vdj_feature)),
+        assay = S4Vectors::SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
         rowData = S4Vectors::DataFrame(row.names = colnames(pseudo_vdj_feature)),
         colData = pbs.col
     )

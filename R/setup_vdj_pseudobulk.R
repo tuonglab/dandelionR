@@ -50,6 +50,19 @@
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @return filtered SingleCellExperiment object
+#' @examples
+#' 
+#' # load data
+#' data(sce_vdj)
+#' # check the dimension
+#' dim(sce_vdj)
+#' # filtered the data
+#' sce_vdj<-setup_vdj_pseudobulk(sce = sce_vdj,
+#'                             mode_option = "abT",  # set the mode to αβTCR
+#'                             already.productive = FALSE) # need to filter the unproductive cells
+#' # check the remaining dim
+#' dim(sce_vdj)
+#'                              
 #' @export
 setup_vdj_pseudobulk <- function(
     sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
