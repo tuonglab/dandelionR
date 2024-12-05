@@ -55,28 +55,20 @@ Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_m
 Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.}
 }
 \value{
-milo object stores vdj feature space.
+SingleCellExperiment object ...
 }
 \description{
 making pseudobulk vdj feature space
 }
 \examples{
+sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+                                already.productive = FALSE)
+# Build Milo Object                                 
+traj_milo <- miloR::Milo(sce_vdj)
+milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
-# load data
-data(sce_vdj)
-# get knn graph
-library(miloR)
-sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
-traj_milo <- Milo(sce_vdj)
-milo <- buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
-milo <- makeNhoods(milo, reduced_dims = "X_scvi", d = 20)
-
-
-vdj_pseudobulk(milo, col_to_take = "anno_lvl_2_final_clean")
-
-# visualization
-library(scater)
-pb.milo <- runPCA(pb.milo, assay.type = "Feature_space")
-plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
-
+# Construct pseudobulked VDJ feature space
+pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+                                        
 }

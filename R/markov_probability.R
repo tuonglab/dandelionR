@@ -9,6 +9,35 @@
 #' @param pseudotime_key the column name in the colData that holds the inferred pseudotime
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
+#' @examples
+#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#'                                 already.productive = FALSE)
+#' # Build Milo Object                                 
+#' traj_milo <- miloR::Milo(sce_vdj)
+#' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+#' 
+#' # Construct Pseudobulked VDJ Feature Space
+#' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+#' pbs = milo_object@nhoods
+#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' 
+#' # Define root and branch tips
+#' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
+#' branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
+#' names(branch.tips) <- c("CD8+T", "CD4+T")
+#' root <- which.min(pca[1, ])
+#' 
+#' # Construct Diffusion Map
+#' dm <- DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
+#' 
+#' #Markov Chain Construction 
+#' pb.milo <- markov_probability(milo = pb.milo, 
+#'                               diffusionmap = dm, 
+#'                               terminal_state = branch.tips, 
+#'                               root_cell = root, 
+#'                               pseudotime_key = "pseudotime")
+#'                               
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determ.multiscale.space.R
 #' @include minmax.scale.R
@@ -16,34 +45,6 @@
 #' @include differentiation_probabilities.R
 #' @include project_probability.R
 #' @import SingleCellExperiment
-#' @examples
-#' # load data
-#' data(pb.milo)
-#' library(SingleCellExperiment)
-#' branch.tips <- c(540,54)
-#' names(branch.tips) <- c("CD8+T", "CD4+T")
-#' root <- 222
-#' DPTroot <- paste0("DPT", root)
-#' # extract pca
-#' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
-#' # Run diffusion map on the PCA
-#' library(destiny)
-#' dm <- DiffusionMap(t(pca),n_pcs=50, n_eigs = 10)
-#' dif.pse <- DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
-#' pb.milo$pseudotime <- dif.pse[[DPTroot]]
-#' 
-#' pb.milo <- markov_probability(
-#' milo=pb.milo, 
-#' diffusionmap=dm, 
-#' terminal_state=branch.tips, 
-#' root_cell=root, 
-#' pseudotime_key="pseudotime")
-#' 
-#' #visualization of the results
-#' library(scater)
-#' pal <- colorRampPalette(rev((RColorBrewer::brewer.pal(9, "RdYlBu"))))(255)
-#' plotPCA(pb.milo,  color_by = "CD8+T") + scale_color_gradientn(colors = pal)
-#' plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 #' @export
 markov_probability <- function(
     milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,
