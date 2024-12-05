@@ -23,18 +23,11 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
+  <a href="../articles/dandelionR.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/vignettes.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a>
-    </li>
-  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -109,123 +102,54 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># load data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pb.milo</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: SummarizedExperiment</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MatrixGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: matrixStats</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘MatrixGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowWeightedSds, rowWeightedVars</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomicRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, saveRDS, setdiff, table,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: S4Vectors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘S4Vectors’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:utils’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     findMatches</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: IRanges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomeInfoDb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘Biobase’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:MatrixGenerics’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rowMedians</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     anyMissing, rowMedians</span>
-<span class="r-in"><span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">540</span>,<span class="fl">54</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="setup_vdj_pseudobulk.html">setup_vdj_pseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, </span></span>
+<span class="r-in"><span>                                already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking productivity from productive_abT_VDJ, productive_abT_VJ ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 23270 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> checking allowed chain status...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Extract main TCR from v_call_abT_VDJ, d_call_abT_VDJ, j_call_abT_VDJ, v_call_abT_VJ, j_call_abT_VJ ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering cells from v_call_abT_VDJ_main, j_call_abT_VDJ_main, v_call_abT_VJ_main, j_call_abT_VJ_main ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 202 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8524 of cells remain.</span>
+<span class="r-in"><span><span class="co"># Build Milo Object                                 </span></span></span>
+<span class="r-in"><span><span class="va">traj_milo</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/Milo.html" class="external-link">Milo</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/buildGraph.html" class="external-link">buildGraph</a></span><span class="op">(</span><span class="va">traj_milo</span>, k <span class="op">=</span> <span class="fl">50</span>, d <span class="op">=</span> <span class="fl">20</span>, reduced.dim <span class="op">=</span> <span class="st">"X_scvi"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Constructing kNN graph with k:50</span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/makeNhoods.html" class="external-link">makeNhoods</a></span><span class="op">(</span><span class="va">milo_object</span>, reduced_dims <span class="op">=</span> <span class="st">"X_scvi"</span>, d <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking valid object</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running refined sampling with reduced_dim</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Construct Pseudobulked VDJ Feature Space</span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="vdj_pseudobulk.html">vdj_pseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in S4Vectors::DataFrame(anno.frac):</span> cannot coerce class "dgeMatrix" to a DataFrame</span>
+<span class="r-in"><span><span class="va">pbs</span> <span class="op">=</span> <span class="va">milo_object</span><span class="op">@</span><span class="va">nhoods</span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu">runPCA</span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"X"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in runPCA(pb.milo, assay.type = "X"):</span> could not find function "runPCA"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define root and branch tips</span></span></span>
+<span class="r-in"><span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu">reducedDim</span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reducedDim(pb.milo, type = "PCA"):</span> could not find function "reducedDim"</span>
+<span class="r-in"><span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'pca' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">branch.tips</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fl">222</span></span></span>
-<span class="r-in"><span><span class="va">DPTroot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DPT"</span>, <span class="va">root</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># extract pca</span></span></span>
-<span class="r-in"><span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Run diffusion map on the PCA</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://theislab.github.io/destiny/" class="external-link">destiny</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘destiny’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:SummarizedExperiment’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     distance</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:GenomicRanges’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     distance</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:IRanges’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     distance</span>
-<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DiffusionMap-class.html" class="external-link">DiffusionMap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pca</span><span class="op">)</span>,n_pcs<span class="op">=</span><span class="fl">50</span>, n_eigs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'as(&lt;dsCMatrix&gt;, "dgTMatrix")' is deprecated.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Use 'as(as(., "generalMatrix"), "TsparseMatrix")' instead.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("Matrix-deprecated").</span>
-<span class="r-in"><span><span class="va">dif.pse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DPT.html" class="external-link">DPT</a></span><span class="op">(</span><span class="va">dm</span>, tips <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">branch.tips</span><span class="op">)</span>, w_width <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">pb.milo</span><span class="op">$</span><span class="va">pseudotime</span> <span class="op">&lt;-</span> <span class="va">dif.pse</span><span class="op">[[</span><span class="va">DPTroot</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'branch.tips' not found</span>
+<span class="r-in"><span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'pca' not found</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu">markov_probability</span><span class="op">(</span></span></span>
-<span class="r-in"><span>milo<span class="op">=</span><span class="va">pb.milo</span>, </span></span>
-<span class="r-in"><span>diffusionmap<span class="op">=</span><span class="va">dm</span>, </span></span>
-<span class="r-in"><span>terminal_state<span class="op">=</span><span class="va">branch.tips</span>, </span></span>
-<span class="r-in"><span>root_cell<span class="op">=</span><span class="va">root</span>, </span></span>
-<span class="r-in"><span>pseudotime_key<span class="op">=</span><span class="st">"pseudotime"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling and flocking waypoints...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Markov chain construction...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: bluster</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing fundamental matrix and absorption probabilities...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Project probabilites from waypoints to each pseudobulk...</span>
+<span class="r-in"><span><span class="co"># Construct Diffusion Map</span></span></span>
+<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu">DiffusionMap</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pca</span><span class="op">)</span>, n_pcs <span class="op">=</span> <span class="fl">50</span>, n_eigs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10):</span> could not find function "DiffusionMap"</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#visualization of the results</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: scuttle</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ggplot2</span>
-<span class="r-in"><span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">(</span><span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">9</span>, <span class="st">"RdYlBu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">255</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
-<span class="r-plt img"><img src="markov_probability-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>,  color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
-<span class="r-plt img"><img src="markov_probability-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#Markov Chain Construction </span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu">markov_probability</span><span class="op">(</span>milo <span class="op">=</span> <span class="va">pb.milo</span>, </span></span>
+<span class="r-in"><span>                              diffusionmap <span class="op">=</span> <span class="va">dm</span>, </span></span>
+<span class="r-in"><span>                              terminal_state <span class="op">=</span> <span class="va">branch.tips</span>, </span></span>
+<span class="r-in"><span>                              root_cell <span class="op">=</span> <span class="va">root</span>, </span></span>
+<span class="r-in"><span>                              pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in markov_probability(milo = pb.milo, diffusionmap = dm, terminal_state = branch.tips,     root_cell = root, pseudotime_key = "pseudotime"):</span> Missing pseudotime data. This data can be either stored in pb.milo or provided by parameter diffusionmap</span>
+<span class="r-in"><span>                              </span></span>
 </code></pre></div>
     </div>
   </div>

@@ -2,5 +2,5 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  vignettes: vignettes.html
-last_built: 2024-12-05T00:12Z
+  dandelionR: dandelionR.html
+last_built: 2024-12-05T01:52Z

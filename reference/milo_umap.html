@@ -23,18 +23,11 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
+  <a href="../articles/dandelionR.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/vignettes.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a>
-    </li>
-  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -94,29 +87,8 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># load denpendency </span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marionilab.github.io/miloR" class="external-link">miloR</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: edgeR</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: limma</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘limma’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:scater’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     plotMDS</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:BiocGenerics’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     plotMA</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘edgeR’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:SingleCellExperiment’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     cpm</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># load example data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># get milo object with knn graph</span></span></span>
-<span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="setup_vdj_pseudobulk.html">setup_vdj_pseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="setup_vdj_pseudobulk.html">setup_vdj_pseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, </span></span>
+<span class="r-in"><span>                                already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking productivity from productive_abT_VDJ, productive_abT_VJ ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 23270 of cells filtered</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> checking allowed chain status...</span>
@@ -125,6 +97,48 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Complete.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering cells from v_call_abT_VDJ_main, j_call_abT_VDJ_main, v_call_abT_VJ_main, j_call_abT_VJ_main ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 202 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8524 of cells remain.</span>
+<span class="r-in"><span><span class="co"># Build Milo Object                                 </span></span></span>
+<span class="r-in"><span><span class="va">traj_milo</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/Milo.html" class="external-link">Milo</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/buildGraph.html" class="external-link">buildGraph</a></span><span class="op">(</span><span class="va">traj_milo</span>, k <span class="op">=</span> <span class="fl">50</span>, d <span class="op">=</span> <span class="fl">20</span>, reduced.dim <span class="op">=</span> <span class="st">"X_scvi"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Constructing kNN graph with k:50</span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/makeNhoods.html" class="external-link">makeNhoods</a></span><span class="op">(</span><span class="va">milo_object</span>, reduced_dims <span class="op">=</span> <span class="st">"X_scvi"</span>, d <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking valid object</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running refined sampling with reduced_dim</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Construct UMAP on Milo Neighbor Graph</span></span></span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">milo_umap</span><span class="op">(</span><span class="va">milo_object</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: Seurat</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> This message will be shown once per session</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:04 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:04 Read 8524 rows of sparse distance matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:04 Finding nearest neighbors from sparse matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:11 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  with target n_neighbors = 50</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:11 8524 smooth knn distance failures</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:13 Initializing from normalized Laplacian + noise (using RSpectra)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:53:13 Commencing optimization for 500 epochs, with 544394 positive edges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:08 Optimization finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No assay specified, setting assay as RNA by default.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load denpendency </span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marionilab.github.io/miloR" class="external-link">miloR</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: edgeR</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: limma</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get milo object with knn graph</span></span></span>
+<span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="setup_vdj_pseudobulk.html">setup_vdj_pseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking productivity from productive_abT_VDJ, productive_abT_VJ ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 0 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> checking allowed chain status...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 0 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering cells from v_call_abT_VDJ_main, j_call_abT_VDJ_main, v_call_abT_VJ_main, j_call_abT_VJ_main ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 0 of cells filtered</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 8524 of cells remain.</span>
 <span class="r-in"><span><span class="va">traj_milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marionilab.github.io/miloR/reference/Milo.html" class="external-link">Milo</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marionilab.github.io/miloR/reference/buildGraph.html" class="external-link">buildGraph</a></span><span class="op">(</span><span class="va">traj_milo</span>, k <span class="op">=</span> <span class="fl">50</span>, d <span class="op">=</span> <span class="fl">20</span>, reduced.dim <span class="op">=</span> <span class="st">"X_scvi"</span><span class="op">)</span></span></span>
@@ -135,19 +149,15 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Construct UMAP</span></span></span>
 <span class="r-in"><span><span class="va">milo</span> <span class="op">&lt;-</span> <span class="fu">milo_umap</span><span class="op">(</span><span class="va">milo</span>, n.neighbors <span class="op">=</span> <span class="fl">10L</span>, metric <span class="op">=</span> <span class="st">"euclidean"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: Seurat</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> This message will be shown once per session</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:42 UMAP embedding parameters a = 0.9922 b = 1.112</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:42 Read 8524 rows of sparse distance matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:42 Finding nearest neighbors from sparse matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:50 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:11 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:11 Read 8524 rows of sparse distance matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:11 Finding nearest neighbors from sparse matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:18 Commencing smooth kNN distance calibration using 1 thread</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  with target n_neighbors = 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:50 8524 smooth knn distance failures</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:51 Initializing from normalized Laplacian + noise (using RSpectra)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:12:51 Commencing optimization for 500 epochs, with 143212 positive edges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 00:13:07 Optimization finished</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:18 8524 smooth knn distance failures</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:19 Initializing from normalized Laplacian + noise (using RSpectra)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:19 Commencing optimization for 500 epochs, with 143212 positive edges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 01:54:34 Optimization finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No assay specified, setting assay as RNA by default.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># visualize the result</span></span></span>
