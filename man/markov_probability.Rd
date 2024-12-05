@@ -64,7 +64,7 @@ dif.pse <- destiny::DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 #Markov Chain Construction 
 pb.milo <- markov_probability(milo = pb.milo, 
                               diffusionmap = dm, 
-                              diffusiontime = dif.pse[[DPTroot]]
+                              diffusiontime = dif.pse[[DPTroot]],
                               terminal_state = branch.tips, 
                               root_cell = root, 
                               pseudotime_key = "pseudotime")
