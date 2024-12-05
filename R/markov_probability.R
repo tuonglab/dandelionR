@@ -12,7 +12,8 @@
 #' @examples
 #' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
 #'                                 already.productive = FALSE)
-#' # Build Milo Object                                 
+#' # Build Milo Object
+#' set.seed(100)                                 
 #' traj_milo <- miloR::Milo(sce_vdj)
 #' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
@@ -57,7 +58,11 @@ markov_probability <- function(
     requireNamespace("rlang")
     if(is.null(diffusiontime))
     {
-      rlang::abort(paste("Missing pseudotime data. This data can be either stored in",deparse(substitute(milo)),"or provided by parameter diffusionmap"))
+      rlang::abort(paste("Missing pseudotime data. This data can be either stored in",deparse(substitute(milo)),"or provided by parameter diffusiontime"))
+    }
+    else
+    {
+      milo[[pseudotime_key]] <- diffusiontime
     }
   }
   else

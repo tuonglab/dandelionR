@@ -8,7 +8,8 @@
 #' @examples
 #' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
 #'                                 already.productive = FALSE)
-#' # Build Milo Object                                 
+#' # Build Milo Object     
+#' set.seed(100)                            
 #' traj_milo <- miloR::Milo(sce_vdj)
 #' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)

@@ -157,7 +157,7 @@ plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 
 ### Project pseudobulk data to each cell
 ```{r}
-cdata<- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
+cdata<- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips) 
 ```
 ### Visualise the trajectory data on a per cell basis
 ```{r, message=FALSE}
