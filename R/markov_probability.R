@@ -35,7 +35,7 @@
 #' #Markov Chain Construction 
 #' pb.milo <- markov_probability(milo = pb.milo, 
 #'                               diffusionmap = dm, 
-#'                               diffusiontime = dif.pse[[DPTroot]],
+#'                               diffusiontime = dif.pse[[paste0("DPT", root)]],
 #'                               terminal_state = branch.tips, 
 #'                               root_cell = root, 
 #'                               pseudotime_key = "pseudotime")
