@@ -70,7 +70,7 @@
       <h1 data-toc-skip>Single-cell Immune Repertoire Trajectory
 Analysis with dandelionR</h1>
             
-            <h4 data-toc-skip class="date">2024-12-04</h4>
+            <h4 data-toc-skip class="date">2024-12-05</h4>
       
 
       <div class="hidden name"><code>vignettes.rmd</code></div>
@@ -174,14 +174,14 @@ neighbors. Sample the representative neighbours form the objects.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/milo_umap.html">milo_umap</a></span><span class="op">(</span><span class="va">milo_object</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: Seurat</span></span>
-<span><span class="co">#&gt; 06:59:49 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
-<span><span class="co">#&gt; 06:59:49 Read 8524 rows of sparse distance matrix</span></span>
-<span><span class="co">#&gt; 06:59:49 Finding nearest neighbors from sparse matrix</span></span>
-<span><span class="co">#&gt; 06:59:58 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 50</span></span>
-<span><span class="co">#&gt; 06:59:58 8524 smooth knn distance failures</span></span>
-<span><span class="co">#&gt; 06:59:59 Initializing from normalized Laplacian + noise (using RSpectra)</span></span>
-<span><span class="co">#&gt; 06:59:59 Commencing optimization for 500 epochs, with 544394 positive edges</span></span>
-<span><span class="co">#&gt; 07:00:55 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 00:13:52 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
+<span><span class="co">#&gt; 00:13:52 Read 8524 rows of sparse distance matrix</span></span>
+<span><span class="co">#&gt; 00:13:52 Finding nearest neighbors from sparse matrix</span></span>
+<span><span class="co">#&gt; 00:14:00 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 50</span></span>
+<span><span class="co">#&gt; 00:14:00 8524 smooth knn distance failures</span></span>
+<span><span class="co">#&gt; 00:14:02 Initializing from normalized Laplacian + noise (using RSpectra)</span></span>
+<span><span class="co">#&gt; 00:14:02 Commencing optimization for 500 epochs, with 544394 positive edges</span></span>
+<span><span class="co">#&gt; 00:14:57 Optimization finished</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">milo_object</span>,color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>,dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignettes_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
@@ -351,7 +351,7 @@ neighbors. Sample the representative neighbours form the objects.</p>
 <span><span class="co">#&gt;  [19] fastDummies_1.7.4       labeling_0.4.3          sass_0.4.9             </span></span>
 <span><span class="co">#&gt;  [22] Seurat_5.1.0            robustbase_0.99-4-1     spatstat.data_3.1-4    </span></span>
 <span><span class="co">#&gt;  [25] proxy_0.4-27            ggridges_0.5.6          pbapply_1.7-2          </span></span>
-<span><span class="co">#&gt;  [28] pkgdown_2.1.1           systemfonts_1.1.0       parallelly_1.39.0      </span></span>
+<span><span class="co">#&gt;  [28] pkgdown_2.1.1           systemfonts_1.1.0       parallelly_1.40.0      </span></span>
 <span><span class="co">#&gt;  [31] TTR_0.24.4              generics_0.1.3          gtools_3.9.5           </span></span>
 <span><span class="co">#&gt;  [34] ica_1.0-3               spatstat.random_3.3-2   car_3.1-3              </span></span>
 <span><span class="co">#&gt;  [37] dplyr_1.1.4             Matrix_1.7-1            ggbeeswarm_0.7.2       </span></span>
