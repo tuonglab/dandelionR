@@ -112,15 +112,15 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> This message will be shown once per session</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:34 UMAP embedding parameters a = 0.9922 b = 1.112</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:34 Read 8524 rows of sparse distance matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:34 Finding nearest neighbors from sparse matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:41 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:15 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:15 Read 8524 rows of sparse distance matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:15 Finding nearest neighbors from sparse matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:23 Commencing smooth kNN distance calibration using 1 thread</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  with target n_neighbors = 50</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:41 8524 smooth knn distance failures</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:43 Initializing from normalized Laplacian + noise (using RSpectra)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 05:59:43 Commencing optimization for 500 epochs, with 544394 positive edges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:38 Optimization finished</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:23 8524 smooth knn distance failures</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:24 Initializing from normalized Laplacian + noise (using RSpectra)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:35:25 Commencing optimization for 500 epochs, with 544394 positive edges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:20 Optimization finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No assay specified, setting assay as RNA by default.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -149,15 +149,15 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Construct UMAP</span></span></span>
 <span class="r-in"><span><span class="va">milo</span> <span class="op">&lt;-</span> <span class="fu">milo_umap</span><span class="op">(</span><span class="va">milo</span>, n.neighbors <span class="op">=</span> <span class="fl">10L</span>, metric <span class="op">=</span> <span class="st">"euclidean"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:41 UMAP embedding parameters a = 0.9922 b = 1.112</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:41 Read 8524 rows of sparse distance matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:41 Finding nearest neighbors from sparse matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:48 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:22 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:22 Read 8524 rows of sparse distance matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:22 Finding nearest neighbors from sparse matrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:30 Commencing smooth kNN distance calibration using 1 thread</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  with target n_neighbors = 10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:48 8524 smooth knn distance failures</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:50 Initializing from normalized Laplacian + noise (using RSpectra)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:00:50 Commencing optimization for 500 epochs, with 143212 positive edges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:01:05 Optimization finished</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:30 8524 smooth knn distance failures</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:31 Initializing from normalized Laplacian + noise (using RSpectra)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:31 Commencing optimization for 500 epochs, with 143212 positive edges</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 06:36:47 Optimization finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No assay specified, setting assay as RNA by default.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># visualize the result</span></span></span>
