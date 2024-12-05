@@ -16,7 +16,7 @@
 #' # Construct Pseudobulked VDJ Feature Space
 #' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 #' pbs = milo_object@nhoods
-#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 #' 
 #' # Define root and branch tips
 #' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
@@ -25,12 +25,14 @@
 #' root <- which.min(pca[1, ])
 #' 
 #' # Construct Diffusion Map
-#' dm <- DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
+#' dm <- destiny::DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
+#' dif.pse <- destiny::DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 #' 
 #' #Markov Chain Construction 
 #' pb.milo <- markov_probability(milo = pb.milo, 
 #'                               diffusionmap = dm, 
 #'                               terminal_state = branch.tips, 
+#'                               diffusiontime = dif.pse[[paste0("DPT", root)]],
 #'                               root_cell = root, 
 #'                               pseudotime_key = "pseudotime")
 #' 
