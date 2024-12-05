@@ -20,7 +20,7 @@
 #' # Construct Pseudobulked VDJ Feature Space
 #' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 #' pbs = milo_object@nhoods
-#' pb.milo <- runPCA(pb.milo, assay.type = "X")
+#' pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 #' 
 #' # Define root and branch tips
 #' pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
