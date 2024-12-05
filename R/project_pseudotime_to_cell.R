@@ -20,9 +20,9 @@
 #' 
 #' # Define root and branch tips
 #' pca <- t(as.matrix(SingleCellExperiment::reducedDim(pb.milo, type = "PCA")))
-#' branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
+#' branch.tips <- c(232, 298)
 #' names(branch.tips) <- c("CD8+T", "CD4+T")
-#' root <- which.min(pca[1, ])
+#' root <- 476
 #' 
 #' # Construct Diffusion Map
 #' dm <- destiny::DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
@@ -37,7 +37,7 @@
 #'                               pseudotime_key = "pseudotime")
 #' 
 #' # Project Pseudobulk Data
-#' cdata <- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
+#' projected_milo <- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
 #' 
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 #' @import miloR

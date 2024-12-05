@@ -36,9 +36,9 @@ pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 
 # Define root and branch tips
 pca <- t(as.matrix(SingleCellExperiment::reducedDim(pb.milo, type = "PCA")))
-branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
+branch.tips <- c(232, 298)
 names(branch.tips) <- c("CD8+T", "CD4+T")
-root <- which.min(pca[1, ])
+root <- 476
 
 # Construct Diffusion Map
 dm <- destiny::DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
@@ -53,6 +53,6 @@ pb.milo <- markov_probability(milo = pb.milo,
                               pseudotime_key = "pseudotime")
 
 # Project Pseudobulk Data
-cdata <- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
+projected_milo <- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips)
 
 }
