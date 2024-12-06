@@ -20,13 +20,6 @@ Welcome to `dandelionR`!
 
 It provides all the necessary tools to interface with [scRepertoire](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>"
-)
-```
-
 ## Installation
 
 You can install `dandelionR` from GitHub with:
