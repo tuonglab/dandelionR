@@ -109,10 +109,11 @@ you encounter any problems or have any suggestions for improvement.</p>
 <p>First, we will load the demo data. This is a down-sampled dataset
 from the <a href="https://www.nature.com/articles/s41587-023-01734-7" class="external-link">Suo et al 2024
 Nature Biotechnology</a> paper. It contains 32000 cells with the TCR
-information (prepared with <code>scRepertoire</code>) and the
-dimensionality reduced data (scVI) that we need for this tutorial. The
-gene expression matrix is not required for this tutorial so it is not
-included in the demo data.</p>
+information and the dimensionality reduced data (scVI) that we need for
+this tutorial. The gene expression matrix is not required for this
+tutorial so it is not included in the demo data. We will show in a
+separate tutorial how to start with data from
+<code>scRepertoire</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></code></pre></div>
 <p>We will set the seed so that the plots and results are
@@ -388,7 +389,7 @@ T-cells in this dataset!</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Jiawei Yu, Kelvin Tuong.</p>
+<p>Developed by Jiawei Yu, Nicholas Borcherding, Kelvin Tuong.</p>
 </div>
 
 <div class="pkgdown">
