@@ -10,6 +10,7 @@
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
 #' @examples
+#' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )
