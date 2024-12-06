@@ -21,3 +21,4 @@ transition matrix of the markov chain
 \description{
 markov chain construction
 }
+\keyword{internal}

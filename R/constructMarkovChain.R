@@ -5,6 +5,7 @@
 #' @param knn. Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
+#' @keywords internal
 #' @return transition matrix of the markov chain
 .constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints) {
     message("Markov chain construction...")

@@ -3,6 +3,7 @@
 #' check whether the input is with the correct class
 #' @param input the input need to be check
 #' @param must the type we need
+#' @keywords internal
 .classCheck <- function(input, must) {
     requireNamespace("rlang")
     requireNamespace("methods")
@@ -23,6 +24,7 @@
 #' check whether the input has the correct type
 #' @param input the input need to be check
 #' @param must the type we need
+#' @keywords internal
 .typeCheck <- function(input, must) {
     requireNamespace("methods")
     if (is.null(input)) {
