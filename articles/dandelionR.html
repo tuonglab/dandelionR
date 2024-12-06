@@ -124,9 +124,8 @@ consistent.</p>
 <div class="section level3">
 <h3 id="filter-the-data">Filter the data<a class="anchor" aria-label="anchor" href="#filter-the-data"></a>
 </h3>
-<p>To begin, we will filter the data to remove cells with no paired
-chains and extract the TCR information so that we can construct
-pseudobulks.</p>
+<p>To begin, we will filter the data and extract the TCR information so
+that we can construct pseudobulks.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>We can visualise the UMAP of the filtered data.</p>
@@ -246,11 +245,13 @@ plot.</p>
 <div class="section level3">
 <h3 id="transfer">Transfer<a class="anchor" aria-label="anchor" href="#transfer"></a>
 </h3>
-<p>The next step is to project the pseudotime information from the
-pseudobulks back to each cell in the dataset. This is done by computing
-the distance of each cell to the pseudobulked VDJ feature space and
-projecting the pseudotime information to the nearest neighbour in the
-pseudobulked VDJ feature space.</p>
+<p>The next step is to project the pseudotime and the branch probability
+information from the pseudobulks back to each cell in the dataset. If
+the cell do not belong to any of the pseudobulk, it will be removed. If
+a cell belongs to multiple pseudobulk samples, its value should be
+calculated as a weighted average of the corresponding values from each
+pseudobulk, where each weight is inverse of the size of the
+pseudobulk.</p>
 <div class="section level4">
 <h4 id="project-pseudobulk-data-to-each-cell">Project pseudobulk data to each cell<a class="anchor" aria-label="anchor" href="#project-pseudobulk-data-to-each-cell"></a>
 </h4>
