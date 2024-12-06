@@ -4,6 +4,7 @@
 #' @param wp_data Multi scale data of the waypoints
 #' @param pseudotime numeric vector, pseudotime of each pseudobulk
 #' @param waypoints integer vector, waypoint selected to construct markov chain.
+#' @keywords internal
 #' @return terminal_state
 .terminalStateFromMarkovChain <- function(Transmat, wp_data, pseudotime, waypoints) {
     message("No terminal state provided, indentification of terminal states....")

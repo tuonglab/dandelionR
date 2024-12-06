@@ -14,3 +14,4 @@
 \description{
 check whether the input has the correct type
 }
+\keyword{internal}

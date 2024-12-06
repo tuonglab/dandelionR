@@ -19,3 +19,4 @@ a cell x pseudobulk matrix
 \description{
 Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking.
 }
+\keyword{internal}

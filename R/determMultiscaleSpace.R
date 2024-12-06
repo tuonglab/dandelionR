@@ -3,6 +3,7 @@
 #' @param diffusionmap DiffusionMap object
 #' @param n_eigs integer, default is NULL. Number of eigen vectors to use.
 #' - If is not specified, the number of eigen vectors will be determined using the eigen gap.
+#' @keywords internal
 #' @returns dataframe
 .determineMultiscaleSpace <- function(diffusionmap, n_eigs = NULL) {
     .classCheck(diffusionmap, "DiffusionMap")

@@ -4,6 +4,7 @@
 #' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL
 #' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo
 #' @param milo SingleCellExperiment object
+#' @keywords internal
 #' @return a cell x pseudobulk matrix
 .getPbs <- function(pbs, col_to_bulk, milo) {
     # some way to pseudobulk
@@ -46,6 +47,7 @@
 #' @param pbs dgeMatrix, cell x pseudobulk binary matrix
 #' @param col_to_take character vector, names of colData of milo that need to be processed
 #' @param milo Milo or SingleCellExperiment object
+#' @keywords internal
 #' @return pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object as colData of vdj x pseudobulk assays
 .getPbsCol <- function(pbs, col_to_take, milo) {
     # prepare per-pseudobulk calls of specified metadata columns
