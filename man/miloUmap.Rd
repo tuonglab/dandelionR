@@ -2,7 +2,7 @@
 % Please edit documentation in R/miloUmap.R
 \name{miloUmap}
 \alias{miloUmap}
-\title{miloUmap}
+\title{Perform UMAP on the Adjacency Matrix of a Milo Object}
 \usage{
 miloUmap(
   milo,
@@ -12,30 +12,25 @@ miloUmap(
 )
 }
 \arguments{
-\item{milo}{the milo object with knn graph that needed to conduct umap on.}
+\item{milo}{A \code{Milo} object containing a KNN graph. UMAP will be conducted on
+the adjacency matrix of this graph.}
 
-\item{slot_name}{character, with default 'UMAP_knngraph'.
-\itemize{
-\item The slot name in reduceDim where the result store
-}}
+\item{slot_name}{Character. The name of the slot in \code{reducedDims} where the UMAP
+results will be stored. Default is \code{'UMAP_knngraph'}.}
 
-\item{n.neighbors}{integer, with default 50L.
-\itemize{
-\item the number of neighboring points used
-\item parameter of RunUMAP, checking its document for further detail
-}}
+\item{n.neighbors}{Integer. The number of neighboring points used in the UMAP
+algorithm. Default is \code{50L}. For further details, refer to the \code{RunUMAP}
+documentation.}
 
-\item{metric}{character, with default 'euclidean'
-\itemize{
-\item the choice of metric used to measure distance
-\item parameter of RunUMAP, checking its document for further detail
-}}
+\item{metric}{Character. The distance metric to be used in the UMAP algorithm.
+Default is \code{'euclidean'}. For further details, refer to the \code{RunUMAP} documentation.}
 }
 \value{
 milo object with umap reduction
 }
 \description{
-use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
+This function uses \code{RunUMAP} from the Seurat package to perform UMAP dimensionality
+reduction on the adjacency matrix of the KNN graph in a Milo object.
 }
 \examples{
 data(sce_vdj)
