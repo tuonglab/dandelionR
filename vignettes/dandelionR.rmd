@@ -50,38 +50,39 @@ library(scater)
 This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.
 
 ## Load data
-Load the demo data
+First, we will load the demo data. This is a down-sampled dataset from the [Suo et al 2024 Nature Biotechnology](https://www.nature.com/articles/s41587-023-01734-7) paper. It contains 32000 cells with the TCR information (prepared with `scRepertoire`) and the dimensionality reduced data (scVI) that we need for this tutorial. The gene expression matrix is not required for this tutorial so it is not included in the demo data.
 ```{r, warning = FALSE}
 data(sce_vdj)
 ```
-set seed
+We will set the seed so that the plots and results are consistent.
 ```{r}
 set.seed(100)
 ```
 
-
 ## Filter the data
-subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
+
+To begin, we will filter the data to remove cells with no paired chains and extract the TCR information so that we can construct pseudobulks. 
 ```{r, warning = FALSE}
 sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
 ```
-plot the filtered data
+
+We can visualise the UMAP of the filtered data.
 ```{r, warning = FALSE}
 plotUMAP(sce_vdj,color_by = "anno_lvl_2_final_clean")
 ```
 
-## Milo object constructing and neighbour graph construction
+## Milo object and neighbourhood graph construction
 
-use miloR to create pseudobulks. Construct neighbor graph with many neighbors. Sample the representative neighbours form the objects.
-
+We will use miloR to create the pseudobulks based on the gene expression data. The goal is to construct a neighbourhood graph with many neighbors with which we can sample the representative neighbours to form the objects.
 ```{r, warning = FALSE}
 library(miloR)
 traj_milo <- Milo(sce_vdj) 
 milo_object <- buildGraph(traj_milo, k = 50, d=20, reduced.dim="X_scvi") 
 milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 ```
-### Construct umap on milo neighbor graph
+### Construct UMAP on milo neighbor graph
 
+We can visualise this milo object using UMAP.
 ```{r, warning = FALSE}
 milo_object <- miloUmap(milo_object)
 ```
@@ -90,6 +91,8 @@ plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph
 ```
 
 ## Construct pseudobulked VDJ feature space
+
+Next, we will construct the pseudobulked VDJ feature space using the neighbourhood graph constructed above. We will also run PCA on the pseudobulked VDJ feature space.
 ```{r}
 pb.milo <- vdjPseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
 
@@ -97,11 +100,14 @@ pb.milo <- vdjPseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
 pb.milo<-runPCA(pb.milo, assay.type = "Feature_space")
 ```
 
+We can visualise the PCA of the pseudobulked VDJ feature space.
 ```{r}
 plotPCA(pb.milo,color_by = "anno_lvl_2_final_clean")
 ```
 
 ## TCR trajectory inference using Absorbing Markov Chain
+
+In the original `dandelion` python package, the trajectory inference is done using the `palantir` package. Here, we implement the absorbing markov chain approach in dandelionR to infer the trajectory, leveraging on `destiny` for diffusion map computation.
 
 ### Define root and branch tips
 ```{r}
@@ -148,17 +154,24 @@ pb.milo <- markovProbability(
   root_cell=root, 
   pseudotime_key="pseudotime")
 ```
+
 ### Visualising branch probabilities
+
+With the Markov chain probabilities computed, we can visualise the branch probabilities towards CD4+ or CD8+ T-cell fate on the PCA plot.
 ```{r, message=FALSE}
 plotPCA(pb.milo,  color_by = "CD8+T") + scale_color_gradientn(colors = pal)
 plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 ```
+
 ## Transfer
+
+The next step is to project the pseudotime information from the pseudobulks back to each cell in the dataset. This is done by computing the distance of each cell to the pseudobulked VDJ feature space and projecting the pseudotime information to the nearest neighbour in the pseudobulked VDJ feature space.
 
 ### Project pseudobulk data to each cell
 ```{r}
 cdata<- projectPseudotimeToCell(milo_object, pb.milo, branch.tips) 
 ```
+
 ### Visualise the trajectory data on a per cell basis
 ```{r, message=FALSE}
 plotUMAP(cdata,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
@@ -167,6 +180,7 @@ plotUMAP(cdata,color_by = "CD4+T",dimred = "UMAP_knngraph") + scale_color_gradie
 plotUMAP(cdata,color_by = "CD8+T",dimred = "UMAP_knngraph") + scale_color_gradientn(colors = pal)
 ```
 
+And that's it! We have successfully inferred the trajectory of the T-cells in this dataset!
 
 ## Session info
 
