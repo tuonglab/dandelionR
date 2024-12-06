@@ -13,29 +13,28 @@ biocViews: Software, ImmunoOncology, SingleCell
 LazyDataCompression: xz
 Collate:
     'check.R'
-    'construct.markov.chain.R'
-    'determ.multiscale.space.R'
-    'terminal.state.from.markov.chain.R'
-    'differentiation_probabilities.R'
-    'filter.cells.R'
-    'get.pbs.R'
-    'project_probability.R'
-    'max.min.sampling.R'
-    'minmax.scale.R'
-    'markov_probability.R'
-    'milo_umap.R'
-    'pb.milo.R'
-    'project_pseudotime_to_cell.R'
+    'constructMarkovChain.R'
+    'determMultiscaleSpace.R'
+    'differentiationProbabilities.R'
+    'filterCells.R'
+    'getPbs.R'
+    'projectProbability.R'
+    'markovProbability.R'
+    'maxMinSampling.R'
+    'miloUmap.R'
+    'minmaxScale.R'
+    'projectPseudotimeToCell.R'
     'sce_vdj.R'
-    'setup_vdj_pseudobulk.R'
-    'vdj_pseudobulk.R'
+    'setupVdjPseudobulk.R'
+    'terminalStateFromMarkovChain.R'
+    'vdjPseudobulk.R'
 Imports:
     miloR,
     SingleCellExperiment,
     SummarizedExperiment
 Suggests:
     BiocGenerics,
-    fields,
+    BiocStyle,
     bluster,
     destiny,
     igraph,
