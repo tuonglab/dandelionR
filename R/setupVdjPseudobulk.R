@@ -46,7 +46,7 @@
 #'      - If true, will remove cells with contigs matching the filter from the object.
 #'      - If False, will mask them with a uniform value dependent on the column name.
 #' @include check.R
-#' @include filter.cells.R
+#' @include filterCells.R
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
 #' @return filtered SingleCellExperiment object

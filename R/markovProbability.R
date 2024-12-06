@@ -45,9 +45,9 @@
 #' )
 #'
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
-#' @include determ.multiscale.space.R
-#' @include minmax.scale.R
-#' @include max.min.sampling.R
+#' @include determMultiscaleSpace.R
+#' @include minmaxScale.R
+#' @include maxMinSampling.R
 #' @include differentiationProbabilities.R
 #' @include projectProbability.R
 #' @import SingleCellExperiment

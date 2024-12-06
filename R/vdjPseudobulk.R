@@ -39,7 +39,7 @@
 #'
 #' @return SingleCellExperiment object ...
 #' @include check.R
-#' @include get.pbs.R
+#' @include getPbs.R
 #' @import SingleCellExperiment
 #' @import miloR
 #' @export

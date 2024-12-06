@@ -39,17 +39,18 @@ milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 Preprocessing data and Construct markov chain and calculate probabilities
 }
 \examples{
-sce_vdj <- setupVdjPseudobulk(sce_vdj, 
-                                already.productive = FALSE)
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
+    already.productive = FALSE
+)
 # Build Milo Object
-set.seed(100)                                 
+set.seed(100)
 traj_milo <- miloR::Milo(sce_vdj)
 milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
 milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct Pseudobulked VDJ Feature Space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
-pbs = milo_object@nhoods
+pbs <- milo_object@nhoods
 pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 
 # Define root and branch tips
@@ -62,12 +63,14 @@ root <- 476
 dm <- destiny::DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
 dif.pse <- destiny::DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 
-#Markov Chain Construction 
-pb.milo <- markovProbability(milo = pb.milo, 
-                              diffusionmap = dm, 
-                              diffusiontime = dif.pse[[paste0("DPT", root)]],
-                              terminal_state = branch.tips, 
-                              root_cell = root, 
-                              pseudotime_key = "pseudotime")
-                              
+# Markov Chain Construction
+pb.milo <- markovProbability(
+    milo = pb.milo,
+    diffusionmap = dm,
+    diffusiontime = dif.pse[[paste0("DPT", root)]],
+    terminal_state = branch.tips,
+    root_cell = root,
+    pseudotime_key = "pseudotime"
+)
+
 }
