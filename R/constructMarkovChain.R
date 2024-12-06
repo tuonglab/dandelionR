@@ -27,7 +27,7 @@
     }, numeric(1))
 
     igraph::E(nbrs)$weight <- weights
-    
+
     ## generate weighted adjacent matrix of this knn graph
 
     KNN <- igraph::as_adjacency_matrix(nbrs, attr = "weight")
@@ -58,8 +58,9 @@
         .z[.x < .y]
     })
     for (i in seq_len(length(waypoints))) {
-        if (length(KNN[i, rem_edges[[i]]])) 
+        if (length(KNN[i, rem_edges[[i]]])) {
             KNN[i, rem_edges[[i]]] <- 0
+        }
     }
     # determine the indice and update adjacency matrix
     cell_mapping <- seq_len(length(waypoints))
