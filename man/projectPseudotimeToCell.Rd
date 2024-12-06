@@ -22,6 +22,7 @@ subset of milo or SingleCellExperiment object where cell that do not belong to a
 Function to project pseudotime & branch probabilities from pb.milo (pseudobulk) to milo (cell).
 }
 \examples{
+data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
 )

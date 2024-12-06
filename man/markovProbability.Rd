@@ -39,6 +39,7 @@ milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 Preprocessing data and Construct markov chain and calculate probabilities
 }
 \examples{
+data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
 )

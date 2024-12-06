@@ -38,6 +38,7 @@ milo object with umap reduction
 use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 }
 \examples{
+data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
 )

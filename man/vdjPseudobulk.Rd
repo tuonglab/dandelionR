@@ -61,6 +61,7 @@ SingleCellExperiment object ...
 making pseudobulk vdj feature space
 }
 \examples{
+data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
 )
