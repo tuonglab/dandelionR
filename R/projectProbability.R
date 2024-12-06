@@ -1,4 +1,4 @@
-#' project_probabilty
+#' projectProbability
 #'
 #' project the probabilities from Markov chain to each pseudobulk
 #' @param diffusionmap diffusion map, used to reconstruct diffustion distance matrix
@@ -6,7 +6,7 @@
 #' @param probabilities waypoints' probabilities, result from markov chain
 #' @param t diffusion time
 #' @return each pseudobulk's probabilites
-project_probability <- function(diffusionmap, waypoints, probabilities, t = 1) {
+projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1) {
     message("Project probabilites from waypoints to each pseudobulk...")
     # Extract eigenvalues and eigenvectors from the DiffusionMap
     requireNamespace("destiny")

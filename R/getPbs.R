@@ -1,11 +1,11 @@
-#' .get.pbs
+#' .getPbs
 #'
 #' Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking.
-#' @param pbs pbs parameter provided by vdj_pseudobulk(),  cells by pseudobulks matrix or NULL
-#' @param col_to_bulk col_to_bulk parameter provided by vdj_pseudobulk(), column's name of colData from milo
+#' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL
+#' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo
 #' @param milo SingleCellExperiment object
 #' @return a cell x pseudobulk matrix
-.get.pbs <- function(pbs, col_to_bulk, milo) {
+.getPbs <- function(pbs, col_to_bulk, milo) {
     # some way to pseudobulk
     requireNamespace("rlang")
     if (is.null(pbs) && is.null(col_to_bulk)) {
@@ -40,14 +40,14 @@
     }
 }
 
-#' .get.pbs.col
+#' .getPbsCol
 #'
 #' Helper function to create the new pseudobulk object's coldata.
 #' @param pbs dgeMatrix, cell x pseudobulk binary matrix
 #' @param col_to_take character vector, names of colData of milo that need to be processed
 #' @param milo Milo or SingleCellExperiment object
 #' @return pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object as colData of vdj x pseudobulk assays
-.get.pbs.col <- function(pbs, col_to_take, milo) {
+.getPbsCol <- function(pbs, col_to_take, milo) {
     # prepare per-pseudobulk calls of specified metadata columns
     if (!is.null(col_to_take)) {
         requireNamespace("S4Vectors")

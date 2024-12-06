@@ -1,11 +1,11 @@
-#' .terminal.state.from.markov.chain
+#' .terminalStateFromMarkovChain
 #'
 #' @param Transmat Transition matrix
 #' @param wp_data Multi scale data of the waypoints
 #' @param pseudotime numeric vector, pseudotime of each pseudobulk
 #' @param waypoints integer vector, waypoint selected to construct markov chain.
 #' @return terminal_state
-.terminal.state.from.markov.chain <- function(Transmat, wp_data, pseudotime, waypoints) {
+.terminalStateFromMarkovChain <- function(Transmat, wp_data, pseudotime, waypoints) {
     message("No terminal state provided, indentification of terminal states....")
     # Identify terminal states dm_boudaries
     n <- min(dim(Transmat))

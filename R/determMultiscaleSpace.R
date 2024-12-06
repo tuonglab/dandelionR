@@ -1,11 +1,11 @@
-#' .determine.multiscale.space
+#' .determineMultiscaleSpace
 #'
 #' @param diffusionmap DiffusionMap object
 #' @param n_eigs integer, default is NULL. Number of eigen vectors to use.
 #' - If is not specified, the number of eigen vectors will be determined using the eigen gap.
 #' @returns dataframe
-.determine.multiscale.space <- function(diffusionmap, n_eigs = NULL) {
-    .class.check(diffusionmap, "DiffusionMap")
+.determineMultiscaleSpace <- function(diffusionmap, n_eigs = NULL) {
+    .classCheck(diffusionmap, "DiffusionMap")
     requireNamespace("destiny")
     eigenvect <- destiny::eigenvectors(diffusionmap)
     eigenval <- destiny::eigenvalues(diffusionmap)

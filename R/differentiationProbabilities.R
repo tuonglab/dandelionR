@@ -1,4 +1,4 @@
-#' differentiation_entropy
+#' differentiationProbabilities
 #'
 #' function to compute branch probabilities using markov chain
 #' @param wp_data Multi scale data of the waypoints
@@ -9,13 +9,13 @@
 #' @return probabilities
 #' @include construct.markov.chain.R
 #' @include terminal.state.from.markov.chain.R
-differentiation_probabilities <- function(
+differentiationProbabilities <- function(
     wp_data, terminal_states = NULL, knn. = 30L,
     pseudotime, waypoints) {
-    T_ <- .construct.markov.chain(wp_data, 30, pseudotime, waypoints)
+    T_ <- .constructMarkovChain(wp_data, 30, pseudotime, waypoints)
     # identify terminal states if not specified
     if (is.null(terminal_states)) {
-        terminal_states <- .terminal.state.from.markov.chain(
+        terminal_states <- .terminalStateFromMarkovChain(
             T_, wp_data, pseudotime,
             waypoints
         )

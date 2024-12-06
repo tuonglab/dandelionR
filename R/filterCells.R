@@ -1,4 +1,4 @@
-#' .filter.cells
+#' .filterCells
 #'
 #' Helper function that identifies filter_pattern hits in determined column of sce, and then either removes the offeending cells or masks the matched values with a uniform value of '(column's name)_missing'
 #' @param sce SingleCellExperiment object, adata in python
@@ -10,7 +10,7 @@
 #'  - If False, will mask them with a uniform value dependent on the column name.
 #' @import SingleCellExperiment
 #' @return filtered SingleCellExperiment object according to the parameter.
-.filter.cells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
+.filterCells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
     requireNamespace("rlang")
     if (ncol(sce) < 1) {
         rlang::abort("None column remains, please check whether the filtering option is correct.")

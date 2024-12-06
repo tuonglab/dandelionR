@@ -1,4 +1,4 @@
-#' setup_vdj_pseudobulk
+#' setupVdjPseudobulk
 #'
 #' Function for data preprocessing. This function will filters the data based on productivity, chain status, subsets data, extracts main v(d)j, and removes the unmapping data
 #' @param sce SingleCellExperiment object, vdj data should be contained in colData for filtering
@@ -57,14 +57,14 @@
 #' # check the dimension
 #' dim(sce_vdj)
 #' # filtered the data
-#' sce_vdj<-setup_vdj_pseudobulk(sce = sce_vdj,
+#' sce_vdj<-setupVdjPseudobulk(sce = sce_vdj,
 #'                             mode_option = "abT",  # set the mode to αβTCR
 #'                             already.productive = FALSE) # need to filter the unproductive cells
 #' # check the remaining dim
 #' dim(sce_vdj)
 #'                              
 #' @export
-setup_vdj_pseudobulk <- function(
+setupVdjPseudobulk <- function(
     sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
     productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = c(
         "Single pair",
@@ -74,22 +74,22 @@ setup_vdj_pseudobulk <- function(
     check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
     check_extract_cols_mapping = NULL, remove_missing = TRUE) {
     # check if the data type is correct
-    .class.check(sce, "SingleCellExperiment")
+    .classCheck(sce, "SingleCellExperiment")
     mode_option <- match.arg(mode_option)
-    .type.check(productive_cols, "character")
-    .type.check(productive_vdj, "logical")
-    .type.check(productive_vj, "logical")
-    .type.check(subsetby, "character")
-    .type.check(groups, "character")
+    .typeCheck(productive_cols, "character")
+    .typeCheck(productive_vdj, "logical")
+    .typeCheck(productive_vj, "logical")
+    .typeCheck(subsetby, "character")
+    .typeCheck(groups, "character")
     allowed_chain_status <- match.arg(allowed_chain_status, several.ok = TRUE)
-    .type.check(extract_cols, "character")
-    .type.check(filter_pattern, "character")
+    .typeCheck(extract_cols, "character")
+    .typeCheck(filter_pattern, "character")
     check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
         several.ok = TRUE
     )
     check_vj_mapping <- match.arg(check_vj_mapping, several.ok = TRUE)
-    .type.check(check_extract_cols_mapping, "character")
-    .type.check(remove_missing, "logical")
+    .typeCheck(check_extract_cols_mapping, "character")
+    .typeCheck(remove_missing, "logical")
 
     # filtering retain only productive entries based on specified mode
     requireNamespace("rlang")
@@ -253,7 +253,7 @@ setup_vdj_pseudobulk <- function(
             message(sprintf("Filtering cells from %s ...", msg), appendLF = FALSE)
             cnumber0 <- dim(sce)[2]
             sce <- Reduce(function(x, y) {
-                .filter.cells(
+                .filterCells(
                     sce = x, col_n = y, filter_pattern = filter_pattern,
                     remove_missing = remove_missing
                 )

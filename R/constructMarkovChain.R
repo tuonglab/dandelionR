@@ -1,4 +1,4 @@
-#' .construct.markov.chain
+#' .constructMarkovChain
 #'
 #' markov chain construction
 #' @param wp_data Multi scale data of the waypoints
@@ -6,7 +6,7 @@
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @return transition matrix of the markov chain
-.construct.markov.chain <- function(wp_data, knn., pseudotime, waypoints) {
+.constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints) {
     message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
     # construct kNN graph

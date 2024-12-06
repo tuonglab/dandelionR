@@ -1,4 +1,4 @@
-#' markov_probability
+#' markovProbability
 #'
 #' Preprocessing data and Construct markov chain and calculate probabilities
 #' @param milo milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter
@@ -10,7 +10,7 @@
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
 #' @examples
-#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#' sce_vdj <- setupVdjPseudobulk(sce_vdj, 
 #'                                 already.productive = FALSE)
 #' # Build Milo Object
 #' set.seed(100)                                 
@@ -19,7 +19,7 @@
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 #' 
 #' # Construct Pseudobulked VDJ Feature Space
-#' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+#' pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 #' pbs = milo_object@nhoods
 #' pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 #' 
@@ -34,7 +34,7 @@
 #' dif.pse <- destiny::DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 #' 
 #' #Markov Chain Construction 
-#' pb.milo <- markov_probability(milo = pb.milo, 
+#' pb.milo <- markovProbability(milo = pb.milo, 
 #'                               diffusionmap = dm, 
 #'                               diffusiontime = dif.pse[[paste0("DPT", root)]],
 #'                               terminal_state = branch.tips, 
@@ -45,11 +45,11 @@
 #' @include determ.multiscale.space.R
 #' @include minmax.scale.R
 #' @include max.min.sampling.R
-#' @include differentiation_probabilities.R
-#' @include project_probability.R
+#' @include differentiationProbabilities.R
+#' @include projectProbability.R
 #' @import SingleCellExperiment
 #' @export
-markov_probability <- function(
+markovProbability <- function(
     milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,
     pseudotime_key = "pseudotime", 
     scale_components = TRUE, num_waypoints = 500) {
@@ -71,17 +71,17 @@ markov_probability <- function(
   }
   
   # scale data
-  multiscale <- .determine.multiscale.space(diffusionmap)
+  multiscale <- .determineMultiscaleSpace(diffusionmap)
   if (scale_components)
-    multiscale <- .minmax.scale(multiscale)
+    multiscale <- .minmaxScale(multiscale)
   # sample waypoints to construct markov chain
-  waypoints <- .max.min.sampling(multiscale, num_waypoints = 500)
+  waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)
   waypoints <- unique(c(root_cell, waypoints, terminal_state))
   # calculate probabilities
-  probabilities <- differentiation_probabilities(multiscale[waypoints, ], terminal_states = terminal_state,
+  probabilities <- differentiationProbabilities(multiscale[waypoints, ], terminal_states = terminal_state,
     pseudotime = diffusiontime, waypoints = waypoints)
   # project probabilities from waypoints to each pseudobulk
-  probabilities_proj <- project_probability(diffusionmap, waypoints, probabilities)
+  probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
   # store the result into milo
   requireNamespace("S4Vectors")
   new_coldata <- S4Vectors::DataFrame(probabilities_proj[,

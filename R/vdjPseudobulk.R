@@ -1,4 +1,4 @@
-#' vdj_pseudobulk
+#' vdjPseudobulk
 #'
 #' making pseudobulk vdj feature space
 #' @param milo milo object or SingleCellExperiment object
@@ -15,7 +15,7 @@
 #'  If True, will scale the counts of each V(D)J gene group to 1 for each pseudobulk.
 #' @param renormalise bool, False by default
 #' If True, will re-scale the counts of each V(D)J gene group to 1 for each pseudobulk with any 'missing' calls removed.
-#' Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_missing set to False.
+#' Relevant with normalise as True, if setupVdjPseudobulk() was ran with remove_missing set to False.
 #' @param min_count int, 1 by default
 #' Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.
 #' @param mode_option, must be one element of the vector c('B','abT','gdT'), 'abT' by default
@@ -26,7 +26,7 @@
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
 #'  
 #' @examples
-#' sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+#' sce_vdj <- setupVdjPseudobulk(sce_vdj, 
 #'                                 already.productive = FALSE)
 #' # Build Milo Object
 #' traj_milo <- miloR::Milo(sce_vdj)
@@ -34,7 +34,7 @@
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 #' 
 #' # Construct pseudobulked VDJ feature space
-#' pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+#' pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 #'                                         
 #' @return SingleCellExperiment object ...
 #' @include check.R
@@ -42,7 +42,7 @@
 #' @import SingleCellExperiment
 #' @import miloR
 #' @export
-vdj_pseudobulk <- function(
+vdjPseudobulk <- function(
     milo, 
     pbs = NULL, 
     col_to_bulk = NULL, 
@@ -59,25 +59,25 @@ vdj_pseudobulk <- function(
     if (!methods::is(milo, "Milo") && !methods::is(milo, "SingleCellExperiment")) {
         rlang::abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
     }
-    .class.check(pbs, "Matrix")
+    .classCheck(pbs, "Matrix")
     if (!all(col_to_bulk %in% names(colData(milo)))) {
         rlang::abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
     }
     if (!all(col_to_take %in% names(colData(milo)))) {
         rlang::abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
     }
-    .type.check(normalise, "logical")
-    .type.check(renormalise, "logical")
-    .type.check(min_count, "numeric")
+    .typeCheck(normalise, "logical")
+    .typeCheck(renormalise, "logical")
+    .typeCheck(min_count, "numeric")
     min_count <- as.integer(min_count)
-    .type.check(mode_option, "character")
+    .typeCheck(mode_option, "character")
     mode_option <- match.arg(mode_option)
-    .type.check(extract_cols, "character")
+    .typeCheck(extract_cols, "character")
     # determ the value of pbs
     if (methods::is(milo, "Milo")) {
         pbs <- miloR::nhoods(milo)
     } else {
-        pbs <- .get.pbs(pbs, col_to_bulk, milo)
+        pbs <- .getPbs(pbs, col_to_bulk, milo)
     }
     # set the column used in caculation
     if (is.null(extract_cols)) {
@@ -146,7 +146,7 @@ vdj_pseudobulk <- function(
     }
     # create colData for the new pesudobulk object milo@metadata$feature.space
     # <- pseudo_vdj_feature
-    pbs.col <- .get.pbs.col(pbs, col_to_take = col_to_take, milo = milo)
+    pbs.col <- .getPbsCol(pbs, col_to_take = col_to_take, milo = milo)
     # create a new SingelCellExperiment object as result
     requireNamespace("S4Vectors")
     pb.sce <- SingleCellExperiment(

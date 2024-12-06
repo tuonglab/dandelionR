@@ -49,7 +49,7 @@ If True, will scale the counts of each V(D)J gene group to 1 for each pseudobulk
 
 \item{renormalise}{bool, False by default
 If True, will re-scale the counts of each V(D)J gene group to 1 for each pseudobulk with any 'missing' calls removed.
-Relevant with normalise as True, if setup_vdj_pseudobulk() was ran with remove_missing set to False.}
+Relevant with normalise as True, if setupVdjPseudobulk() was ran with remove_missing set to False.}
 
 \item{min_count}{int, 1 by default
 Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.}
@@ -61,7 +61,7 @@ SingleCellExperiment object ...
 making pseudobulk vdj feature space
 }
 \examples{
-sce_vdj <- setup_vdj_pseudobulk(sce_vdj, 
+sce_vdj <- setupVdjPseudobulk(sce_vdj, 
                                 already.productive = FALSE)
 # Build Milo Object                                 
 traj_milo <- miloR::Milo(sce_vdj)
@@ -69,6 +69,6 @@ milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scv
 milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct pseudobulked VDJ feature space
-pb.milo <- vdj_pseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
                                         
 }

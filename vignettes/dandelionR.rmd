@@ -63,7 +63,7 @@ set.seed(100)
 ## Filter the data
 subset the object to cells with paired chains, and prepare appropriately named and formatted columns for the pseudobulking functions to use as defaults
 ```{r, warning = FALSE}
-sce_vdj <- setup_vdj_pseudobulk(sce_vdj, already.productive = FALSE)
+sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
 ```
 plot the filtered data
 ```{r, warning = FALSE}
@@ -83,7 +83,7 @@ milo_object <- makeNhoods(milo_object, reduced_dims="X_scvi", d=20)
 ### Construct umap on milo neighbor graph
 
 ```{r, warning = FALSE}
-milo_object <- milo_umap(milo_object)
+milo_object <- miloUmap(milo_object)
 ```
 ```{r}
 plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph")
@@ -91,7 +91,7 @@ plotUMAP(milo_object,color_by = "anno_lvl_2_final_clean",dimred = "UMAP_knngraph
 
 ## Construct pseudobulked VDJ feature space
 ```{r}
-pb.milo <- vdj_pseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
+pb.milo <- vdjPseudobulk(milo_object,col_to_take = "anno_lvl_2_final_clean")
 
 # pbs = milo_object@nhoods
 pb.milo<-runPCA(pb.milo, assay.type = "Feature_space")
@@ -141,7 +141,7 @@ plotPCA(pb.milo, color_by = "pseudotime") + scale_colour_gradientn(colours = pal
 ### Markov chain construction on the pseudobulk VDJ feature space
 
 ```{r}
-pb.milo <- markov_probability(
+pb.milo <- markovProbability(
   milo=pb.milo, 
   diffusionmap=dm, 
   terminal_state=branch.tips, 
@@ -157,7 +157,7 @@ plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 
 ### Project pseudobulk data to each cell
 ```{r}
-cdata<- project_pseudotime_to_cell(milo_object, pb.milo, branch.tips) 
+cdata<- projectPseudotimeToCell(milo_object, pb.milo, branch.tips) 
 ```
 ### Visualise the trajectory data on a per cell basis
 ```{r, message=FALSE}
