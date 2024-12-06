@@ -10,6 +10,7 @@
 #' @param scale_components logical, If True, the components will be scale before constructing markov chain
 #' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
 #' @examples
+#' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )
@@ -45,7 +46,7 @@
 #'
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 #' @include determMultiscaleSpace.R
-#' @include minmaxScale.R
+#' @include minMaxScale.R
 #' @include maxMinSampling.R
 #' @include differentiationProbabilities.R
 #' @include projectProbability.R
@@ -69,7 +70,7 @@ markovProbability <- function(
     # scale data
     multiscale <- .determineMultiscaleSpace(diffusionmap)
     if (scale_components) {
-        multiscale <- .minmaxScale(multiscale)
+        multiscale <- .minMaxScale(multiscale)
     }
     # sample waypoints to construct markov chain
     waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)

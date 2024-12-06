@@ -6,6 +6,7 @@
 #' @param term_states vector of terminal states with branch_probabilities to be transferred
 #' @param suffix suffix to be added after the added column names, default ''
 #' @examples
+#' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )

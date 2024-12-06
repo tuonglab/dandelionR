@@ -11,6 +11,7 @@
 #'  - the choice of metric used to measure distance
 #'  - parameter of RunUMAP, checking its document for further detail
 #' @examples
+#' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )

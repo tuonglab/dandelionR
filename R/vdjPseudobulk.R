@@ -26,6 +26,7 @@
 #'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
 #'
 #' @examples
+#' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )

@@ -22,7 +22,7 @@ Collate:
     'getPbs.R'
     'projectProbability.R'
     'maxMinSampling.R'
-    'minmaxScale.R'
+    'minMaxScale.R'
     'markovProbability.R'
     'miloUmap.R'
     'projectPseudotimeToCell.R'
