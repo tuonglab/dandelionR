@@ -57,4 +57,3 @@ URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
 Depends: 
     R (>= 4.4.0)
-LazyData: false
