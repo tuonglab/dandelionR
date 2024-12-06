@@ -121,10 +121,12 @@ data(sce_vdj)
 # check the dimension
 dim(sce_vdj)
 # filtered the data
-sce_vdj<-setupVdjPseudobulk(sce = sce_vdj,
-                            mode_option = "abT",  # set the mode to αβTCR
-                            already.productive = FALSE) # need to filter the unproductive cells
+sce_vdj <- setupVdjPseudobulk(
+    sce = sce_vdj,
+    mode_option = "abT", # set the mode to αβTCR
+    already.productive = FALSE
+) # need to filter the unproductive cells
 # check the remaining dim
 dim(sce_vdj)
-                             
+
 }

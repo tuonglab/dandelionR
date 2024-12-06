@@ -11,37 +11,20 @@
 #'  - the choice of metric used to measure distance
 #'  - parameter of RunUMAP, checking its document for further detail
 #' @examples
-#' sce_vdj <- setupVdjPseudobulk(sce_vdj, 
-#'                                 already.productive = FALSE)
-#' # Build Milo Object                                 
+#' data(sce_vdj)
+#' sce_vdj <- setupVdjPseudobulk(sce_vdj,
+#'     already.productive = FALSE
+#' )
+#' # Build Milo Object
 #' traj_milo <- miloR::Milo(sce_vdj)
 #' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
-#' 
+#'
 #' # Construct UMAP on Milo Neighbor Graph
 #' milo_object <- miloUmap(milo_object)
-#' 
+#'
 #' @return milo object with umap reduction
 #' @import SingleCellExperiment
-#' @examples
-#' 
-#' # load denpendency 
-#' library(miloR)
-#' 
-#' # load example data
-#' data(sce_vdj)
-#' # get milo object with knn graph
-#' sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
-#' traj_milo <- Milo(sce_vdj)
-#' milo <- buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
-#' milo <- makeNhoods(milo, reduced_dims = "X_scvi", d = 20)
-#' 
-#' # Construct UMAP
-#' milo <- miloUmap(milo, n.neighbors = 10L, metric = "euclidean")
-#' 
-#' # visualize the result
-#' scater::plotUMAP(milo,dimred = "UMAP_knngraph")
-#' 
 #' @export
 miloUmap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
     requireNamespace("miloR")

@@ -7,8 +7,8 @@
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @return probabilities
-#' @include construct.markov.chain.R
-#' @include terminal.state.from.markov.chain.R
+#' @include constructMarkovChain.R
+#' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
     wp_data, terminal_states = NULL, knn. = 30L,
     pseudotime, waypoints) {

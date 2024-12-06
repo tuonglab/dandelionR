@@ -61,8 +61,10 @@ SingleCellExperiment object ...
 making pseudobulk vdj feature space
 }
 \examples{
-sce_vdj <- setupVdjPseudobulk(sce_vdj, 
-                                already.productive = FALSE)
+data(sce_vdj)
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
+    already.productive = FALSE
+)
 # Build Milo Object
 traj_milo <- miloR::Milo(sce_vdj)
 milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
@@ -70,5 +72,5 @@ milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct pseudobulked VDJ feature space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
-                                        
+
 }
