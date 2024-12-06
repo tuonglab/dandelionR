@@ -1,15 +1,18 @@
-#' miloUmap
+#' Perform UMAP on the Adjacency Matrix of a Milo Object
 #'
-#' use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
-#' @param milo the milo object with knn graph that needed to conduct umap on.
-#' @param slot_name character, with default 'UMAP_knngraph'.
-#'  - The slot name in reduceDim where the result store
-#' @param n.neighbors integer, with default 50L.
-#'  - the number of neighboring points used
-#'  - parameter of RunUMAP, checking its document for further detail
-#' @param metric character, with default 'euclidean'
-#'  - the choice of metric used to measure distance
-#'  - parameter of RunUMAP, checking its document for further detail
+#' This function uses `RunUMAP` from the Seurat package to perform UMAP dimensionality 
+#' reduction on the adjacency matrix of the KNN graph in a Milo object.
+#'
+#' @param milo A `Milo` object containing a KNN graph. UMAP will be conducted on 
+#' the adjacency matrix of this graph.
+#' @param slot_name Character. The name of the slot in `reducedDims` where the UMAP 
+#' results will be stored. Default is `'UMAP_knngraph'`.
+#' @param n.neighbors Integer. The number of neighboring points used in the UMAP 
+#' algorithm. Default is `50L`. For further details, refer to the `RunUMAP` 
+#' documentation.
+#' @param metric Character. The distance metric to be used in the UMAP algorithm. 
+#' Default is `'euclidean'`. For further details, refer to the `RunUMAP` documentation.
+#'
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
@@ -25,17 +28,17 @@
 #'
 #' @return milo object with umap reduction
 #' @import SingleCellExperiment
+#' @importFrom igraph as_adjacency_matrix
+#' @importFrom miloR graph
+#' @importFrom Seurat RunUMAP
 #' @export
 miloUmap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
-    requireNamespace("miloR")
-    requireNamespace("igraph")
     # get the graph's adjacency matrix
-    graphm <- igraph::as_adjacency_matrix(miloR::graph(milo))
+    graphm <- as_adjacency_matrix(miloR::graph(milo))
     # inherit the names of each row
     rownames(graphm) <- rownames(colData(milo))
     colnames(graphm) <- rownames(colData(milo))
     # conduct umap
-    requireNamespace("Seurat")
     umap <- Seurat::RunUMAP(graphm, n.neighbors = n.neighbors, metric = metric)
     reducedDim(milo, slot_name) <- umap@cell.embeddings
     milo

@@ -1,24 +1,27 @@
 #' .constructMarkovChain
 #'
-#' markov chain construction
+#' Markov chain construction
 #' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @keywords internal
+#' @importFrom bluster makeKNNGraph
+#' @importFrom igraph ends E<- E as_adjacency_matrix
+#' @importFrom Matrix sparseMatrix summary
+#' @importFrom purrr pmap
+#' @importFrom stats dist
 #' @return transition matrix of the markov chain
 .constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints) {
     message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
     # construct kNN graph
-    requireNamespace("bluster")
-    nbrs <- bluster::makeKNNGraph(wp_data, k = knn.)
+    nbrs <- makeKNNGraph(wp_data, k = knn.)
     ## calculate distance of each edge
-    distance_m <- as.matrix(stats::dist(wp_data))
-    requireNamespace("igraph")
+    distance_m <- as.matrix(dist(wp_data))
 
     ## Modified to remove sapply()
-    edge_indices <- igraph::ends(nbrs, igraph::E(nbrs))
+    edge_indices <- ends(nbrs, igraph::E(nbrs))
     weights <- vapply(seq_len(nrow(edge_indices)), function(i) {
         ### Get the nodes connected by each edge
         node1 <- as.numeric(edge_indices[i, 1])
@@ -27,11 +30,11 @@
         distance_m[node1, node2]
     }, numeric(1))
 
-    igraph::E(nbrs)$weight <- weights
+    E(nbrs)$weight <- weights
 
     ## generate weighted adjacent matrix of this knn graph
 
-    KNN <- igraph::as_adjacency_matrix(nbrs, attr = "weight")
+    KNN <- as_adjacency_matrix(nbrs, attr = "weight")
     ## generate the index of each neighbor
     idx <- KNN@p
     idx_seq <- mapply(seq, (idx + 1)[-length(idx)], idx[-1])
@@ -51,8 +54,7 @@
     })
     ## Remove edges that move backwards in pseudotime except for edges that are
     ## within the computed standard deviation
-    requireNamespace("purrr")
-    rem_edges <- purrr::pmap(list(
+    rem_edges <- pmap(list(
         .x = traj_nbrs, .y = (pseudotime - adaptive.std),
         .z = ind
     ), function(.x, .y, .z) {
@@ -74,7 +76,7 @@
     # Transition matrix
     D <- apply(W, 1, sum)
     ids <- Matrix::summary(W)
-    T_ <- Matrix::sparseMatrix(
+    T_ <- sparseMatrix(
         i = ids$i, j = ids$j, x = ids$x / D[ids$i], dims = dim(KNN),
         giveCsparse = TRUE
     )

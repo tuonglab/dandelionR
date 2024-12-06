@@ -2,24 +2,30 @@
 % Please edit documentation in R/projectPseudotimeToCell.R
 \name{projectPseudotimeToCell}
 \alias{projectPseudotimeToCell}
-\title{projectPseudotimeToCell}
+\title{Project Pseudotime and Branch Probabilities to Single Cells}
 \usage{
 projectPseudotimeToCell(milo, pb_milo, term_states, suffix = "")
 }
 \arguments{
-\item{milo}{SingleCellExperiment or milo object}
+\item{milo}{A \code{SingleCellExperiment} or \code{Milo} object. Represents single-cell data where
+pseudotime and branch probabilities will be projected.}
 
-\item{pb_milo}{pseudobulk data}
+\item{pb_milo}{A pseudobulk \code{Milo} object. Contains aggregated branch probabilities and
+pseudotime information to be transferred to single cells.}
 
-\item{term_states}{vector of terminal states with branch_probabilities to be transferred}
+\item{term_states}{A named vector of terminal states, with branch probabilities to be
+transferred. The names should correspond to branches of interest.}
 
-\item{suffix}{suffix to be added after the added column names, default ''}
+\item{suffix}{Character. A suffix to be added to the new column names in \code{colData}.
+Default is an empty string (\code{''}).}
 }
 \value{
 subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 }
 \description{
-Function to project pseudotime & branch probabilities from pb.milo (pseudobulk) to milo (cell).
+This function projects pseudotime and branch probabilities from pseudobulk (\code{pb.milo})
+data to single-cell resolution (\code{milo}). The results are stored in the \code{colData} of
+the \code{milo} object.
 }
 \examples{
 data(sce_vdj)

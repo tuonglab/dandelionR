@@ -1,29 +1,35 @@
-#' vdjPseudobulk
+#' Generate Pseudobulk V(D)J Feature Space
 #'
-#' making pseudobulk vdj feature space
-#' @param milo milo object or SingleCellExperiment object
-#' @param pbs Optional binary matrix with cells as rows and pseudobulk groups as columns,
-#'  - if milo is a milo object, no need to provide
-#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
-#' @param col_to_bulk character or character vector, NULL by default
-#' Optional colData column(s) to generate pbs, if multiple are provided, they will be combined
-#'  - if milo is a milo object, no need to provide
-#'  - if milo is a SingleCellExperiment object, user should only provide either pbs or col_to_bulk
-#' @param col_to_take str or a list of str, NULL by default
-#' Optional obs column(s) to identify the most common value of for each pseudobulk.
-#' @param normalise bool, True by default
-#'  If True, will scale the counts of each V(D)J gene group to 1 for each pseudobulk.
-#' @param renormalise bool, False by default
-#' If True, will re-scale the counts of each V(D)J gene group to 1 for each pseudobulk with any 'missing' calls removed.
-#' Relevant with normalise as True, if setupVdjPseudobulk() was ran with remove_missing set to False.
-#' @param min_count int, 1 by default
-#' Pseudobulks with fewer than these many non-'missing' calls in a V(D)J gene group will have their non-'missing' calls set to 0 for that group. Relevant with normalise as True.
-#' @param mode_option, must be one element of the vector c('B','abT','gdT'), 'abT' by default
-#' Note: only when you set extract_cols to NULL, will this argument be considered!
-#' Optional mode for extracting the V(D)J genes. If set as NULL, it will use e.g. v_call_VD` instead of v_call_abT_VDJ.
-#' @param extract_cols character vector
-#' with default value c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')
-#'  Column names where VDJ/VJ information is stored so that this will be used instead of the standard columns.
+#' This function creates a pseudobulk V(D)J feature space from single-cell data, aggregating V(D)J information into pseudobulk groups. It supports input as either a `Milo` object or a `SingleCellExperiment` object.
+#'
+#' @param milo A `Milo` or `SingleCellExperiment` object containing V(D)J data.
+#' @param pbs Optional. A binary matrix with cells as rows and pseudobulk groups as columns. 
+#'   - If `milo` is a `Milo` object, this parameter is not required.
+#'   - If `milo` is a `SingleCellExperiment` object, either `pbs` or `col_to_bulk` must be provided.
+#' @param col_to_bulk Optional character or character vector. Specifies `colData` column(s) to generate `pbs`. If multiple columns are provided, they will be combined. Default is `NULL`.
+#'   - If `milo` is a `Milo` object, this parameter is not required.
+#'   - If `milo` is a `SingleCellExperiment` object, either `pbs` or `col_to_bulk` must be provided.
+#' @param col_to_take Optional character or list of characters. Specifies `obs` column(s) to identify the most common value for each pseudobulk. Default is `NULL`.
+#' @param normalise Logical. If `TRUE`, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is `TRUE`.
+#' @param renormalise Logical. If `TRUE`, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing "missing" calls. Useful when `setupVdjPseudobulk()` was run with `remove_missing = FALSE`. Default is `FALSE`.
+#' @param min_count Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when `normalise = TRUE`. Default is `1`.
+#' @param mode_option Character. Specifies the mode for extracting V(D)J genes. Must be one of `c('B', 'abT', 'gdT')`. Default is `'abT'`.
+#'   - Note: This parameter is considered only when `extract_cols = NULL`. 
+#'   - If `NULL`, uses column names such as `v_call_VDJ` instead of `v_call_abT_VDJ`.
+#' @param extract_cols Character vector. Specifies column names where V(D)J information is stored. Default is `c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')`.
+#'
+#' @details
+#' This function aggregates V(D)J data into pseudobulk groups based on the following logic:
+#' - **Input Requirements**:
+#'   - If `milo` is a `Milo` object, neither `pbs` nor `col_to_bulk` is required.
+#'   - If `milo` is a `SingleCellExperiment` object, the user must provide either `pbs` or `col_to_bulk`.
+#' - **Normalization**:
+#'   - When `normalise = TRUE`, scales V(D)J counts to 1 for each pseudobulk group.
+#'   - When `renormalise = TRUE`, rescales the counts after removing "missing" calls.
+#' - **Mode Selection**:
+#'   - If `extract_cols = NULL`, the function relies on `mode_option` to determine which V(D)J columns to extract.
+#' - **Filtering**:
+#'   - Uses `min_count` to filter pseudobulks with insufficient counts for V(D)J groups.
 #'
 #' @examples
 #' data(sce_vdj)
@@ -38,11 +44,17 @@
 #' # Construct pseudobulked VDJ feature space
 #' pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 #'
-#' @return SingleCellExperiment object ...
+#' @return SingleCellExperiment object
 #' @include check.R
 #' @include getPbs.R
 #' @import SingleCellExperiment
-#' @import miloR
+#' @importFrom miloR nhoods Milo
+#' @importFrom rlang abort
+#' @importFrom methods is
+#' @importFrom Matrix t
+#' @importFrom S4Vectors SimpleList DataFrame
+#' @importFrom stats model.matrix contrasts
+#' 
 #' @export
 vdjPseudobulk <- function(
     milo,
@@ -55,17 +67,15 @@ vdjPseudobulk <- function(
     renormalise = FALSE,
     min_count = 1L) {
     # type check
-    requireNamespace("methods")
-    requireNamespace("rlang")
-    if (!methods::is(milo, "Milo") && !methods::is(milo, "SingleCellExperiment")) {
-        rlang::abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
+    if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
+        abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
     }
     .classCheck(pbs, "Matrix")
     if (!all(col_to_bulk %in% names(colData(milo)))) {
-        rlang::abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
+        abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
     }
     if (!all(col_to_take %in% names(colData(milo)))) {
-        rlang::abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
+        abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
     }
     .typeCheck(normalise, "logical")
     .typeCheck(renormalise, "logical")
@@ -75,8 +85,8 @@ vdjPseudobulk <- function(
     mode_option <- match.arg(mode_option)
     .typeCheck(extract_cols, "character")
     # determ the value of pbs
-    if (methods::is(milo, "Milo")) {
-        pbs <- miloR::nhoods(milo)
+    if (is(milo, "Milo")) {
+        pbs <- nhoods(milo)
     } else {
         pbs <- .getPbs(pbs, col_to_bulk, milo)
     }
@@ -106,12 +116,11 @@ vdjPseudobulk <- function(
         }
     })
     requireNamespace("stats")
-    one_hot_encoded <- stats::model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
-        stats::contrasts,
+    one_hot_encoded <- model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
+        contrasts,
         contrasts = FALSE
     )) # prevent reference level
     colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-    requireNamespace("Matrix")
     pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
     if (normalise) {
         ## identify any missing calls inserted by the setup, will end with
@@ -148,11 +157,11 @@ vdjPseudobulk <- function(
     # create colData for the new pesudobulk object milo@metadata$feature.space
     # <- pseudo_vdj_feature
     pbs.col <- .getPbsCol(pbs, col_to_take = col_to_take, milo = milo)
+    
     # create a new SingelCellExperiment object as result
-    requireNamespace("S4Vectors")
     pb.sce <- SingleCellExperiment(
-        assay = S4Vectors::SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
-        rowData = S4Vectors::DataFrame(row.names = colnames(pseudo_vdj_feature)),
+        assay = SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
+        rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)),
         colData = pbs.col
     )
     # store pseudobulk assignment, as a sparse for storage efficiency transpose

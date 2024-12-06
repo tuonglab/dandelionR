@@ -4,12 +4,12 @@
 #' @param n_eigs integer, default is NULL. Number of eigen vectors to use.
 #' - If is not specified, the number of eigen vectors will be determined using the eigen gap.
 #' @keywords internal
+#' @importFrom destiny eigenvectors eigenvalues
 #' @returns dataframe
 .determineMultiscaleSpace <- function(diffusionmap, n_eigs = NULL) {
     .classCheck(diffusionmap, "DiffusionMap")
-    requireNamespace("destiny")
-    eigenvect <- destiny::eigenvectors(diffusionmap)
-    eigenval <- destiny::eigenvalues(diffusionmap)
+    eigenvect <- eigenvectors(diffusionmap)
+    eigenval <- eigenvalues(diffusionmap)
     # determine n_eigs
     if (is.null(n_eigs)) {
         val_gaps <- eigenval[2:length(eigenval) - 1] - eigenval[2:length(eigenval)]
