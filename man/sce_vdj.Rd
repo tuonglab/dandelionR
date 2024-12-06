@@ -7,7 +7,6 @@
 \format{
 A SingleCellExperiment object with the following slots filled
 \describe{
-\item{\code{assays}}{Currently only contains 'logcounts'}
 \item{\code{colData}}{
 A \code{DataFrame} containing metadata about each sample, corresponding to obs in AnnData for python.\cr
 Below only describe the column used in the vignette:

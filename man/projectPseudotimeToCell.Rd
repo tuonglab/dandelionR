@@ -33,7 +33,6 @@ milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct Pseudobulked VDJ Feature Space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
-pbs <- milo_object@nhoods
 pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 
 # Define root and branch tips
