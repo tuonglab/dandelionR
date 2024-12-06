@@ -61,7 +61,7 @@ set.seed(100)
 
 ## Filter the data
 
-To begin, we will filter the data to remove cells with no paired chains and extract the TCR information so that we can construct pseudobulks. 
+To begin, we will filter the data and extract the TCR information so that we can construct pseudobulks. 
 ```{r, warning = FALSE}
 sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
 ```
@@ -165,7 +165,7 @@ plotPCA(pb.milo,  color_by = "CD4+T") + scale_color_gradientn(colors = pal)
 
 ## Transfer
 
-The next step is to project the pseudotime information from the pseudobulks back to each cell in the dataset. This is done by computing the distance of each cell to the pseudobulked VDJ feature space and projecting the pseudotime information to the nearest neighbour in the pseudobulked VDJ feature space.
+The next step is to project the pseudotime and the branch probability information from the pseudobulks back to each cell in the dataset. If the cell do not belong to any of the pseudobulk, it will be removed. If a cell belongs to multiple pseudobulk samples, its value should be calculated as a weighted average of the corresponding values from each pseudobulk, where each weight is inverse of the size of the pseudobulk.
 
 ### Project pseudobulk data to each cell
 ```{r}
