@@ -2,22 +2,22 @@
 % Please edit documentation in R/projectProbability.R
 \name{projectProbability}
 \alias{projectProbability}
-\title{projectProbability}
+\title{Project Probabilities from Markov Chain to Pseudobulks}
 \usage{
 projectProbability(diffusionmap, waypoints, probabilities, t = 1)
 }
 \arguments{
 \item{diffusionmap}{diffusion map, used to reconstruct diffustion distance matrix}
 
-\item{waypoints}{index of waypoints}
+\item{waypoints}{Integer vector. Indices of the waypoints used in the Markov chain.}
 
-\item{probabilities}{waypoints' probabilities, result from markov chain}
+\item{probabilities}{Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.}
 
-\item{t}{diffusion time}
+\item{t}{Numeric. The diffusion time to be used in the projection.}
 }
 \value{
 each pseudobulk's probabilites
 }
 \description{
-project the probabilities from Markov chain to each pseudobulk
+This function projects probabilities calculated from a Markov chain onto each pseudobulk based on a diffusion distance matrix.
 }

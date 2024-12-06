@@ -21,8 +21,8 @@ data after combineTCR， contain both vdj and seq}
 
 \item{remove_missing}{bool, True by default
 \itemize{
-\item If true, will remove cells with contigs matching the filter from the object.
-\item If False, will mask them with a uniform value dependent on the column name.
+\item If \code{TRUE}, will remove cells with contigs matching the filter from the object.
+\item If \code{FALSE}, will mask them with a uniform value dependent on the column name.
 }}
 }
 \value{
@@ -31,3 +31,4 @@ filtered SingleCellExperiment object according to the parameter.
 \description{
 Helper function that identifies filter_pattern hits in determined column of sce, and then either removes the offeending cells or masks the matched values with a uniform value of '(column's name)_missing'
 }
+\keyword{internal}

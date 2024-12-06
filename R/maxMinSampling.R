@@ -4,6 +4,7 @@
 #'
 #' @param data data matrix along which to sample the waypoints, usually diffusion components
 #' @param num_waypoints number of waypoints to sample
+#' @keywords internal
 #' @return Series reprenting the sampled waypoints
 .maxMinSampling <- function(data, num_waypoints) {
     message("Sampling and flocking waypoints...")

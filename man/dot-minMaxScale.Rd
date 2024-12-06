@@ -15,3 +15,4 @@ scaled value
 \description{
 scale the value to range 0 to 1
 }
+\keyword{internal}

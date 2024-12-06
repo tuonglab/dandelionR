@@ -21,3 +21,4 @@ terminal_state
 \description{
 .terminalStateFromMarkovChain
 }
+\keyword{internal}

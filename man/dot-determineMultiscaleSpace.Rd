@@ -20,3 +20,4 @@ dataframe
 \description{
 .determineMultiscaleSpace
 }
+\keyword{internal}

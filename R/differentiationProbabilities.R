@@ -1,12 +1,15 @@
-#' differentiationProbabilities
+#' Compute Branch Probabilities Using Markov Chain
 #'
-#' function to compute branch probabilities using markov chain
-#' @param wp_data Multi scale data of the waypoints
-#' @param terminal_states integer, NULL by default. The index of the terminal state.
-#' @param knn. integer, 30L by default. Number of nearest neighbors for graph construction.
-#' @param pseudotime pseudotime ordering of cells
-#' @param waypoints integer vector, index of selected waypoint used to construct markov chain
-#' @return probabilities
+#' This function calculates branch probabilities for differentiation trajectories based on a Markov chain constructed from waypoint data and pseudotime ordering.
+#'
+#' @param wp_data A multi-scale data matrix or data frame representing the waypoints.
+#' @param terminal_states Integer vector. Indices of the terminal states. Default is `NULL`.
+#' @param knn Integer. Number of nearest neighbors for graph construction. Default is `30L`.
+#' @param pseudotime Numeric vector. Pseudotime ordering of cells.
+#' @param waypoints Integer vector. Indices of selected waypoints used to construct the Markov chain.
+#' @return A numeric matrix or data frame containing branch probabilities for each waypoint.
+#' @importFrom Matrix solve
+#' @importFrom MASS ginv
 #' @include constructMarkovChain.R
 #' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
@@ -33,16 +36,14 @@ differentiationProbabilities <- function(
     Q <- T_[-abs_states_idx, -abs_states_idx]
     # Fundamental matrix
     mat <- diag(dim(Q)[[1]]) - Q
-    requireNamespace("Matrix")
-    requireNamespace("MASS")
     N <- tryCatch(
         {
-            Matrix::solve(mat)
+            solve(mat)
         },
         error = function(cnd) {
             warning("Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix")
             warning("Or you can re-run this function to reconstruct the markov chain")
-            MASS::ginv(as.matrix(mat))
+            ginv(as.matrix(mat))
         }
     )
     R <- T_[trans_states_idx, abs_states_idx]
