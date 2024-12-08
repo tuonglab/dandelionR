@@ -1,16 +1,16 @@
 #' Project Pseudotime and Branch Probabilities to Single Cells
 #'
-#' This function projects pseudotime and branch probabilities from pseudobulk (`pb.milo`) 
-#' data to single-cell resolution (`milo`). The results are stored in the `colData` of 
+#' This function projects pseudotime and branch probabilities from pseudobulk (`pb.milo`)
+#' data to single-cell resolution (`milo`). The results are stored in the `colData` of
 #' the `milo` object.
-#' 
-#' @param milo A `SingleCellExperiment` or `Milo` object. Represents single-cell data where 
+#'
+#' @param milo A `SingleCellExperiment` or `Milo` object. Represents single-cell data where
 #' pseudotime and branch probabilities will be projected.
-#' @param pb_milo A pseudobulk `Milo` object. Contains aggregated branch probabilities and 
+#' @param pb_milo A pseudobulk `Milo` object. Contains aggregated branch probabilities and
 #' pseudotime information to be transferred to single cells.
-#' @param term_states A named vector of terminal states, with branch probabilities to be 
+#' @param term_states A named vector of terminal states, with branch probabilities to be
 #' transferred. The names should correspond to branches of interest.
-#' @param suffix Character. A suffix to be added to the new column names in `colData`. 
+#' @param suffix Character. A suffix to be added to the new column names in `colData`.
 #' Default is an empty string (`''`).
 #'
 #' @examples

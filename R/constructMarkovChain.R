@@ -2,7 +2,7 @@
 #'
 #' Markov chain construction
 #' @param wp_data Multi scale data of the waypoints
-#' @param knn. Number of nearest neighbors for graph construction
+#' @param knn Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to construct markov chain
 #' @keywords internal
@@ -12,11 +12,11 @@
 #' @importFrom purrr pmap
 #' @importFrom stats dist
 #' @return transition matrix of the markov chain
-.constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints) {
+.constructMarkovChain <- function(wp_data, knn, pseudotime, waypoints) {
     message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
     # construct kNN graph
-    nbrs <- makeKNNGraph(wp_data, k = knn.)
+    nbrs <- makeKNNGraph(wp_data, k = knn)
     ## calculate distance of each edge
     distance_m <- as.matrix(dist(wp_data))
 
@@ -42,7 +42,7 @@
         KNN@i[x] + 1
     })
     ## select Standard deviation allowing for 'back' edges
-    adaptive.k <- min(c(floor(knn. / 3) - 1, 30))
+    adaptive.k <- min(c(floor(knn / 3) - 1, 30))
     dist_ <- lapply(idx_seq, function(y) {
         KNN@x[y]
     })

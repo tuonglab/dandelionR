@@ -7,7 +7,7 @@
 differentiationProbabilities(
   wp_data,
   terminal_states = NULL,
-  knn. = 30L,
+  knn = 30L,
   pseudotime,
   waypoints
 )
@@ -17,11 +17,11 @@ differentiationProbabilities(
 
 \item{terminal_states}{Integer vector. Indices of the terminal states. Default is \code{NULL}.}
 
+\item{knn}{Integer. Number of nearest neighbors for graph construction. Default is \code{30L}.}
+
 \item{pseudotime}{Numeric vector. Pseudotime ordering of cells.}
 
 \item{waypoints}{Integer vector. Indices of selected waypoints used to construct the Markov chain.}
-
-\item{knn}{Integer. Number of nearest neighbors for graph construction. Default is \code{30L}.}
 }
 \value{
 A numeric matrix or data frame containing branch probabilities for each waypoint.
