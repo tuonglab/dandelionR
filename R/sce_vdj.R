@@ -1,7 +1,7 @@
 #' Example Dataset for V(D)J Analysis
 #'
-#' The `sce_vdj` object is a down-sampled demo dataset derived from Suo et al., 2024, *Nature Biotechnology*. 
-#' This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original 
+#' The `sce_vdj` object is a down-sampled demo dataset derived from Suo et al., 2024, *Nature Biotechnology*.
+#' This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original
 #' publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
 #'
 #' @docType data
@@ -9,11 +9,11 @@
 #' @format A `SingleCellExperiment` object with the following slots:
 #' \describe{
 #'   \item{\code{colData}}{
-#'     A `DataFrame` containing metadata about each sample, corresponding to `obs` in AnnData (Python). 
+#'     A `DataFrame` containing metadata about each sample, corresponding to `obs` in AnnData (Python).
 #'     The following columns are relevant for vignette usage:
 #'     \describe{
 #'       \item{\code{productive_(mode)_VDJ}, \code{productive_(mode)_VJ}}{
-#'         Factors indicating whether the heavy or light chain is productive. \code{mode} refers to the 
+#'         Factors indicating whether the heavy or light chain is productive. \code{mode} refers to the
 #'         extraction mode for V(D)J genes and can be one of:
 #'         \itemize{
 #'           \item{\code{'abT'}}: TCRαβ
@@ -22,7 +22,7 @@
 #'         }
 #'       }
 #'       \item{\code{Gene segment fields}}{
-#'         Gene segment annotations with column names in the format \code{(v/d/j)_call_(mode)_(VDJ/VJ)}. 
+#'         Gene segment annotations with column names in the format \code{(v/d/j)_call_(mode)_(VDJ/VJ)}.
 #'         Examples include:
 #'         \itemize{
 #'           \item{\code{v_call_abT_VDJ}}: V gene for TCRαβ VDJ recombination

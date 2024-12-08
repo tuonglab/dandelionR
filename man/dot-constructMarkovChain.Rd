@@ -4,12 +4,12 @@
 \alias{.constructMarkovChain}
 \title{.constructMarkovChain}
 \usage{
-.constructMarkovChain(wp_data, knn., pseudotime, waypoints)
+.constructMarkovChain(wp_data, knn, pseudotime, waypoints)
 }
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}
 
-\item{knn.}{Number of nearest neighbors for graph construction}
+\item{knn}{Number of nearest neighbors for graph construction}
 
 \item{pseudotime}{pseudotime ordering of cells}
 

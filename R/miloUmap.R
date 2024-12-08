@@ -1,16 +1,16 @@
 #' Perform UMAP on the Adjacency Matrix of a Milo Object
 #'
-#' This function uses `RunUMAP` from the Seurat package to perform UMAP dimensionality 
+#' This function uses `RunUMAP` from the Seurat package to perform UMAP dimensionality
 #' reduction on the adjacency matrix of the KNN graph in a Milo object.
 #'
-#' @param milo A `Milo` object containing a KNN graph. UMAP will be conducted on 
+#' @param milo A `Milo` object containing a KNN graph. UMAP will be conducted on
 #' the adjacency matrix of this graph.
-#' @param slot_name Character. The name of the slot in `reducedDims` where the UMAP 
+#' @param slot_name Character. The name of the slot in `reducedDims` where the UMAP
 #' results will be stored. Default is `'UMAP_knngraph'`.
-#' @param n.neighbors Integer. The number of neighboring points used in the UMAP 
-#' algorithm. Default is `50L`. For further details, refer to the `RunUMAP` 
+#' @param n.neighbors Integer. The number of neighboring points used in the UMAP
+#' algorithm. Default is `50L`. For further details, refer to the `RunUMAP`
 #' documentation.
-#' @param metric Character. The distance metric to be used in the UMAP algorithm. 
+#' @param metric Character. The distance metric to be used in the UMAP algorithm.
 #' Default is `'euclidean'`. For further details, refer to the `RunUMAP` documentation.
 #'
 #' @examples
