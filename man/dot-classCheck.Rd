@@ -14,3 +14,4 @@
 \description{
 check whether the input is with the correct class
 }
+\keyword{internal}

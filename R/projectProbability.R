@@ -1,17 +1,19 @@
-#' projectProbability
+#' Project Probabilities from Markov Chain to Pseudobulks
 #'
-#' project the probabilities from Markov chain to each pseudobulk
+#' This function projects probabilities calculated from a Markov chain onto each pseudobulk based on a diffusion distance matrix.
+#'
 #' @param diffusionmap diffusion map, used to reconstruct diffustion distance matrix
-#' @param waypoints index of waypoints
-#' @param probabilities waypoints' probabilities, result from markov chain
-#' @param t diffusion time
+#' @param waypoints Integer vector. Indices of the waypoints used in the Markov chain.
+#' @param probabilities Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.
+#' @param t Numeric. The diffusion time to be used in the projection.
+#' @importFrom destiny eigenvalues
+#' @importFrom stats sd
 #' @return each pseudobulk's probabilites
 projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1) {
     message("Project probabilites from waypoints to each pseudobulk...")
     # Extract eigenvalues and eigenvectors from the DiffusionMap
-    requireNamespace("destiny")
-    eigenvalues <- destiny::eigenvalues(diffusionmap) # vector of eigenvalues
-    eigenvectors <- destiny::eigenvectors(diffusionmap) # matrix of eigenvectors (each column is an eigenvector)
+    eigenvalues <- eigenvalues(diffusionmap) # vector of eigenvalues
+    eigenvectors <- eigenvectors(diffusionmap) # matrix of eigenvectors (each column is an eigenvector)
     # Set diffusion time `t` and the number of components `K` to use
     t <- 1 # diffusion time
     K <- min(length(eigenvalues), ncol(eigenvectors)) # use available components

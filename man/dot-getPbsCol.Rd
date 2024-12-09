@@ -19,3 +19,4 @@ pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object
 \description{
 Helper function to create the new pseudobulk object's coldata.
 }
+\keyword{internal}

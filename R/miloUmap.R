@@ -1,4 +1,7 @@
-#' Computes UMAP from Milo KNN graph.
+#' Perform UMAP on the Adjacency Matrix of a Milo Object
+#'
+#' This function uses `uwot::umap` to perform UMAP dimensionality
+#' reduction on the adjacency matrix of the KNN graph in a Milo object.
 #'
 #' @param milo the milo object with knn graph that needed to conduct umap on.
 #' @param slot_name character, with default 'UMAP_knngraph'.
@@ -26,13 +29,15 @@
 #'
 #' @return milo object with umap reduction
 #' @import SingleCellExperiment
+#' @importFrom igraph as_adjacency_matrix
+#' @importFrom miloR graph
 #' @importFrom uwot umap
 #' @export
 miloUmap <- function(milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean", min_dist = 0.3, ...) {
     requireNamespace("miloR")
     requireNamespace("igraph")
     # get the graph's adjacency matrix
-    graphm <- igraph::as_adjacency_matrix(miloR::graph(milo))
+    graphm <- as_adjacency_matrix(miloR::graph(milo))
     # inherit the names of each row
     rownames(graphm) <- rownames(colData(milo))
     colnames(graphm) <- rownames(colData(milo))

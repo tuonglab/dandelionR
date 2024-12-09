@@ -17,3 +17,4 @@ Series reprenting the sampled waypoints
 \description{
 function for max min sampling of waypoints
 }
+\keyword{internal}

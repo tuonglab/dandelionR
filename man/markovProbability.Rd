@@ -2,7 +2,7 @@
 % Please edit documentation in R/markovProbability.R
 \name{markovProbability}
 \alias{markovProbability}
-\title{markovProbability}
+\title{Markov Chain Construction and Probability Calculation}
 \usage{
 markovProbability(
   milo,
@@ -16,27 +16,27 @@ markovProbability(
 )
 }
 \arguments{
-\item{milo}{milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter}
+\item{milo}{A \code{Milo} or \code{SingleCellExperiment} object. This object should have pseudotime stored in \code{colData}, which will be used to calculate probabilities. If pseudotime is available in \code{milo}, it takes precedence over the value provided through the \code{diffusiontime} parameter.}
 
-\item{diffusionmap}{DiffusionMap object corresponds to milo}
+\item{diffusionmap}{A \code{DiffusionMap} object corresponding to the \code{milo} object. Used for Markov chain construction.}
 
-\item{diffusiontime}{if milo do not restore pseudotime, use this parameter to transfer it to function}
+\item{diffusiontime}{Numeric vector. If pseudotime is not stored in \code{milo}, this parameter can be used to provide pseudotime values to the function.}
 
-\item{terminal_state}{the index of the terminal state}
+\item{terminal_state}{Integer. The index of the terminal state in the Markov chain.}
 
-\item{root_cell}{the index of the root state}
+\item{root_cell}{Integer. The index of the root state in the Markov chain.}
 
-\item{pseudotime_key}{the column name in the colData that holds the inferred pseudotime}
+\item{pseudotime_key}{Character. The name of the column in \code{colData} that contains the inferred pseudotime.}
 
-\item{scale_components}{logical, If True, the components will be scale before constructing markov chain}
+\item{scale_components}{Logical. If \code{TRUE}, the components will be scaled before constructing the Markov chain. Default is \code{FALSE}.}
 
-\item{num_waypoints}{integer, 500L by default. Number of waypoints to sample to construct markov chain.}
+\item{num_waypoints}{Integer. The number of waypoints to sample when constructing the Markov chain. Default is \code{500L}.}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 }
 \description{
-Preprocessing data and Construct markov chain and calculate probabilities
+This function preprocesses data, constructs a Markov chain, and calculates transition probabilities based on pseudotime information.
 }
 \examples{
 data(sce_vdj)

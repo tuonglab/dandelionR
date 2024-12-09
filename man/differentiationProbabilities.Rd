@@ -2,30 +2,30 @@
 % Please edit documentation in R/differentiationProbabilities.R
 \name{differentiationProbabilities}
 \alias{differentiationProbabilities}
-\title{differentiationProbabilities}
+\title{Compute Branch Probabilities Using Markov Chain}
 \usage{
 differentiationProbabilities(
   wp_data,
   terminal_states = NULL,
-  knn. = 30L,
+  knn = 30L,
   pseudotime,
   waypoints
 )
 }
 \arguments{
-\item{wp_data}{Multi scale data of the waypoints}
+\item{wp_data}{A multi-scale data matrix or data frame representing the waypoints.}
 
-\item{terminal_states}{integer, NULL by default. The index of the terminal state.}
+\item{terminal_states}{Integer vector. Indices of the terminal states. Default is \code{NULL}.}
 
-\item{knn.}{integer, 30L by default. Number of nearest neighbors for graph construction.}
+\item{knn}{Integer. Number of nearest neighbors for graph construction. Default is \code{30L}.}
 
-\item{pseudotime}{pseudotime ordering of cells}
+\item{pseudotime}{Numeric vector. Pseudotime ordering of cells.}
 
-\item{waypoints}{integer vector, index of selected waypoint used to construct markov chain}
+\item{waypoints}{Integer vector. Indices of selected waypoints used to construct the Markov chain.}
 }
 \value{
-probabilities
+A numeric matrix or data frame containing branch probabilities for each waypoint.
 }
 \description{
-function to compute branch probabilities using markov chain
+This function calculates branch probabilities for differentiation trajectories based on a Markov chain constructed from waypoint data and pseudotime ordering.
 }

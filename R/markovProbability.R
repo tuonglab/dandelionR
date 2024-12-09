@@ -1,14 +1,14 @@
-#' markovProbability
+#' Markov Chain Construction and Probability Calculation
 #'
-#' Preprocessing data and Construct markov chain and calculate probabilities
-#' @param milo milo or SingelCellExperiment object, with pseudotime stored in colData, used to store the result and extract pseudotime. Pseudotime stored in milo has higher priority than the value provided through the diffusiontime parameter
-#' @param diffusionmap DiffusionMap object corresponds to milo
-#' @param diffusiontime if milo do not restore pseudotime, use this parameter to transfer it to function
-#' @param terminal_state the index of the terminal state
-#' @param root_cell the index of the root state
-#' @param pseudotime_key the column name in the colData that holds the inferred pseudotime
-#' @param scale_components logical, If True, the components will be scale before constructing markov chain
-#' @param num_waypoints integer, 500L by default. Number of waypoints to sample to construct markov chain.
+#' This function preprocesses data, constructs a Markov chain, and calculates transition probabilities based on pseudotime information.
+#' @param milo A `Milo` or `SingleCellExperiment` object. This object should have pseudotime stored in `colData`, which will be used to calculate probabilities. If pseudotime is available in `milo`, it takes precedence over the value provided through the `diffusiontime` parameter.
+#' @param diffusionmap A `DiffusionMap` object corresponding to the `milo` object. Used for Markov chain construction.
+#' @param diffusiontime Numeric vector. If pseudotime is not stored in `milo`, this parameter can be used to provide pseudotime values to the function.
+#' @param terminal_state Integer. The index of the terminal state in the Markov chain.
+#' @param root_cell Integer. The index of the root state in the Markov chain.
+#' @param pseudotime_key Character. The name of the column in `colData` that contains the inferred pseudotime.
+#' @param scale_components Logical. If `TRUE`, the components will be scaled before constructing the Markov chain. Default is `FALSE`.
+#' @param num_waypoints Integer. The number of waypoints to sample when constructing the Markov chain. Default is `500L`.
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
@@ -51,15 +51,17 @@
 #' @include differentiationProbabilities.R
 #' @include projectProbability.R
 #' @import SingleCellExperiment
+#' @importFrom rlang abort
+#' @importFrom S4Vectors DataFrame
+#' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
     milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,
     pseudotime_key = "pseudotime",
     scale_components = TRUE, num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
-        requireNamespace("rlang")
         if (is.null(diffusiontime)) {
-            rlang::abort(paste("Missing pseudotime data. This data can be either stored in", deparse(substitute(milo)), "or provided by parameter diffusiontime"))
+            abort(paste("Missing pseudotime data. This data can be either stored in", deparse(substitute(milo)), "or provided by parameter diffusiontime"))
         } else {
             milo[[pseudotime_key]] <- diffusiontime
         }
@@ -83,8 +85,7 @@ markovProbability <- function(
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
     # store the result into milo
-    requireNamespace("S4Vectors")
-    new_coldata <- S4Vectors::DataFrame(probabilities_proj[
+    new_coldata <- DataFrame(probabilities_proj[
         ,
         1
     ], probabilities_proj[, 2])

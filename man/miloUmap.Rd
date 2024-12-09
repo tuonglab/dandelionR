@@ -2,7 +2,7 @@
 % Please edit documentation in R/miloUmap.R
 \name{miloUmap}
 \alias{miloUmap}
-\title{Computes UMAP from Milo KNN graph.}
+\title{Perform UMAP on the Adjacency Matrix of a Milo Object}
 \usage{
 miloUmap(
   milo,
@@ -43,7 +43,8 @@ miloUmap(
 milo object with umap reduction
 }
 \description{
-Computes UMAP from Milo KNN graph.
+This function uses \code{uwot::umap} to perform UMAP dimensionality
+reduction on the adjacency matrix of the KNN graph in a Milo object.
 }
 \examples{
 data(sce_vdj)

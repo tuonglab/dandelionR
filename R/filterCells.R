@@ -6,14 +6,16 @@
 #' @param col_n mode for extraction the V(D)J genes.
 #' @param filter_pattern character string, optional ',|None|No_contig' by default
 #' @param remove_missing bool, True by default
-#'  - If true, will remove cells with contigs matching the filter from the object.
-#'  - If False, will mask them with a uniform value dependent on the column name.
+#'  - If `TRUE`, will remove cells with contigs matching the filter from the object.
+#'  - If `FALSE`, will mask them with a uniform value dependent on the column name.
 #' @import SingleCellExperiment
+#' @importFrom SummarizedExperiment colData<-
+#' @keywords internal
+#' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object according to the parameter.
 .filterCells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
-    requireNamespace("rlang")
     if (ncol(sce) < 1) {
-        rlang::abort("None column remains, please check whether the filtering option is correct.")
+        abort("None column remains, please check whether the filtering option is correct.")
     }
     # find filter pattern hits in our column of interest
     temp <- colData(sce)[col_n]
