@@ -31,6 +31,10 @@ Collate:
     'setupVdjPseudobulk.R'
     'vdjPseudobulk.R'
 Imports:
+    miloR,
+    SingleCellExperiment,
+    SummarizedExperiment,
+    uwot,
     BiocGenerics,
     bluster,
     destiny, 
@@ -41,7 +45,6 @@ Imports:
     miloR,
     purrr,
     S4Vectors,
-    Seurat,
     SingleCellExperiment,
     spam,
     stats,
