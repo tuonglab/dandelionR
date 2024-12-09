@@ -41,7 +41,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">differentiationProbabilities</span><span class="op">(</span></span>
 <span>  <span class="va">wp_data</span>,</span>
 <span>  terminal_states <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  knn. <span class="op">=</span> <span class="fl">30L</span>,</span>
+<span>  knn <span class="op">=</span> <span class="fl">30L</span>,</span>
 <span>  <span class="va">pseudotime</span>,</span>
 <span>  <span class="va">waypoints</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -59,16 +59,16 @@
 <dd><p>Integer vector. Indices of the terminal states. Default is <code>NULL</code>.</p></dd>
 
 
+<dt id="arg-knn">knn<a class="anchor" aria-label="anchor" href="#arg-knn"></a></dt>
+<dd><p>Integer. Number of nearest neighbors for graph construction. Default is <code>30L</code>.</p></dd>
+
+
 <dt id="arg-pseudotime">pseudotime<a class="anchor" aria-label="anchor" href="#arg-pseudotime"></a></dt>
 <dd><p>Numeric vector. Pseudotime ordering of cells.</p></dd>
 
 
 <dt id="arg-waypoints">waypoints<a class="anchor" aria-label="anchor" href="#arg-waypoints"></a></dt>
 <dd><p>Integer vector. Indices of selected waypoints used to construct the Markov chain.</p></dd>
-
-
-<dt id="arg-knn">knn<a class="anchor" aria-label="anchor" href="#arg-knn"></a></dt>
-<dd><p>Integer. Number of nearest neighbors for graph construction. Default is <code>30L</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
