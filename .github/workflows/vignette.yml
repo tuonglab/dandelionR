@@ -25,6 +25,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GH_PAT }}
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
