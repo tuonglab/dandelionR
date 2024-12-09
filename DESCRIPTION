@@ -53,7 +53,7 @@ Suggests:
     RColorBrewer,
     stats
 VignetteBuilder: knitr
-URL: https://www.github.com/tuonglab/dandelionR/
+url: https://tuonglab.github.io/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
 Depends: 
     R (>= 4.4.0)
