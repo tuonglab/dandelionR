@@ -1,18 +1,19 @@
-#' miloUmap
+#' Computes UMAP from Milo KNN graph.
 #'
-#' use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
 #' @param milo the milo object with knn graph that needed to conduct umap on.
 #' @param slot_name character, with default 'UMAP_knngraph'.
 #'  - The slot name in reduceDim where the result store
-#' @param n.neighbors integer, with default 50L.
-#'  - the number of neighboring points used
-#'  - parameter of RunUMAP, checking its document for further detail
+#' @param n_neighbors integer, with default 50L.
+#'  - the size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation.
+#'  - Here, the goal is to create large enough neighborhoods to capture the local manifold structure to allow for hypersampling.
 #' @param metric character, with default 'euclidean'
-#'  - the choice of metric used to measure distance
-#'  - parameter of RunUMAP, checking its document for further detail
+#'  - the choice of metric used to measure distance to find nearest neighbors. Default is 'euclidean'.
+#' @param min_dist numeric, with default 0.3
+#'  - the minimum distance between points in the low dimensional space
+#' @param ... other parameters passed to uwot::umap
 #' @examples
 #' data(sce_vdj)
-#' sce_vdj <- setupVdjPseudobulk(sce_vdj,
+#' sce_vdj <- setupVDJPseudobulk(sce_vdj,
 #'     already.productive = FALSE
 #' )
 #' # Build Milo Object
@@ -25,8 +26,9 @@
 #'
 #' @return milo object with umap reduction
 #' @import SingleCellExperiment
+#' @importFrom uwot umap
 #' @export
-miloUmap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metric = "euclidean") {
+miloUmap <- function(milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean", min_dist = 0.3, ...) {
     requireNamespace("miloR")
     requireNamespace("igraph")
     # get the graph's adjacency matrix
@@ -35,8 +37,7 @@ miloUmap <- function(milo, slot_name = "UMAP_knngraph", n.neighbors = 50L, metri
     rownames(graphm) <- rownames(colData(milo))
     colnames(graphm) <- rownames(colData(milo))
     # conduct umap
-    requireNamespace("Seurat")
-    umap <- Seurat::RunUMAP(graphm, n.neighbors = n.neighbors, metric = metric)
-    reducedDim(milo, slot_name) <- umap@cell.embeddings
+    pos <- umap(graphm, n_neighbors = n_neighbors, metric = metric, min_dist = min_dist, ...)
+    reducedDim(milo, slot_name) <- pos
     milo
 }

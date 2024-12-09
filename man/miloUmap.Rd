@@ -2,13 +2,15 @@
 % Please edit documentation in R/miloUmap.R
 \name{miloUmap}
 \alias{miloUmap}
-\title{miloUmap}
+\title{Computes UMAP from Milo KNN graph.}
 \usage{
 miloUmap(
   milo,
   slot_name = "UMAP_knngraph",
-  n.neighbors = 50L,
-  metric = "euclidean"
+  n_neighbors = 50L,
+  metric = "euclidean",
+  min_dist = 0.3,
+  ...
 )
 }
 \arguments{
@@ -19,27 +21,33 @@ miloUmap(
 \item The slot name in reduceDim where the result store
 }}
 
-\item{n.neighbors}{integer, with default 50L.
+\item{n_neighbors}{integer, with default 50L.
 \itemize{
-\item the number of neighboring points used
-\item parameter of RunUMAP, checking its document for further detail
+\item the size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation.
+\item Here, the goal is to create large enough neighborhoods to capture the local manifold structure to allow for hypersampling.
 }}
 
 \item{metric}{character, with default 'euclidean'
 \itemize{
-\item the choice of metric used to measure distance
-\item parameter of RunUMAP, checking its document for further detail
+\item the choice of metric used to measure distance to find nearest neighbors. Default is 'euclidean'.
 }}
+
+\item{min_dist}{numeric, with default 0.3
+\itemize{
+\item the minimum distance between points in the low dimensional space
+}}
+
+\item{...}{other parameters passed to uwot::umap}
 }
 \value{
 milo object with umap reduction
 }
 \description{
-use function RunUMAP from Seurat to conduct the umap on the adjacency matrix of knn graph in milo object
+Computes UMAP from Milo KNN graph.
 }
 \examples{
 data(sce_vdj)
-sce_vdj <- setupVdjPseudobulk(sce_vdj,
+sce_vdj <- setupVDJPseudobulk(sce_vdj,
     already.productive = FALSE
 )
 # Build Milo Object
