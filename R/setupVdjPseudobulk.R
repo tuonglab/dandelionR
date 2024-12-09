@@ -1,33 +1,33 @@
 #' Preprocess V(D)J Data for Pseudobulk Analysis
 #'
-#' This function preprocesses single-cell V(D)J sequencing data for pseudobulk analysis. It filters data based 
+#' This function preprocesses single-cell V(D)J sequencing data for pseudobulk analysis. It filters data based
 #' on productivity and chain status, subsets data, extracts main V(D)J genes, and removes unmapped entries.
 #'
 #' @param sce A `SingleCellExperiment` object. V(D)J data should be contained in `colData` for filtering.
-#' @param mode_option Optional character. Specifies the mode for extracting V(D)J genes. 
+#' @param mode_option Optional character. Specifies the mode for extracting V(D)J genes.
 #' If `NULL`, `extract_cols` must be specified. Default is `NULL`.
-#' @param already.productive Logical. Whether the data has already been filtered for productivity. 
+#' @param already.productive Logical. Whether the data has already been filtered for productivity.
 #' If `TRUE`, skips productivity filtering. Default is `FALSE`.
-#' @param productive_cols Character vector. Names of `colData` columns used for productivity filtering. 
+#' @param productive_cols Character vector. Names of `colData` columns used for productivity filtering.
 #' Default is `NULL`.
 #' @param productive_vj Logical. If `TRUE`, retains cells where the main VJ chain is productive.
 #'  Default is `TRUE`.
-#' @param productive_vdj Logical. If `TRUE`, retains cells where the main VDJ chain is productive. 
+#' @param productive_vdj Logical. If `TRUE`, retains cells where the main VDJ chain is productive.
 #' Default is `TRUE`.
-#' @param allowed_chain_status Character vector. Specifies chain statuses to retain. Valid options 
+#' @param allowed_chain_status Character vector. Specifies chain statuses to retain. Valid options
 #' include `c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ', 'Orphan VDJ-exception')`. Default is `NULL`.
 #' @param subsetby Character. Name of a `colData` column for subsetting. Default is `NULL`.
 #' @param groups Character vector. Specifies the subset condition for filtering. Default is `NULL`.
-#' @param extract_cols Character vector. Names of `colData` columns where V(D)J information is 
+#' @param extract_cols Character vector. Names of `colData` columns where V(D)J information is
 #' stored, used instead of the standard columns. Default is `NULL`.
 #' @param filter_pattern Character. Pattern to filter unmapped data. Default is `',|None|No_contig'`.
-#' @param check_vj_mapping Character vector. Specifies columns to check for VJ mapping. Default 
+#' @param check_vj_mapping Character vector. Specifies columns to check for VJ mapping. Default
 #' is `c('v_call', 'j_call')`.
-#' @param check_vdj_mapping Character vector. Specifies columns to check for VDJ mapping. Default 
+#' @param check_vdj_mapping Character vector. Specifies columns to check for VDJ mapping. Default
 #' is `c('v_call', 'd_call', 'j_call')`.
-#' @param check_extract_cols_mapping Character vector. Specifies columns related to `extract_cols` 
+#' @param check_extract_cols_mapping Character vector. Specifies columns related to `extract_cols`
 #' for mapping checks. Default is `NULL`.
-#' @param remove_missing Logical. If `TRUE`, removes cells with contigs matching the filter. 
+#' @param remove_missing Logical. If `TRUE`, removes cells with contigs matching the filter.
 #' If `FALSE`, masks them with uniform values. Default is `TRUE`.
 #'
 #' @details

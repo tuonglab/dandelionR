@@ -1,6 +1,6 @@
 #' Perform UMAP on the Adjacency Matrix of a Milo Object
 #'
-#' This function uses `uwot::umap` to perform UMAP dimensionality 
+#' This function uses `uwot::umap` to perform UMAP dimensionality
 #' reduction on the adjacency matrix of the KNN graph in a Milo object.
 #'
 #' @param milo the milo object with knn graph that needed to conduct umap on.

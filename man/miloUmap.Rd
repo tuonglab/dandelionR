@@ -14,11 +14,12 @@ miloUmap(
 )
 }
 \arguments{
-\item{milo}{A \code{Milo} object containing a KNN graph. UMAP will be conducted on
-the adjacency matrix of this graph.}
+\item{milo}{the milo object with knn graph that needed to conduct umap on.}
 
-\item{slot_name}{Character. The name of the slot in \code{reducedDims} where the UMAP
-results will be stored. Default is \code{'UMAP_knngraph'}.}
+\item{slot_name}{character, with default 'UMAP_knngraph'.
+\itemize{
+\item The slot name in reduceDim where the result store
+}}
 
 \item{n_neighbors}{integer, with default 50L.
 \itemize{
@@ -42,7 +43,8 @@ results will be stored. Default is \code{'UMAP_knngraph'}.}
 milo object with umap reduction
 }
 \description{
-Computes UMAP from Milo KNN graph.
+This function uses \code{uwot::umap} to perform UMAP dimensionality
+reduction on the adjacency matrix of the KNN graph in a Milo object.
 }
 \examples{
 data(sce_vdj)
