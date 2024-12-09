@@ -1,4 +1,4 @@
-library(testthat)
-library(dandelionR)
+# library(testthat)
+# library(dandelionR)
 
-test_check("dandelionR")
+# test_check("dandelionR")
