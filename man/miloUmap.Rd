@@ -47,7 +47,7 @@ Computes UMAP from Milo KNN graph.
 }
 \examples{
 data(sce_vdj)
-sce_vdj <- setupVDJPseudobulk(sce_vdj,
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
 )
 # Build Milo Object
