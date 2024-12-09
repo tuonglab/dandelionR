@@ -108,7 +108,7 @@ jobs:
             Preview documentation for this PR (at commit ${{ github.event.pull_request.head.sha }})
 
   vignette-pr-clean:
-    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    if: (github.event.action == 'closed' || github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
