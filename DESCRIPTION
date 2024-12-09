@@ -46,7 +46,8 @@ Imports:
     spam,
     stats,
     SummarizedExperiment, 
-    rlang
+    rlang,
+    uwot
 Suggests:
     BiocStyle,
     knitr,
