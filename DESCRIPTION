@@ -50,7 +50,6 @@ Suggests:
     scater,
     Seurat,
     spam,
-    testthat,
     RColorBrewer,
     stats
 VignetteBuilder: knitr

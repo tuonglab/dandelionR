@@ -59,11 +59,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
-            any::rcmdcheck
-            testthat
+          extra-packages: any::rcmdcheck
           packages: |
-            covr
+            covr,
+            testthat
 
       - uses: r-lib/actions/check-r-package@v2
 
