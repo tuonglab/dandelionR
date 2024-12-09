@@ -70,11 +70,9 @@ jobs:
 
       - name: Build and publish vignette
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
-        with:
-          clean: false
-          branch: gh-pages
-          folder: .
+        run: |
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
+        shell: bash -l {0}
 
       # If events is a PR, set subdir to 'preview/pr<pr_number>'
       - name: "[PR] Set documentation subdirectory"
@@ -83,22 +81,15 @@ jobs:
           echo "PKGDOWN_DEV_MODE=unreleased" >> $GITHUB_ENV
           echo "subdir=preview/pr${{ github.event.number }}" >> $GITHUB_ENV
 
-      - name: Build and publish vignette
-        if: github.event_name == 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
-        with:
-          clean: false
-          branch: gh-pages
-          folder: .
-          target-folder: ${{ env.subdir }}
-
-      - name: Extract deployed URL
-        if: github.event_name == 'pull_request'
+      - name: Deploy pkgdown site
         id: deploy
         shell: Rscript {0}
         run: |
           subdir <- "${{ env.subdir }}"
           pkg <- pkgdown::as_pkgdown(".")
+
+          # Deploy pkgdown site to branch
+          pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
           # Report deployed site URL
           deployed_url <- file.path(pkg$meta$url, subdir)
