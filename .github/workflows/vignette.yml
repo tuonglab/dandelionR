@@ -22,7 +22,7 @@ jobs:
           - { os: ubuntu-latest }
     runs-on: ${{ matrix.config.os }}
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GH_PAT }}
     permissions:
       contents: write
     steps:
@@ -99,7 +99,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: hasura/comment-progress@v2.2.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_PAT }}
           repository: ${{ github.repository }}
           number: ${{ github.event.number }}
           id: pkgdown-deploy
