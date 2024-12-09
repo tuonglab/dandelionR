@@ -39,6 +39,7 @@ jobs:
         run: |
           R --version > VERSION
           echo "version=$(head -1 VERSION | awk '{print $3}')" >> $GITHUB_OUTPUT
+          rm VERSION
         shell: bash -l {0}
 
       - name: Get Bioconductor version

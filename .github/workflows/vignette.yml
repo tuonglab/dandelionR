@@ -61,9 +61,82 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
-      - name: Build and deploy pkgdown site
+      - name: Configure git
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Build and publish vignette
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        run: |
           Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
         shell: bash -l {0}
+
+      # If events is a PR, set subdir to 'preview/pr<pr_number>'
+      - name: "[PR] Set documentation subdirectory"
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "PKGDOWN_DEV_MODE=unreleased" >> $GITHUB_ENV
+          echo "subdir=preview/pr${{ github.event.number }}" >> $GITHUB_ENV
+
+      - name: Deploy pkgdown site
+        id: deploy
+        shell: Rscript {0}
+        run: |
+          subdir <- "${{ env.subdir }}"
+          pkg <- pkgdown::as_pkgdown(".")
+
+          # Deploy pkgdown site to branch
+          pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
+
+          # Report deployed site URL
+          deployed_url <- file.path(pkg$meta$url, subdir)
+          cat(sprintf('url=%s', deployed_url), file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
+
+      - name: Notify pkgdown deployment
+        if: github.event_name == 'pull_request'
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: pkgdown-deploy
+          append: false
+          message: >
+            :book: ${{ steps.deploy.outputs.url }}
+
+            Preview documentation for this PR (at commit ${{ github.event.pull_request.head.sha }})
+
+  vignette-pr-clean:
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "gh-pages"
+
+      - name: Clean up PR Preview
+        run: |
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+          preview_dir="preview/pr${{ github.event.pull_request.number }}"
+          if [ -d "$preview_dir" ]; then
+            git rm -r $preview_dir
+            git commit -m "Remove $preview_dir (GitHub Actions)" || echo 'No preview to remove'
+            git push origin || echo 'No preview to remove'
+          else
+            echo 'No preview to remove'
+          fi
+
+      - name: Notify pkgdown cleanup
+        uses: hasura/comment-progress@v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          number: ${{ github.event.number }}
+          id: pkgdown-deploy
+          message: |
+            _:closed_book: Preview documentation for this PR has been cleaned up._
