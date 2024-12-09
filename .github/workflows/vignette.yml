@@ -62,6 +62,7 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Configure git
+        run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
