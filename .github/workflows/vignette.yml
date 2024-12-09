@@ -115,37 +115,3 @@ jobs:
             :book: ${{ steps.deploy.outputs.url }}
 
             Preview documentation for this PR (at commit ${{ github.event.pull_request.head.sha }})
-
-  vignette-pr-clean:
-    if: (github.event.action == 'closed' || github.event.pull_request.merged == true)
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: "gh-pages"
-
-      - name: Clean up PR Preview
-        run: |
-          git config --local user.name "$GITHUB_ACTOR"
-          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-          preview_dir="preview/pr${{ github.event.pull_request.number }}"
-          if [ -d "$preview_dir" ]; then
-            git rm -r $preview_dir
-            git commit -m "Remove $preview_dir (GitHub Actions)" || echo 'No preview to remove'
-            git push origin || echo 'No preview to remove'
-          else
-            echo 'No preview to remove'
-          fi
-
-      - name: Notify pkgdown cleanup
-        uses: hasura/comment-progress@v2.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          number: ${{ github.event.number }}
-          id: pkgdown-deploy
-          message: |
-            _:closed_book: Preview documentation for this PR has been cleaned up._
