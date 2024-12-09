@@ -23,6 +23,8 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -68,9 +70,11 @@ jobs:
 
       - name: Build and publish vignette
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        run: |
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
-        shell: bash -l {0}
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
 
       # If events is a PR, set subdir to 'preview/pr<pr_number>'
       - name: "[PR] Set documentation subdirectory"
@@ -79,15 +83,20 @@ jobs:
           echo "PKGDOWN_DEV_MODE=unreleased" >> $GITHUB_ENV
           echo "subdir=preview/pr${{ github.event.number }}" >> $GITHUB_ENV
 
-      - name: Deploy pkgdown site
+      - name: Build and publish vignette
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
+          target-folder: ${{ env.subdir }}
+
+      - name: Extract deployed URL
         id: deploy
         shell: Rscript {0}
         run: |
           subdir <- "${{ env.subdir }}"
           pkg <- pkgdown::as_pkgdown(".")
-
-          # Deploy pkgdown site to branch
-          pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
           # Report deployed site URL
           deployed_url <- file.path(pkg$meta$url, subdir)
