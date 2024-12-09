@@ -47,7 +47,7 @@
 #' @return SingleCellExperiment object
 #' @include check.R
 #' @include getPbs.R
-#' @import SingleCellExperiment
+#' @importFrom SingleCellExperiment colData SingleCellExperiment
 #' @importFrom miloR nhoods Milo
 #' @importFrom rlang abort
 #' @importFrom methods is
@@ -66,6 +66,8 @@ vdjPseudobulk <- function(
     normalise = TRUE,
     renormalise = FALSE,
     min_count = 1L) {
+    requireNamespace("stats")
+    requireNamespace("Matrix")
     # type check
     if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
         abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
@@ -115,7 +117,6 @@ vdjPseudobulk <- function(
             x
         }
     })
-    requireNamespace("stats")
     one_hot_encoded <- model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
         contrasts,
         contrasts = FALSE

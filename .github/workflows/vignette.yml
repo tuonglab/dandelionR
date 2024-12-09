@@ -74,7 +74,7 @@ jobs:
         with:
           clean: false
           branch: gh-pages
-          folder: docs
+          folder: .
 
       # If events is a PR, set subdir to 'preview/pr<pr_number>'
       - name: "[PR] Set documentation subdirectory"
@@ -89,7 +89,7 @@ jobs:
         with:
           clean: false
           branch: gh-pages
-          folder: docs
+          folder: .
           target-folder: ${{ env.subdir }}
 
       - name: Extract deployed URL

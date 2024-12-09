@@ -7,12 +7,12 @@
 #' the adjacency matrix of this graph.
 #' @param slot_name Character. The name of the slot in `reducedDims` where the UMAP
 #' results will be stored. Default is `'UMAP_knngraph'`.
-#' @param n_neighbors Integer. The size of local neighborhood (in terms of number of 
-#' neighboring sample points) used for manifold approximation. Default is `50L`. 
+#' @param n_neighbors Integer. The size of local neighborhood (in terms of number of
+#' neighboring sample points) used for manifold approximation. Default is `50L`.
 #' For further details, refer to the `uwot::umap` documentation.
 #' @param metric Character. The distance metric to be used in the UMAP algorithm.
 #' Default is `'euclidean'`. For further details, refer to the `uwot::umap` documentation.
-#' @param min_dist Float. The minimum distance between points in the low dimensional space. 
+#' @param min_dist Float. The minimum distance between points in the low dimensional space.
 #' Default is `0.3`.
 #' @param ... other parameters passed to `uwot::umap`.
 #' @examples
@@ -29,7 +29,7 @@
 #' milo_object <- miloUmap(milo_object)
 #'
 #' @return milo object with umap reduction
-#' @import SingleCellExperiment
+#' @importFrom SingleCellExperiment reducedDim
 #' @importFrom igraph as_adjacency_matrix
 #' @importFrom miloR graph
 #' @importFrom uwot umap

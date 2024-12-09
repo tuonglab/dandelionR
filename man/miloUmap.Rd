@@ -20,30 +20,24 @@ the adjacency matrix of this graph.}
 \item{slot_name}{Character. The name of the slot in \code{reducedDims} where the UMAP
 results will be stored. Default is \code{'UMAP_knngraph'}.}
 
-\item{n_neighbors}{integer, with default 50L.
-\itemize{
-\item the size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation.
-\item Here, the goal is to create large enough neighborhoods to capture the local manifold structure to allow for hypersampling.
-}}
+\item{n_neighbors}{Integer. The size of local neighborhood (in terms of number of
+neighboring sample points) used for manifold approximation. Default is \code{50L}.
+For further details, refer to the \code{uwot::umap} documentation.}
 
-\item{metric}{character, with default 'euclidean'
-\itemize{
-\item the choice of metric used to measure distance to find nearest neighbors. Default is 'euclidean'.
-}}
+\item{metric}{Character. The distance metric to be used in the UMAP algorithm.
+Default is \code{'euclidean'}. For further details, refer to the \code{uwot::umap} documentation.}
 
-\item{min_dist}{numeric, with default 0.3
-\itemize{
-\item the minimum distance between points in the low dimensional space
-}}
+\item{min_dist}{Float. The minimum distance between points in the low dimensional space.
+Default is \code{0.3}.}
 
-\item{...}{other parameters passed to uwot::umap}
-
+\item{...}{other parameters passed to \code{uwot::umap}.}
 }
 \value{
 milo object with umap reduction
 }
 \description{
-Computes UMAP from Milo KNN graph.
+This function uses \code{umap} from the \code{uwot} package to perform UMAP dimensionality
+reduction on the adjacency matrix of the KNN graph in a Milo object.
 }
 \examples{
 data(sce_vdj)

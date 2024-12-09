@@ -50,7 +50,7 @@
 #' @include maxMinSampling.R
 #' @include differentiationProbabilities.R
 #' @include projectProbability.R
-#' @import SingleCellExperiment
+#' @importFrom SingleCellExperiment colData
 #' @importFrom rlang abort
 #' @importFrom S4Vectors DataFrame
 #' @export

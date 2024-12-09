@@ -52,8 +52,8 @@
 #' projected_milo <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips)
 #'
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
-#' @import miloR
-#' @import SingleCellExperiment
+#' @importFrom miloR nhoods
+#' @importFrom SingleCellExperiment colData
 #' @export
 projectPseudotimeToCell <- function(milo, pb_milo, term_states, suffix = "") {
     nhood <- nhoods(pb_milo) # peudobulk x cells
