@@ -46,7 +46,7 @@ library(scater)
 This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.
 
 ## Load data
-First, we will load the demo data. This is a down-sampled dataset from the [Suo et al 2024 Nature Biotechnology](https://www.nature.com/articles/s41587-023-01734-7) paper. It contains 32000 cells with the TCR information and the dimensionality reduced data (scVI) that we need for this tutorial. The gene expression matrix is not required for this tutorial so it is not included in the demo data. We will show in a separate tutorial how to start with data from `scRepertoire`.
+First, we will load the demo data. This is a down-sampled dataset from the [Suo et al 2024 Nature Biotechnology](https://www.nature.com/articles/s41587-023-01734-7) paper. It contains 10,000 cells with the TCR information and the dimensionality reduced data (scVI) that we need for this tutorial. The gene expression matrix is not required for this tutorial so it is not included in the demo data. We will show in a separate tutorial how to start with data from `scRepertoire`.
 ```{r, warning = FALSE}
 data(sce_vdj)
 ```
@@ -114,8 +114,8 @@ pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
 # define the CD8 terminal cell as the top-most cell and CD4 terminal cell as the bottom-most cell
 branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
 names(branch.tips) <- c("CD8+T", "CD4+T")
-# define the start of our trajectory as the left-most cell
-root <- which.min(pca[1, ])
+# define the start of our trajectory as the right-most cell
+root <- which.max(pca[1, ])
 ```
 
 ### Construct diffusion map
