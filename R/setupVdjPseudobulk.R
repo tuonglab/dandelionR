@@ -65,7 +65,7 @@
 #'      - If `FALSE`, will mask them with a uniform value dependent on the column name.
 #' @include check.R
 #' @include filterCells.R
-#' @importFrom SingleCellExperiment colData
+#' @importFrom SummarizedExperiment colData
 #' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object
 #' @examples

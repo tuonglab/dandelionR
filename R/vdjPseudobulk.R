@@ -47,7 +47,8 @@
 #' @return SingleCellExperiment object
 #' @include check.R
 #' @include getPbs.R
-#' @importFrom SingleCellExperiment colData SingleCellExperiment
+#' @importFrom SummarizedExperiment colData
+#' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom miloR nhoods Milo
 #' @importFrom rlang abort
 #' @importFrom methods is

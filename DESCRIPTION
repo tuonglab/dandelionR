@@ -40,18 +40,18 @@ Imports:
     methods,
     miloR,
     purrr,
+    rlang,
     S4Vectors,
-    Seurat,
     SingleCellExperiment,
     spam,
     stats,
-    rlang,
+    SummarizedExperiment,
     uwot
 Suggests:
     BiocStyle,
     knitr,
-    scater,
-    RColorBrewer
+    RColorBrewer,
+    scater
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
