@@ -53,6 +53,7 @@
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @importFrom S4Vectors DataFrame
+#' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
     milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,

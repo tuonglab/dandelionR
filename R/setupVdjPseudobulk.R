@@ -66,7 +66,7 @@
 #' @include check.R
 #' @include filterCells.R
 #' @import SingleCellExperiment
-#' @import SummarizedExperiment
+#' @importFrom SummarizedExperiment colData<-
 #' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object
 #' @examples
