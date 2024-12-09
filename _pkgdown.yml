@@ -1,1 +1,3 @@
 url: https://tuonglab.github.io/dandelionR/
+template:
+  bootstrap: 5
