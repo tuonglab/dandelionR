@@ -122,8 +122,7 @@ jobs:
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-          # preview_dir="preview/pr${{ github.event.pull_request.number }}"
-          preview_dir=22
+          preview_dir="preview/pr${{ github.event.pull_request.number }}"
           if [ -d "$preview_dir" ]; then
             git rm -r $preview_dir
             git commit -m "Remove $preview_dir (GitHub Actions)" || echo 'No preview to remove'
