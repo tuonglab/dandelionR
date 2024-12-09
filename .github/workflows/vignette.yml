@@ -84,6 +84,7 @@ jobs:
           echo "subdir=preview/pr${{ github.event.number }}" >> $GITHUB_ENV
 
       - name: Build and publish vignette
+        if: github.event_name == 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           clean: false
@@ -92,6 +93,7 @@ jobs:
           target-folder: ${{ env.subdir }}
 
       - name: Extract deployed URL
+        if: github.event_name == 'pull_request'
         id: deploy
         shell: Rscript {0}
         run: |
