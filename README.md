@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/tuonglab/dandelionR/graph/badge.svg?token=dd1bBTW48K)](https://codecov.io/gh/tuonglab/dandelionR)
+
 # dandelionR
 
 Welcome to `dandelionR`!
