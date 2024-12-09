@@ -45,7 +45,6 @@ Imports:
     SingleCellExperiment,
     spam,
     stats,
-    SummarizedExperiment,
     uwot
 Suggests:
     BiocStyle,
