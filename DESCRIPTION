@@ -33,7 +33,8 @@ Collate:
 Imports:
     miloR,
     SingleCellExperiment,
-    SummarizedExperiment
+    SummarizedExperiment,
+    uwot
 Suggests:
     BiocGenerics,
     BiocStyle,
@@ -45,12 +46,11 @@ Suggests:
     Matrix,
     methods,
     purrr,
+    RColorBrewer,
     rlang,
     S4Vectors,
     scater,
-    Seurat,
     spam,
-    RColorBrewer,
     stats
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
