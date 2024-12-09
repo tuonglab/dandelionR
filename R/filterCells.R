@@ -8,7 +8,7 @@
 #' @param remove_missing bool, True by default
 #'  - If `TRUE`, will remove cells with contigs matching the filter from the object.
 #'  - If `FALSE`, will mask them with a uniform value dependent on the column name.
-#' @importFrom SummarizedExperiment colData
+#' @import SingleCellExperiment
 #' @keywords internal
 #' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object according to the parameter.

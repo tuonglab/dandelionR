@@ -84,6 +84,8 @@ jobs:
 
       - name: Deploy pkgdown site
         id: deploy
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
         shell: Rscript {0}
         run: |
           subdir <- "${{ env.subdir }}"

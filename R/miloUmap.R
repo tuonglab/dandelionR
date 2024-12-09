@@ -29,7 +29,7 @@
 #' milo_object <- miloUmap(milo_object)
 #'
 #' @return milo object with umap reduction
-#' @importFrom SingleCellExperiment reducedDim
+#' @import SingleCellExperiment
 #' @importFrom igraph as_adjacency_matrix
 #' @importFrom miloR graph
 #' @importFrom uwot umap
