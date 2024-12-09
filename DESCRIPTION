@@ -31,10 +31,6 @@ Collate:
     'setupVdjPseudobulk.R'
     'vdjPseudobulk.R'
 Imports:
-    miloR,
-    SingleCellExperiment,
-    SummarizedExperiment,
-    uwot,
     BiocGenerics,
     bluster,
     destiny, 
@@ -44,17 +40,18 @@ Imports:
     methods,
     miloR,
     purrr,
+    rlang,
     S4Vectors,
     SingleCellExperiment,
     spam,
     stats,
-    SummarizedExperiment, 
-    rlang
+    SummarizedExperiment,
+    uwot
 Suggests:
     BiocStyle,
     knitr,
-    scater,
-    RColorBrewer
+    RColorBrewer,
+    scater
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
