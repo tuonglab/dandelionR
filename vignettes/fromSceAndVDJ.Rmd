@@ -34,6 +34,7 @@ if (!requireNamespace("scater", quietly = TRUE)) { # only for the tutorial
     BiocManager::install("scater")
 }
 devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
+devtools::install_github("tuonglab/scRepertoire", ref = "fix-shuffling")
 ```
 
 
