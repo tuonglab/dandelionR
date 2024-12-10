@@ -16,24 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_permission: ${{ steps.check_permissions.outputs.has_permission }}
-    permissions:
-      contents: write
-      pull-requests: write
-      pages: write
     steps:
-      - name: Debug GitHub event payload
-        run: |
-          cat "$GITHUB_EVENT_PATH"
-      - name: Check if actor has write permissions
+      - name: Check if actor has permission
         id: check_permissions
         run: |
-          RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-                        -H "Accept: application/vnd.github.v3+json" \
-                        "https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission")
+          # Define allowed actors
+          ALLOWED_ACTORS=("zktuong" "Jiawei-Yu10")  # Replace these with the actual GitHub usernames
 
-          PERMISSION=$(echo "$RESPONSE" | jq -r '.permission')
-
-          if [ "$PERMISSION" = "write" ] || [ "$PERMISSION" = "admin" ]; then
+          if [[ " ${ALLOWED_ACTORS[@]} " =~ " ${GITHUB_ACTOR} " ]]; then
             echo "has_permission=true" >> $GITHUB_OUTPUT
           else
             echo "has_permission=false" >> $GITHUB_OUTPUT
