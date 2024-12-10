@@ -21,15 +21,15 @@ jobs:
       - name: Check if actor has write permissions
         id: check_permissions
         run: |
-          PERMISSION=$(jq -r '.repository.permission' "$GITHUB_EVENT_PATH")
+          PERMISSION=$(jq -r '.repository.permission.push' "$GITHUB_EVENT_PATH")
 
           if [ "$PERMISSION" = "write" ] || [ "$PERMISSION" = "admin" ]; then
-            echo "::set-output name=has_permission::true"
+            echo "has_permission=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=has_permission::false"
+            echo "has_permission=false" >> $GITHUB_ENV
           fi
   vignette:
-    if: steps.check_permissions.outputs.has_permission == 'true'
+    if: env.has_permission == 'true'
     defaults:
       run:
         shell: bash -l {0}
