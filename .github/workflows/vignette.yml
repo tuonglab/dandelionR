@@ -30,8 +30,6 @@ jobs:
           else
             echo "has_permission=false" >> $GITHUB_ENV
           fi
-        outputs:
-          has_permission: ${{ steps.check_permissions.outputs.has_permission }}
   vignette:
     needs:
       - check-permissions
