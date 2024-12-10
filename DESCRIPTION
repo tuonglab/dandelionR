@@ -16,6 +16,7 @@ LazyDataCompression: xz
 Collate:
     'check.R'
     'constructMarkovChain.R'
+    'data.R'
     'determMultiscaleSpace.R'
     'terminalStateFromMarkovChain.R'
     'differentiationProbabilities.R'
@@ -27,7 +28,6 @@ Collate:
     'markovProbability.R'
     'miloUmap.R'
     'projectPseudotimeToCell.R'
-    'sce_vdj.R'
     'setupVdjPseudobulk.R'
     'vdjPseudobulk.R'
 Imports:
