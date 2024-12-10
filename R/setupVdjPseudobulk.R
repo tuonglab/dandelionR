@@ -3,7 +3,7 @@
 #' This function preprocesses single-cell V(D)J sequencing data for pseudobulk analysis. It filters data based 
 #' on productivity and chain status, subsets data, extracts main V(D)J genes, and removes unmapped entries.
 #'
-#' @param sce A `SingleCellExperiment` object. V(D)J data should be contained in `colData` for filtering.
+#' @param sce A `SingleCellExperiment` object. V(D)J data should be contained in `colData` for filtering. This object should contain vdj information
 #' @param mode_option Optional character. Specifies the mode for extracting V(D)J genes. 
 #' If `NULL`, `extract_cols` must be specified. Default is `NULL`.
 #' @param already.productive Logical. Whether the data has already been filtered for productivity. 
@@ -64,6 +64,7 @@
 #'      - If `TRUE`, will remove cells with contigs matching the filter from the object.
 #'      - If `FALSE`, will mask them with a uniform value dependent on the column name.
 #' @include check.R
+#' @include splitTCR.R
 #' @include filterCells.R
 #' @import SingleCellExperiment
 #' @import SummarizedExperiment
@@ -213,6 +214,32 @@ setupVdjPseudobulk <- function(
             }
             msg <- paste(extr_cols, collapse = ", ")
             message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
+            if(!all(extr_cols%in%colnames(colData(sce)))){
+              splited_TCR <- splitCTgene(sce)
+              if(length(splited_TCR[[1]])!=length(extr_cols))
+              {
+                abort(paste("Keyerror: Automatically generated colnames",
+                            paste0(extr_cols[!extr_cols%in%colnames(colData(sce))],
+                                   collapse = ", "), "are with the same length of the vdj data, which is of the length", 
+                            length(splited_TCR[[1]]),
+                            "\nYou could use parameter extract_cols to specify the columns to match the length"))
+              }
+              else
+              {
+                vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
+                  vapply(X = sc, '[',X, FUN.VALUE = character(1))
+                }, sc = splited_TCR)
+                names(vdj) <- extr_cols
+                colData(sce) <- cbind(colData(sce), vdj)
+              }
+            }
+            else if(any(extr_cols%in%colnames(colData(sce))))
+            {
+              abort(paste("Keyerror: Automatically generated colnames",
+                          paste0(extr_cols[!extr_cols%in%colnames(colData(sce))],
+                                 collapse = ", "), "are not contained in colData",
+                          "\nYou could use parameter extract_cols to specify the columns to extract TCR"))
+            }
             sce <- Reduce(function(data, ex_col) {
                 tem <- colData(data)[[ex_col]]
                 strtem <- strsplit(as.character(tem), "\\|")
@@ -227,6 +254,32 @@ setupVdjPseudobulk <- function(
     } else {
         msg <- paste(extract_cols, collapse = ", ")
         message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
+        if(!all(extract_cols%in%colnames(colData(sce)))){
+          splited_TCR <- splitCTgene(sce)
+          if(length(splited_TCR[[1]])!=length(extract_cols))
+          {
+            abort(paste("Keyerror: Automatically generated colnames",
+                        paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
+                               collapse = ", "), "are with the same length of the vdj data, which is of the length", 
+                        length(splited_TCR[[1]]),
+                        "\nYou could modify parameter extract_cols to specify the columns to match the length"))
+          }
+          else
+          {
+            vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
+              vapply(X = sc, '[',X, FUN.VALUE = character(1))
+            }, sc = splited_TCR)
+            names(vdj) <- extract_cols
+            colData(sce) <- cbind(colData(sce), vdj)
+          }
+        }
+        else if(any(extract_cols%in%colnames(colData(sce))))
+        {
+          abort(paste("Keyerror: Automatically generated colnames",
+                      paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
+                             collapse = ", "), "are not contained in colData",
+                      "\nYou could use parameter extract_cols to specify the columns to extract TCR"))
+        }
         sce <- Reduce(function(data, ex_col) {
             tem <- colData(data)[[ex_col]]
             strtem <- strsplit(as.character(tem), "\\|")
