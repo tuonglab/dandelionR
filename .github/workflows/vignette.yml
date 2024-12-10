@@ -30,6 +30,9 @@ jobs:
           else
             echo "has_permission=false" >> $GITHUB_OUTPUT
           fi
+      - name: Debug permissions output
+        run: |
+          echo "Has permission: ${{ steps.check_permissions.outputs.has_permission }}"
   vignette:
     needs:
       - check-permissions
