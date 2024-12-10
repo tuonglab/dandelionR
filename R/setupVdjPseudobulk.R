@@ -213,7 +213,7 @@ setupVdjPseudobulk <- function(
             }
             msg <- paste(extr_cols, collapse = ", ")
             message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-            if(!all(extr_cols%in%colnames(colData(sce)))){
+            if(!any(extr_cols%in%colnames(colData(sce)))){
               splited_TCR <- splitCTgene(sce)
               if(length(splited_TCR[[1]])!=length(extr_cols))
               {
@@ -232,7 +232,7 @@ setupVdjPseudobulk <- function(
                 colData(sce) <- cbind(colData(sce), vdj)
               }
             }
-            else if(any(extr_cols%in%colnames(colData(sce))))
+            else if(!all(extr_cols%in%colnames(colData(sce))))
             {
               abort(paste("Keyerror: Automatically generated colnames",
                           paste0(extr_cols[!extr_cols%in%colnames(colData(sce))],
@@ -253,7 +253,7 @@ setupVdjPseudobulk <- function(
     } else {
         msg <- paste(extract_cols, collapse = ", ")
         message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-        if(!all(extract_cols%in%colnames(colData(sce)))){
+        if(!any(extract_cols%in%colnames(colData(sce)))){
           splited_TCR <- splitCTgene(sce)
           if(length(splited_TCR[[1]])!=length(extract_cols))
           {
@@ -272,7 +272,7 @@ setupVdjPseudobulk <- function(
             colData(sce) <- cbind(colData(sce), vdj)
           }
         }
-        else if(any(extract_cols%in%colnames(colData(sce))))
+        else if(!all(extract_cols%in%colnames(colData(sce))))
         {
           abort(paste("Keyerror: Colnames",
                       paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
