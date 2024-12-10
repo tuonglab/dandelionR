@@ -6,6 +6,7 @@
 <url><loc>https://tuonglab.github.io/dandelionR/articles/index.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/authors.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/index.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/categoryTCR.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/demo_airr.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/demo_sce.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/differentiationProbabilities.html</loc></url>
@@ -26,6 +27,8 @@
 <url><loc>https://tuonglab.github.io/dandelionR/reference/projectPseudotimeToCell.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/sce_vdj.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/setupVdjPseudobulk.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/splitCTgene.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/vdjPseudobulk.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/vecAssign.html</loc></url>
 </urlset>
 
