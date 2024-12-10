@@ -14,6 +14,8 @@ env:
 jobs:
   check-permissions:
     runs-on: ubuntu-latest
+    outputs:
+      has_permission: ${{ steps.check_permissions.outputs.has_permission }}
     permissions:
       contents: write
       pages: write
@@ -21,15 +23,19 @@ jobs:
       - name: Check if actor has write permissions
         id: check_permissions
         run: |
-          PERMISSION=$(jq -r '.repository.permission.push' "$GITHUB_EVENT_PATH")
+          PERMISSION=$(jq -r '.repository.permissions.push' "$GITHUB_EVENT_PATH")
 
           if [ "$PERMISSION" = "write" ] || [ "$PERMISSION" = "admin" ]; then
             echo "has_permission=true" >> $GITHUB_ENV
           else
             echo "has_permission=false" >> $GITHUB_ENV
           fi
+        outputs:
+          has_permission: ${{ steps.check_permissions.outputs.has_permission }}
   vignette:
-    if: env.has_permission == 'true'
+    needs:
+      - check-permissions
+    if: needs.check-permissions.outputs.has_permission == 'true'
     defaults:
       run:
         shell: bash -l {0}
