@@ -102,7 +102,7 @@ setupVdjPseudobulk <- function(
     .typeCheck(productive_vj, "logical")
     .typeCheck(subsetby, "character")
     .typeCheck(groups, "character")
-    if(!is.null(allowed_chain_status)) allowed_chain_status <- match.arg(allowed_chain_status, several.ok = TRUE)
+    allowed_chain_status <- match.arg(allowed_chain_status, several.ok = TRUE)
     .typeCheck(extract_cols, "character")
     .typeCheck(filter_pattern, "character")
     check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
