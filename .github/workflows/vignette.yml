@@ -12,7 +12,24 @@ env:
   cache-version: "cache-v1"
 
 jobs:
+  check-permissions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Check if actor has write permissions
+        id: check_permissions
+        run: |
+          PERMISSION=$(jq -r '.repository.permission' "$GITHUB_EVENT_PATH")
+
+          if [ "$PERMISSION" = "write" ] || [ "$PERMISSION" = "admin" ]; then
+            echo "::set-output name=has_permission::true"
+          else
+            echo "::set-output name=has_permission::false"
+          fi
   vignette:
+    if: steps.check_permissions.outputs.has_permission == 'true'
     defaults:
       run:
         shell: bash -l {0}
