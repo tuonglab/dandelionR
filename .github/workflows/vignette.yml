@@ -20,6 +20,9 @@ jobs:
       contents: write
       pages: write
     steps:
+      - name: Debug GitHub event payload
+        run: |
+          cat "$GITHUB_EVENT_PATH"
       - name: Check if actor has write permissions
         id: check_permissions
         run: |
