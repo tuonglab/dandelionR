@@ -34,8 +34,8 @@ data(demo_sce)
 \description{
 The \code{demo_sce} object is a down-sampled demo dataset derived from Suo et al., 2024, \emph{Nature Biotechnology}.
 This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original
-publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The original data is available at
-\verb{url\{https://developmental.cellatlas.io/fetal-immune\}} \link{Lymphoid cells}.
+publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The original Lymphoid cells data is
+available at \verb{url\{https://developmental.cellatlas.io/fetal-immune\}}.
 }
 \examples{
 data(demo_sce)
