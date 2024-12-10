@@ -13,6 +13,9 @@ env:
 
 jobs:
   vignette:
+    permissions:
+      contents: write
+      pages: write
     defaults:
       run:
         shell: bash -l {0}
