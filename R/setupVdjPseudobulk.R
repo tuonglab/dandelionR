@@ -257,7 +257,7 @@ setupVdjPseudobulk <- function(
           splited_TCR <- splitCTgene(sce)
           if(length(splited_TCR[[1]])!=length(extract_cols))
           {
-            abort(paste("Keyerror: Automatically generated colnames",
+            abort(paste("Keyerror: Colnames",
                         paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
                                collapse = ", "), "are with the same length of the vdj data, which is of the length", 
                         length(splited_TCR[[1]]),
@@ -274,10 +274,10 @@ setupVdjPseudobulk <- function(
         }
         else if(any(extract_cols%in%colnames(colData(sce))))
         {
-          abort(paste("Keyerror: Automatically generated colnames",
+          abort(paste("Keyerror: Colnames",
                       paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
                              collapse = ", "), "are not contained in colData",
-                      "\nYou could use parameter extract_cols to specify the columns to extract TCR"))
+                      "\nYou could modify parameter extract_cols to specify the columns to extract TCR"))
         }
         sce <- Reduce(function(data, ex_col) {
             tem <- colData(data)[[ex_col]]
