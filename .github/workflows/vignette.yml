@@ -26,9 +26,9 @@ jobs:
           PERMISSION=$(jq -r '.repository.permissions.push' "$GITHUB_EVENT_PATH")
 
           if [ "$PERMISSION" = "write" ] || [ "$PERMISSION" = "admin" ]; then
-            echo "has_permission=true" >> $GITHUB_ENV
+            echo "has_permission=true" >> $GITHUB_OUTPUT
           else
-            echo "has_permission=false" >> $GITHUB_ENV
+            echo "has_permission=false" >> $GITHUB_OUTPUT
           fi
   vignette:
     needs:
