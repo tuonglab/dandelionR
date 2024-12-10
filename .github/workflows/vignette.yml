@@ -11,6 +11,13 @@ name: vignette
 env:
   cache-version: "cache-v1"
 
+permissions:
+  actions: write
+  contents: write
+  deployments: write
+  pages: write
+  pull-requests: write
+
 jobs:
   vignette:
     defaults:
