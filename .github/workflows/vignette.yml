@@ -18,6 +18,7 @@ jobs:
       has_permission: ${{ steps.check_permissions.outputs.has_permission }}
     permissions:
       contents: write
+      pull-requests: write
       pages: write
     steps:
       - name: Debug GitHub event payload
