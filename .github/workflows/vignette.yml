@@ -11,13 +11,6 @@ name: vignette
 env:
   cache-version: "cache-v1"
 
-permissions:
-  actions: write
-  contents: write
-  deployments: write
-  pages: write
-  pull-requests: write
-
 jobs:
   vignette:
     defaults:
@@ -72,6 +65,7 @@ jobs:
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
 
       - name: Build and publish vignette
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
