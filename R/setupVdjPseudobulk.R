@@ -20,11 +20,16 @@
 #' @param groups Character vector. Specifies the subset condition for filtering. Default is `NULL`.
 #' @param extract_cols Character vector. Names of `colData` columns where V(D)J information is
 #' stored, used instead of the standard columns. Default is `NULL`.
-#' @param need_filter Logic. Whether to filter unmapped data. Default is TRUE.
-#' @param check_vj_mapping Character vector. Specifies columns to check for VJ mapping. Default
-#' is `c('v_call', 'j_call')`.
-#' @param check_vdj_mapping Character vector. Specifies columns to check for VDJ mapping. Default
-#' is `c('v_call', 'd_call', 'j_call')`.
+#' @param filter_ummaped Logic. Whether to filter unmapped data. Default is TRUE.
+#' @param check_vj_mapping Logic vector. Whether to check for VJ mapping. Default
+#' is `c(TRUE, TRUE)`. 
+#'  - If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
+#'  - If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain
+#' @param check_vdj_mapping Logic vector. Specifies columns to check for VDJ mapping. Default
+#' is `c(TRUE, FALSE, 'TRUE)`.
+#'  - If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain 
+#'  - If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain   
+#'  - If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain   
 #' @param check_extract_cols_mapping Character vector. Specifies columns related to `extract_cols`
 #' for mapping checks. Default is `NULL`.
 #' @param remove_missing Logical. If `TRUE`, removes cells with contigs matching the filter.
@@ -93,7 +98,7 @@ setupVdjPseudobulk <- function(
     already.productive = TRUE,
     productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
     subsetby = NULL, groups = NULL, extract_cols = NULL, need_filter = TRUE,
-    check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
+    check_vj_mapping = c(TRUE, TRUE), check_vdj_mapping = c(TRUE, FALSE, TRUE),
     check_extract_cols_mapping = NULL, remove_missing = TRUE) {
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
@@ -104,11 +109,13 @@ setupVdjPseudobulk <- function(
     .typeCheck(subsetby, "character")
     .typeCheck(groups, "character")
     .typeCheck(extract_cols, "character")
-    .typeCheck(filter_pattern, "character")
-    check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
-        several.ok = TRUE
-    )
-    check_vj_mapping <- match.arg(check_vj_mapping, several.ok = TRUE)
+    .typeCheck(filter_unmapped, "logical")
+    .typeCheck(check_vj_mapping, "logical")
+    if(length(check_vj_mapping)!=2)
+        abort(paste("ValueError: length of check_vj_mapping should be 2. But",length(check_vj_mapping),"was provided."))
+    .typeCheck(check_vdj_mapping, "logical")
+    if(length(check_vdj_mapping)!=3)
+        abort(paste("ValueError: length of check_vj_mapping should be 3. But",length(check_vdj_mapping),"was provided."))
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
 
@@ -296,31 +303,34 @@ setupVdjPseudobulk <- function(
         }, extract_cols, init = sce)
         message("Complete.")
     }
-    return(sce)
     # remove unclear mapping
-    if (need_filter) {
+    if (filter_unmapped) {
         filter_pattern = ",|None|No_contig"
         extr_cols <- c()
         if (!is.null(mode_option)) {
-            if (!is.null(check_vdj_mapping)) {
-                extr_cols <- c(extr_cols, paste(check_vdj_mapping, mode_option, "VDJ_main",
+            if (any(check_vdj_mapping)) {
+                vdj_mapping <- c('v_call', 'd_call', 'j_call')
+                extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], mode_option, "VDJ_main",
                     sep = "_"
                 ))
             }
-            if (!is.null(check_vj_mapping)) {
-                extr_cols <- c(extr_cols, paste(check_vj_mapping, mode_option, "VJ_main",
+            if (any(check_vj_mapping)) {
+                vj_mapping <- c('v_call', 'j_call')
+                extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], mode_option, "VJ_main",
                     sep = "_"
                 ))
             }
         } else {
             if (is.null(extract_cols)) {
-                if (!is.null(check_vdj_mapping)) {
-                    extr_cols <- c(extr_cols, paste(check_vdj_mapping, "VDJ_main",
+                if (any(check_vdj_mapping)) {
+                    vdj_mapping <- c('v_call', 'd_call', 'j_call')
+                    extr_cols <- c(extr_cols, paste(vdj_mappin[check_vdj_mapping], "VDJ_main",
                         sep = "_"
                     ))
                 }
-                if (!is.null(check_vj_mapping)) {
-                    extr_cols <- c(extr_cols, paste(check_vj_mapping, "VJ_main", sep = "_"))
+                if (any(check_vj_mapping)) {
+                    vj_mapping <- c('v_call', 'j_call')
+                    extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], "VJ_main", sep = "_"))
                 }
             } else {
                 if (!is.null(check_extract_cols_mapping)) {
