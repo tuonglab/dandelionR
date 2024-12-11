@@ -29,12 +29,11 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="../articles/dandelionR.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/fromSceAndVDJ.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
+<li><a class="dropdown-item" href="../fromSceAndVDJ.html">Starting from scRepertoire</a></li>
+    <li><a class="dropdown-item" href="../dandelionR.html">Starting from dandelion (original)</a></li>
   </ul>
 </li>
       </ul>
@@ -123,9 +122,20 @@ consistent.</p>
 <h3 id="filter-the-data">Filter the data<a class="anchor" aria-label="anchor" href="#filter-the-data"></a>
 </h3>
 <p>To begin, we will filter the data and extract the TCR information so
-that we can construct pseudobulks.</p>
+that we can construct pseudobulks. Because the <code>colData</code> of
+this single-cell object is populated with the TCR information from
+<code>dandelion</code> in python (through this method:
+<code>dandelion</code> -&gt; <code>anndata</code> -&gt;
+<code>anndata2ri</code>, which essentially converts an
+<code>AnnData</code> object in python to
+<code>SingleCellExperiment</code> in R), we can directly use the
+<code>setupVdjPseudobulk</code> function to extract the TCR information
+and construct the pseudobulks. We also need to specify the
+<code>allowed_chain_status</code> to keep to the relevant contigs.
+Default for <code>allowed_chain_status</code> is <code>NULL</code>,
+which will keep all contigs.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, already.productive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>, already.productive <span class="op">=</span> <span class="cn">FALSE</span>, allowed_chain_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Single pair"</span>, <span class="st">"Extra pair"</span>, <span class="st">"Extra pair-exception"</span>, <span class="st">"Orphan VDJ"</span>, <span class="st">"Orphan VDJ-exception"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can visualise the UMAP of the filtered data.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">sce_vdj</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>

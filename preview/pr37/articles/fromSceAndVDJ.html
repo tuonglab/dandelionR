@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination • dandelionR</title>
+<title>Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire • dandelionR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -29,12 +29,11 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/dandelionR.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/fromSceAndVDJ.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
+<li><a class="dropdown-item" href="../fromSceAndVDJ.html">Starting from scRepertoire</a></li>
+    <li><a class="dropdown-item" href="../dandelionR.html">Starting from dandelion (original)</a></li>
   </ul>
 </li>
       </ul>
@@ -55,7 +54,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination</h1>
+      <h1>Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire</h1>
             
             <h4 data-toc-skip class="date">2024-12-11</h4>
       
@@ -66,60 +65,94 @@
     
     
 <div class="section level2">
-<h2 id="interaction-with-screpertoire">Interaction with scRepertoire<a class="anchor" aria-label="anchor" href="#interaction-with-screpertoire"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>In a</p>
-<p><code>dandelionR</code> is an R package for performing single-cell
-immune repertoire trajectory analysis, based on the original python
-implementation in <a href="https://www.github.com/zktuong/dandelion" class="external-link">dandelion</a>.</p>
-<p>It provides all the necessary tools to interface with <a href="https://github.com/ncborcherding/scRepertoire" class="external-link">scRepertoire</a>
-and a custom implementation of absorbing markov chain for pseudotime
-inference, inspired based on the <a href="https://github.com/dpeerlab/Palantir" class="external-link">palantir</a> python
-package.</p>
+<p>In a standard analysis workflow in R, users may choose to read in
+their VDJ data with <a href="https://github.com/ncborcherding/scRepertoire" class="external-link">scRepertoire</a>.
+In this vignette, we will demonstrate how to perform TCR trajectory
+analysis starting from ‘raw’ data i.e. just a standard single-cell gene
+expression data (stored in <code>SingleCellExperiment</code>) and VDJ
+data (in AIRR format).</p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>You can install <code>dandelionR</code> from GitHub with:</p>
+<p>Install <code>scRepertoire</code> if you haven’t already.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"scater"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> <span class="co"># only for the tutorial</span></span>
-<span>    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"scater"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"scRepertoire"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> <span class="co"># only for the tutorial</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"scRepertoire"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> <span class="co"># only for the tutorial</span></span>
 <span>    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"scRepertoire"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tuonglab/dandelionR"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># or</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ncborcherding/scRepertoire"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="load-the-required-libraries">Load the required libraries<a class="anchor" aria-label="anchor" href="#load-the-required-libraries"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.github.com/tuonglab/dandelionR/" class="external-link">dandelionR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.borch.dev/uploads/scRepertoire/" class="external-link">scRepertoire</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="load-the-demo-data">Load the demo data<a class="anchor" aria-label="anchor" href="#load-the-demo-data"></a>
+</h4>
+<p>Due to size limitations of the package, we have provided an very
+trimmed down version of the demo data to ~2000 cells. The full dataset
+can be found here accordingly: GEX - <a href="https://developmental.cellatlas.io/fetal-immune" class="external-link uri">https://developmental.cellatlas.io/fetal-immune</a>
+(Lymphoid Cells) and VDJ - <a href="https://github.com/zktuong/dandelion-demo-files/tree/master/dandelion_manuscript/data/dandelion-remap" class="external-link uri">https://github.com/zktuong/dandelion-demo-files/tree/master/dandelion_manuscript/data/dandelion-remap</a></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demo_sce</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demo_airr</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="use-screpertoire-to-load-the-vdj-data">Use <code>scRepertoire</code> to load the VDJ data<a class="anchor" aria-label="anchor" href="#use-screpertoire-to-load-the-vdj-data"></a>
+</h4>
+<p>For the trajectory analysis work here, we are focusing on the main
+productive TCR chains. Therefore we will flag
+<code>filterMulti = TRUE</code>, which will keep the selection of the 2
+corresponding chains with the highest expression for a single barcode.
+For more details, refer to <code>scRepertoire</code>’s <a href="https://www.borch.dev/uploads/screpertoire/reference/combinetcr" class="external-link">documentation</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contig.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/loadContigs.html" class="external-link">loadContigs</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">demo_airr</span>, format <span class="op">=</span> <span class="st">"AIRR"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Format to `scRepertoire`'s requirements and some light filtering</span></span>
 <span><span class="va">combined.TCR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineTCR.html" class="external-link">combineTCR</a></span><span class="op">(</span><span class="va">contig.list</span>,</span>
 <span>    removeNA <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    removeMulti <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    filterMulti <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    filterMulti <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    filterNonproductive <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="merging-vdj-data-with-gene-expression-data">Merging VDJ data with gene expression data<a class="anchor" aria-label="anchor" href="#merging-vdj-data-with-gene-expression-data"></a>
+</h4>
+<p>Next we will combine the gene expression data with the VDJ data to
+create a <code>SingleCellExperiment</code> object.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineExpression.html" class="external-link">combineExpression</a></span><span class="op">(</span><span class="va">combined.TCR</span>,</span>
-<span>    <span class="va">demo_sce</span>,</span>
-<span>    cloneCall <span class="op">=</span> <span class="st">"gene"</span>,</span>
-<span>    filterNA <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    proportion <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineExpression.html" class="external-link">combineExpression</a></span><span class="op">(</span><span class="va">combined.TCR</span>, <span class="va">demo_sce</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="initiate-dandelionr-workflow">Initiate <code>dandelionR</code> workflow<a class="anchor" aria-label="anchor" href="#initiate-dandelionr-workflow"></a>
+</h4>
+<p>Here, the data is ready to be used for the pseudobulk and trajectory
+analysis workflow in <code>dandelionR</code>.</p>
+<p>Because this is a alpha-beta TCR data, we will set the
+<code>mode_option</code> to “abT”. This will append <code>abT</code> to
+the relevant columns holding the VDJ gene information. If you are going
+to try other types of VDJ data e.g. BCR, you should set
+<code>mode_option</code> to “B” instead. And this argument should be
+consistently set with the <code>vdjPseudobulk</code> function later.</p>
+<p>Since the TCR data is already filtered for productive chains in
+<code>combineTCR</code>, we will set
+<code>already.productive = TRUE</code> and can keep
+<code>allowed_chain_status</code> as <code>NULL</code>.</p>
+<p>We will also subset the data to only include the main T-cell types:
+CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, allowed_chain_status <span class="op">=</span> <span class="cn">NULL</span>, already.productive <span class="op">=</span> <span class="cn">TRUE</span>, subsetby <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span>, <span class="st">"ABT(ENTRY)"</span>, <span class="st">"DP(P)_T"</span>, <span class="st">"DP(Q)_T"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, already.productive <span class="op">=</span> <span class="cn">TRUE</span>, subsetby <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span>, <span class="st">"ABT(ENTRY)"</span>, <span class="st">"DP(P)_T"</span>, <span class="st">"DP(Q)_T"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Visualise the UMAP of the filtered data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">sce</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">sce</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fromSceAndVDJ_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="milo-object-and-neighbourhood-graph-construction">Milo object and neighbourhood graph construction<a class="anchor" aria-label="anchor" href="#milo-object-and-neighbourhood-graph-construction"></a>
@@ -138,7 +171,7 @@ form the objects.</p>
 </h4>
 <p>We can visualise this milo object using UMAP.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miloUmap.html">miloUmap</a></span><span class="op">(</span><span class="va">milo_object</span>, n_neighbors<span class="op">=</span><span class="fl">30</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miloUmap.html">miloUmap</a></span><span class="op">(</span><span class="va">milo_object</span>, n_neighbors <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">milo_object</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fromSceAndVDJ_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
@@ -151,10 +184,9 @@ form the objects.</p>
 neighbourhood graph constructed above. We will also run PCA on the
 pseudobulked VDJ feature space.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># pbs = milo_object@nhoods</span></span>
-<span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p>We can visualise the PCA of the pseudobulked VDJ feature space.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
@@ -213,7 +245,7 @@ computation.</p>
 <span>    terminal_state <span class="op">=</span> <span class="va">branch.tips</span>,</span>
 <span>    root_cell <span class="op">=</span> <span class="va">root</span>,</span>
 <span>    pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span>,</span>
-<span>    knn<span class="op">=</span><span class="fl">30</span></span>
+<span>    knn <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -323,7 +355,7 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [49] e1071_1.7-16            tidygraph_1.3.1         progressr_0.15.1       </span></span>
 <span><span class="co">##  [52] Formula_1.2-5           survival_3.7-0          ggalluvial_0.12.5      </span></span>
 <span><span class="co">##  [55] systemfonts_1.1.0       tools_4.4.2             ragg_1.3.3             </span></span>
-<span><span class="co">##  [58] stringdist_0.9.14       Rcpp_1.0.13-1           glue_1.8.0             </span></span>
+<span><span class="co">##  [58] stringdist_0.9.12       Rcpp_1.0.13-1           glue_1.8.0             </span></span>
 <span><span class="co">##  [61] gridExtra_2.3           SparseArray_1.6.0       laeken_0.5.3           </span></span>
 <span><span class="co">##  [64] xfun_0.49               ranger_0.17.0           TTR_0.24.4             </span></span>
 <span><span class="co">##  [67] ggthemes_5.1.0          dplyr_1.1.4             withr_3.0.2            </span></span>
