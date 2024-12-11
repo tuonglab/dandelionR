@@ -1,3 +1,11 @@
 url: https://tuonglab.github.io/dandelionR/
 template:
   bootstrap: 5
+navbar:
+  left:
+    - text: Vignettes
+      menu:
+        - text: Single-cell Immune Repertoire Trajectory Analysis
+          href: dandelionR.html
+        - text: Starting from scReperotire
+          href: fromSceAndVDJ.html
