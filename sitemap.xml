@@ -2,15 +2,17 @@
 <url><loc>https://tuonglab.github.io/dandelionR/404.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/LICENSE-text.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/LICENSE.html</loc></url>
-<url><loc>https://tuonglab.github.io/dandelionR/articles/dandelionR.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/articles/index.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/articles/vignette_01.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/articles/vignette_02.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/authors.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/index.html</loc></url>
-<url><loc>https://tuonglab.github.io/dandelionR/reference/categoryTCR.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/chainAssign.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/demo_airr.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/demo_sce.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/differentiationProbabilities.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-classCheck.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/dot-collapse_nested_list.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-constructMarkovChain.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-determineMultiscaleSpace.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-filterCells.html</loc></url>
@@ -20,6 +22,7 @@
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-minMaxScale.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-terminalStateFromMarkovChain.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/dot-typeCheck.html</loc></url>
+<url><loc>https://tuonglab.github.io/dandelionR/reference/formatVdj.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/index.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/markovProbability.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/miloUmap.html</loc></url>
@@ -29,6 +32,5 @@
 <url><loc>https://tuonglab.github.io/dandelionR/reference/setupVdjPseudobulk.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/splitCTgene.html</loc></url>
 <url><loc>https://tuonglab.github.io/dandelionR/reference/vdjPseudobulk.html</loc></url>
-<url><loc>https://tuonglab.github.io/dandelionR/reference/vecAssign.html</loc></url>
 </urlset>
 

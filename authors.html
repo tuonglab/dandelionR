@@ -15,8 +15,12 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="articles/dandelionR.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/vignette_01.html">Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire</a></li>
+    <li><a class="dropdown-item" href="articles/vignette_02.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
       </ul></div>
@@ -51,16 +55,23 @@
       <h2 id="citation">Citation</h2>
       <p></p>
 
-      <p>Yu J, Borcherding N, Tuong K (2024).
-<em>dandelionR: Single-cell Immune Repertoire Trajectory Analysis in R</em>.
-R package version 0.99.0, <a href="https://www.github.com/tuonglab/dandelionR/" class="external-link">https://www.github.com/tuonglab/dandelionR/</a>.
-</p>
-      <pre>@Manual{,
-  title = {dandelionR: Single-cell Immune Repertoire Trajectory Analysis in R},
-  author = {Jiawei Yu and Nicholas Borcherding and Kelvin Tuong},
+      <p>Yu J, Borcherding N, Tuong ZK. DandelionR: Single-cell immune repertoire trajectory analysis in R.</p>
+      <pre>@Article{,
+  title = {DandelionR: Single-cell immune repertoire trajectory analysis in R},
+  author = {Jiawei Yu and Nicholas Borcherding and Zewen Kelvin Tuong},
+  journal = {TBC},
+  year = {2025},
+}</pre>
+      <p>Suo C, Polanski K, Dann E, Lindeboom RGH, Vilarrasa-Blasi R, Vento-Tormo R, Haniffa M, Meyer KB, Dratva LM, Tuong ZK, Clatworthy MR, Teichmann SA. Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins. Nat Biotechnol. 2024;42(1):40-51. doi:10.1038/s41587-023-01734-7.</p>
+      <pre>@Article{,
+  title = {Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins},
+  author = {Chenqu Suo and Krzysztof Polanski and Emma Dann and Rik G.H. Lindeboom and Roser Vilarrasa-Blasi and Roser Vento-Tormo and Muzlifah Haniffa and Kerstin B. Meyer and Lisa M. Dratva and Zewen Kelvin Tuong and Menna R. Clatworthy and Sarah A. Teichmann},
+  journal = {Nature Biotechnology},
+  volume = {42},
   year = {2024},
-  note = {R package version 0.99.0},
-  url = {https://www.github.com/tuonglab/dandelionR/},
+  publisher = {Nature Publishing Group},
+  doi = {10.1038/s41587-023-01734-7},
+  url = {https://www.nature.com/articles/s41587-023-01734-7},
 }</pre>
     </div>
 

@@ -2,8 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  dandelionR: dandelionR.html
-last_built: 2024-12-10T06:47Z
+  vignette_01: vignette_01.html
+  vignette_02: vignette_02.html
+last_built: 2024-12-11T22:52Z
 urls:
   reference: https://tuonglab.github.io/dandelionR/reference
   article: https://tuonglab.github.io/dandelionR/articles

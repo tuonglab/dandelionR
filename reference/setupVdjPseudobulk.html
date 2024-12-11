@@ -17,8 +17,12 @@ on productivity and chain status, subsets data, extracts main V(D)J genes, and r
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/dandelionR.html">Get started</a></li>
-<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/vignette_01.html">Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire</a></li>
+    <li><a class="dropdown-item" href="../articles/vignette_02.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
       </ul></div>
@@ -48,14 +52,13 @@ on productivity and chain status, subsets data, extracts main V(D)J genes, and r
 <span>  productive_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  productive_vj <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  productive_vdj <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  allowed_chain_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Single pair"</span>, <span class="st">"Extra pair"</span>, <span class="st">"Extra pair-exception"</span>,</span>
-<span>    <span class="st">"Orphan VDJ"</span>, <span class="st">"Orphan VDJ-exception"</span><span class="op">)</span>,</span>
+<span>  allowed_chain_status <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subsetby <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  extract_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  filter_pattern <span class="op">=</span> <span class="st">",|None|No_cotig"</span>,</span>
-<span>  check_vj_mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"v_call"</span>, <span class="st">"j_call"</span><span class="op">)</span>,</span>
-<span>  check_vdj_mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"v_call"</span>, <span class="st">"j_call"</span><span class="op">)</span>,</span>
+<span>  filter_unmapped <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  check_vj_mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  check_vdj_mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  check_extract_cols_mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  remove_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -112,18 +115,23 @@ include <code>c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ
 stored, used instead of the standard columns. Default is <code>NULL</code>.</p></dd>
 
 
-<dt id="arg-filter-pattern">filter_pattern<a class="anchor" aria-label="anchor" href="#arg-filter-pattern"></a></dt>
-<dd><p>Character. Pattern to filter unmapped data. Default is <code>',|None|No_contig'</code>.</p></dd>
+<dt id="arg-filter-unmapped">filter_unmapped<a class="anchor" aria-label="anchor" href="#arg-filter-unmapped"></a></dt>
+<dd><p>Logic. Whether to filter unmapped data. Default is TRUE.</p></dd>
 
 
 <dt id="arg-check-vj-mapping">check_vj_mapping<a class="anchor" aria-label="anchor" href="#arg-check-vj-mapping"></a></dt>
-<dd><p>Character vector. Specifies columns to check for VJ mapping. Default
-is <code>c('v_call', 'j_call')</code>.</p></dd>
+<dd><p>Logic vector. Whether to check for VJ mapping. Default
+is <code>c(TRUE, TRUE)</code>.</p><ul><li><p>If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain</p></li>
+<li><p>If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain</p></li>
+</ul></dd>
 
 
 <dt id="arg-check-vdj-mapping">check_vdj_mapping<a class="anchor" aria-label="anchor" href="#arg-check-vdj-mapping"></a></dt>
-<dd><p>Character vector. Specifies columns to check for VDJ mapping. Default
-is <code>c('v_call', 'd_call', 'j_call')</code>.</p></dd>
+<dd><p>Logic vector. Specifies columns to check for VDJ mapping. Default
+is <code>c(TRUE, FALSE, 'TRUE)</code>.</p><ul><li><p>If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain</p></li>
+<li><p>If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain</p></li>
+<li><p>If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain</p></li>
+</ul></dd>
 
 
 <dt id="arg-check-extract-cols-mapping">check_extract_cols_mapping<a class="anchor" aria-label="anchor" href="#arg-check-extract-cols-mapping"></a></dt>
@@ -160,10 +168,10 @@ If <code>FALSE</code>, masks them with uniform values. Default is <code>TRUE</co
 </ul></li>
 <li><p><strong>Main V(D)J Extraction</strong>:</p><ul><li><p>Uses <code>extract_cols</code> to specify custom columns for extracting V(D)J information.</p></li>
 </ul></li>
-<li><p><strong>Unmapped Data Filtering</strong>:</p><ul><li><p>Removes or masks cells based on <code>filter_pattern</code>.</p></li>
+<li><p><strong>Unmapped Data Filtering</strong>:</p><ul><li><p>decided to removes or masks cells based on <code>filter_unmapped</code>.</p></li>
 <li><p>Checks specific columns for unclear mappings using <code>check_vj_mapping</code>, <code>check_vdj_mapping</code>, or <code>check_extract_cols_mapping</code>.</p></li>
-<li><p><em>filter_pattern</em></p><ul><li><p>pattern to be filtered form object.</p></li>
-<li><p>If is set to be <code>NULL</code>, the unmaping filtering process will not start</p></li>
+<li><p><em>filter_unmapped</em></p><ul><li><p>pattern to be filtered from object.</p></li>
+<li><p>If is set to be <code>NULL</code>, the filtering process will not start</p></li>
 </ul></li>
 <li><p><em>check_vj_mapping, check_vdj_mapping</em></p><ul><li><p>only <code>colData</code> specified by these arguments (<code>check_vj_mapping</code> and <code>check_vdj_mapping</code>) will be checked for unclear mappings</p></li>
 </ul></li>
@@ -187,20 +195,24 @@ If <code>FALSE</code>, masks them with uniform values. Default is <code>TRUE</co
 <span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu">setupVdjPseudobulk</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    sce <span class="op">=</span> <span class="va">sce_vdj</span>,</span></span>
 <span class="r-in"><span>    mode_option <span class="op">=</span> <span class="st">"abT"</span>, <span class="co"># set the mode to αβTCR</span></span></span>
+<span class="r-in"><span>    allowed_chain_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Single pair"</span>, <span class="st">"Extra pair"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    already.productive <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="co"># need to filter the unproductive cells</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking productivity from productive_abT_VDJ, productive_abT_VJ ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 7279 of cells filtered</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> checking allowed chain status...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 12 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> VDJ data extraction begin:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Parameter extract_cols do not provided, automatically geneterate colnames for extraction.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Detect whether colData v_call_abT_VDJ, d_call_abT_VDJ, j_call_abT_VDJ, v_call_abT_VJ, j_call_abT_VJ already exist...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Extract main TCR from v_call_abT_VDJ, d_call_abT_VDJ, j_call_abT_VDJ, v_call_abT_VJ, j_call_abT_VJ ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Complete.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering cells from v_call_abT_VDJ_main, j_call_abT_VDJ_main, v_call_abT_VJ_main, j_call_abT_VJ_main ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 63 of cells filtered</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2657 of cells remain.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2646 of cells remain.</span>
 <span class="r-in"><span><span class="co"># check the remaining dim</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 33538  2657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 33538  2646</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
