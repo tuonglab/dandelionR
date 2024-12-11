@@ -96,10 +96,18 @@ setupVdjPseudobulk <- function(
     sce,
     mode_option = c("abT", "gdT", "B"),
     already.productive = TRUE,
-    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
-    subsetby = NULL, groups = NULL, extract_cols = NULL, filter_unmapped = TRUE,
-    check_vj_mapping = c(TRUE, TRUE), check_vdj_mapping = c(TRUE, FALSE, TRUE),
-    check_extract_cols_mapping = NULL, remove_missing = TRUE) {
+    productive_cols = NULL, 
+    productive_vj = TRUE, 
+    productive_vdj = TRUE, 
+    allowed_chain_status = NULL,
+    subsetby = NULL, 
+    groups = NULL, 
+    extract_cols = NULL, 
+    filter_unmapped = TRUE,
+    check_vj_mapping = c(TRUE, TRUE), 
+    check_vdj_mapping = c(TRUE, FALSE, TRUE),
+    check_extract_cols_mapping = NULL, 
+    remove_missing = TRUE) {
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
     mode_option <- match.arg(mode_option)

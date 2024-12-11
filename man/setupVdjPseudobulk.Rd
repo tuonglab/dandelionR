@@ -15,7 +15,7 @@ setupVdjPseudobulk(
   subsetby = NULL,
   groups = NULL,
   extract_cols = NULL,
-  need_filter = TRUE,
+  filter_unmapped = TRUE,
   check_vj_mapping = c(TRUE, TRUE),
   check_vdj_mapping = c(TRUE, FALSE, TRUE),
   check_extract_cols_mapping = NULL,
@@ -50,6 +50,8 @@ include \code{c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ
 \item{extract_cols}{Character vector. Names of \code{colData} columns where V(D)J information is
 stored, used instead of the standard columns. Default is \code{NULL}.}
 
+\item{filter_unmapped}{Logic. Whether to filter unmapped data. Default is TRUE.}
+
 \item{check_vj_mapping}{Logic vector. Whether to check for VJ mapping. Default
 is \code{c(TRUE, TRUE)}.
 \itemize{
@@ -70,8 +72,6 @@ for mapping checks. Default is \code{NULL}.}
 
 \item{remove_missing}{Logical. If \code{TRUE}, removes cells with contigs matching the filter.
 If \code{FALSE}, masks them with uniform values. Default is \code{TRUE}.}
-
-\item{filter_ummaped}{Logic. Whether to filter unmapped data. Default is TRUE.}
 }
 \value{
 filtered SingleCellExperiment object
@@ -117,9 +117,9 @@ The function performs the following preprocessing steps:
 }
 \item \strong{Unmapped Data Filtering}:
 \itemize{
-\item Removes or masks cells based on \code{filter_pattern}.
+\item decided to removes or masks cells based on \code{filter_unmapped}.
 \item Checks specific columns for unclear mappings using \code{check_vj_mapping}, \code{check_vdj_mapping}, or \code{check_extract_cols_mapping}.
-\item \emph{filter_pattern}
+\item \emph{filter_unmapped}
 \itemize{
 \item pattern to be filtered from object.
 \item If is set to be \code{NULL}, the filtering process will not start
