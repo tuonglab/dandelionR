@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Single-cell Immune Repertoire Trajectory Analysis in R">
-<meta name="description" content="dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides all the necessary tools to interface with scRepertoire and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the palantir python package.">
-<meta property="og:description" content="dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides all the necessary tools to interface with scRepertoire and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the palantir python package.">
+<meta name="description" content="dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides the necessary functions to interface with scRepertoire and a custom implementation of an absorbing Markov chain for pseudotime inference, inspired by the Palantir Python package.">
+<meta property="og:description" content="dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides the necessary functions to interface with scRepertoire and a custom implementation of an absorbing Markov chain for pseudotime inference, inspired by the Palantir Python package.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -35,8 +35,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/dandelionR1.html">Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire</a></li>
-    <li><a class="dropdown-item" href="articles/dandelionR2.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a></li>
+<li><a class="dropdown-item" href="articles/01_StartingFromscRepertoire.html">Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire</a></li>
+    <li><a class="dropdown-item" href="articles/02_OriginalDataFromDandelion.html">Single-cell Immune Repertoire Trajectory Analysis with dandelionR</a></li>
   </ul>
 </li>
       </ul>
@@ -74,6 +74,14 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.github.com/tuonglab/dandelionR/" class="external-link">dandelionR</a></span><span class="op">)</span></span></code></pre></div>
 <p>This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.</p>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use <code>dandelionR</code> in your work, please cite the original <code>dandelion</code> paper:</p>
+<pre><code>Suo, C. et al. Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins. Nat. Biotechnol. 42, 40-51 (2024). https://doi.org:10.1038/s41587-023-01734-7</code></pre>
+<p>Placeholder for Bioconductor citation.</p>
+<pre><code>Yu, J., Borcherding, N. &amp; Tuong, Z.K.. (2024) DandelionR: Single-cell immune repertoire trajectory analysis in R. R package version 0.99.0.</code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

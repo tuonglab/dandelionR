@@ -2,9 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  dandelionR1: dandelionR1.html
-  dandelionR2: dandelionR2.html
-last_built: 2024-12-11T02:11Z
+  01_StartingFromscRepertoire: 01_StartingFromscRepertoire.html
+  02_OriginalDataFromDandelion: 02_OriginalDataFromDandelion.html
+last_built: 2024-12-11T06:50Z
 urls:
   reference: https:/tuonglab.github.io/dandelionR/preview/pr37/reference
   article: https:/tuonglab.github.io/dandelionR/preview/pr37/articles
