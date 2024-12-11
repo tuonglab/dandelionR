@@ -45,6 +45,7 @@ This function preprocesses data, constructs a Markov chain, and calculates trans
 data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
+    allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
 )
 # Build Milo Object
 set.seed(100)

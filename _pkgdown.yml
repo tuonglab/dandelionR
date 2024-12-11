@@ -5,7 +5,7 @@ navbar:
   left:
     - text: Vignettes
       menu:
-        - text: Single-cell Immune Repertoire Trajectory Analysis
-          href: dandelionR.html
-        - text: Starting from scReperotire
+        - text: Starting from scRepertoire
           href: fromSceAndVDJ.html
+        - text: Starting from dandelion (original)
+          href: dandelionR.html

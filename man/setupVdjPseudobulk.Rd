@@ -11,12 +11,11 @@ setupVdjPseudobulk(
   productive_cols = NULL,
   productive_vj = TRUE,
   productive_vdj = TRUE,
-  allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception",
-    "Orphan VDJ", "Orphan VDJ-exception"),
+  allowed_chain_status = NULL,
   subsetby = NULL,
   groups = NULL,
   extract_cols = NULL,
-  filter_pattern = ",|None|No_cotig",
+  filter_pattern = ",|None|No_contig",
   check_vj_mapping = c("v_call", "j_call"),
   check_vdj_mapping = c("v_call", "j_call"),
   check_extract_cols_mapping = NULL,
@@ -142,6 +141,7 @@ dim(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(
     sce = sce_vdj,
     mode_option = "abT", # set the mode to αβTCR
+    allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
     already.productive = FALSE
 ) # need to filter the unproductive cells
 # check the remaining dim

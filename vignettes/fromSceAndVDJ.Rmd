@@ -1,5 +1,5 @@
 ---
-title: "Starting from scRepertoire"
+title: "Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
@@ -23,7 +23,7 @@ Install `scRepertoire` if you haven't already.
 if (!requireNamespace("scRepertoire", quietly = TRUE)) { # only for the tutorial
     BiocManager::install("scRepertoire")
 }
-# or 
+# or
 devtools::install_github("ncborcherding/scRepertoire")
 ```
 
@@ -67,7 +67,7 @@ Here, the data is ready to be used for the pseudobulk and trajectory analysis wo
 
 Because this is a alpha-beta TCR data, we will set the `mode_option` to "abT". This will append `abT` to the relevant columns holding the VDJ gene information. If you are going to try other types of VDJ data e.g. BCR, you should set `mode_option` to "B" instead. And this argument should be consistently set with the `vdjPseudobulk` function later.
 
-Since the TCR data is already filtered for productive chains in `combineTCR`, we will set `already.productive = TRUE`.
+Since the TCR data is already filtered for productive chains in `combineTCR`, we will set `already.productive = TRUE` and can keep `allowed_chain_status` as `NULL`.
 
 We will also subset the data to only include the main T-cell types: CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.
 ```{r}
@@ -94,7 +94,7 @@ milo_object <- makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20, prop = 0
 We can visualise this milo object using UMAP.
 
 ```{r, warning = FALSE}
-milo_object <- miloUmap(milo_object, n_neighbors=30)
+milo_object <- miloUmap(milo_object, n_neighbors = 30)
 ```
 ```{r}
 plotUMAP(milo_object, color_by = "anno_lvl_2_final_clean", dimred = "UMAP_knngraph")
@@ -106,7 +106,7 @@ Next, we will construct the pseudobulked VDJ feature space using the neighbourho
 ```{r}
 pb.milo <- vdjPseudobulk(milo_object, mode_option = "abT", col_to_take = "anno_lvl_2_final_clean")
 
-pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents=20)
+pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents = 20)
 ```
 
 We can visualise the PCA of the pseudobulked VDJ feature space.
@@ -160,7 +160,7 @@ pb.milo <- markovProbability(
     terminal_state = branch.tips,
     root_cell = root,
     pseudotime_key = "pseudotime",
-    knn=30
+    knn = 30
 )
 ```
 

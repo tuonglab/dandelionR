@@ -50,6 +50,7 @@ reduction on the adjacency matrix of the KNN graph in a Milo object.
 data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE
+    allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"),
 )
 # Build Milo Object
 traj_milo <- miloR::Milo(sce_vdj)
