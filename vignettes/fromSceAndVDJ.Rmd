@@ -71,7 +71,13 @@ Since the TCR data is already filtered for productive chains in `combineTCR`, we
 
 We will also subset the data to only include the main T-cell types: CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.
 ```{r}
-sce <- setupVdjPseudobulk(sce, mode_option = "abT", already.productive = TRUE, subsetby = "anno_lvl_2_final_clean", groups = c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T"))
+sce1 <- setupVdjPseudobulk(sce, 
+                          mode_option = "abT", 
+                          already.productive = TRUE, 
+                          all
+                          subsetby = "anno_lvl_2_final_clean", 
+                          groups = c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T")
+                          )
 ```
 
 Visualise the UMAP of the filtered data.
