@@ -112,8 +112,8 @@ The function performs the following preprocessing steps:
 \item Checks specific columns for unclear mappings using \code{check_vj_mapping}, \code{check_vdj_mapping}, or \code{check_extract_cols_mapping}.
 \item \emph{filter_pattern}
 \itemize{
-\item pattern to be filtered form object.
-\item If is set to be \code{NULL}, the unmaping filtering process will not start
+\item pattern to be filtered from object.
+\item If is set to be \code{NULL}, the filtering process will not start
 }
 \item \emph{check_vj_mapping, check_vdj_mapping}
 \itemize{

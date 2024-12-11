@@ -54,8 +54,8 @@
 #'   - Removes or masks cells based on `filter_pattern`.
 #'   - Checks specific columns for unclear mappings using `check_vj_mapping`, `check_vdj_mapping`, or `check_extract_cols_mapping`.
 #'   - *filter_pattern*
-#'      - pattern to be filtered form object.
-#'      - If is set to be `NULL`, the unmaping filtering process will not start
+#'      - pattern to be filtered from object.
+#'      - If is set to be `NULL`, the filtering process will not start
 #'   - *check_vj_mapping, check_vdj_mapping*
 #'      - only `colData` specified by these arguments (`check_vj_mapping` and `check_vdj_mapping`) will be checked for unclear mappings
 #'   - *check_extract_cols_mapping, related to extract_cols*
@@ -88,8 +88,8 @@
 #'
 #' @export
 setupVdjPseudobulk <- function(
-    sce, 
-    mode_option = c("abT", "gdT", "B"), 
+    sce,
+    mode_option = c("abT", "gdT", "B"),
     already.productive = TRUE,
     productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
     subsetby = NULL, groups = NULL, extract_cols = NULL, need_filter = TRUE,
@@ -221,7 +221,7 @@ setupVdjPseudobulk <- function(
                 if (length(splited_TCR[[1]]) != length(extr_cols)) {
                     abort(paste(
                         "Keyerror: Automatically generated colnames's length is",
-                        length(extr_cols), 
+                        length(extr_cols),
                         ".It must have the same number with the vdj data columns, which is",
                         length(splited_TCR[[1]]),
                         "\nYou could use parameter extract_cols to specify the columns to match the length"
