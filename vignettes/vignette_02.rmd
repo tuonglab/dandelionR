@@ -3,7 +3,7 @@ title: "Single-cell Immune Repertoire Trajectory Analysis with dandelionR"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{dandelionR}
+  %\VignetteIndexEntry{Single-cell Immune Repertoire Trajectory Analysis with dandelionR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

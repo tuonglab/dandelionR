@@ -80,12 +80,11 @@
 #' data(sce_vdj)
 #' # check the dimension
 #' dim(sce_vdj)
-#' allowed <- c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception")
 #' # filtered the data
 #' sce_vdj <- setupVdjPseudobulk(
 #'     sce = sce_vdj,
 #'     mode_option = "abT", # set the mode to αβTCR
-#'     allowed_chain_status = allowed,
+#'     allowed_chain_status = c("Single pair", "Extra pair"),
 #'     already.productive = FALSE
 #' ) # need to filter the unproductive cells
 #' # check the remaining dim
@@ -334,7 +333,7 @@ setupVdjPseudobulk <- function(
             if (is.null(extract_cols)) {
                 if (any(check_vdj_mapping)) {
                     vdj_mapping <- c("v_call", "d_call", "j_call")
-                    extr_cols <- c(extr_cols, paste(vdj_mappin[check_vdj_mapping], "VDJ_main",
+                    extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], "VDJ_main",
                         sep = "_"
                     ))
                 }

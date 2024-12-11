@@ -12,10 +12,9 @@
 #' @param num_waypoints Integer. The number of waypoints to sample when constructing the Markov chain. Default is `500L`.
 #' @examples
 #' data(sce_vdj)
-#' allowed <- c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception")
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE,
-#'     allowed_chain_status = allowed
+#'     allowed_chain_status = c("Single pair", "Extra pair")
 #' )
 #' # Build Milo Object
 #' set.seed(100)

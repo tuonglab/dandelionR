@@ -146,12 +146,11 @@ The function performs the following preprocessing steps:
 data(sce_vdj)
 # check the dimension
 dim(sce_vdj)
-allowed <- c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception")
 # filtered the data
 sce_vdj <- setupVdjPseudobulk(
     sce = sce_vdj,
     mode_option = "abT", # set the mode to αβTCR
-    allowed_chain_status = allowed,
+    allowed_chain_status = c("Single pair", "Extra pair"),
     already.productive = FALSE
 ) # need to filter the unproductive cells
 # check the remaining dim
