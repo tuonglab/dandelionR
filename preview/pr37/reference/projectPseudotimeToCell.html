@@ -81,7 +81,62 @@ Default is an empty string (<code>''</code>).</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu"><a href="setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce_vdj</span>,</span></span>
+<span class="r-in"><span>    already.productive <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>    allowed_chain_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Single pair"</span>, <span class="st">"Extra pair"</span>, <span class="st">"Extra pair-exception"</span>, <span class="st">"Orphan VDJ"</span>, <span class="st">"Orphan VDJ-exception"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking productivity from productive_abT_VDJ, productive_abT_VJ ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 7279 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> checking allowed chain status...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Extract main TCR from v_call_abT_VDJ, d_call_abT_VDJ, j_call_abT_VDJ, v_call_abT_VJ, j_call_abT_VJ ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Complete.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering cells from v_call_abT_VDJ_main, j_call_abT_VDJ_main, v_call_abT_VJ_main, j_call_abT_VJ_main ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 63 of cells filtered</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2657 of cells remain.</span>
+<span class="r-in"><span><span class="co"># Build Milo Object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">traj_milo</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/Milo.html" class="external-link">Milo</a></span><span class="op">(</span><span class="va">sce_vdj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/buildGraph.html" class="external-link">buildGraph</a></span><span class="op">(</span><span class="va">traj_milo</span>, k <span class="op">=</span> <span class="fl">50</span>, d <span class="op">=</span> <span class="fl">20</span>, reduced.dim <span class="op">=</span> <span class="st">"X_scvi"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Constructing kNN graph with k:50</span>
+<span class="r-in"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu">miloR</span><span class="fu">::</span><span class="fu"><a href="https://marionilab.github.io/miloR/reference/makeNhoods.html" class="external-link">makeNhoods</a></span><span class="op">(</span><span class="va">milo_object</span>, reduced_dims <span class="op">=</span> <span class="st">"X_scvi"</span>, d <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Checking valid object</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running refined sampling with reduced_dim</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Construct Pseudobulked VDJ Feature Space</span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu">scater</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define root and branch tips</span></span></span>
+<span class="r-in"><span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu">SingleCellExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">189</span>, <span class="fl">198</span><span class="op">)</span> <span class="co"># which.min(pca[, 2]) and which.max(pca[, 2])</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">branch.tips</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fl">177</span> <span class="co"># which.max(pca[, 1])</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Construct Diffusion Map</span></span></span>
+<span class="r-in"><span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu">destiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DiffusionMap-class.html" class="external-link">DiffusionMap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pca</span><span class="op">)</span>, n_pcs <span class="op">=</span> <span class="fl">50</span>, n_eigs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dif.pse</span> <span class="op">&lt;-</span> <span class="fu">destiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DPT.html" class="external-link">DPT</a></span><span class="op">(</span><span class="va">dm</span>, tips <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">branch.tips</span><span class="op">)</span>, w_width <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Markov Chain Construction</span></span></span>
+<span class="r-in"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="markovProbability.html">markovProbability</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    milo <span class="op">=</span> <span class="va">pb.milo</span>,</span></span>
+<span class="r-in"><span>    diffusionmap <span class="op">=</span> <span class="va">dm</span>,</span></span>
+<span class="r-in"><span>    terminal_state <span class="op">=</span> <span class="va">branch.tips</span>,</span></span>
+<span class="r-in"><span>    diffusiontime <span class="op">=</span> <span class="va">dif.pse</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DPT"</span>, <span class="va">root</span><span class="op">)</span><span class="op">]</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>    root_cell <span class="op">=</span> <span class="va">root</span>,</span></span>
+<span class="r-in"><span>    pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling and flocking waypoints...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Markov chain construction...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing fundamental matrix and absorption probabilities...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Project probabilites from waypoints to each pseudobulk...</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Project Pseudobulk Data</span></span></span>
+<span class="r-in"><span><span class="va">projected_milo</span> <span class="op">&lt;-</span> <span class="fu">projectPseudotimeToCell</span><span class="op">(</span><span class="va">milo_object</span>, <span class="va">pb.milo</span>, <span class="va">branch.tips</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 number of cells removed due to not belonging to any neighbourhood</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
