@@ -40,9 +40,10 @@ Because the `colData` of this single-cell object is populated with the TCR infor
 Here, we also need to specify the `allowed_chain_status` to keep to the relevant contigs. Default for `allowed_chain_status` is `NULL`, which will keep all contigs. In the standard R workflow that starts from `scRepertoire`, we will assume that all the QC and filtering has already been handled by `scRepertoire`.
 
 ```{r, warning = FALSE}
-sce_vdj <- setupVdjPseudobulk(sce_vdj, 
-                              already.productive = FALSE, 
-                              allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"))
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
+    already.productive = FALSE,
+    allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception")
+)
 ```
 
 We can visualise the UMAP of the filtered data.
