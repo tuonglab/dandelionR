@@ -27,7 +27,7 @@ Collate:
     'miloUmap.R'
     'projectPseudotimeToCell.R'
     'setupVdjPseudobulk.R'
-    'splitTCR.R'
+    'splitCTgene.R'
     'vdjPseudobulk.R'
 Imports:
     BiocGenerics,

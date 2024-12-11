@@ -233,19 +233,19 @@ setupVdjPseudobulk <- function(
             message(sprintf("Detect whether colData %s already exist...", msg))
             if (!any(extr_cols %in% colnames(colData(sce)))) {
                 message(sprintf("Creating %s colData based on column CTgene", msg))
-                splited_TCR <- splitCTgene(sce)
-                if (length(splited_TCR[[1]]) != length(extr_cols)) {
+                splitVdj <- splitCTgene(sce)
+                if (length(splitVdj[[1]]) != length(extr_cols)) {
                     abort(paste(
                         "Keyerror: Automatically generated colnames's length is",
                         length(extr_cols),
                         ".It must have the same number with the vdj data columns, which is",
-                        length(splited_TCR[[1]]),
+                        length(splitVdj[[1]]),
                         "\nYou could use parameter extract_cols to specify the columns to match the length"
                     ))
                 } else {
                     vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
                         vapply(X = sc, "[", X, FUN.VALUE = character(1))
-                    }, sc = splited_TCR)
+                    }, sc = splitVdj)
                     names(vdj) <- extr_cols
                     colData(sce) <- cbind(colData(sce), vdj)
                 }
@@ -274,20 +274,20 @@ setupVdjPseudobulk <- function(
         msg <- paste(extract_cols, collapse = ", ")
         if (!any(extract_cols %in% colnames(colData(sce)))) {
             message(sprintf("ColData does not exist, Creating %s colData based on column CTgene", msg))
-            splited_TCR <- splitCTgene(sce)
-            if (length(splited_TCR[[1]]) != length(extract_cols)) {
+            splitVdj <- splitCTgene(sce)
+            if (length(splitVdj[[1]]) != length(extract_cols)) {
                 abort(paste(
                     "Keyerror: Colnames",
                     paste0(extract_cols[!extract_cols %in% colnames(colData(sce))],
                         collapse = ", "
                     ), "must have the same length with the vdj data, which is of the length",
-                    length(splited_TCR[[1]]),
+                    length(splitVdj[[1]]),
                     "\nYou could modify parameter extract_cols to specify the columns to match the length"
                 ))
             } else {
                 vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
                     vapply(X = sc, "[", X, FUN.VALUE = character(1))
-                }, sc = splited_TCR)
+                }, sc = splitVdj)
                 names(vdj) <- extract_cols
                 colData(sce) <- cbind(colData(sce), vdj)
             }
