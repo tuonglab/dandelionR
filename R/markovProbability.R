@@ -58,12 +58,15 @@
 #' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
-    milo, diffusionmap, terminal_state, root_cell, knn = 30L, diffusiontime = NULL,
-    pseudotime_key = "pseudotime",
-    scale_components = TRUE, num_waypoints = 500) {
+    milo, diffusionmap, terminal_state, root_cell, knn = 30L,
+    diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
+    num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) {
-            abort(paste("Missing pseudotime data. This data can be either stored in", deparse(substitute(milo)), "or provided by parameter diffusiontime"))
+            abort(paste(
+                "Missing pseudotime data. This data can be either stored in",
+                deparse(substitute(milo)), "or provided by parameter diffusiontime"
+            ))
         } else {
             milo[[pseudotime_key]] <- diffusiontime
         }
@@ -81,16 +84,13 @@ markovProbability <- function(
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities <- differentiationProbabilities(multiscale[waypoints, ],
-        terminal_states = terminal_state, knn = knn,
-        pseudotime = diffusiontime, waypoints = waypoints
+        terminal_states = terminal_state,
+        knn = knn, pseudotime = diffusiontime, waypoints = waypoints
     )
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
     # store the result into milo
-    new_coldata <- DataFrame(probabilities_proj[
-        ,
-        1
-    ], probabilities_proj[, 2])
+    new_coldata <- DataFrame(probabilities_proj[, 1], probabilities_proj[, 2])
     colnames(new_coldata) <- c(names(terminal_state))
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)

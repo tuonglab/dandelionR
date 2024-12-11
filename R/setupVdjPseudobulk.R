@@ -92,20 +92,10 @@
 #'
 #' @export
 setupVdjPseudobulk <- function(
-    sce,
-    mode_option = c("abT", "gdT", "B"),
-    already.productive = TRUE,
-    productive_cols = NULL,
-    productive_vj = TRUE,
-    productive_vdj = TRUE,
-    allowed_chain_status = NULL,
-    subsetby = NULL,
-    groups = NULL,
-    extract_cols = NULL,
-    filter_unmapped = TRUE,
-    check_vj_mapping = c(TRUE, TRUE),
-    check_vdj_mapping = c(TRUE, FALSE, TRUE),
-    check_extract_cols_mapping = NULL,
+    sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
+    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
+    subsetby = NULL, groups = NULL, extract_cols = NULL, filter_unmapped = TRUE,
+    check_vj_mapping = c(TRUE, TRUE), check_vdj_mapping = c(TRUE, FALSE, TRUE), check_extract_cols_mapping = NULL,
     remove_missing = TRUE) {
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
@@ -119,11 +109,17 @@ setupVdjPseudobulk <- function(
     .typeCheck(filter_unmapped, "logical")
     .typeCheck(check_vj_mapping, "logical")
     if (length(check_vj_mapping) != 2) {
-        abort(paste("ValueError: length of check_vj_mapping should be 2. But", length(check_vj_mapping), "was provided."))
+        abort(paste(
+            "ValueError: length of check_vj_mapping should be 2. But", length(check_vj_mapping),
+            "was provided."
+        ))
     }
     .typeCheck(check_vdj_mapping, "logical")
     if (length(check_vdj_mapping) != 3) {
-        abort(paste("ValueError: length of check_vj_mapping should be 3. But", length(check_vdj_mapping), "was provided."))
+        abort(paste(
+            "ValueError: length of check_vj_mapping should be 3. But", length(check_vdj_mapping),
+            "was provided."
+        ))
     }
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
@@ -187,8 +183,7 @@ setupVdjPseudobulk <- function(
         message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
         idx <- Reduce(`|`, lapply(groups, function(i) {
-            colData(sce)[[subsetby]] %in%
-                i
+            colData(sce)[[subsetby]] %in% i
         }))
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
@@ -210,10 +205,7 @@ setupVdjPseudobulk <- function(
                 # can be pack as another function
                 suffix <- c("_VDJ", "_VJ")
                 extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(
-                        x,
-                        mode_option, y
-                    )
+                    paste0(x, mode_option, y)
                 }))
                 extr_cols <- extr_cols[extr_cols != paste0(
                     "d_call_", mode_option,
@@ -222,10 +214,7 @@ setupVdjPseudobulk <- function(
             } else {
                 suffix <- c("VDJ", "VJ")
                 extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(
-                        x,
-                        y
-                    )
+                    paste0(x, y)
                 }))
                 extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
             }
@@ -237,10 +226,8 @@ setupVdjPseudobulk <- function(
                 if (length(splitVdj[[1]]) != length(extr_cols)) {
                     abort(paste(
                         "Keyerror: Automatically generated colnames's length is",
-                        length(extr_cols),
-                        ".It must have the same number with the vdj data columns, which is",
-                        length(splitVdj[[1]]),
-                        "\nYou could use parameter extract_cols to specify the columns to match the length"
+                        length(extr_cols), ".It must have the same number with the vdj data columns, which is",
+                        length(splitVdj[[1]]), "\nYou could use parameter extract_cols to specify the columns to match the length"
                     ))
                 } else {
                     vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
@@ -251,10 +238,8 @@ setupVdjPseudobulk <- function(
                 }
             } else if (!all(extr_cols %in% colnames(colData(sce)))) {
                 abort(paste(
-                    "Keyerror: Automatically generated colnames",
-                    paste0(extr_cols[!extr_cols %in% colnames(colData(sce))],
-                        collapse = ", "
-                    ), "must be contained in colData",
+                    "Keyerror: Automatically generated colnames", paste0(extr_cols[!extr_cols %in%
+                        colnames(colData(sce))], collapse = ", "), "must be contained in colData",
                     "\nYou could use parameter extract_cols to specify the columns to extract TCR"
                 ))
             }
@@ -273,16 +258,16 @@ setupVdjPseudobulk <- function(
     } else {
         msg <- paste(extract_cols, collapse = ", ")
         if (!any(extract_cols %in% colnames(colData(sce)))) {
-            message(sprintf("ColData does not exist, Creating %s colData based on column CTgene", msg))
+            message(sprintf(
+                "ColData does not exist, Creating %s colData based on column CTgene",
+                msg
+            ))
             splitVdj <- splitCTgene(sce)
             if (length(splitVdj[[1]]) != length(extract_cols)) {
                 abort(paste(
-                    "Keyerror: Colnames",
-                    paste0(extract_cols[!extract_cols %in% colnames(colData(sce))],
-                        collapse = ", "
-                    ), "must have the same length with the vdj data, which is of the length",
-                    length(splitVdj[[1]]),
-                    "\nYou could modify parameter extract_cols to specify the columns to match the length"
+                    "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                        colnames(colData(sce))], collapse = ", "), "must have the same length with the vdj data, which is of the length",
+                    length(splitVdj[[1]]), "\nYou could modify parameter extract_cols to specify the columns to match the length"
                 ))
             } else {
                 vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
@@ -293,10 +278,8 @@ setupVdjPseudobulk <- function(
             }
         } else if (!all(extract_cols %in% colnames(colData(sce)))) {
             abort(paste(
-                "Keyerror: Colnames",
-                paste0(extract_cols[!extract_cols %in% colnames(colData(sce))],
-                    collapse = ", "
-                ), "must be contained in colData",
+                "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                    colnames(colData(sce))], collapse = ", "), "must be contained in colData",
                 "\nYou could modify parameter extract_cols to specify the columns to extract TCR"
             ))
         }
@@ -319,13 +302,15 @@ setupVdjPseudobulk <- function(
         if (!is.null(mode_option)) {
             if (any(check_vdj_mapping)) {
                 vdj_mapping <- c("v_call", "d_call", "j_call")
-                extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], mode_option, "VDJ_main",
+                extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], mode_option,
+                    "VDJ_main",
                     sep = "_"
                 ))
             }
             if (any(check_vj_mapping)) {
                 vj_mapping <- c("v_call", "j_call")
-                extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], mode_option, "VJ_main",
+                extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], mode_option,
+                    "VJ_main",
                     sep = "_"
                 ))
             }
@@ -333,13 +318,16 @@ setupVdjPseudobulk <- function(
             if (is.null(extract_cols)) {
                 if (any(check_vdj_mapping)) {
                     vdj_mapping <- c("v_call", "d_call", "j_call")
-                    extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], "VDJ_main",
+                    extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping],
+                        "VDJ_main",
                         sep = "_"
                     ))
                 }
                 if (any(check_vj_mapping)) {
                     vj_mapping <- c("v_call", "j_call")
-                    extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], "VJ_main", sep = "_"))
+                    extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], "VJ_main",
+                        sep = "_"
+                    ))
                 }
             } else {
                 if (!is.null(check_extract_cols_mapping)) {

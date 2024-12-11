@@ -5,12 +5,15 @@
 #' @return list contain vector of VJ & VDJ genes from each cell
 #' @importFrom SummarizedExperiment colData<-
 splitCTgene <- function(sce) {
-    CTgene <- colData(sce)["CTgene"]
-    # split with "_"
-    CTgene <- vapply(CTgene, strsplit, split = "_", FUN.VALUE = list(character(1)))
-    # split with "."
-    CTgene <- vapply(CTgene, strsplit, split = "[.]", FUN.VALUE = list(character(1)))
-    names(CTgene) <- NULL # this is a list containing `ncol()` sublists, where each sublist contains two character vectors: the first represent TRA the second represent TRB
+    CTgene <- colData(sce)[, "CTgene"]
+    # split with '_'
+    CTgene <- lapply(CTgene, strsplit, split = "_")
+    # split with '.'
+    CTgene <- lapply(CTgene, function(x) lapply(x, strsplit, split = "[.]"))
+    CTgene <- .collapse_nested_list(CTgene)
+    # names(CTgene) <- NULL # this is a list containing `ncol()` sublists,
+    # where each sublist contains two character vectors: the first represent
+    # TRA the second represent TRB
     CTgene <- lapply(CTgene, formatVdj)
     return(lapply(CTgene, unlist))
 }
@@ -48,4 +51,29 @@ chainAssign <- function(vec, num) {
         abort
     }
     return(chains)
+}
+
+#' Collapse a nested list
+#'
+#' @param input_list input nested list.
+#' @keywords internal
+#' @return collapsed list
+.collapse_nested_list <- function(input_list) {
+    lapply(input_list, function(sublist) {
+        if (is.list(sublist)) {
+            # Check if all elements are also lists
+            all_are_lists <- TRUE
+            for (item in sublist) {
+                if (!is.list(item)) {
+                    all_are_lists <- FALSE
+                    break
+                }
+            }
+            # If all elements are lists, unlist one level
+            if (all_are_lists) {
+                return(unlist(sublist, recursive = FALSE))
+            }
+        }
+        return(sublist)
+    })
 }

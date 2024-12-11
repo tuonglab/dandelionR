@@ -13,7 +13,8 @@
 
 \item{pseudotime}{pseudotime ordering of cells}
 
-\item{waypoints}{integer vector, index of selected waypoint used to construct markov chain}
+\item{waypoints}{integer vector, index of selected waypoint used to
+construct markov chain}
 }
 \value{
 transition matrix of the markov chain

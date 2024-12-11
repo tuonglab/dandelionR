@@ -44,7 +44,7 @@ vdjPseudobulk(
 
 \item{normalise}{Logical. If \code{TRUE}, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is \code{TRUE}.}
 
-\item{renormalise}{Logical. If \code{TRUE}, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing "missing" calls. Useful when \code{setupVdjPseudobulk()} was run with \code{remove_missing = FALSE}. Default is \code{FALSE}.}
+\item{renormalise}{Logical. If \code{TRUE}, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when \code{setupVdjPseudobulk()} was run with \code{remove_missing = FALSE}. Default is \code{FALSE}.}
 
 \item{min_count}{Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when \code{normalise = TRUE}. Default is \code{1}.}
 }
@@ -65,7 +65,7 @@ This function aggregates V(D)J data into pseudobulk groups based on the followin
 \item \strong{Normalization}:
 \itemize{
 \item When \code{normalise = TRUE}, scales V(D)J counts to 1 for each pseudobulk group.
-\item When \code{renormalise = TRUE}, rescales the counts after removing "missing" calls.
+\item When \code{renormalise = TRUE}, rescales the counts after removing 'missing' calls.
 }
 \item \strong{Mode Selection}:
 \itemize{
