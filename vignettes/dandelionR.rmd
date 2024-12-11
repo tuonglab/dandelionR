@@ -57,7 +57,8 @@ set.seed(100)
 
 ## Filter the data
 
-To begin, we will filter the data and extract the TCR information so that we can construct pseudobulks. 
+To begin, we will filter the data and extract the TCR information so that we can construct pseudobulks. Because the `colData` of this single-cell object is populated with the TCR information from `dandelion` in python (through this method: `dandelion` -> `anndata` -> `anndata2ri`, which essentially converts an `AnnData` object in python to `SingleCellExperiment` in R), we can directly use the `setupVdjPseudobulk` function to extract the TCR information and construct the pseudobulks. 
+
 ```{r, warning = FALSE}
 sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
 ```

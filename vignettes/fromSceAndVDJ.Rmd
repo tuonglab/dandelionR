@@ -1,5 +1,5 @@
 ---
-title: "Single-cell Immune Repertoire Trajectory Analysis with dandelionR from sce and vdj combination"
+title: "Starting from scRepertoire"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
@@ -12,70 +12,71 @@ knitr::opts_chunk$set(error = FALSE, message = FALSE, warning = FALSE)
 library(BiocStyle)
 ```
 
-# Interaction with scRepertoire
+# Introduction
 
-In a 
-
-`dandelionR` is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in [dandelion](https://www.github.com/zktuong/dandelion). 
-
-It provides all the necessary tools to interface with [scRepertoire](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
+In a standard analysis workflow in R, users may choose to read in their VDJ data with [scRepertoire](https://github.com/ncborcherding/scRepertoire). In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from 'raw' data i.e. just a standard single-cell gene expression data (stored in `SingleCellExperiment`) and VDJ data (in AIRR format).
 
 ## Installation
 
-You can install `dandelionR` from GitHub with:
+Install `scRepertoire` if you haven't already.
 ```{r, eval = FALSE}
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
-}
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-    install.packages("BiocManager")
-}
-if (!requireNamespace("scater", quietly = TRUE)) { # only for the tutorial
-    BiocManager::install("scater")
-}
 if (!requireNamespace("scRepertoire", quietly = TRUE)) { # only for the tutorial
     BiocManager::install("scRepertoire")
 }
-devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
+# or 
+devtools::install_github("ncborcherding/scRepertoire")
 ```
 
-
+### Load the required libraries
 ```{r}
 library(dandelionR)
 library(scRepertoire)
 library(scater)
 ```
 
+### Load the demo data
+Due to size limitations of the package, we have provided an very trimmed down version of the demo data to ~2000 cells. The full dataset can be found here accordingly: GEX - https://developmental.cellatlas.io/fetal-immune (Lymphoid Cells) and VDJ - https://github.com/zktuong/dandelion-demo-files/tree/master/dandelion_manuscript/data/dandelion-remap
+
 ```{r}
 data(demo_sce)
 data(demo_airr)
 ```
 
+### Use `scRepertoire` to load the VDJ data
+For the trajectory analysis work here, we are focusing on the main productive TCR chains. Therefore we will flag `filterMulti = TRUE`, which will keep the selection of the 2 corresponding chains with the highest expression for a single barcode. For more details, refer to `scRepertoire`'s [documentation](https://www.borch.dev/uploads/screpertoire/reference/combinetcr).
 ```{r}
 contig.list <- loadContigs(input = demo_airr, format = "AIRR")
+
+# Format to `scRepertoire`'s requirements and some light filtering
 combined.TCR <- combineTCR(contig.list,
     removeNA = TRUE,
     removeMulti = FALSE,
-    filterMulti = TRUE
+    filterMulti = TRUE,
+    filterNonproductive = TRUE,
 )
 ```
 
+### Merging VDJ data with gene expression data
+Next we will combine the gene expression data with the VDJ data to create a `SingleCellExperiment` object.
 ```{r}
-sce <- combineExpression(combined.TCR,
-    demo_sce,
-    cloneCall = "gene",
-    filterNA = TRUE,
-    proportion = TRUE
-)
+sce <- combineExpression(combined.TCR, demo_sce)
 ```
 
+### Initiate `dandelionR` workflow
+Here, the data is ready to be used for the pseudobulk and trajectory analysis workflow in `dandelionR`.
+
+Because this is a alpha-beta TCR data, we will set the `mode_option` to "abT". This will append `abT` to the relevant columns holding the VDJ gene information. If you are going to try other types of VDJ data e.g. BCR, you should set `mode_option` to "B" instead. And this argument should be consistently set with the `vdjPseudobulk` function later.
+
+Since the TCR data is already filtered for productive chains in `combineTCR`, we will set `already.productive = TRUE`.
+
+We will also subset the data to only include the main T-cell types: CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.
 ```{r}
-sce <- setupVdjPseudobulk(sce, mode_option = "abT", allowed_chain_status = NULL, already.productive = TRUE, subsetby = "anno_lvl_2_final_clean", groups = c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T"))
+sce <- setupVdjPseudobulk(sce, mode_option = "abT", already.productive = TRUE, subsetby = "anno_lvl_2_final_clean", groups = c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T"))
 ```
 
-
+Visualise the UMAP of the filtered data.
 ```{r}
-scater::plotUMAP(sce, color_by = "anno_lvl_2_final_clean")
+plotUMAP(sce, color_by = "anno_lvl_2_final_clean")
 ```
 
 
@@ -103,9 +104,8 @@ plotUMAP(milo_object, color_by = "anno_lvl_2_final_clean", dimred = "UMAP_knngra
 
 Next, we will construct the pseudobulked VDJ feature space using the neighbourhood graph constructed above. We will also run PCA on the pseudobulked VDJ feature space.
 ```{r}
-pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
+pb.milo <- vdjPseudobulk(milo_object, mode_option = "abT", col_to_take = "anno_lvl_2_final_clean")
 
-# pbs = milo_object@nhoods
 pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents=20)
 ```
 
