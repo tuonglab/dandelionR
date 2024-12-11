@@ -11,7 +11,7 @@ bibentry(
 )
 
 bibentry(
-  bitype = "Article",
+  bibtype = "Article",
   title = "Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins",
   author = c(
       person("Chenqu", "Suo"),
