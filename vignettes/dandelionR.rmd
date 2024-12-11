@@ -119,7 +119,7 @@ root <- which.max(pca[1, ])
 ```
 
 ### Construct diffusion map
-```{r}
+```{r, warning = FALSE}
 library(destiny)
 # Run diffusion map on the PCA
 dm <- DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)

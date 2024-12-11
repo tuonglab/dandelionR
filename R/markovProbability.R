@@ -2,10 +2,11 @@
 #'
 #' This function preprocesses data, constructs a Markov chain, and calculates transition probabilities based on pseudotime information.
 #' @param milo A `Milo` or `SingleCellExperiment` object. This object should have pseudotime stored in `colData`, which will be used to calculate probabilities. If pseudotime is available in `milo`, it takes precedence over the value provided through the `diffusiontime` parameter.
-#' @param diffusionmap A `DiffusionMap` object corresponding to the `milo` object. Used for Markov chain construction.
-#' @param diffusiontime Numeric vector. If pseudotime is not stored in `milo`, this parameter can be used to provide pseudotime values to the function.
 #' @param terminal_state Integer. The index of the terminal state in the Markov chain.
 #' @param root_cell Integer. The index of the root state in the Markov chain.
+#' @param knn Integer. The number of nearest neighbors for graph construction. Default is `30L`.
+#' @param diffusionmap A `DiffusionMap` object corresponding to the `milo` object. Used for Markov chain construction.
+#' @param diffusiontime Numeric vector. If pseudotime is not stored in `milo`, this parameter can be used to provide pseudotime values to the function.
 #' @param pseudotime_key Character. The name of the column in `colData` that contains the inferred pseudotime.
 #' @param scale_components Logical. If `TRUE`, the components will be scaled before constructing the Markov chain. Default is `FALSE`.
 #' @param num_waypoints Integer. The number of waypoints to sample when constructing the Markov chain. Default is `500L`.
@@ -56,7 +57,7 @@
 #' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
-    milo, diffusionmap, diffusiontime = NULL, terminal_state, root_cell,
+    milo, diffusionmap, terminal_state, root_cell, knn = 30L, diffusiontime = NULL,
     pseudotime_key = "pseudotime",
     scale_components = TRUE, num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
@@ -79,7 +80,7 @@ markovProbability <- function(
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities <- differentiationProbabilities(multiscale[waypoints, ],
-        terminal_states = terminal_state,
+        terminal_states = terminal_state, knn = knn,
         pseudotime = diffusiontime, waypoints = waypoints
     )
     # project probabilities from waypoints to each pseudobulk
