@@ -7,11 +7,12 @@
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/articles/vignette_02.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/authors.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/index.html</loc></url>
-<url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/categoryTCR.html</loc></url>
+<url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/chainAssign.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/demo_airr.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/demo_sce.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/differentiationProbabilities.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-classCheck.html</loc></url>
+<url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-collapse_nested_list.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-constructMarkovChain.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-determineMultiscaleSpace.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-filterCells.html</loc></url>
@@ -21,6 +22,7 @@
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-minMaxScale.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-terminalStateFromMarkovChain.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/dot-typeCheck.html</loc></url>
+<url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/formatVdj.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/index.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/markovProbability.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/miloUmap.html</loc></url>
@@ -30,6 +32,5 @@
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/setupVdjPseudobulk.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/splitCTgene.html</loc></url>
 <url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/vdjPseudobulk.html</loc></url>
-<url><loc>https:/tuonglab.github.io/dandelionR/preview/pr37/reference/vecAssign.html</loc></url>
 </urlset>
 
