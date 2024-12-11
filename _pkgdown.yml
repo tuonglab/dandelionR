@@ -1,11 +1,3 @@
 url: https://tuonglab.github.io/dandelionR/
 template:
   bootstrap: 5
-navbar:
-  left:
-    - text: Vignettes
-      menu:
-        - text: Starting from scRepertoire
-          href: fromSceAndVDJ.html
-        - text: Starting from dandelion (original)
-          href: dandelionR.html
