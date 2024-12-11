@@ -15,9 +15,9 @@ setupVdjPseudobulk(
   subsetby = NULL,
   groups = NULL,
   extract_cols = NULL,
-  filter_pattern = ",|None|No_contig",
-  check_vj_mapping = c("v_call", "j_call"),
-  check_vdj_mapping = c("v_call", "j_call"),
+  need_filter = TRUE,
+  check_vj_mapping = c(TRUE, TRUE),
+  check_vdj_mapping = c(TRUE, FALSE, TRUE),
   check_extract_cols_mapping = NULL,
   remove_missing = TRUE
 )
@@ -50,19 +50,28 @@ include \code{c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ
 \item{extract_cols}{Character vector. Names of \code{colData} columns where V(D)J information is
 stored, used instead of the standard columns. Default is \code{NULL}.}
 
-\item{filter_pattern}{Character. Pattern to filter unmapped data. Default is \code{',|None|No_contig'}.}
+\item{check_vj_mapping}{Logic vector. Whether to check for VJ mapping. Default
+is \code{c(TRUE, TRUE)}.
+\itemize{
+\item If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
+\item If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain
+}}
 
-\item{check_vj_mapping}{Character vector. Specifies columns to check for VJ mapping. Default
-is \code{c('v_call', 'j_call')}.}
-
-\item{check_vdj_mapping}{Character vector. Specifies columns to check for VDJ mapping. Default
-is \code{c('v_call', 'd_call', 'j_call')}.}
+\item{check_vdj_mapping}{Logic vector. Specifies columns to check for VDJ mapping. Default
+is \verb{c(TRUE, FALSE, 'TRUE)}.
+\itemize{
+\item If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain
+\item If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain
+\item If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain
+}}
 
 \item{check_extract_cols_mapping}{Character vector. Specifies columns related to \code{extract_cols}
 for mapping checks. Default is \code{NULL}.}
 
 \item{remove_missing}{Logical. If \code{TRUE}, removes cells with contigs matching the filter.
 If \code{FALSE}, masks them with uniform values. Default is \code{TRUE}.}
+
+\item{filter_ummaped}{Logic. Whether to filter unmapped data. Default is TRUE.}
 }
 \value{
 filtered SingleCellExperiment object

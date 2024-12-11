@@ -20,7 +20,7 @@
 #' @param groups Character vector. Specifies the subset condition for filtering. Default is `NULL`.
 #' @param extract_cols Character vector. Names of `colData` columns where V(D)J information is
 #' stored, used instead of the standard columns. Default is `NULL`.
-#' @param filter_ummaped Logic. Whether to filter unmapped data. Default is TRUE.
+#' @param filter_unmapped Logic. Whether to filter unmapped data. Default is TRUE.
 #' @param check_vj_mapping Logic vector. Whether to check for VJ mapping. Default
 #' is `c(TRUE, TRUE)`. 
 #'  - If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
@@ -56,9 +56,9 @@
 #' - **Main V(D)J Extraction**:
 #'   - Uses `extract_cols` to specify custom columns for extracting V(D)J information.
 #' - **Unmapped Data Filtering**:
-#'   - Removes or masks cells based on `filter_pattern`.
+#'   - decided to removes or masks cells based on `filter_unmapped`.
 #'   - Checks specific columns for unclear mappings using `check_vj_mapping`, `check_vdj_mapping`, or `check_extract_cols_mapping`.
-#'   - *filter_pattern*
+#'   - *filter_unmapped*
 #'      - pattern to be filtered from object.
 #'      - If is set to be `NULL`, the filtering process will not start
 #'   - *check_vj_mapping, check_vdj_mapping*
@@ -97,7 +97,7 @@ setupVdjPseudobulk <- function(
     mode_option = c("abT", "gdT", "B"),
     already.productive = TRUE,
     productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
-    subsetby = NULL, groups = NULL, extract_cols = NULL, need_filter = TRUE,
+    subsetby = NULL, groups = NULL, extract_cols = NULL, filter_unmapped = TRUE,
     check_vj_mapping = c(TRUE, TRUE), check_vdj_mapping = c(TRUE, FALSE, TRUE),
     check_extract_cols_mapping = NULL, remove_missing = TRUE) {
     # check if the data type is correct
