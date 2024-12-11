@@ -1,0 +1,38 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "DandelionR: Single-cell immune repertoire trajectory analysis in R",
+  author   = c(
+      person("Jiawei", "Yu"),
+      person("Nicholas", "Borcherding"),
+      person("Zewen Kelvin", "Tuong")),
+  journal = "TBC",
+  year     = "2025",
+  textVersion = "Yu J, Borcherding N, Tuong ZK. DandelionR: Single-cell immune repertoire trajectory analysis in R."  
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins",
+  author = c(
+      person("Chenqu", "Suo"),
+      person("Krzysztof", "Polanski"),
+      person("Emma", "Dann"),
+      person("Rik G.H.", "Lindeboom"),
+      person("Roser", "Vilarrasa-Blasi"),
+      person("Roser", "Vento-Tormo"),
+      person("Muzlifah", "Haniffa"),
+      person("Kerstin B.", "Meyer"),
+      person("Lisa M.", "Dratva"),
+      person("Zewen Kelvin", "Tuong"),
+      person("Menna R.", "Clatworthy"),
+      person("Sarah A.", "Teichmann")
+  ),
+  journal = "Nature Biotechnology",
+  volume = "42",
+  year = "2024",
+  publisher = "Nature Publishing Group",
+  doi = "10.1038/s41587-023-01734-7",
+  url = "https://www.nature.com/articles/s41587-023-01734-7",
+  textVersion = "Suo C, Polanski K, Dann E, Lindeboom RGH, Vilarrasa-Blasi R, Vento-Tormo R, Haniffa M, Meyer KB, Dratva LM, Tuong ZK, Clatworthy MR, Teichmann SA. Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins. Nat Biotechnol. 2024;42(1):40-51. doi:10.1038/s41587-023-01734-7."
+)
+

@@ -15,7 +15,7 @@
 differentiationProbabilities <- function(
     wp_data, terminal_states = NULL, knn = 30L,
     pseudotime, waypoints) {
-    T_ <- .constructMarkovChain(wp_data, 30, pseudotime, waypoints)
+    T_ <- .constructMarkovChain(wp_data, knn, pseudotime, waypoints)
     # identify terminal states if not specified
     if (is.null(terminal_states)) {
         terminal_states <- .terminalStateFromMarkovChain(

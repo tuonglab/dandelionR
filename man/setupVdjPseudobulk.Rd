@@ -11,14 +11,13 @@ setupVdjPseudobulk(
   productive_cols = NULL,
   productive_vj = TRUE,
   productive_vdj = TRUE,
-  allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception",
-    "Orphan VDJ", "Orphan VDJ-exception"),
+  allowed_chain_status = NULL,
   subsetby = NULL,
   groups = NULL,
   extract_cols = NULL,
-  filter_pattern = ",|None|No_cotig",
-  check_vj_mapping = c("v_call", "j_call"),
-  check_vdj_mapping = c("v_call", "j_call"),
+  filter_unmapped = TRUE,
+  check_vj_mapping = c(TRUE, TRUE),
+  check_vdj_mapping = c(TRUE, FALSE, TRUE),
   check_extract_cols_mapping = NULL,
   remove_missing = TRUE
 )
@@ -51,13 +50,22 @@ include \code{c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ
 \item{extract_cols}{Character vector. Names of \code{colData} columns where V(D)J information is
 stored, used instead of the standard columns. Default is \code{NULL}.}
 
-\item{filter_pattern}{Character. Pattern to filter unmapped data. Default is \code{',|None|No_contig'}.}
+\item{filter_unmapped}{Logic. Whether to filter unmapped data. Default is TRUE.}
 
-\item{check_vj_mapping}{Character vector. Specifies columns to check for VJ mapping. Default
-is \code{c('v_call', 'j_call')}.}
+\item{check_vj_mapping}{Logic vector. Whether to check for VJ mapping. Default
+is \code{c(TRUE, TRUE)}.
+\itemize{
+\item If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
+\item If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain
+}}
 
-\item{check_vdj_mapping}{Character vector. Specifies columns to check for VDJ mapping. Default
-is \code{c('v_call', 'd_call', 'j_call')}.}
+\item{check_vdj_mapping}{Logic vector. Specifies columns to check for VDJ mapping. Default
+is \verb{c(TRUE, FALSE, 'TRUE)}.
+\itemize{
+\item If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain
+\item If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain
+\item If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain
+}}
 
 \item{check_extract_cols_mapping}{Character vector. Specifies columns related to \code{extract_cols}
 for mapping checks. Default is \code{NULL}.}
@@ -109,12 +117,12 @@ The function performs the following preprocessing steps:
 }
 \item \strong{Unmapped Data Filtering}:
 \itemize{
-\item Removes or masks cells based on \code{filter_pattern}.
+\item decided to removes or masks cells based on \code{filter_unmapped}.
 \item Checks specific columns for unclear mappings using \code{check_vj_mapping}, \code{check_vdj_mapping}, or \code{check_extract_cols_mapping}.
-\item \emph{filter_pattern}
+\item \emph{filter_unmapped}
 \itemize{
-\item pattern to be filtered form object.
-\item If is set to be \code{NULL}, the unmaping filtering process will not start
+\item pattern to be filtered from object.
+\item If is set to be \code{NULL}, the filtering process will not start
 }
 \item \emph{check_vj_mapping, check_vdj_mapping}
 \itemize{
@@ -142,6 +150,7 @@ dim(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(
     sce = sce_vdj,
     mode_option = "abT", # set the mode to αβTCR
+    allowed_chain_status = c("Single pair", "Extra pair"),
     already.productive = FALSE
 ) # need to filter the unproductive cells
 # check the remaining dim

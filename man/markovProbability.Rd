@@ -7,9 +7,10 @@
 markovProbability(
   milo,
   diffusionmap,
-  diffusiontime = NULL,
   terminal_state,
   root_cell,
+  knn = 30L,
+  diffusiontime = NULL,
   pseudotime_key = "pseudotime",
   scale_components = TRUE,
   num_waypoints = 500
@@ -20,11 +21,13 @@ markovProbability(
 
 \item{diffusionmap}{A \code{DiffusionMap} object corresponding to the \code{milo} object. Used for Markov chain construction.}
 
-\item{diffusiontime}{Numeric vector. If pseudotime is not stored in \code{milo}, this parameter can be used to provide pseudotime values to the function.}
-
 \item{terminal_state}{Integer. The index of the terminal state in the Markov chain.}
 
 \item{root_cell}{Integer. The index of the root state in the Markov chain.}
+
+\item{knn}{Integer. The number of nearest neighbors for graph construction. Default is \code{30L}.}
+
+\item{diffusiontime}{Numeric vector. If pseudotime is not stored in \code{milo}, this parameter can be used to provide pseudotime values to the function.}
 
 \item{pseudotime_key}{Character. The name of the column in \code{colData} that contains the inferred pseudotime.}
 
@@ -41,7 +44,8 @@ This function preprocesses data, constructs a Markov chain, and calculates trans
 \examples{
 data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
-    already.productive = FALSE
+    already.productive = FALSE,
+    allowed_chain_status = c("Single pair", "Extra pair")
 )
 # Build Milo Object
 set.seed(100)

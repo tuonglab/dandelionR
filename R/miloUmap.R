@@ -17,7 +17,8 @@
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
-#'     already.productive = FALSE
+#'     already.productive = FALSE,
+#'     allowed_chain_status = c("Single pair", "Extra pair")
 #' )
 #' # Build Milo Object
 #' traj_milo <- miloR::Milo(sce_vdj)
@@ -33,7 +34,9 @@
 #' @importFrom miloR graph
 #' @importFrom uwot umap
 #' @export
-miloUmap <- function(milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean", min_dist = 0.3, ...) {
+miloUmap <- function(
+    milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean",
+    min_dist = 0.3, ...) {
     requireNamespace("miloR")
     requireNamespace("igraph")
     # get the graph's adjacency matrix
@@ -42,7 +45,10 @@ miloUmap <- function(milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metri
     rownames(graphm) <- rownames(colData(milo))
     colnames(graphm) <- rownames(colData(milo))
     # conduct umap
-    pos <- umap(graphm, n_neighbors = n_neighbors, metric = metric, min_dist = min_dist, ...)
+    pos <- umap(graphm,
+        n_neighbors = n_neighbors, metric = metric, min_dist = min_dist,
+        ...
+    )
     reducedDim(milo, slot_name) <- pos
     milo
 }

@@ -20,11 +20,16 @@
 #' @param groups Character vector. Specifies the subset condition for filtering. Default is `NULL`.
 #' @param extract_cols Character vector. Names of `colData` columns where V(D)J information is
 #' stored, used instead of the standard columns. Default is `NULL`.
-#' @param filter_pattern Character. Pattern to filter unmapped data. Default is `',|None|No_contig'`.
-#' @param check_vj_mapping Character vector. Specifies columns to check for VJ mapping. Default
-#' is `c('v_call', 'j_call')`.
-#' @param check_vdj_mapping Character vector. Specifies columns to check for VDJ mapping. Default
-#' is `c('v_call', 'd_call', 'j_call')`.
+#' @param filter_unmapped Logic. Whether to filter unmapped data. Default is TRUE.
+#' @param check_vj_mapping Logic vector. Whether to check for VJ mapping. Default
+#' is `c(TRUE, TRUE)`.
+#'  - If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
+#'  - If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain
+#' @param check_vdj_mapping Logic vector. Specifies columns to check for VDJ mapping. Default
+#' is `c(TRUE, FALSE, 'TRUE)`.
+#'  - If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain
+#'  - If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain
+#'  - If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain
 #' @param check_extract_cols_mapping Character vector. Specifies columns related to `extract_cols`
 #' for mapping checks. Default is `NULL`.
 #' @param remove_missing Logical. If `TRUE`, removes cells with contigs matching the filter.
@@ -51,11 +56,11 @@
 #' - **Main V(D)J Extraction**:
 #'   - Uses `extract_cols` to specify custom columns for extracting V(D)J information.
 #' - **Unmapped Data Filtering**:
-#'   - Removes or masks cells based on `filter_pattern`.
+#'   - decided to removes or masks cells based on `filter_unmapped`.
 #'   - Checks specific columns for unclear mappings using `check_vj_mapping`, `check_vdj_mapping`, or `check_extract_cols_mapping`.
-#'   - *filter_pattern*
-#'      - pattern to be filtered form object.
-#'      - If is set to be `NULL`, the unmaping filtering process will not start
+#'   - *filter_unmapped*
+#'      - pattern to be filtered from object.
+#'      - If is set to be `NULL`, the filtering process will not start
 #'   - *check_vj_mapping, check_vdj_mapping*
 #'      - only `colData` specified by these arguments (`check_vj_mapping` and `check_vdj_mapping`) will be checked for unclear mappings
 #'   - *check_extract_cols_mapping, related to extract_cols*
@@ -79,6 +84,7 @@
 #' sce_vdj <- setupVdjPseudobulk(
 #'     sce = sce_vdj,
 #'     mode_option = "abT", # set the mode to αβTCR
+#'     allowed_chain_status = c("Single pair", "Extra pair"),
 #'     already.productive = FALSE
 #' ) # need to filter the unproductive cells
 #' # check the remaining dim
@@ -87,13 +93,10 @@
 #' @export
 setupVdjPseudobulk <- function(
     sce, mode_option = c("abT", "gdT", "B"), already.productive = TRUE,
-    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = c(
-        "Single pair",
-        "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception"
-    ),
-    subsetby = NULL, groups = NULL, extract_cols = NULL, filter_pattern = ",|None|No_cotig",
-    check_vj_mapping = c("v_call", "j_call"), check_vdj_mapping = c("v_call", "j_call"),
-    check_extract_cols_mapping = NULL, remove_missing = TRUE) {
+    productive_cols = NULL, productive_vj = TRUE, productive_vdj = TRUE, allowed_chain_status = NULL,
+    subsetby = NULL, groups = NULL, extract_cols = NULL, filter_unmapped = TRUE,
+    check_vj_mapping = c(TRUE, TRUE), check_vdj_mapping = c(TRUE, FALSE, TRUE), check_extract_cols_mapping = NULL,
+    remove_missing = TRUE) {
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
     mode_option <- match.arg(mode_option)
@@ -102,13 +105,22 @@ setupVdjPseudobulk <- function(
     .typeCheck(productive_vj, "logical")
     .typeCheck(subsetby, "character")
     .typeCheck(groups, "character")
-    if(!is.null(allowed_chain_status)) allowed_chain_status <- match.arg(allowed_chain_status, several.ok = TRUE)
     .typeCheck(extract_cols, "character")
-    .typeCheck(filter_pattern, "character")
-    check_vdj_mapping <- match.arg(check_vdj_mapping, c("v_call", "d_call", "j_call"),
-        several.ok = TRUE
-    )
-    check_vj_mapping <- match.arg(check_vj_mapping, several.ok = TRUE)
+    .typeCheck(filter_unmapped, "logical")
+    .typeCheck(check_vj_mapping, "logical")
+    if (length(check_vj_mapping) != 2) {
+        abort(paste(
+            "ValueError: length of check_vj_mapping should be 2. But", length(check_vj_mapping),
+            "was provided."
+        ))
+    }
+    .typeCheck(check_vdj_mapping, "logical")
+    if (length(check_vdj_mapping) != 3) {
+        abort(paste(
+            "ValueError: length of check_vj_mapping should be 3. But", length(check_vdj_mapping),
+            "was provided."
+        ))
+    }
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
 
@@ -171,8 +183,7 @@ setupVdjPseudobulk <- function(
         message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
         idx <- Reduce(`|`, lapply(groups, function(i) {
-            colData(sce)[[subsetby]] %in%
-                i
+            colData(sce)[[subsetby]] %in% i
         }))
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
@@ -180,7 +191,9 @@ setupVdjPseudobulk <- function(
         message(sprintf("%d of cells filtered", filtered))
     }
     ## extract main VDJ from specified columns
+    message("VDJ data extraction begin:")
     if (is.null(extract_cols)) {
+        message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
         if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
             v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
                 "v_call_genotyped_"
@@ -192,10 +205,7 @@ setupVdjPseudobulk <- function(
                 # can be pack as another function
                 suffix <- c("_VDJ", "_VJ")
                 extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(
-                        x,
-                        mode_option, y
-                    )
+                    paste0(x, mode_option, y)
                 }))
                 extr_cols <- extr_cols[extr_cols != paste0(
                     "d_call_", mode_option,
@@ -204,41 +214,36 @@ setupVdjPseudobulk <- function(
             } else {
                 suffix <- c("VDJ", "VJ")
                 extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(
-                        x,
-                        y
-                    )
+                    paste0(x, y)
                 }))
                 extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
             }
             msg <- paste(extr_cols, collapse = ", ")
+            message(sprintf("Detect whether colData %s already exist...", msg))
+            if (!any(extr_cols %in% colnames(colData(sce)))) {
+                message(sprintf("Creating %s colData based on column CTgene", msg))
+                splitVdj <- splitCTgene(sce)
+                if (length(splitVdj[[1]]) != length(extr_cols)) {
+                    abort(paste(
+                        "Keyerror: Automatically generated colnames's length is",
+                        length(extr_cols), ".It must have the same number with the vdj data columns, which is",
+                        length(splitVdj[[1]]), "\nYou could use parameter extract_cols to specify the columns to match the length"
+                    ))
+                } else {
+                    vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
+                        vapply(X = sc, "[", X, FUN.VALUE = character(1))
+                    }, sc = splitVdj)
+                    names(vdj) <- extr_cols
+                    colData(sce) <- cbind(colData(sce), vdj)
+                }
+            } else if (!all(extr_cols %in% colnames(colData(sce)))) {
+                abort(paste(
+                    "Keyerror: Automatically generated colnames", paste0(extr_cols[!extr_cols %in%
+                        colnames(colData(sce))], collapse = ", "), "must be contained in colData",
+                    "\nYou could use parameter extract_cols to specify the columns to extract TCR"
+                ))
+            }
             message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-            if(!any(extr_cols%in%colnames(colData(sce)))){
-              splited_TCR <- splitCTgene(sce)
-              if(length(splited_TCR[[1]])!=length(extr_cols))
-              {
-                abort(paste("Keyerror: Automatically generated colnames",
-                            paste0(extr_cols[!extr_cols%in%colnames(colData(sce))],
-                                   collapse = ", "), "are with the same length of the vdj data, which is of the length", 
-                            length(splited_TCR[[1]]),
-                            "\nYou could use parameter extract_cols to specify the columns to match the length"))
-              }
-              else
-              {
-                vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
-                  vapply(X = sc, '[',X, FUN.VALUE = character(1))
-                }, sc = splited_TCR)
-                names(vdj) <- extr_cols
-                colData(sce) <- cbind(colData(sce), vdj)
-              }
-            }
-            else if(!all(extr_cols%in%colnames(colData(sce))))
-            {
-              abort(paste("Keyerror: Automatically generated colnames",
-                          paste0(extr_cols[!extr_cols%in%colnames(colData(sce))],
-                                 collapse = ", "), "are not contained in colData",
-                          "\nYou could use parameter extract_cols to specify the columns to extract TCR"))
-            }
             sce <- Reduce(function(data, ex_col) {
                 tem <- colData(data)[[ex_col]]
                 strtem <- strsplit(as.character(tem), "\\|")
@@ -252,33 +257,33 @@ setupVdjPseudobulk <- function(
         }
     } else {
         msg <- paste(extract_cols, collapse = ", ")
+        if (!any(extract_cols %in% colnames(colData(sce)))) {
+            message(sprintf(
+                "ColData does not exist, Creating %s colData based on column CTgene",
+                msg
+            ))
+            splitVdj <- splitCTgene(sce)
+            if (length(splitVdj[[1]]) != length(extract_cols)) {
+                abort(paste(
+                    "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                        colnames(colData(sce))], collapse = ", "), "must have the same length with the vdj data, which is of the length",
+                    length(splitVdj[[1]]), "\nYou could modify parameter extract_cols to specify the columns to match the length"
+                ))
+            } else {
+                vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
+                    vapply(X = sc, "[", X, FUN.VALUE = character(1))
+                }, sc = splitVdj)
+                names(vdj) <- extract_cols
+                colData(sce) <- cbind(colData(sce), vdj)
+            }
+        } else if (!all(extract_cols %in% colnames(colData(sce)))) {
+            abort(paste(
+                "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                    colnames(colData(sce))], collapse = ", "), "must be contained in colData",
+                "\nYou could modify parameter extract_cols to specify the columns to extract TCR"
+            ))
+        }
         message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-        if(!any(extract_cols%in%colnames(colData(sce)))){
-          splited_TCR <- splitCTgene(sce)
-          if(length(splited_TCR[[1]])!=length(extract_cols))
-          {
-            abort(paste("Keyerror: Colnames",
-                        paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
-                               collapse = ", "), "are with the same length of the vdj data, which is of the length", 
-                        length(splited_TCR[[1]]),
-                        "\nYou could modify parameter extract_cols to specify the columns to match the length"))
-          }
-          else
-          {
-            vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
-              vapply(X = sc, '[',X, FUN.VALUE = character(1))
-            }, sc = splited_TCR)
-            names(vdj) <- extract_cols
-            colData(sce) <- cbind(colData(sce), vdj)
-          }
-        }
-        else if(!all(extract_cols%in%colnames(colData(sce))))
-        {
-          abort(paste("Keyerror: Colnames",
-                      paste0(extract_cols[!extract_cols%in%colnames(colData(sce))],
-                             collapse = ", "), "are not contained in colData",
-                      "\nYou could modify parameter extract_cols to specify the columns to extract TCR"))
-        }
         sce <- Reduce(function(data, ex_col) {
             tem <- colData(data)[[ex_col]]
             strtem <- strsplit(as.character(tem), "\\|")
@@ -291,28 +296,38 @@ setupVdjPseudobulk <- function(
         message("Complete.")
     }
     # remove unclear mapping
-    if (!is.null(filter_pattern)) {
+    if (filter_unmapped) {
+        filter_pattern <- ",|None|No_contig"
         extr_cols <- c()
         if (!is.null(mode_option)) {
-            if (!is.null(check_vdj_mapping)) {
-                extr_cols <- c(extr_cols, paste(check_vdj_mapping, mode_option, "VDJ_main",
+            if (any(check_vdj_mapping)) {
+                vdj_mapping <- c("v_call", "d_call", "j_call")
+                extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], mode_option,
+                    "VDJ_main",
                     sep = "_"
                 ))
             }
-            if (!is.null(check_vj_mapping)) {
-                extr_cols <- c(extr_cols, paste(check_vj_mapping, mode_option, "VJ_main",
+            if (any(check_vj_mapping)) {
+                vj_mapping <- c("v_call", "j_call")
+                extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], mode_option,
+                    "VJ_main",
                     sep = "_"
                 ))
             }
         } else {
             if (is.null(extract_cols)) {
-                if (!is.null(check_vdj_mapping)) {
-                    extr_cols <- c(extr_cols, paste(check_vdj_mapping, "VDJ_main",
+                if (any(check_vdj_mapping)) {
+                    vdj_mapping <- c("v_call", "d_call", "j_call")
+                    extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping],
+                        "VDJ_main",
                         sep = "_"
                     ))
                 }
-                if (!is.null(check_vj_mapping)) {
-                    extr_cols <- c(extr_cols, paste(check_vj_mapping, "VJ_main", sep = "_"))
+                if (any(check_vj_mapping)) {
+                    vj_mapping <- c("v_call", "j_call")
+                    extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], "VJ_main",
+                        sep = "_"
+                    ))
                 }
             } else {
                 if (!is.null(check_extract_cols_mapping)) {

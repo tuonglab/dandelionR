@@ -5,14 +5,12 @@ Authors@R:
     c(person(given="Jiawei", family="Yu", email = "jiawei.yu@uq.edu.au", role = c("aut"), comment = c(ORCID = "0009-0005-9170-7881")),
       person(given="Nicholas", family="Borcherding", email = "borcherding@wustl.edu", role = c("aut"), comment = c(ORCID = "0000-0003-1427-6342")),
       person(given="Kelvin", family="Tuong", email = "z.tuong@uq.edu.au", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6735-6808")))
-Description: dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides all the necessary tools to interface with scRepertoire and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the palantir python package.
+Description: dandelionR is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation. It provides the necessary functions to interface with scRepertoire and a custom implementation of an absorbing Markov chain for pseudotime inference, inspired by the Palantir Python package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 biocViews: Software, ImmunoOncology, SingleCell
-LazyData: true
-LazyDataCompression: xz
 Collate:
     'check.R'
     'constructMarkovChain.R'
@@ -29,7 +27,7 @@ Collate:
     'miloUmap.R'
     'projectPseudotimeToCell.R'
     'setupVdjPseudobulk.R'
-    'splitTCR.R'
+    'splitCTgene.R'
     'vdjPseudobulk.R'
 Imports:
     BiocGenerics,
@@ -52,7 +50,8 @@ Suggests:
     BiocStyle,
     knitr,
     RColorBrewer,
-    scater
+    scater,
+    scRepertoire
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues

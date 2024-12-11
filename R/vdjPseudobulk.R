@@ -11,7 +11,7 @@
 #'   - If `milo` is a `SingleCellExperiment` object, either `pbs` or `col_to_bulk` must be provided.
 #' @param col_to_take Optional character or list of characters. Specifies `obs` column(s) to identify the most common value for each pseudobulk. Default is `NULL`.
 #' @param normalise Logical. If `TRUE`, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is `TRUE`.
-#' @param renormalise Logical. If `TRUE`, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing "missing" calls. Useful when `setupVdjPseudobulk()` was run with `remove_missing = FALSE`. Default is `FALSE`.
+#' @param renormalise Logical. If `TRUE`, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when `setupVdjPseudobulk()` was run with `remove_missing = FALSE`. Default is `FALSE`.
 #' @param min_count Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when `normalise = TRUE`. Default is `1`.
 #' @param mode_option Character. Specifies the mode for extracting V(D)J genes. Must be one of `c('B', 'abT', 'gdT')`. Default is `'abT'`.
 #'   - Note: This parameter is considered only when `extract_cols = NULL`.
@@ -25,7 +25,7 @@
 #'   - If `milo` is a `SingleCellExperiment` object, the user must provide either `pbs` or `col_to_bulk`.
 #' - **Normalization**:
 #'   - When `normalise = TRUE`, scales V(D)J counts to 1 for each pseudobulk group.
-#'   - When `renormalise = TRUE`, rescales the counts after removing "missing" calls.
+#'   - When `renormalise = TRUE`, rescales the counts after removing 'missing' calls.
 #' - **Mode Selection**:
 #'   - If `extract_cols = NULL`, the function relies on `mode_option` to determine which V(D)J columns to extract.
 #' - **Filtering**:
@@ -34,7 +34,8 @@
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
-#'     already.productive = FALSE
+#'     already.productive = FALSE,
+#'     allowed_chain_status = c("Single pair", "Extra pair")
 #' )
 #' # Build Milo Object
 #' traj_milo <- miloR::Milo(sce_vdj)
@@ -56,16 +57,13 @@
 #' @importFrom stats model.matrix contrasts
 #'
 #' @export
-vdjPseudobulk <- function(
-    milo,
-    pbs = NULL,
-    col_to_bulk = NULL,
-    extract_cols = c("v_call_abT_VDJ_main", "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"),
-    mode_option = c("abT", "gdT", "B"),
-    col_to_take = NULL,
-    normalise = TRUE,
-    renormalise = FALSE,
-    min_count = 1L) {
+vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(
+                              "v_call_abT_VDJ_main",
+                              "j_call_abT_VDJ_main", "v_call_abT_VJ_main", "j_call_abT_VJ_main"
+                          ), mode_option = c(
+                              "abT",
+                              "gdT", "B"
+                          ), col_to_take = NULL, normalise = TRUE, renormalise = FALSE, min_count = 1L) {
     # type check
     if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
         abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
@@ -161,8 +159,7 @@ vdjPseudobulk <- function(
     # create a new SingelCellExperiment object as result
     pb.sce <- SingleCellExperiment(
         assay = SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
-        rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)),
-        colData = pbs.col
+        rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col
     )
     # store pseudobulk assignment, as a sparse for storage efficiency transpose
     # as the original matrix is cells x pseudobulks

@@ -3,7 +3,7 @@ title: "Single-cell Immune Repertoire Trajectory Analysis with dandelionR"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{dandelionR}
+  %\VignetteIndexEntry{Single-cell Immune Repertoire Trajectory Analysis with dandelionR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,29 +12,7 @@ knitr::opts_chunk$set(error = FALSE, message = FALSE, warning = FALSE)
 library(BiocStyle)
 ```
 
-# Foreword
-
-Welcome to `dandelionR`!
-
-`dandelionR` is an R package for performing single-cell immune repertoire trajectory analysis, based on the original python implementation in [dandelion](https://www.github.com/zktuong/dandelion). 
-
-It provides all the necessary tools to interface with [scRepertoire](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
-
-## Installation
-
-You can install `dandelionR` from GitHub with:
-```{r, eval = FALSE}
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
-}
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-    install.packages("BiocManager")
-}
-if (!requireNamespace("scater", quietly = TRUE)) { # only for the tutorial
-    BiocManager::install("scater")
-}
-devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
-```
+In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from data that has already been processed by `dandelion` in python. This is useful for users who have already processed their data with `dandelion` and want to perform further analysis in R, or who simply want to reproduce the results from the original `dandelion` paper.
 
 ## Usage
 
@@ -42,8 +20,6 @@ devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
 library(dandelionR)
 library(scater)
 ```
-
-This is a work in progress, so please feel free to open an issue if you encounter any problems or have any suggestions for improvement.
 
 ## Load data
 First, we will load the demo data. This is a down-sampled dataset from the [Suo et al 2024 Nature Biotechnology](https://www.nature.com/articles/s41587-023-01734-7) paper. It contains 10,000 cells with the TCR information and the dimensionality reduced data (scVI) that we need for this tutorial. The gene expression matrix is not required for this tutorial so it is not included in the demo data. We will show in a separate tutorial how to start with data from `scRepertoire`.
@@ -58,8 +34,16 @@ set.seed(100)
 ## Filter the data
 
 To begin, we will filter the data and extract the TCR information so that we can construct pseudobulks. 
+
+Because the `colData` of this single-cell object is populated with the TCR information from `dandelion` in python (through this method: `dandelion` -> `anndata` -> `anndata2ri`, which essentially converts an `AnnData` object in python to `SingleCellExperiment` in R), we can directly use the `setupVdjPseudobulk` function to extract the TCR information and construct the pseudobulks.
+
+Here, we also need to specify the `allowed_chain_status` to keep to the relevant contigs. Default for `allowed_chain_status` is `NULL`, which will keep all contigs. In the standard R workflow that starts from `scRepertoire`, we will assume that all the QC and filtering has already been handled by `scRepertoire`.
+
 ```{r, warning = FALSE}
-sce_vdj <- setupVdjPseudobulk(sce_vdj, already.productive = FALSE)
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
+    already.productive = FALSE,
+    allowed_chain_status = c("Single pair", "Extra pair", "Extra pair-exception", "Orphan VDJ", "Orphan VDJ-exception")
+)
 ```
 
 We can visualise the UMAP of the filtered data.
@@ -119,7 +103,7 @@ root <- which.max(pca[1, ])
 ```
 
 ### Construct diffusion map
-```{r}
+```{r, warning = FALSE}
 library(destiny)
 # Run diffusion map on the PCA
 dm <- DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)

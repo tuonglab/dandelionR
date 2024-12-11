@@ -4,7 +4,8 @@
 #' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
-#' @param waypoints integer vector, index of selected waypoint used to construct markov chain
+#' @param waypoints integer vector, index of selected waypoint used to
+#' construct markov chain
 #' @keywords internal
 #' @importFrom bluster makeKNNGraph
 #' @importFrom igraph ends E<- E as_adjacency_matrix
@@ -54,12 +55,12 @@
     })
     ## Remove edges that move backwards in pseudotime except for edges that are
     ## within the computed standard deviation
-    rem_edges <- pmap(list(
-        .x = traj_nbrs, .y = (pseudotime - adaptive.std),
-        .z = ind
-    ), function(.x, .y, .z) {
-        .z[.x < .y]
-    })
+    rem_edges <- pmap(
+        list(.x = traj_nbrs, .y = (pseudotime - adaptive.std), .z = ind),
+        function(.x, .y, .z) {
+            .z[.x < .y]
+        }
+    )
     for (i in seq_len(length(waypoints))) {
         if (length(KNN[i, rem_edges[[i]]])) {
             KNN[i, rem_edges[[i]]] <- 0

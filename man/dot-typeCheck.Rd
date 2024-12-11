@@ -11,6 +11,9 @@
 
 \item{must}{the type we need}
 }
+\value{
+whether or not the input is the correct type
+}
 \description{
 check whether the input has the correct type
 }

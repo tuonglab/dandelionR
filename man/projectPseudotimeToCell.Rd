@@ -30,7 +30,8 @@ the \code{milo} object.
 \examples{
 data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
-    already.productive = FALSE
+    already.productive = FALSE,
+    allowed_chain_status = c("Single pair", "Extra pair")
 )
 # Build Milo Object
 set.seed(100)
