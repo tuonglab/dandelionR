@@ -131,7 +131,7 @@ plotPCA(pb.milo, color_by = "pseudotime") + scale_colour_gradientn(colours = pal
 ### Markov chain construction on the pseudobulk VDJ feature space
 
 ```{r}
-pb.milo1 <- markovProbability(
+pb.milo <- markovProbability(
     milo = pb.milo,
     diffusionmap = dm,
     terminal_state = branch.tips,
