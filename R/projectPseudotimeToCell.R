@@ -10,6 +10,9 @@
 #' pseudotime information to be transferred to single cells.
 #' @param term_states A named vector of terminal states, with branch probabilities to be
 #' transferred. The names should correspond to branches of interest.
+#' @param pseudotime_key Character. The column name in `colData` of `pb_milo` that contains
+#' the  pseudotime information which was used in the `markovProbability` function. Default
+#' is `"pseudotime"`.
 #' @param suffix Character. A suffix to be added to the new column names in `colData`.
 #' Default is an empty string (`''`).
 #'
@@ -21,8 +24,8 @@
 #' )
 #' # Build Milo Object
 #' set.seed(100)
-#' traj_milo <- miloR::Milo(sce_vdj)
-#' milo_object <- miloR::buildGraph(traj_milo, k = 50, d = 20, reduced.dim = "X_scvi")
+#' milo_object <- miloR::Milo(sce_vdj)
+#' milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
 #' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 #'
 #' # Construct Pseudobulked VDJ Feature Space
@@ -50,14 +53,14 @@
 #' )
 #'
 #' # Project Pseudobulk Data
-#' projected_milo <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips)
+#' projected_milo <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips, pseudotime_key = "pseudotime")
 #'
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 #' @import miloR
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @export
-projectPseudotimeToCell <- function(milo, pb_milo, term_states, suffix = "") {
+projectPseudotimeToCell <- function(milo, pb_milo, term_states, pseudotime_key = "pseudotime", suffix = "") {
     nhood <- nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood
     nhoodsum <- apply(nhoods(pb_milo), 2, sum)
@@ -70,7 +73,7 @@ projectPseudotimeToCell <- function(milo, pb_milo, term_states, suffix = "") {
     # is in, weighted by 1/ neighbourhood size
     nhoods_cdata <- nhood[, nhoodsum > 0]
     nhoods_cdata_norm <- nhoods_cdata / apply(nhoods_cdata, 1, sum)
-    col_list <- c(paste0("pseudotime", suffix), paste0(names(term_states), suffix))
+    col_list <- c(paste0(pseudotime_key, suffix), paste0(names(term_states), suffix))
     new_col <- vapply(colData(pb_milo)[, col_list]@listData, function(x, y) {
         list(as.vector(x %*% y / apply(y, 2, sum)))
     }, y = nhoods_cdata_norm, FUN.VALUE = list(double()))

@@ -55,8 +55,8 @@
 #'
 #' The `demo_sce` object is a down-sampled demo dataset derived from Suo et al., 2024, *Nature Biotechnology*.
 #' This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original
-#' publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The original Lymphoid cells data is
-#' available at `url{https://developmental.cellatlas.io/fetal-immune}`.
+#' publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The original Lymphoid cells data in
+#' h5ad format is available at \url{https://developmental.cellatlas.io/fetal-immune}.
 #'
 #' @docType data
 #' @usage data(demo_sce)
