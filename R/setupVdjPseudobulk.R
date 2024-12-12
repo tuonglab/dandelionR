@@ -196,7 +196,7 @@ setupVdjPseudobulk <- function(
         message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
         if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
             v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) { # nocov start
-                "v_call_genotyped_" # nocov ebd
+                "v_call_genotyped_" # nocov end
             } else {
                 "v_call_"
             }
