@@ -7,7 +7,7 @@
 .filterCells(
   sce,
   col_n,
-  filter_pattern = ",|None|No_cotig",
+  filter_pattern = ",|None|No_contig",
   remove_missing = TRUE
 )
 }

@@ -13,7 +13,7 @@
 #' @keywords internal
 #' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object according to the parameter.
-.filterCells <- function(sce, col_n, filter_pattern = ",|None|No_cotig", remove_missing = TRUE) {
+.filterCells <- function(sce, col_n, filter_pattern = ",|None|No_contig", remove_missing = TRUE) {
     if (ncol(sce) < 1) {
         abort("None column remains, please check whether the filtering option is correct.")
     }
