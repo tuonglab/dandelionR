@@ -38,7 +38,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest }
-          # - { os: macos-latest } # disabling until https://github.com/r-lib/actions/issues/950 is resolved
+          - { os: macos-latest } # disabling until https://github.com/r-lib/actions/issues/950 is resolved
           - { os: windows-latest }
     runs-on: ${{ matrix.config.os }}
     env:
