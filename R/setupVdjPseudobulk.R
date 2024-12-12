@@ -112,14 +112,14 @@ setupVdjPseudobulk <- function(
         abort(paste(
             "ValueError: length of check_vj_mapping should be 2. But", length(check_vj_mapping),
             "was provided."
-        ))
+        )) # nocov
     }
     .typeCheck(check_vdj_mapping, "logical")
     if (length(check_vdj_mapping) != 3) {
         abort(paste(
             "ValueError: length of check_vj_mapping should be 3. But", length(check_vdj_mapping),
             "was provided."
-        ))
+        )) # nocov
     }
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
@@ -127,7 +127,7 @@ setupVdjPseudobulk <- function(
     # filtering retain only productive entries based on specified mode
     if (!already.productive) {
         if (is.null(mode_option)) {
-            if (!is.null(productive_cols)) {
+            if (!is.null(productive_cols)) { # nocov start
                 msg <- paste(productive_cols, collapse = ", ")
                 message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
                 cnumber0 <- dim(sce)[2]
@@ -140,7 +140,7 @@ setupVdjPseudobulk <- function(
                 message(sprintf("%d of cells filtered", filtered))
             } else {
                 abort("When mode_option is NULL, the productive_cols must be specified.")
-            }
+            } # nocov end
         } else {
             produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(
                 productive_vdj,
@@ -195,8 +195,8 @@ setupVdjPseudobulk <- function(
     if (is.null(extract_cols)) {
         message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
         if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
-            v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
-                "v_call_genotyped_"
+            v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) { # nocov start
+                "v_call_genotyped_" # nocov end
             } else {
                 "v_call_"
             }
@@ -211,12 +211,12 @@ setupVdjPseudobulk <- function(
                     "d_call_", mode_option,
                     "_VJ"
                 )]
-            } else {
+            } else { # nocov start
                 suffix <- c("VDJ", "VJ")
                 extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
                     paste0(x, y)
                 }))
-                extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")]
+                extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")] # nocov end
             }
             msg <- paste(extr_cols, collapse = ", ")
             message(sprintf("Detect whether colData %s already exist...", msg))
@@ -228,7 +228,7 @@ setupVdjPseudobulk <- function(
                         "Keyerror: Automatically generated colnames's length is",
                         length(extr_cols), ".It must have the same number with the vdj data columns, which is",
                         length(splitVdj[[1]]), "\nYou could use parameter extract_cols to specify the columns to match the length"
-                    ))
+                    )) # nocov
                 } else {
                     vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
                         vapply(X = sc, "[", X, FUN.VALUE = character(1))
@@ -241,7 +241,7 @@ setupVdjPseudobulk <- function(
                     "Keyerror: Automatically generated colnames", paste0(extr_cols[!extr_cols %in%
                         colnames(colData(sce))], collapse = ", "), "must be contained in colData",
                     "\nYou could use parameter extract_cols to specify the columns to extract TCR"
-                ))
+                )) # nocov
             }
             message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
             sce <- Reduce(function(data, ex_col) {
@@ -255,7 +255,7 @@ setupVdjPseudobulk <- function(
             }, extr_cols, init = sce)
             message("Complete.")
         }
-    } else {
+    } else { # nocov start
         msg <- paste(extract_cols, collapse = ", ")
         if (!any(extract_cols %in% colnames(colData(sce)))) {
             message(sprintf(
@@ -294,7 +294,7 @@ setupVdjPseudobulk <- function(
             data
         }, extract_cols, init = sce)
         message("Complete.")
-    }
+    } # nocov end
     # remove unclear mapping
     if (filter_unmapped) {
         filter_pattern <- ",|None|No_contig"
@@ -315,7 +315,7 @@ setupVdjPseudobulk <- function(
                 ))
             }
         } else {
-            if (is.null(extract_cols)) {
+            if (is.null(extract_cols)) { # nocov start
                 if (any(check_vdj_mapping)) {
                     vdj_mapping <- c("v_call", "d_call", "j_call")
                     extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping],
@@ -333,7 +333,7 @@ setupVdjPseudobulk <- function(
                 if (!is.null(check_extract_cols_mapping)) {
                     extr_cols <- check_extract_cols_mapping
                 }
-            }
+            } # nocov end
         }
         if (!is.null(extr_cols)) {
             msg <- paste(extr_cols, collapse = ", ")

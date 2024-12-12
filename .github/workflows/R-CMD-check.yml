@@ -19,7 +19,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest }
-          # - { os: macos-latest } # disabling until https://github.com/r-lib/actions/issues/950 is resolved
+          - { os: macos-latest } # disabling until https://github.com/r-lib/actions/issues/950 is resolved
           - { os: windows-latest }
     runs-on: ${{ matrix.config.os }}
     env:
@@ -60,7 +60,6 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
-          packages: any::covr
 
       - uses: r-lib/actions/check-r-package@v2
 
@@ -80,6 +79,12 @@ jobs:
       - name: Debug permissions output
         run: |
           echo "Has permission: ${{ steps.check_permissions.outputs.has_permission }}"
+          
+      - name: Setup to test coverage
+        uses: r-lib/actions/setup-r-dependencies@v2
+        if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
+        with:
+          packages: covr
 
       - name: Test coverage
         if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'

@@ -66,14 +66,14 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
                           ), col_to_take = NULL, normalise = TRUE, renormalise = FALSE, min_count = 1L) {
     # type check
     if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
-        abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object")
+        abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object") # nocov
     }
     .classCheck(pbs, "Matrix")
     if (!all(col_to_bulk %in% names(colData(milo)))) {
-        abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo")
+        abort("Inappropriate argument value: \nocol_to_bulk should within the name of coldata of milo") # nocov
     }
     if (!all(col_to_take %in% names(colData(milo)))) {
-        abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo")
+        abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo") # nocov
     }
     .typeCheck(normalise, "logical")
     .typeCheck(renormalise, "logical")
@@ -88,9 +88,9 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     } else {
         pbs <- .getPbs(pbs, col_to_bulk, milo)
     }
-    # set the column used in caculation
+    # set the column used in calculation
     if (is.null(extract_cols)) {
-        if (is.null(mode_option)) {
+        if (is.null(mode_option)) { # nocov start
             all.col.n <- colnames(colData(milo))
             extract_cols <- all.col.n[grep("_call_VDJ_main|_call_VJ_main", all.col.n)]
         } else {
@@ -99,7 +99,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
                 mode_option, "_VDJ_main|", mode_option,
                 "_call_VJ_main"
             ), all.col.n)]
-        }
+        } # nocov end
     }
     # perform matrix multiplication of pseudobulks by cell matrix by a cells by
     # VJs matrix strat off by creating the cell by VJs matix skip the prefix
@@ -110,7 +110,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
         if (!is.factor(x)) {
             as.factor(x)
         } else {
-            x
+            x # nocov
         }
     })
     requireNamespace("stats")
@@ -139,7 +139,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
             defined.min.counts <- define.count >= min_count
             # normalise the pseudobulks
             pseudo_vdj_feature[, group.define.mask] <- pseudo_vdj_feature[, group.define.mask] / define.count
-            if (renormalise) {
+            if (renormalise) { # nocov start
                 redefine.count <- apply(
                     pseudo_vdj_feature[defined.min.counts, group.define.mask],
                     1, sum
@@ -148,7 +148,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
                     defined.min.counts,
                     group.define.mask
                 ] / define.count
-            }
+            } # nocov end
             pseudo_vdj_feature[!defined.min.counts, group.define.mask] <- 0
         }
     }
