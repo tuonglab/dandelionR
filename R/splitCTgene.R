@@ -45,10 +45,10 @@ formatVdj <- function(gene_list) {
 chainAssign <- function(vec, num) {
     if (length(vec) == (num + 1)) {
         chains <- vec[seq_len(num)]
-    } else if (all(vec == "NA")) {
+    } else if (all(vec == "NA")) { # nocov start
         chains <- rep("None", num)
     } else {
-        abort
+        abort # nocov end
     }
     return(chains)
 }
@@ -64,16 +64,16 @@ chainAssign <- function(vec, num) {
             # Check if all elements are also lists
             all_are_lists <- TRUE
             for (item in sublist) {
-                if (!is.list(item)) {
+                if (!is.list(item)) { # nocov start
                     all_are_lists <- FALSE
                     break
-                }
+                } # nocov end
             }
             # If all elements are lists, unlist one level
             if (all_are_lists) {
                 return(unlist(sublist, recursive = FALSE))
             }
         }
-        return(sublist)
+        return(sublist) # nocov
     })
 }

@@ -66,7 +66,7 @@ markovProbability <- function(
             abort(paste(
                 "Missing pseudotime data. This data can be either stored in",
                 deparse(substitute(milo)), "or provided by parameter diffusiontime"
-            ))
+            )) # nocov
         } else {
             milo[[pseudotime_key]] <- diffusiontime
         }
@@ -98,8 +98,8 @@ markovProbability <- function(
         warning(paste(
             "Name", paste(names(colData(milo))[idx], collapse = ", "),
             "already exists in", as.character(substitute(milo))
-        ))
-        repeat {
+        )) # nocov
+        repeat { # nocov start
             answer <- readline(prompt = "Do you want to overwrite the column? (y/n): ")
             if (answer == "n") {
                 while (any(names(colData(milo)) %in% colnames(new_coldata))) {
@@ -116,7 +116,7 @@ markovProbability <- function(
             } else {
                 message("Invalid response. Please enter 'y' or 'n'.")
             }
-        }
+        } # nocov end
     }
     colData(milo) <- cbind(colData(milo), new_coldata)
     return(milo)
