@@ -21,7 +21,7 @@ jobs:
         id: check_permissions
         run: |
           # Define allowed actors
-          ALLOWED_ACTORS=("zktuong", "Jiawei-Yu10")  # Replace these with the actual GitHub usernames
+          ALLOWED_ACTORS=("zktuong" "Jiawei-Yu10")  # Replace these with the actual GitHub usernames
 
           if [[ " ${ALLOWED_ACTORS[@]} " =~ " ${GITHUB_ACTOR} " ]]; then
             echo "has_permission=true" >> $GITHUB_OUTPUT
