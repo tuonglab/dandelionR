@@ -58,7 +58,7 @@
 #' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
-    milo, diffusionmap, terminal_state, root_cell, knn = 30L,
+    milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
     num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
