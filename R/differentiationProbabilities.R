@@ -49,7 +49,10 @@ differentiationProbabilities <- function(
     R <- T_[trans_states_idx, abs_states_idx]
     # absorbing probabilities:
     probabilities <- N %*% R
-    probabilities@x[probabilities@x < 0] <- 0
+    if(dim(probabilities)[[2]]>1)
+      probabilities@x[probabilities@x < 0] <- 0
+    else
+      probabilities[probabilities < 0] <- 0
     # add terminal states
     probabilities <- rbind(probabilities, T_[abs_states_idx, abs_states_idx])
     probabilities <- probabilities[order(c(trans_states_idx, abs_states_idx)), ]
