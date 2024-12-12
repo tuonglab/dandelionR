@@ -42,5 +42,5 @@
         dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
         terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
     }
-    unique(terminal_states)
+    unique(waypoints[terminal_states])
 }
