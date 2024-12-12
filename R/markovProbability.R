@@ -54,7 +54,7 @@
 #' @include projectProbability.R
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
-#' @importFrom S4Vectors DataFrame
+#' @importFrom S4Vectors DataFrame metadata metadata<-
 #' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
@@ -123,5 +123,6 @@ markovProbability <- function(
         }
     } # nocov end
     colData(milo) <- cbind(colData(milo), new_coldata)
+    metadata(milo) <- c(metadata(milo), list(branch.tips = terminal_state))
     return(milo)
 }
