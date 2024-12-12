@@ -78,11 +78,14 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: covr
           extra-packages: any::rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v2
 
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        if: needs.check-permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
+        with:
+          packages: covr
       - name: Test coverage
         if: needs.check-permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
         run: |
