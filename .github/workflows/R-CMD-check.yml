@@ -14,25 +14,6 @@ env:
   cache-version: "cache-v1"
 
 jobs:
-  check-permissions:
-    runs-on: ubuntu-latest
-    outputs:
-      has_permission: ${{ steps.check_permissions.outputs.has_permission }}
-    steps:
-      - name: Check if actor has permission
-        id: check_permissions
-        run: |
-          # Define allowed actors
-          ALLOWED_ACTORS=("zktuong" "Jiawei-Yu10")  # Replace these with the actual GitHub usernames
-
-          if [[ " ${ALLOWED_ACTORS[@]} " =~ " ${GITHUB_ACTOR} " ]]; then
-            echo "has_permission=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_permission=false" >> $GITHUB_OUTPUT
-          fi
-      - name: Debug permissions output
-        run: |
-          echo "Has permission: ${{ steps.check_permissions.outputs.has_permission }}"
   R-CMD-check:
     strategy:
       matrix:
@@ -82,14 +63,31 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
 
+      - name: Check if actor has permission
+        if: matrix.config.os == 'ubuntu-latest'
+        id: check_permissions
+        run: |
+          # Define allowed actors
+          ALLOWED_ACTORS=("zktuong" "Jiawei-Yu10")  # Replace these with the actual GitHub usernames
+
+          if [[ " ${ALLOWED_ACTORS[@]} " =~ " ${GITHUB_ACTOR} " ]]; then
+            echo "has_permission=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_permission=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug permissions output
+        run: |
+          echo "Has permission: ${{ steps.check_permissions.outputs.has_permission }}"
+
       - name: Setup to test coverage
         uses: r-lib/actions/setup-r-dependencies@v2
-        if: needs.check-permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
+        if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
         with:
           packages: covr
 
       - name: Test coverage
-        if: needs.check-permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
+        if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
         run: |
           Rscript -e 'covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}")'
         shell: bash -l {0}

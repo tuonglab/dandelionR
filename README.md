@@ -1,3 +1,7 @@
+[![codecov](https://codecov.io/gh/tuonglab/dandelionR/graph/badge.svg?token=dd1bBTW48K)](https://codecov.io/gh/tuonglab/dandelionR)
+[![R-CMD-check](https://github.com/tuonglab/dandelionR/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/tuonglab/dandelionR/actions/workflows/R-CMD-check.yml)
+[![vignette](https://github.com/tuonglab/dandelionR/actions/workflows/vignette.yml/badge.svg)](https://github.com/tuonglab/dandelionR/actions/workflows/vignette.yml)
+
 # dandelionR
 
 Welcome to `dandelionR`!

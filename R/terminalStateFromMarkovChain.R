@@ -1,4 +1,4 @@
-#' .terminalStateFromMarkovChain
+#' Determine terminal states using Markov chain if terminal states are not provided.
 #'
 #' @param Transmat Transition matrix
 #' @param wp_data Multi scale data of the waypoints
@@ -11,8 +11,8 @@
 #' @importFrom spam nearest.dist
 #' @return terminal_state
 .terminalStateFromMarkovChain <- function(Transmat, wp_data, pseudotime, waypoints) {
-    message("No terminal state provided, indentification of terminal states....")
-    # Identify terminal states dm_boudaries
+    message("No terminal state provided, identification of terminal states....")
+    # Identify terminal states dm_boundaries
     n <- min(dim(Transmat))
     ei <- eigen(t(Transmat))
     idx <- order(Re(ei$values), decreasing = TRUE)[seq_len(10)]
@@ -26,7 +26,7 @@
         stats::median(ranks))))
     # connect components of cells beyond cutoff
     cells <- which(ranks > cutoff)
-    # Find connected componets
+    # Find connected components
     graph <- graph_from_adjacency_matrix(Transmat[cells, cells],
         weighted = TRUE,
         mode = "directed"

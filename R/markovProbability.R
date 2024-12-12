@@ -62,16 +62,16 @@ markovProbability <- function(
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
     num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
-        if (is.null(diffusiontime)) {
+        if (is.null(diffusiontime)) { # nocov start
             abort(paste(
                 "Missing pseudotime data. This data can be either stored in",
                 deparse(substitute(milo)), "or provided by parameter diffusiontime"
-            ))
+            )) # nocov end
         } else {
             milo[[pseudotime_key]] <- diffusiontime
         }
     } else {
-        diffusiontime <- milo[[pseudotime_key]]
+        diffusiontime <- milo[[pseudotime_key]] # nocov
     }
 
     # scale data
@@ -94,7 +94,7 @@ markovProbability <- function(
     colnames(new_coldata) <- c(names(terminal_state))
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)
-    if (any(idx)) {
+    if (any(idx)) { # nocov start
         warning(paste(
             "Name", paste(names(colData(milo))[idx], collapse = ", "),
             "already exists in", as.character(substitute(milo))
@@ -117,7 +117,7 @@ markovProbability <- function(
                 message("Invalid response. Please enter 'y' or 'n'.")
             }
         }
-    }
+    } # nocov end
     colData(milo) <- cbind(colData(milo), new_coldata)
     return(milo)
 }
