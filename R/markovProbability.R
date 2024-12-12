@@ -83,14 +83,18 @@ markovProbability <- function(
     waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
-    probabilities <- differentiationProbabilities(multiscale[waypoints, ],
+    probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state,
         knn = knn, pseudotime = diffusiontime, waypoints = waypoints
     )
+    probabilities <- probabilities_terminal[[1]]
+    terminal_state <- probabilities_terminal[[2]]
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
     # store the result into milo
     new_coldata <- DataFrame(probabilities_proj[, 1], probabilities_proj[, 2])
+    if(is.null(names(terminal_state)))
+      names(terminal_state) <- paste0("terminal_state", length(terminal_state))
     colnames(new_coldata) <- c(names(terminal_state))
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)

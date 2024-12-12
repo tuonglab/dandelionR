@@ -53,5 +53,5 @@ differentiationProbabilities <- function(
     # add terminal states
     probabilities <- rbind(probabilities, T_[abs_states_idx, abs_states_idx])
     probabilities <- probabilities[order(c(trans_states_idx, abs_states_idx)), ]
-    return(probabilities)
+    return(list(probabilities,terminal_states))
 }
