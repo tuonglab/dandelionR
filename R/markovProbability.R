@@ -92,7 +92,7 @@ markovProbability <- function(
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
     # store the result into milo
-    new_coldata <- DataFrame(probabilities_proj[, 1], probabilities_proj[, 2])
+    new_coldata <-DataFrame(as.matrix(probabilities_proj))
     if(is.null(names(terminal_state)))
       names(terminal_state) <- paste0("terminal_state", length(terminal_state))
     colnames(new_coldata) <- c(names(terminal_state))
