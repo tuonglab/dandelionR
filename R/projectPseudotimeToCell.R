@@ -62,14 +62,14 @@
 #' @importFrom S4Vectors metadata
 #' @export
 projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "") {
-    if(is.null(term_states))
-    {
-      if(is.null(metadata(pb_milo)$branch.tips)) # nocov start
-      {
-        abort("Parameter Error: Please provide term_state, which should align with parameter terminal_state in function markovProbability")
-      } # nocov end
-      else
-        term_states <- metadata(pb_milo)$branch.tips
+    if (is.null(term_states)) {
+        if (is.null(metadata(pb_milo)$branch.tips)) # nocov start
+            {
+                abort("Parameter Error: Please provide term_state, which should align with parameter terminal_state in function markovProbability")
+            } # nocov end
+        else {
+            term_states <- metadata(pb_milo)$branch.tips
+        }
     }
     nhood <- nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood

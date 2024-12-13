@@ -51,9 +51,9 @@ test_that("projectPseudotimeToCell cannot work without pseudotime column", {
 
 # Test for projectPseudotimeToCell without term_states
 test_that("projectPseudotimeToCell works correctly with term_states", {
-  result <- projectPseudotimeToCell(milo_object, pb.milo, term_states = NULL)
-  
-  expect_true(is(result, "SingleCellExperiment"))
-  expect_true("pseudotime" %in% colnames(colData(result)))
-  expect_true(all(c("CD8+T", "CD4+T") %in% colnames(colData(result))))
+    result <- projectPseudotimeToCell(milo_object, pb.milo, term_states = NULL)
+
+    expect_true(is(result, "SingleCellExperiment"))
+    expect_true("pseudotime" %in% colnames(colData(result)))
+    expect_true(all(c("CD8+T", "CD4+T") %in% colnames(colData(result))))
 })
