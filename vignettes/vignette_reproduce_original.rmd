@@ -1,9 +1,9 @@
 ---
-title: "Single-cell Immune Repertoire Trajectory Analysis with dandelionR"
+title: "Reproducing the original dandelion method/paper"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{Single-cell Immune Repertoire Trajectory Analysis with dandelionR}
+  %\VignetteIndexEntry{Reproducing the original dandelion method/paper"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(error = FALSE, message = FALSE, warning = FALSE)
 library(BiocStyle)
 ```
 
-In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from data that has already been processed by `dandelion` in python. This is useful for users who have already processed their data with `dandelion` and want to perform further analysis in R, or who simply want to reproduce the results from the original `dandelion` paper.
+In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from data that has already been processed by `dandelion` in python. This is to demonstrate that the original method/results in the `dandelion` paper can be reproduced.
 
 ## Usage
 
