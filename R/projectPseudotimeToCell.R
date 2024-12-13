@@ -64,7 +64,7 @@
 projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "") {
     if(is.null(term_states))
     {
-      if(is.null(metadata(pb_milo)$branch.tips)) # ncov start
+      if(is.null(metadata(pb_milo)$branch.tips)) # nocov start
       {
         abort("Parameter Error: Please provide term_state, which should align with parameter terminal_state in function markovProbability")
       } # nocov end
