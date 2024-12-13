@@ -54,11 +54,11 @@
 #' @include projectProbability.R
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
-#' @importFrom S4Vectors DataFrame
+#' @importFrom S4Vectors DataFrame metadata metadata<-
 #' @importFrom SummarizedExperiment colData<-
 #' @export
 markovProbability <- function(
-    milo, diffusionmap, terminal_state, root_cell, knn = 30L,
+    milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
     num_waypoints = 500) {
     if (is.null(milo[[pseudotime_key]])) {
@@ -83,14 +83,18 @@ markovProbability <- function(
     waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
-    probabilities <- differentiationProbabilities(multiscale[waypoints, ],
+    probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state,
         knn = knn, pseudotime = diffusiontime, waypoints = waypoints
     )
+    probabilities <- probabilities_terminal[[1]]
+    terminal_state <- probabilities_terminal[[2]]
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
     # store the result into milo
-    new_coldata <- DataFrame(probabilities_proj[, 1], probabilities_proj[, 2])
+    new_coldata <-DataFrame(as.matrix(probabilities_proj))
+    if(is.null(names(terminal_state)))
+      names(terminal_state) <- paste0("terminal_state", seq(length(terminal_state)))
     colnames(new_coldata) <- c(names(terminal_state))
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)
@@ -119,5 +123,6 @@ markovProbability <- function(
         }
     } # nocov end
     colData(milo) <- cbind(colData(milo), new_coldata)
+    metadata(milo) <- c(metadata(milo), list(branch.tips = terminal_state))
     return(milo)
 }

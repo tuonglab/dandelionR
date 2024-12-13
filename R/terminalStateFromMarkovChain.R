@@ -21,7 +21,6 @@
     dm_boudaries <- unique(apply(Transmat, 2, which.max), apply(Transmat, 2, which.min))
     ranks <- abs(Re(vecs[, which.max(Re(vals)), drop = FALSE]))
     # cutoff and intersection with the boundary cells
-
     cutoff <- stats::qnorm(0.9999, mean = stats::median(ranks), sd = stats::median(abs(ranks -
         stats::median(ranks))))
     # connect components of cells beyond cutoff
@@ -43,5 +42,5 @@
         dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
         terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
     }
-    unique(terminal_states)
+    unique(waypoints[terminal_states])
 }

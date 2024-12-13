@@ -79,7 +79,7 @@ jobs:
       - name: Debug permissions output
         run: |
           echo "Has permission: ${{ steps.check_permissions.outputs.has_permission }}"
-
+          
       - name: Setup to test coverage
         uses: r-lib/actions/setup-r-dependencies@v2
         if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'

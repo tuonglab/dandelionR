@@ -7,7 +7,7 @@
 markovProbability(
   milo,
   diffusionmap,
-  terminal_state,
+  terminal_state = NULL,
   root_cell,
   knn = 30L,
   diffusiontime = NULL,

@@ -7,7 +7,7 @@
 projectPseudotimeToCell(
   milo,
   pb_milo,
-  term_states,
+  term_states = NULL,
   pseudotime_key = "pseudotime",
   suffix = ""
 )
