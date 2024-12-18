@@ -74,6 +74,11 @@ pb.milo <- markovProbability(
 )
 
 # Project Pseudobulk Data
-projected_milo <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips, pseudotime_key = "pseudotime")
+projected_milo <- projectPseudotimeToCell(
+    milo_object,
+    pb.milo,
+    branch.tips,
+    pseudotime_key = "pseudotime"
+)
 
 }

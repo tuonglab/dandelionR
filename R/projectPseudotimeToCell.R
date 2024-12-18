@@ -53,7 +53,12 @@
 #' )
 #'
 #' # Project Pseudobulk Data
-#' projected_milo <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips, pseudotime_key = "pseudotime")
+#' projected_milo <- projectPseudotimeToCell(
+#'     milo_object,
+#'     pb.milo,
+#'     branch.tips,
+#'     pseudotime_key = "pseudotime"
+#' )
 #'
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 #' @import miloR
