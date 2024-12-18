@@ -80,10 +80,10 @@ jobs:
         with:
           extra-packages: pkgdown
 
-      - name: Install scRepertoire from github
-        run: |
-          Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
-        shell: bash -l {0}
+      # - name: Install scRepertoire from github
+      #   run: |
+      #     Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
+      #   shell: bash -l {0}
 
       - name: Install package
         run: R CMD INSTALL .
