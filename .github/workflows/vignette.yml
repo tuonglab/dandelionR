@@ -76,14 +76,14 @@ jobs:
           key: ${{ env.cache-version }}-${{ matrix.config.os }}-biocversion-${{ steps.BIOC.outputs.version}}-r-${{ steps.R.outputs.version}}-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ matrix.config.os }}-biocversion-${{ steps.BIOC.outputs.version}}-r-${{ steps.R.outputs.version}}-
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: pkgdown
-
       - name: Install specific version of pillar to avoid weird error message
         run: |
           Rscript -e 'remotes::install_version("pillar", "1.9.0")'
         shell: bash -l {0}
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: pkgdown
 
       - name: Install scRepertoire from github
         run: |
