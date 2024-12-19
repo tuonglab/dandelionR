@@ -67,7 +67,7 @@ jobs:
       - name: Install windows dependencies
         if: ${{ matrix.config.os == 'windows-latest' }}
         run: |
-          choco install gsl --version=2.7.1
+          choco install gsl
 
       - name: Get R version
         id: R
