@@ -52,8 +52,7 @@ Suggests:
     RColorBrewer,
     scater,
     scRepertoire,
-    testthat,
-    pillar (< 1.10.0)
+    testthat
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
 BugReports: https://www.github.com/tuonglab/dandelionR/issues
