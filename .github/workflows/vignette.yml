@@ -85,10 +85,10 @@ jobs:
           Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
         shell: bash -l {0}
 
-      - name: Install specific version of pillar to avoid weird error message
-        run: |
-          Rscript -e 'remotes::install_github("r-lib/pillar@v1.9.0")'
-        shell: bash -l {0}
+      # - name: Install specific version of pillar to avoid weird error message
+      #   run: |
+      #     Rscript -e 'remotes::install_github("r-lib/pillar@v1.9.0")'
+      #   shell: bash -l {0}
 
       - name: Install package
         run: R CMD INSTALL .
