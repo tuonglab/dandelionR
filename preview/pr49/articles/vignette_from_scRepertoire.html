@@ -115,12 +115,10 @@ data (in AIRR format).</p>
 <div class="section level4">
 <h4 id="load-the-required-libraries">Load the required libraries<a class="anchor" aria-label="anchor" href="#load-the-required-libraries"></a>
 </h4>
-<p>Loading <code>destiny</code> is required for the diffusion map
-computation which we will piggyback on for the trajectory inference.</p>
-<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
-<p>We will also load <code>scRepertoire</code> and <code>scater</code>
-for the analysis.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.github.com/tuonglab/dandelionR/" class="external-link">dandelionR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.borch.dev/uploads/scRepertoire/" class="external-link">scRepertoire</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="load-the-demo-data">Load the demo data<a class="anchor" aria-label="anchor" href="#load-the-demo-data"></a>
@@ -154,10 +152,10 @@ the development version of <code>scRepertoire</code> from GitHub:</p>
 <p><code>devtools::install_github("ncborcherding/scRepertoire")</code></p>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contig.list</span> <span class="op">&lt;-</span> <span class="fu">loadContigs</span><span class="op">(</span>input <span class="op">=</span> <span class="va">demo_airr</span>, format <span class="op">=</span> <span class="st">"AIRR"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contig.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/loadContigs.html" class="external-link">loadContigs</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">demo_airr</span>, format <span class="op">=</span> <span class="st">"AIRR"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Format to `scRepertoire`'s requirements and some light filtering</span></span>
-<span><span class="va">combined.TCR</span> <span class="op">&lt;-</span> <span class="fu">combineTCR</span><span class="op">(</span><span class="va">contig.list</span>,</span>
+<span><span class="va">combined.TCR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineTCR.html" class="external-link">combineTCR</a></span><span class="op">(</span><span class="va">contig.list</span>,</span>
 <span>    removeNA <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    removeMulti <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    filterMulti <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -169,7 +167,7 @@ the development version of <code>scRepertoire</code> from GitHub:</p>
 <p>Next we will combine the gene expression data with the VDJ data to
 create a <code>SingleCellExperiment</code> object.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu">combineExpression</span><span class="op">(</span><span class="va">combined.TCR</span>, <span class="va">demo_sce</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineExpression.html" class="external-link">combineExpression</a></span><span class="op">(</span><span class="va">combined.TCR</span>, <span class="va">demo_sce</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="initiate-dandelionr-workflow">Initiate <code>dandelionR</code> workflow<a class="anchor" aria-label="anchor" href="#initiate-dandelionr-workflow"></a>
@@ -197,7 +195,7 @@ CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Visualise the UMAP of the filtered data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">sce</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">sce</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 </div>
@@ -220,7 +218,7 @@ form the objects.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miloUmap.html">miloUmap</a></span><span class="op">(</span><span class="va">milo_object</span>, n_neighbors <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">milo_object</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">milo_object</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 </div>
@@ -233,10 +231,10 @@ pseudobulked VDJ feature space.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu">runPCA</span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p>We can visualise the PCA of the pseudobulked VDJ feature space.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 <div class="section level3">
@@ -252,7 +250,7 @@ computation.</p>
 </h4>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract the PCA matrix</span></span>
-<span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu">reducedDim</span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># define the CD8 terminal cell as the top-most cell and CD4 terminal cell as the bottom-most cell</span></span>
 <span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">branch.tips</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span></span>
@@ -278,7 +276,7 @@ computation.</p>
 <span><span class="va">pb.milo</span><span class="op">$</span><span class="va">pseudotime</span> <span class="op">&lt;-</span> <span class="va">dif.pse</span><span class="op">[[</span><span class="va">DPTroot</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co"># set the colours for pseudotime</span></span>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">(</span><span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">9</span>, <span class="st">"RdYlBu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">255</span><span class="op">)</span></span>
-<span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_colour_gradientn</span><span class="op">(</span>colours <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_colour_gradientn</a></span><span class="op">(</span>colours <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 </div>
 <div class="section level4">
@@ -301,10 +299,10 @@ computation.</p>
 branch probabilities towards CD4+ or CD8+ T-cell fate on the PCA
 plot.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotPCA</span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-21-2.png" width="700"></p>
 </div>
 </div>
@@ -328,16 +326,16 @@ pseudobulk.</p>
 <h4 id="visualise-the-trajectory-data-on-a-per-cell-basis">Visualise the trajectory data on a per cell basis<a class="anchor" aria-label="anchor" href="#visualise-the-trajectory-data-on-a-per-cell-basis"></a>
 </h4>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-2.png" width="700"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-3.png" width="700"></p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">plotUMAP</span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_color_gradientn</span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-4.png" width="700"></p>
 <p>And that’s it! We have successfully inferred the trajectory of the
 T-cells in this dataset!</p>
@@ -371,14 +369,14 @@ T-cells in this dataset!</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] miloR_2.2.0                 edgeR_4.4.1                </span></span>
-<span><span class="co">##  [3] limma_3.62.1                dandelionR_0.99.0          </span></span>
-<span><span class="co">##  [5] scater_1.34.0               scuttle_1.16.0             </span></span>
-<span><span class="co">##  [7] SingleCellExperiment_1.28.1 SummarizedExperiment_1.36.0</span></span>
-<span><span class="co">##  [9] Biobase_2.66.0              GenomicRanges_1.58.0       </span></span>
-<span><span class="co">## [11] GenomeInfoDb_1.42.1         IRanges_2.40.1             </span></span>
-<span><span class="co">## [13] S4Vectors_0.44.0            BiocGenerics_0.52.0        </span></span>
-<span><span class="co">## [15] MatrixGenerics_1.18.0       matrixStats_1.4.1          </span></span>
-<span><span class="co">## [17] scRepertoire_2.2.1          ggplot2_3.5.1              </span></span>
+<span><span class="co">##  [3] limma_3.62.1                scater_1.34.0              </span></span>
+<span><span class="co">##  [5] scuttle_1.16.0              SingleCellExperiment_1.28.1</span></span>
+<span><span class="co">##  [7] SummarizedExperiment_1.36.0 Biobase_2.66.0             </span></span>
+<span><span class="co">##  [9] GenomicRanges_1.58.0        GenomeInfoDb_1.42.1        </span></span>
+<span><span class="co">## [11] IRanges_2.40.1              S4Vectors_0.44.0           </span></span>
+<span><span class="co">## [13] BiocGenerics_0.52.0         MatrixGenerics_1.18.0      </span></span>
+<span><span class="co">## [15] matrixStats_1.4.1           scRepertoire_2.2.1         </span></span>
+<span><span class="co">## [17] ggplot2_3.5.1               dandelionR_0.99.0          </span></span>
 <span><span class="co">## [19] destiny_3.20.0              BiocStyle_2.34.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -390,8 +388,8 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [16] spam_2.11-0             sp_2.1-4                cowplot_1.1.3          </span></span>
 <span><span class="co">##  [19] RColorBrewer_1.1-3      abind_1.4-8             zlibbioc_1.52.0        </span></span>
 <span><span class="co">##  [22] purrr_1.0.2             ggraph_2.2.1            hash_2.2.6.3           </span></span>
-<span><span class="co">##  [25] pracma_2.4.4            nnet_7.3-19             tweenr_2.0.3           </span></span>
-<span><span class="co">##  [28] evmix_2.12              GenomeInfoDbData_1.2.13 ggrepel_0.9.6          </span></span>
+<span><span class="co">##  [25] nnet_7.3-19             pracma_2.4.4            evmix_2.12             </span></span>
+<span><span class="co">##  [28] tweenr_2.0.3            GenomeInfoDbData_1.2.13 ggrepel_0.9.6          </span></span>
 <span><span class="co">##  [31] irlba_2.3.5.1           listenv_0.9.1           iNEXT_3.0.1            </span></span>
 <span><span class="co">##  [34] MatrixModels_0.5-3      RSpectra_0.16-2         parallelly_1.40.1      </span></span>
 <span><span class="co">##  [37] pkgdown_2.1.1           codetools_0.2-20        smoother_1.3           </span></span>
@@ -399,14 +397,14 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [43] UCSC.utils_1.2.0        farver_2.1.2            ScaledMatrix_1.14.0    </span></span>
 <span><span class="co">##  [46] viridis_0.6.5           jsonlite_1.8.9          BiocNeighbors_2.0.1    </span></span>
 <span><span class="co">##  [49] e1071_1.7-16            tidygraph_1.3.1         progressr_0.15.1       </span></span>
-<span><span class="co">##  [52] Formula_1.2-5           ggalluvial_0.12.5       survival_3.7-0         </span></span>
+<span><span class="co">##  [52] Formula_1.2-5           survival_3.7-0          ggalluvial_0.12.5      </span></span>
 <span><span class="co">##  [55] systemfonts_1.1.0       tools_4.4.2             ragg_1.3.3             </span></span>
 <span><span class="co">##  [58] stringdist_0.9.14       Rcpp_1.0.13-1           glue_1.8.0             </span></span>
 <span><span class="co">##  [61] gridExtra_2.3           SparseArray_1.6.0       laeken_0.5.3           </span></span>
 <span><span class="co">##  [64] xfun_0.49               ranger_0.17.0           TTR_0.24.4             </span></span>
-<span><span class="co">##  [67] ggthemes_5.1.0          dplyr_1.1.4             numDeriv_2016.8-1.1    </span></span>
-<span><span class="co">##  [70] withr_3.0.2             BiocManager_1.30.25     fastmap_1.2.0          </span></span>
-<span><span class="co">##  [73] bluster_1.16.0          boot_1.3-31             SparseM_1.84-2         </span></span>
+<span><span class="co">##  [67] ggthemes_5.1.0          dplyr_1.1.4             withr_3.0.2            </span></span>
+<span><span class="co">##  [70] numDeriv_2016.8-1.1     BiocManager_1.30.25     fastmap_1.2.0          </span></span>
+<span><span class="co">##  [73] boot_1.3-31             bluster_1.16.0          SparseM_1.84-2         </span></span>
 <span><span class="co">##  [76] VIM_6.2.2               digest_0.6.37           rsvd_1.0.5             </span></span>
 <span><span class="co">##  [79] R6_2.5.1                textshaping_0.4.1       colorspace_2.1-1       </span></span>
 <span><span class="co">##  [82] gtools_3.9.5            tidyr_1.3.1             generics_0.1.3         </span></span>
@@ -417,21 +415,21 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [97] lmtest_0.9-40           XVector_0.46.0          htmltools_0.5.8.1      </span></span>
 <span><span class="co">## [100] carData_3.0-5           dotCall64_1.2           SeuratObject_5.0.2     </span></span>
 <span><span class="co">## [103] scales_1.3.0            knn.covertree_1.0       ggdendro_0.2.0         </span></span>
-<span><span class="co">## [106] knitr_1.49              reshape2_1.4.4          rjson_0.2.23           </span></span>
+<span><span class="co">## [106] knitr_1.49              rjson_0.2.23            reshape2_1.4.4         </span></span>
 <span><span class="co">## [109] curl_6.0.1              proxy_0.4-27            cachem_1.1.0           </span></span>
-<span><span class="co">## [112] zoo_1.8-12              stringr_1.5.1           vipor_0.4.7            </span></span>
-<span><span class="co">## [115] parallel_4.4.2          desc_1.4.3              pillar_1.10.0          </span></span>
+<span><span class="co">## [112] zoo_1.8-12              stringr_1.5.1           parallel_4.4.2         </span></span>
+<span><span class="co">## [115] vipor_0.4.7             desc_1.4.3              pillar_1.10.0          </span></span>
 <span><span class="co">## [118] grid_4.4.2              vctrs_0.6.5             pcaMethods_1.98.0      </span></span>
 <span><span class="co">## [121] VGAM_1.1-12             car_3.1-3               BiocSingular_1.22.0    </span></span>
 <span><span class="co">## [124] beachmat_2.22.0         cluster_2.1.6           beeswarm_0.4.0         </span></span>
-<span><span class="co">## [127] evaluate_1.0.1          truncdist_1.0-2         locfit_1.5-9.10        </span></span>
-<span><span class="co">## [130] cli_3.6.3               compiler_4.4.2          rlang_1.1.4            </span></span>
+<span><span class="co">## [127] evaluate_1.0.1          truncdist_1.0-2         cli_3.6.3              </span></span>
+<span><span class="co">## [130] locfit_1.5-9.10         compiler_4.4.2          rlang_1.1.4            </span></span>
 <span><span class="co">## [133] crayon_1.5.3            future.apply_1.11.3     labeling_0.4.3         </span></span>
 <span><span class="co">## [136] plyr_1.8.9              fs_1.6.5                ggbeeswarm_0.7.2       </span></span>
 <span><span class="co">## [139] stringi_1.8.4           viridisLite_0.4.2       BiocParallel_1.40.0    </span></span>
-<span><span class="co">## [142] assertthat_0.2.1        munsell_0.5.1           gsl_2.1-8              </span></span>
+<span><span class="co">## [142] assertthat_0.2.1        gsl_2.1-8               munsell_0.5.1          </span></span>
 <span><span class="co">## [145] quantreg_5.99.1         Matrix_1.7-1            RcppHNSW_0.6.0         </span></span>
-<span><span class="co">## [148] patchwork_1.3.0         RcppEigen_0.3.4.0.2     future_1.34.0          </span></span>
+<span><span class="co">## [148] RcppEigen_0.3.4.0.2     patchwork_1.3.0         future_1.34.0          </span></span>
 <span><span class="co">## [151] statmod_1.5.0           evd_2.3-7.1             igraph_2.1.2           </span></span>
 <span><span class="co">## [154] memoise_2.0.1           bslib_0.8.0             DEoptimR_1.1-3-1       </span></span>
 <span><span class="co">## [157] ggplot.multistats_1.0.1</span></span></code></pre>
