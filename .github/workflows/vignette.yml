@@ -54,6 +54,16 @@ jobs:
         with:
           bioc-version: devel
 
+      - name: Install OS dependencies
+        run: |
+          if [[ "${{ matrix.config.os }}" == "ubuntu-latest" ]]; then
+            sudo apt-get update && sudo apt-get install -y libgsl-dev
+          elif [[ "${{ matrix.config.os }}" == "macos-latest" ]]; then
+            brew install gsl
+          elif [[ "${{ matrix.config.os }}" == "windows-latest" ]]; then
+            choco install gsl --version=2.7.1
+          fi
+
       - name: Get R version
         id: R
         run: |
