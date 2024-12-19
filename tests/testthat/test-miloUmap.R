@@ -9,8 +9,7 @@ contig.list <- loadContigs(input = demo_airr, format = "AIRR")
 combined.TCR <- combineTCR(contig.list,
     removeNA = TRUE,
     removeMulti = FALSE,
-    filterMulti = TRUE,
-    filterNonproductive = TRUE,
+    filterMulti = TRUE
 )
 
 sce <- combineExpression(combined.TCR, demo_sce)

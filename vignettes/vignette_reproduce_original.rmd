@@ -3,7 +3,7 @@ title: "Reproducing the original dandelion method/paper"
 output: rmarkdown::html_vignette
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{Reproducing the original dandelion method/paper"}
+  %\VignetteIndexEntry{Reproducing the original dandelion method/paper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

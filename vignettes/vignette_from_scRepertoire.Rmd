@@ -73,6 +73,13 @@ data(demo_airr)
 
 ### Use `scRepertoire` to load the VDJ data
 For the trajectory analysis work here, we are focusing on the main productive TCR chains. Therefore we will flag `filterMulti = TRUE`, which will keep the selection of the 2 corresponding chains with the highest expression for a single barcode. For more details, refer to `scRepertoire`'s [documentation](https://www.borch.dev/uploads/screpertoire/reference/combinetcr).
+
+::: {.note}
+**Note:** There is a known issue with `combineTCR` shuffling the order of the `SingleCellExperiment` `colData` and this may not have been updated in the latest version of `scRepertoire` on Bioconductor (release 3.20). If you encounter this issue, please install the development version of `scRepertoire` from GitHub:
+
+`devtools::install_github("ncborcherding/scRepertoire")`
+:::
+
 ```{r}
 contig.list <- loadContigs(input = demo_airr, format = "AIRR")
 
@@ -80,8 +87,7 @@ contig.list <- loadContigs(input = demo_airr, format = "AIRR")
 combined.TCR <- combineTCR(contig.list,
     removeNA = TRUE,
     removeMulti = FALSE,
-    filterMulti = TRUE,
-    filterNonproductive = TRUE,
+    filterMulti = TRUE
 )
 ```
 

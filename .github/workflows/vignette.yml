@@ -9,7 +9,7 @@ on:
 name: vignette
 
 env:
-  cache-version: "cache-v1"
+  cache-version: "cache-v2"
 
 jobs:
   check-permissions:
@@ -83,6 +83,11 @@ jobs:
       - name: Install scRepertoire from github
         run: |
           Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
+        shell: bash -l {0}
+
+      - name: Install specific version of pillar to avoid weird error message
+        run: |
+          Rscript -e 'remotes::install_github("r-lib/pillar@v1.9.0")'
         shell: bash -l {0}
 
       - name: Install package
