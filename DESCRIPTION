@@ -49,6 +49,7 @@ Imports:
 Suggests:
     BiocStyle,
     knitr,
+    pillar (<= 1.9.0),
     RColorBrewer,
     scater,
     scRepertoire,
