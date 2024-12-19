@@ -57,17 +57,16 @@ devtools::install_github("ncborcherding/scRepertoire")
 ### Load the required libraries
 
 Loading `destiny` is required for the diffusion map computation which we will piggyback on for the trajectory inference. 
-```{r, message=FALSE, warning=FALSE, error=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 library(destiny)
+# there's a known 'error' with loading a dependency of destiny, pillar:
+# https://github.com/r-lib/pillar/pull/668
 ```
 
 We will also load `scRepertoire` and `scater` for the analysis.
-```{r, message=FALSE, warning=FALSE, error=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 library(scRepertoire)
 library(scater)
-```
-
-```{r, message=FALSE, warning=FALSE, error=FALSE}
 library(dandelionR)
 ```
 
