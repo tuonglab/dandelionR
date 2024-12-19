@@ -6,7 +6,7 @@
 #' @param waypoints Integer vector. Indices of the waypoints used in the Markov chain.
 #' @param probabilities Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.
 #' @param t Numeric. The diffusion time to be used in the projection.
-#' @importFrom destiny eigenvalues
+#' @importFrom destiny eigenvectors eigenvalues
 #' @importFrom stats sd
 #' @return each pseudobulk's probabilites
 projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1) {
