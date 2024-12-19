@@ -43,8 +43,6 @@ devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
 
 In a standard analysis workflow in R, users probably choose to read in their VDJ data with [scRepertoire](https://github.com/ncborcherding/scRepertoire). In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from 'raw' data i.e. just a standard single-cell gene expression data (stored in `SingleCellExperiment`) and VDJ data (in AIRR format).
 
-## Installation
-
 Install `scRepertoire` if you haven't already.
 ```{r, eval = FALSE}
 if (!requireNamespace("scRepertoire", quietly = TRUE)) { # only for the tutorial
@@ -54,11 +52,23 @@ if (!requireNamespace("scRepertoire", quietly = TRUE)) { # only for the tutorial
 devtools::install_github("ncborcherding/scRepertoire")
 ```
 
+## Usage
+
 ### Load the required libraries
-```{r}
-library(dandelionR)
+
+Loading `destiny` is required for the diffusion map computation which we will piggyback on for the trajectory inference. 
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(destiny)
+```
+
+We will also load `scRepertoire` and `scater` for the analysis.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
 library(scRepertoire)
 library(scater)
+```
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(dandelionR)
 ```
 
 ### Load the demo data
@@ -171,7 +181,6 @@ root <- which.max(pca[1, ])
 
 ### Construct diffusion map
 ```{r, warning = FALSE}
-library(destiny)
 # Run diffusion map on the PCA
 dm <- DiffusionMap(t(pca), n_pcs = 10, n_eigs = 10)
 ```

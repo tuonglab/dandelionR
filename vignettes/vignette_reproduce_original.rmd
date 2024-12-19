@@ -18,11 +18,21 @@ library(BiocStyle)
 
 In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from data that has already been processed by `dandelion` in python. This is to demonstrate that the original method/results in the `dandelion` paper can be reproduced.
 
-## Usage
+## Load the required libraries
 
-```{r, message = FALSE, warning = FALSE}
-library(dandelionR)
+Loading `destiny` is required for the diffusion map computation which we will piggyback on for the trajectory inference. 
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(destiny)
+```
+
+We will also load `scRepertoire` and `scater` for the analysis.
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(scRepertoire)
 library(scater)
+```
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+library(dandelionR)
 ```
 
 ## Load data
