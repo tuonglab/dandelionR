@@ -52,7 +52,17 @@ jobs:
         uses: grimbough/bioc-actions/setup-bioc@v1
         id: install-r
         with:
-          bioc-version: release
+          bioc-version: devel
+
+      - name: Install ubuntu dependencies
+        if: ${{ matrix.config.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y libgsl-dev
+
+      - name: Install macos dependencies
+        if: ${{ matrix.config.os == 'macos-latest' }}
+        run: |
+          brew install gsl
 
       - name: Get R version
         id: R
