@@ -52,7 +52,7 @@ jobs:
         uses: grimbough/bioc-actions/setup-bioc@v1
         id: install-r
         with:
-          bioc-version: release
+          bioc-version: devel
 
       - name: Get R version
         id: R
