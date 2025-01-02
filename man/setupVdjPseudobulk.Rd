@@ -149,7 +149,7 @@ dim(sce_vdj)
 # filtered the data
 sce_vdj <- setupVdjPseudobulk(
     sce = sce_vdj,
-    mode_option = "abT", # set the mode to αβTCR
+    mode_option = "abT", # set the mode to alpha-beta TCR
     allowed_chain_status = c("Single pair", "Extra pair"),
     already.productive = FALSE
 ) # need to filter the unproductive cells
