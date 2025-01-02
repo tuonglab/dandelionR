@@ -15,8 +15,8 @@ The following columns are relevant for vignette usage:
 Factors indicating whether the heavy or light chain is productive. \code{mode} refers to the
 extraction mode for V(D)J genes and can be one of:
 \itemize{
-\item{\code{'abT'}}: TCRαβ
-\item{\code{'gdT'}}: TCRγδ
+\item{\code{'abT'}}: TCR alpha-beta
+\item{\code{'gdT'}}: TCR gamma-delta
 \item{\code{'B'}}: BCR
 }
 }
@@ -24,8 +24,8 @@ extraction mode for V(D)J genes and can be one of:
 Gene segment annotations with column names in the format \code{(v/d/j)_call_(mode)_(VDJ/VJ)}.
 Examples include:
 \itemize{
-\item{\code{v_call_abT_VDJ}}: V gene for TCRαβ VDJ recombination
-\item{\code{d_call_abT_VJ}}: D gene for TCRαβ VJ recombination
+\item{\code{v_call_abT_VDJ}}: V gene for TCR alpha-beta VDJ recombination
+\item{\code{d_call_abT_VJ}}: D gene for TCR alpha-beta VJ recombination
 }
 }
 \item{\code{chain_status}}{
