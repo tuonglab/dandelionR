@@ -2,7 +2,7 @@
 #'
 #' Helper function that identifies filter_pattern hits in determined column of sce, and then either removes the offeending cells or masks the matched values with a uniform value of '(column's name)_missing'
 #' @param sce SingleCellExperiment object, adata in python
-#' data after combineTCR， contain both vdj and seq
+#' data after combineTCR, contain both vdj and seq
 #' @param col_n mode for extraction the V(D)J genes.
 #' @param filter_pattern character string, optional ',|None|No_contig' by default
 #' @param remove_missing bool, True by default
