@@ -50,3 +50,4 @@ rsconnect/
 .Rproj.user
 .DS_Store
 docs
+*.Rproj
