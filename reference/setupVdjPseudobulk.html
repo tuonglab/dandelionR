@@ -9,7 +9,7 @@ on productivity and chain status, subsets data, extracts main V(D)J genes, and r
 
     <a class="navbar-brand me-2" href="../index.html">dandelionR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -195,7 +195,7 @@ If <code>FALSE</code>, masks them with uniform values. Default is <code>TRUE</co
 <span class="r-in"><span><span class="co"># filtered the data</span></span></span>
 <span class="r-in"><span><span class="va">sce_vdj</span> <span class="op">&lt;-</span> <span class="fu">setupVdjPseudobulk</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    sce <span class="op">=</span> <span class="va">sce_vdj</span>,</span></span>
-<span class="r-in"><span>    mode_option <span class="op">=</span> <span class="st">"abT"</span>, <span class="co"># set the mode to αβTCR</span></span></span>
+<span class="r-in"><span>    mode_option <span class="op">=</span> <span class="st">"abT"</span>, <span class="co"># set the mode to alpha-beta TCR</span></span></span>
 <span class="r-in"><span>    allowed_chain_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Single pair"</span>, <span class="st">"Extra pair"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    already.productive <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="co"># need to filter the unproductive cells</span></span></span>

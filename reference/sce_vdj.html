@@ -11,7 +11,7 @@ publication at https://www.nature.com/articles/s41587-023-01734-7."></head><body
 
     <a class="navbar-brand me-2" href="../index.html">dandelionR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,15 +58,15 @@ publication at <a href="https://www.nature.com/articles/s41587-023-01734-7" clas
 <dd><p>A <code>DataFrame</code> containing metadata about each sample, corresponding to <code>obs</code> in AnnData (Python).
 The following columns are relevant for vignette usage:</p><dl><dt><code>productive_(mode)_VDJ</code>, <code>productive_(mode)_VJ</code></dt>
 <dd><p>Factors indicating whether the heavy or light chain is productive. <code>mode</code> refers to the
-extraction mode for V(D)J genes and can be one of:</p><ul><li><p><code>'abT'</code>: TCRαβ</p></li>
-<li><p><code>'gdT'</code>: TCRγδ</p></li>
+extraction mode for V(D)J genes and can be one of:</p><ul><li><p><code>'abT'</code>: TCR alpha-beta</p></li>
+<li><p><code>'gdT'</code>: TCR gamma-delta</p></li>
 <li><p><code>'B'</code>: BCR</p></li>
 </ul></dd>
 
 <dt><code>Gene segment fields</code></dt>
 <dd><p>Gene segment annotations with column names in the format <code>(v/d/j)_call_(mode)_(VDJ/VJ)</code>.
-Examples include:</p><ul><li><p><code>v_call_abT_VDJ</code>: V gene for TCRαβ VDJ recombination</p></li>
-<li><p><code>d_call_abT_VJ</code>: D gene for TCRαβ VJ recombination</p></li>
+Examples include:</p><ul><li><p><code>v_call_abT_VDJ</code>: V gene for TCR alpha-beta VDJ recombination</p></li>
+<li><p><code>d_call_abT_VJ</code>: D gene for TCR alpha-beta VJ recombination</p></li>
 </ul></dd>
 
 <dt><code>chain_status</code></dt>
