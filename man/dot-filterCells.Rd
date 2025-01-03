@@ -13,7 +13,7 @@
 }
 \arguments{
 \item{sce}{SingleCellExperiment object, adata in python
-data after combineTCR， contain both vdj and seq}
+data after combineTCR, contain both vdj and seq}
 
 \item{col_n}{mode for extraction the V(D)J genes.}
 
