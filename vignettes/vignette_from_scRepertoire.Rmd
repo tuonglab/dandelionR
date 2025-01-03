@@ -77,10 +77,7 @@ Check out the other vignette for an example dataset that starts from the origina
 data(demo_sce)
 data(demo_airr)
 ```
-We will set the seed so that the plots and results are consistent.
-```{r}
-set.seed(100)
-```
+
 ### Use `scRepertoire` to load the VDJ data
 For the trajectory analysis work here, we are focusing on the main productive TCR chains. Therefore we will flag `filterMulti = TRUE`, which will keep the selection of the 2 corresponding chains with the highest expression for a single barcode. For more details, refer to `scRepertoire`'s [documentation](https://www.borch.dev/uploads/screpertoire/reference/combinetcr).
 
