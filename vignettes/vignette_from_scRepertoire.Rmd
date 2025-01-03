@@ -78,6 +78,10 @@ data(demo_sce)
 data(demo_airr)
 ```
 
+We will set the seed so that the plots and results are consistent.
+```{r}
+set.seed(123)
+```
 ### Use `scRepertoire` to load the VDJ data
 For the trajectory analysis work here, we are focusing on the main productive TCR chains. Therefore we will flag `filterMulti = TRUE`, which will keep the selection of the 2 corresponding chains with the highest expression for a single barcode. For more details, refer to `scRepertoire`'s [documentation](https://www.borch.dev/uploads/screpertoire/reference/combinetcr).
 
@@ -121,6 +125,11 @@ sce <- setupVdjPseudobulk(sce,
 )
 ```
 
+The main output of this function is a `SingleCellExperiment` object with the relevant VDJ information appended to the `colData`, particularly the columns with the `_main` suffix e.g. `v_call_abT_VJ_main`, `j_call_abT_VJ_main` etc.
+```{r}
+head(colData(sce))
+```
+
 Visualise the UMAP of the filtered data.
 ```{r}
 plotUMAP(sce, color_by = "anno_lvl_2_final_clean")
@@ -152,12 +161,16 @@ plotUMAP(milo_object, color_by = "anno_lvl_2_final_clean", dimred = "UMAP_knngra
 Next, we will construct the pseudobulked VDJ feature space using the neighbourhood graph constructed above. We will also run PCA on the pseudobulked VDJ feature space.
 ```{r}
 pb.milo <- vdjPseudobulk(milo_object, mode_option = "abT", col_to_take = "anno_lvl_2_final_clean")
-
-pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents = 20)
 ```
 
-We can visualise the PCA of the pseudobulked VDJ feature space.
+Inspect the newly created `pb.milo` object.
 ```{r}
+pb.milo 
+```
+
+We can compute and visualise the PCA of the pseudobulked VDJ feature space.
+```{r}
+pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents = 20)
 plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
 ```
 
@@ -183,7 +196,7 @@ library(destiny)
 dm <- DiffusionMap(t(pca), n_pcs = 10, n_eigs = 10)
 ```
 
-### Compute diffussion pseudotime on diffusion map
+### Compute diffusion pseudotime on diffusion map
 ```{r}
 dif.pse <- DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 ```
@@ -199,7 +212,7 @@ plotPCA(pb.milo, color_by = "pseudotime") + scale_colour_gradientn(colours = pal
 ```
 
 ### Markov chain construction on the pseudobulk VDJ feature space
-
+This step will compute the Markov chain probabilities on the pseudobulk VDJ feature space. It will return the branch probabilities in the `colData` and the column name corresponds to the branch tips defined earlier.
 ```{r}
 pb.milo <- markovProbability(
     milo = pb.milo,
@@ -209,6 +222,11 @@ pb.milo <- markovProbability(
     pseudotime_key = "pseudotime",
     knn = 30
 )
+```
+
+Inspect the `pb.milo` object to see the newly added columns.
+```{r}
+head(colData(pb.milo))
 ```
 
 ### Visualising branch probabilities
