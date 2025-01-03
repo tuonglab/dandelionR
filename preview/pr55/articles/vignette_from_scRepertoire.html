@@ -133,6 +133,10 @@ the original <code>dandelion</code> output associated with the original
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demo_sce</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">demo_airr</span><span class="op">)</span></span></code></pre></div>
+<p>We will set the seed so that the plots and results are
+consistent.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="use-screpertoire-to-load-the-vdj-data">Use <code>scRepertoire</code> to load the VDJ data<a class="anchor" aria-label="anchor" href="#use-screpertoire-to-load-the-vdj-data"></a>
@@ -151,7 +155,7 @@ Bioconductor (release 3.20). If you encounter this issue, please install
 the development version of <code>scRepertoire</code> from GitHub:</p>
 <p><code>devtools::install_github("ncborcherding/scRepertoire")</code></p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contig.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/loadContigs.html" class="external-link">loadContigs</a></span><span class="op">(</span>input <span class="op">=</span> <span class="va">demo_airr</span>, format <span class="op">=</span> <span class="st">"AIRR"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Format to `scRepertoire`'s requirements and some light filtering</span></span>
@@ -166,7 +170,7 @@ the development version of <code>scRepertoire</code> from GitHub:</p>
 </h4>
 <p>Next we will combine the gene expression data with the VDJ data to
 create a <code>SingleCellExperiment</code> object.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.borch.dev/uploads/scRepertoire/reference/combineExpression.html" class="external-link">combineExpression</a></span><span class="op">(</span><span class="va">combined.TCR</span>, <span class="va">demo_sce</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -186,17 +190,138 @@ consistently set with the <code>vdjPseudobulk</code> function later.</p>
 <code>allowed_chain_status</code> as <code>NULL</code>.</p>
 <p>We will also subset the data to only include the main T-cell types:
 CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setupVdjPseudobulk.html">setupVdjPseudobulk</a></span><span class="op">(</span><span class="va">sce</span>,</span>
 <span>    mode_option <span class="op">=</span> <span class="st">"abT"</span>,</span>
 <span>    already.productive <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    subsetby <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>,</span>
 <span>    groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span>, <span class="st">"ABT(ENTRY)"</span>, <span class="st">"DP(P)_T"</span>, <span class="st">"DP(Q)_T"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>The main output of this function is a
+<code>SingleCellExperiment</code> object with the relevant VDJ
+information appended to the <code>colData</code>, particularly the
+columns with the <code>_main</code> suffix
+e.g. <code>v_call_abT_VJ_main</code>, <code>j_call_abT_VJ_main</code>
+etc.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">sce</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 6 rows and 35 columns</span></span>
+<span><span class="co">##                                  n_counts   n_genes           file      mito</span></span>
+<span><span class="co">##                                 &lt;numeric&gt; &lt;integer&gt;       &lt;factor&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG      2947      1275 FCAImmP7851891 0.0105192</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG      4969      1971 FCAImmP7851892 0.0245522</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG      7230      1733 FCAImmP7803035 0.0302905</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA      2504       901 FCAImmP7528296 0.0207668</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA      8689      2037 FCAImmP7555860 0.0357924</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG      3111      1254 FCAImmP7292034 0.0228222</span></span>
+<span><span class="co">##                                 doublet_scores predicted_doublets</span></span>
+<span><span class="co">##                                      &lt;numeric&gt;           &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG      0.0439224              False</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG      0.0610687              False</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG      0.0383747              False</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA      0.0236220              False</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA      0.0738255              False</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG      0.0222841              False</span></span>
+<span><span class="co">##                                 old_annotation_uniform    organ  Sort_id</span></span>
+<span><span class="co">##                                               &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG              SP T CELL       TH    TOT  </span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG              DP T CELL       TH    TOT  </span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG              SP T CELL       SK    CD45P</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA              SP T CELL       SK    CD45P</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA              SP T CELL       TH    CD45P</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG              SP T CELL       TH    TOT  </span></span>
+<span><span class="co">##                                       age   method    donor      sex</span></span>
+<span><span class="co">##                                 &lt;integer&gt; &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG        11     5GEX      F64   female</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG        12     5GEX      F67   female</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG        14     5GEX      F51   female</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA        12     5GEX      F38   male  </span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA        16     5GEX      F41   female</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG        14     5GEX      F30   male  </span></span>
+<span><span class="co">##                                                      Sample scvi_clusters</span></span>
+<span><span class="co">##                                                    &lt;factor&gt;      &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG F64_TH_TOT_FCAImmP7851891              14</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG F67_TH_TOT_FCAImmP7851892              4 </span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG F51_SK_CD45P_FCAImmP7803035            2 </span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA F38_SK_CD45P_FCAImmP7528296            2 </span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA F41_TH_CD45P_FCAImmP7555860            2 </span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG F30_TH_TOT_FCAImmP7292034              14</span></span>
+<span><span class="co">##                                 is_maternal_contaminant anno_lvl_2_final_clean</span></span>
+<span><span class="co">##                                               &lt;logical&gt;               &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG                   FALSE             ABT(ENTRY)</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG                   FALSE             DP(Q)_T   </span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG                   FALSE             CD4+T     </span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA                   FALSE             CD4+T     </span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA                   FALSE             CD4+T     </span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG                   FALSE             ABT(ENTRY)</span></span>
+<span><span class="co">##                                 celltype_annotation                 CTgene</span></span>
+<span><span class="co">##                                            &lt;factor&gt;            &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG          ABT(ENTRY) TRAV13-1*02.TRAJ34*0..</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG          DP(Q)_T    TRAV12-2*01.TRAJ53*0..</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG          CD4+T      TRAV21*02.TRAJ33*01...</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA          CD4+T      TRAV38-2/DV8*01.TRAJ..</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA          CD4+T      TRAV12-1*01.TRAJ6*01..</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG          ABT(ENTRY) TRAV1-1*01.TRAJ32*02..</span></span>
+<span><span class="co">##                                                   CTnt                   CTaa</span></span>
+<span><span class="co">##                                            &lt;character&gt;            &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG TGTGCAGCAAGTATGAACAC.. CAASMNTDKLIF_CASSLTG..</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG TGTGCCGTGTGGAGGTAGCA.. CAVWR*QL*TDI_CASRTGN..</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG TGTGCTTCTATGGATAGCAA.. CASMDSNYQLIW_CASSLTS..</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA TGTGCTTATAGGAGCGTTCA.. CAYRSVQGAQKLVF_CASSW..</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA TGTGTGGTGAACATAAGAGG.. CVVNIRGSYIPTF_CSARDL..</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG TGCGCTGTGAGAGATCAGTA.. CAVRDQYGGATNKLIF_CAS..</span></span>
+<span><span class="co">##                                               CTstrict clonalProportion</span></span>
+<span><span class="co">##                                            &lt;character&gt;        &lt;numeric&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG TRAV13-1*02.TRAJ34*0..        0.0416667</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG TRAV12-2*01.TRAJ53*0..        0.0277778</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG TRAV21*02.TRAJ33*01...        0.0370370</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA TRAV38-2/DV8*01.TRAJ..        0.0909091</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA TRAV12-1*01.TRAJ6*01..        0.0476190</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG TRAV1-1*01.TRAJ32*02..        0.0204082</span></span>
+<span><span class="co">##                                 clonalFrequency               cloneSize</span></span>
+<span><span class="co">##                                       &lt;integer&gt;                &lt;factor&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG               1 Large (0.01 &lt; X &lt;= 0.1)</span></span>
+<span><span class="co">##                                  v_call_abT_VDJ d_call_abT_VDJ j_call_abT_VDJ</span></span>
+<span><span class="co">##                                     &lt;character&gt;    &lt;character&gt;    &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG     TRAV13-1*02      TRAJ34*01    TRBV11-3*04</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG     TRAV12-2*01      TRAJ53*01      TRBV19*01</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG       TRAV21*02      TRAJ33*01     TRBV5-4*01</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA TRAV38-2/DV8*01      TRAJ54*01     TRBV6-6*01</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA     TRAV12-1*01       TRAJ6*01    TRBV20-1*01</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG      TRAV1-1*01      TRAJ32*02    TRBV12-4*01</span></span>
+<span><span class="co">##                                 v_call_abT_VJ j_call_abT_VJ v_call_abT_VDJ_main</span></span>
+<span><span class="co">##                                   &lt;character&gt;   &lt;character&gt;         &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG      TRBD1*01    TRBJ1-2*01         TRAV13-1*02</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG            NA    TRBJ1-1*01         TRAV12-2*01</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG      TRBD2*02    TRBJ2-1*01           TRAV21*02</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA            NA    TRBJ1-3*01     TRAV38-2/DV8*01</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA      TRBD2*02    TRBJ2-7*01         TRAV12-1*01</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG            NA    TRBJ1-2*01          TRAV1-1*01</span></span>
+<span><span class="co">##                                 d_call_abT_VDJ_main j_call_abT_VDJ_main</span></span>
+<span><span class="co">##                                         &lt;character&gt;         &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG           TRAJ34*01         TRBV11-3*04</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG           TRAJ53*01           TRBV19*01</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG           TRAJ33*01          TRBV5-4*01</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA           TRAJ54*01          TRBV6-6*01</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA            TRAJ6*01         TRBV20-1*01</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG           TRAJ32*02         TRBV12-4*01</span></span>
+<span><span class="co">##                                 v_call_abT_VJ_main j_call_abT_VJ_main</span></span>
+<span><span class="co">##                                        &lt;character&gt;        &lt;character&gt;</span></span>
+<span><span class="co">## FCAImmP7851891-CCTACCATCGGACAAG           TRBD1*01         TRBJ1-2*01</span></span>
+<span><span class="co">## FCAImmP7851892-ACGGGCTCAGCATGAG                 NA         TRBJ1-1*01</span></span>
+<span><span class="co">## FCAImmP7803035-CCAGCGATCCGAAGAG           TRBD2*02         TRBJ2-1*01</span></span>
+<span><span class="co">## FCAImmP7528296-ATAAGAGTCAAAGACA                 NA         TRBJ1-3*01</span></span>
+<span><span class="co">## FCAImmP7555860-AACTTTCTCAACGGGA           TRBD2*02         TRBJ2-7*01</span></span>
+<span><span class="co">## FCAImmP7292034-CGTCACTGTGGTCTCG                 NA         TRBJ1-2*01</span></span></code></pre>
 <p>Visualise the UMAP of the filtered data.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">sce</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -206,7 +331,7 @@ CD8+T, CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.</p>
 expression data. The goal is to construct a neighbourhood graph with
 many neighbors with which we can sample the representative neighbours to
 form the objects.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marionilab.github.io/miloR" class="external-link">miloR</a></span><span class="op">)</span></span>
 <span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marionilab.github.io/miloR/reference/Milo.html" class="external-link">Milo</a></span><span class="op">(</span><span class="va">sce</span><span class="op">)</span></span>
 <span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marionilab.github.io/miloR/reference/buildGraph.html" class="external-link">buildGraph</a></span><span class="op">(</span><span class="va">milo_object</span>, k <span class="op">=</span> <span class="fl">30</span>, d <span class="op">=</span> <span class="fl">20</span>, reduced.dim <span class="op">=</span> <span class="st">"X_scvi"</span><span class="op">)</span></span>
@@ -215,11 +340,11 @@ form the objects.</p>
 <h4 id="construct-umap-on-milo-neighbor-graph">Construct UMAP on milo neighbor graph<a class="anchor" aria-label="anchor" href="#construct-umap-on-milo-neighbor-graph"></a>
 </h4>
 <p>We can visualise this milo object using UMAP.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">milo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miloUmap.html">miloUmap</a></span><span class="op">(</span><span class="va">milo_object</span>, n_neighbors <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">milo_object</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -228,14 +353,38 @@ form the objects.</p>
 <p>Next, we will construct the pseudobulked VDJ feature space using the
 neighbourhood graph constructed above. We will also run PCA on the
 pseudobulked VDJ feature space.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<p>We can visualise the PCA of the pseudobulked VDJ feature space.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vdjPseudobulk.html">vdjPseudobulk</a></span><span class="op">(</span><span class="va">milo_object</span>, mode_option <span class="op">=</span> <span class="st">"abT"</span>, col_to_take <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
+<p>Inspect the newly created <code>pb.milo</code> object.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pb.milo</span> </span></code></pre></div>
+<pre><code><span><span class="co">## class: Milo </span></span>
+<span><span class="co">## dim: 129 64 </span></span>
+<span><span class="co">## metadata(0):</span></span>
+<span><span class="co">## assays(1): Feature_space</span></span>
+<span><span class="co">## rownames(129): TRAV1-1*01 TRAV1-2*01 ... TRBJ2-7*01 TRBJ2-7*02</span></span>
+<span><span class="co">## rowData names(0):</span></span>
+<span><span class="co">## colnames(64): 179 93 ... 269 125</span></span>
+<span><span class="co">## colData names(3): anno_lvl_2_final_clean</span></span>
+<span><span class="co">##   anno_lvl_2_final_clean_fraction cell_count</span></span>
+<span><span class="co">## reducedDimNames(0):</span></span>
+<span><span class="co">## mainExpName: NULL</span></span>
+<span><span class="co">## altExpNames(0):</span></span>
+<span><span class="co">## nhoods dimensions(2): 64 382</span></span>
+<span><span class="co">## nhoodCounts dimensions(2): 1 1</span></span>
+<span><span class="co">## nhoodDistances dimension(1): 0</span></span>
+<span><span class="co">## graph names(0):</span></span>
+<span><span class="co">## nhoodIndex names(1): 0</span></span>
+<span><span class="co">## nhoodExpression dimension(2): 1 1</span></span>
+<span><span class="co">## nhoodReducedDim names(0):</span></span>
+<span><span class="co">## nhoodGraph names(0):</span></span>
+<span><span class="co">## nhoodAdjacency dimension(2): 1 1</span></span></code></pre>
+<p>We can compute and visualise the PCA of the pseudobulked VDJ feature
+space.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, assay.type <span class="op">=</span> <span class="st">"Feature_space"</span>, ncomponents <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="tcr-trajectory-inference-using-absorbing-markov-chain">TCR trajectory inference using Absorbing Markov Chain<a class="anchor" aria-label="anchor" href="#tcr-trajectory-inference-using-absorbing-markov-chain"></a>
@@ -248,11 +397,11 @@ computation.</p>
 <div class="section level4">
 <h4 id="define-root-and-branch-tips">Define root and branch tips<a class="anchor" aria-label="anchor" href="#define-root-and-branch-tips"></a>
 </h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract the PCA matrix</span></span>
 <span><span class="va">pca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">pb.milo</span>, type <span class="op">=</span> <span class="st">"PCA"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># define the CD8 terminal cell as the bottom-most cell and CD4 terminal cell as the top-most cell</span></span>
-<span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># define the CD8 terminal cell as the top-most cell and CD4 terminal cell as the bottom-most cell</span></span>
+<span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">branch.tips</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span></span>
 <span><span class="co"># define the start of our trajectory as the right-most cell</span></span>
 <span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -260,17 +409,17 @@ computation.</p>
 <div class="section level4">
 <h4 id="construct-diffusion-map">Construct diffusion map<a class="anchor" aria-label="anchor" href="#construct-diffusion-map"></a>
 </h4>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://theislab.github.io/destiny/" class="external-link">destiny</a></span><span class="op">)</span></span>
 <span><span class="co"># Run diffusion map on the PCA</span></span>
 <span><span class="va">dm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DiffusionMap-class.html" class="external-link">DiffusionMap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pca</span><span class="op">)</span>, n_pcs <span class="op">=</span> <span class="fl">10</span>, n_eigs <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="compute-diffussion-pseudotime-on-diffusion-map">Compute diffussion pseudotime on diffusion map<a class="anchor" aria-label="anchor" href="#compute-diffussion-pseudotime-on-diffusion-map"></a>
+<h4 id="compute-diffusion-pseudotime-on-diffusion-map">Compute diffusion pseudotime on diffusion map<a class="anchor" aria-label="anchor" href="#compute-diffusion-pseudotime-on-diffusion-map"></a>
 </h4>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dif.pse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/destiny/man/DPT.html" class="external-link">DPT</a></span><span class="op">(</span><span class="va">dm</span>, tips <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">branch.tips</span><span class="op">)</span>, w_width <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the root is automatically called DPT + index of the root cell</span></span>
 <span><span class="va">DPTroot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DPT"</span>, <span class="va">root</span><span class="op">)</span></span>
 <span><span class="co"># store pseudotime in milo object</span></span>
@@ -278,12 +427,16 @@ computation.</p>
 <span><span class="co"># set the colours for pseudotime</span></span>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">(</span><span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">9</span>, <span class="st">"RdYlBu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">255</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_colour_gradientn</a></span><span class="op">(</span>colours <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="markov-chain-construction-on-the-pseudobulk-vdj-feature-space">Markov chain construction on the pseudobulk VDJ feature space<a class="anchor" aria-label="anchor" href="#markov-chain-construction-on-the-pseudobulk-vdj-feature-space"></a>
 </h4>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>This step will compute the Markov chain probabilities on the
+pseudobulk VDJ feature space. It will return the branch probabilities in
+the <code>colData</code> and the column name corresponds to the branch
+tips defined earlier.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pb.milo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/markovProbability.html">markovProbability</a></span><span class="op">(</span></span>
 <span>    milo <span class="op">=</span> <span class="va">pb.milo</span>,</span>
 <span>    diffusionmap <span class="op">=</span> <span class="va">dm</span>,</span>
@@ -292,6 +445,27 @@ computation.</p>
 <span>    pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span>,</span>
 <span>    knn <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>Inspect the <code>pb.milo</code> object to see the newly added
+columns.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">colData</span><span class="op">(</span><span class="va">pb.milo</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## DataFrame with 6 rows and 6 columns</span></span>
+<span><span class="co">##     anno_lvl_2_final_clean anno_lvl_2_final_clean_fraction cell_count</span></span>
+<span><span class="co">##                &lt;character&gt;                       &lt;numeric&gt;  &lt;numeric&gt;</span></span>
+<span><span class="co">## 179              faDP(P)_T                        0.605263         38</span></span>
+<span><span class="co">## 93                 faCD8+T                        0.750000         48</span></span>
+<span><span class="co">## 75               faDP(Q)_T                        0.907407         54</span></span>
+<span><span class="co">## 279              faDP(Q)_T                        0.913793         58</span></span>
+<span><span class="co">## 277                faCD4+T                        0.936170         47</span></span>
+<span><span class="co">## 375              faDP(P)_T                        0.632653         49</span></span>
+<span><span class="co">##     pseudotime     CD8+T     CD4+T</span></span>
+<span><span class="co">##      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">## 179   0.449589  0.578761  0.421239</span></span>
+<span><span class="co">## 93    5.584408  0.729279  0.270721</span></span>
+<span><span class="co">## 75    2.642788  0.559456  0.440544</span></span>
+<span><span class="co">## 279   2.595964  0.559617  0.440383</span></span>
+<span><span class="co">## 277   4.314940  0.565749  0.434251</span></span>
+<span><span class="co">## 375   0.134566  0.578744  0.421256</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="visualising-branch-probabilities">Visualising branch probabilities<a class="anchor" aria-label="anchor" href="#visualising-branch-probabilities"></a>
@@ -299,12 +473,12 @@ computation.</p>
 <p>With the Markov chain probabilities computed, we can visualise the
 branch probabilities towards CD4+ or CD8+ T-cell fate on the PCA
 plot.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/plotPCA.html" class="external-link">plotPCA</a></span><span class="op">(</span><span class="va">pb.milo</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-21-2.png" width="700"></p>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-25-2.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -320,24 +494,24 @@ pseudobulk.</p>
 <div class="section level4">
 <h4 id="project-pseudobulk-data-to-each-cell">Project pseudobulk data to each cell<a class="anchor" aria-label="anchor" href="#project-pseudobulk-data-to-each-cell"></a>
 </h4>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projectPseudotimeToCell.html">projectPseudotimeToCell</a></span><span class="op">(</span><span class="va">milo_object</span>, <span class="va">pb.milo</span>, <span class="va">branch.tips</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="visualise-the-trajectory-data-on-a-per-cell-basis">Visualise the trajectory data on a per cell basis<a class="anchor" aria-label="anchor" href="#visualise-the-trajectory-data-on-a-per-cell-basis"></a>
 </h4>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"anno_lvl_2_final_clean"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"pseudotime"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-2.png" width="700"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-27-2.png" width="700"></p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD4+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-3.png" width="700"></p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-27-3.png" width="700"></p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/scater/man/plot_reddim.html" class="external-link">plotUMAP</a></span><span class="op">(</span><span class="va">cdata</span>, color_by <span class="op">=</span> <span class="st">"CD8+T"</span>, dimred <span class="op">=</span> <span class="st">"UMAP_knngraph"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="va">pal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-23-4.png" width="700"></p>
+<p><img src="vignette_from_scRepertoire_files/figure-html/unnamed-chunk-27-4.png" width="700"></p>
 <p>And that’s it! We have successfully inferred the trajectory of the
 T-cells in this dataset!</p>
 </div>
@@ -345,7 +519,7 @@ T-cells in this dataset!</p>
 <div class="section level3">
 <h3 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h3>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R Under development (unstable) (2025-01-01 r87507)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
