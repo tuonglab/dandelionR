@@ -4,39 +4,43 @@
 #' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL
 #' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo
 #' @param milo SingleCellExperiment object
+#' @importFrom rlang abort
+#' @importFrom stats model.matrix
+#' @importFrom Matrix Matrix
 #' @keywords internal
 #' @return a cell x pseudobulk matrix
-.getPbs <- function(pbs, col_to_bulk, milo) {
+.getPbs <- function(pbs, col_to_bulk, milo, verbose = TRUE) {
     # some way to pseudobulk
-    requireNamespace("rlang")
     if (is.null(pbs) && is.null(col_to_bulk)) {
-        rlang::abort("You must specify 'pbs' or 'col_to_bulk'.")
+        abort("You must specify 'pbs' or 'col_to_bulk'.")
     }
     # but just one
     if (!is.null(pbs) && !is.null(col_to_bulk)) {
-        rlang::abort("You must specify 'pbs' or 'col_to_bulk', not both.")
+        abort("You must specify 'pbs' or 'col_to_bulk', not both.")
     }
     if (!is.null(pbs)) {
         return(pbs)
     }
     if (!is.null(col_to_bulk)) {
         msg <- paste0(col_to_bulk, collapse = ", ")
-        message(sprintf("Generating pseudobulks according to colData %s ...", msg),
-            appendLF = FALSE
-        )
+        if (verbose) {
+            message(sprintf("Generating pseudobulks according to colData %s ...", msg),
+                appendLF = FALSE
+            )
+        }
         tobulk <- lapply(col_to_bulk, function(x) {
             colData(milo)[[x]]
         })
         names(tobulk) <- col_to_bulk
         tobulk <- as.data.frame(tobulk)
         tobulk <- as.data.frame(apply(tobulk, 1, paste, collapse = ",", simplify = FALSE))
-        requireNamespace("stats")
-        tobulk <- stats::model.matrix(~ t(tobulk) - 1)
+        tobulk <- model.matrix(~ t(tobulk) - 1)
         colnames(tobulk) <- gsub("t\\(tobulk\\)", "", colnames(tobulk))
-        requireNamespace("Matrix")
-        tobulk <- Matrix::Matrix(tobulk, sparse = TRUE)
-        message("Complete")
-        message(sprintf("The number of pseudobulks is %d", dim(tobulk)[2]))
+        tobulk <- Matrix(tobulk, sparse = TRUE)
+        if (verbose) {
+            message("Complete")
+            message(sprintf("The number of pseudobulks is %d", dim(tobulk)[2]))
+        }
         return(tobulk)
     }
 }

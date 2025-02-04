@@ -113,13 +113,12 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
             x # nocov
         }
     })
-    requireNamespace("stats")
     one_hot_encoded <- model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
         contrasts,
         contrasts = FALSE
     )) # prevent reference level
     colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-    pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
+    pseudo_vdj_feature <- t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
     if (normalise) {
         ## identify any missing calls inserted by the setup, will end with
         ## _missing negate as we want to actually remove them later
@@ -158,12 +157,12 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 
     # create a new SingelCellExperiment object as result
     pb.sce <- SingleCellExperiment(
-        assay = SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
+        assay = SimpleList(Feature_space = t(pseudo_vdj_feature)),
         rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col
     )
     # store pseudobulk assignment, as a sparse for storage efficiency transpose
     # as the original matrix is cells x pseudobulks
     pb.milo <- Milo(pb.sce)
-    nhoods(pb.milo) <- Matrix::t(pbs)
+    nhoods(pb.milo) <- t(pbs)
     return(pb.milo)
 }

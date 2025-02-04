@@ -9,7 +9,8 @@ projectPseudotimeToCell(
   pb_milo,
   term_states = NULL,
   pseudotime_key = "pseudotime",
-  suffix = ""
+  suffix = "",
+  verbose = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ is \code{"pseudotime"}.}
 
 \item{suffix}{Character. A suffix to be added to the new column names in \code{colData}.
 Default is an empty string (\code{''}).}
+
+\item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
 subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData

@@ -4,7 +4,7 @@
 \alias{.getPbs}
 \title{.getPbs}
 \usage{
-.getPbs(pbs, col_to_bulk, milo)
+.getPbs(pbs, col_to_bulk, milo, verbose = TRUE)
 }
 \arguments{
 \item{pbs}{pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL}

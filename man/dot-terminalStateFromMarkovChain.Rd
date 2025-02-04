@@ -4,7 +4,13 @@
 \alias{.terminalStateFromMarkovChain}
 \title{Determine terminal states using Markov chain if terminal states are not provided.}
 \usage{
-.terminalStateFromMarkovChain(Transmat, wp_data, pseudotime, waypoints)
+.terminalStateFromMarkovChain(
+  Transmat,
+  wp_data,
+  pseudotime,
+  waypoints,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{Transmat}{Transition matrix}
@@ -14,6 +20,8 @@
 \item{pseudotime}{numeric vector, pseudotime of each pseudobulk}
 
 \item{waypoints}{integer vector, waypoint selected to construct markov chain.}
+
+\item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
 terminal_state

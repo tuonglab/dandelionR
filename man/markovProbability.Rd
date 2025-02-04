@@ -13,7 +13,8 @@ markovProbability(
   diffusiontime = NULL,
   pseudotime_key = "pseudotime",
   scale_components = TRUE,
-  num_waypoints = 500
+  num_waypoints = 500,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ markovProbability(
 \item{scale_components}{Logical. If \code{TRUE}, the components will be scaled before constructing the Markov chain. Default is \code{FALSE}.}
 
 \item{num_waypoints}{Integer. The number of waypoints to sample when constructing the Markov chain. Default is \code{500L}.}
+
+\item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in its colData

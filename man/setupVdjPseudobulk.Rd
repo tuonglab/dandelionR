@@ -19,7 +19,8 @@ setupVdjPseudobulk(
   check_vj_mapping = c(TRUE, TRUE),
   check_vdj_mapping = c(TRUE, FALSE, TRUE),
   check_extract_cols_mapping = NULL,
-  remove_missing = TRUE
+  remove_missing = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{

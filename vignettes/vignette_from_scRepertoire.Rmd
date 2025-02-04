@@ -165,7 +165,7 @@ pb.milo <- vdjPseudobulk(milo_object, mode_option = "abT", col_to_take = "anno_l
 
 Inspect the newly created `pb.milo` object.
 ```{r}
-pb.milo 
+pb.milo
 ```
 
 We can compute and visualise the PCA of the pseudobulked VDJ feature space.

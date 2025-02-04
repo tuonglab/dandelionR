@@ -4,12 +4,14 @@
 \alias{.maxMinSampling}
 \title{.maxMinSampling}
 \usage{
-.maxMinSampling(data, num_waypoints)
+.maxMinSampling(data, num_waypoints, verbose = TRUE)
 }
 \arguments{
 \item{data}{data matrix along which to sample the waypoints, usually diffusion components}
 
 \item{num_waypoints}{number of waypoints to sample}
+
+\item{verbose}{logical, print progress}
 }
 \value{
 Series reprenting the sampled waypoints
