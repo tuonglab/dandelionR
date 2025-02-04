@@ -14,6 +14,7 @@ biocViews: Software, ImmunoOncology, SingleCell
 Collate:
     'check.R'
     'constructMarkovChain.R'
+    'dandelionR.R'
     'data.R'
     'determMultiscaleSpace.R'
     'terminalStateFromMarkovChain.R'
