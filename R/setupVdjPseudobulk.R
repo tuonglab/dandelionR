@@ -145,6 +145,11 @@ setupVdjPseudobulk <- function(
 #' 
 #' @param sce SingleCellExperiment input
 #' @param mode_option check setupVdjPseudobulk for detailed explanation
+#' @param productive_vj If `TRUE`, retains cells where the main VJ chain is productive.
+#' @param productive_vdj If `TRUE`, retains cells where the main VDJ chain is productive.
+#' @import SingleCellExperiment
+#' @importFrom rlang abort
+#' @return SingleCellExperiment object after filtering on producive chain
 .filterProductivity <- function(
     sce, mode_option, 
     productive_cols, productive_vj, productive_vdj, verbose){
@@ -183,7 +188,14 @@ setupVdjPseudobulk <- function(
   return(sce)
 }
 
-.allowedChain <- function(sce, allowed_chain_status, verbose){
+#' filtering cell without allowed chain status
+#' 
+#' @param sce SingleCellExperiment object input
+#' @param allowed_chain_status the chain needs to be retain, passed from setupVdjPseudobulk
+#' @import SingleCellExperiment
+#' @importFrom rlang abort
+#' @return SingleCellExperiment object with allowed chain status
+.allowedChain <- function(sce, allowed_chain_status){
   ## retain only cells with allowed chain status
   if (!is.null(allowed_chain_status)) {
     if (verbose) message("checking allowed chain status...", appendLF = FALSE)
@@ -204,10 +216,15 @@ setupVdjPseudobulk <- function(
   }
   return(sce)
 }
-
-.subsetSce <- function(sce, subsetby, groups, verbose){
-  .typeCheck(subsetby, "character")
-  .typeCheck(groups, "character")
+#' Subset sce with given parameter
+#' 
+#' @param sce SingleCellExperiment object input
+#' @param subsetby subsetby Character. Name of a `colData` column for subsetting. given by setupVdjPsudobulk.
+#' @param groups Character vector. Specifies the subset condition for filtering. given by setupVdjPsudobulk.
+#' @import SingleCellExperiment
+#' @importFrom rlang abort
+#' @return subsetted SingleCellExperiment object
+.subsetSce <- function(sce, subsetby, groups){
   if (!is.null(groups) && !is.null(subsetby)) {
     msg1 <- paste(as.character(substitute(groups))[-1], collapse = ", ")
     msg2 <- as.character(substitute(subsetby))
@@ -223,9 +240,16 @@ setupVdjPseudobulk <- function(
   }
   return(sce)
 }
-
-.extractVdj <-  function(sce, extract_cols=NULL, mode_option, verbose=TRUE){
-  .typeCheck(extract_cols, "character")
+#' Specify the columns which store VDJ information, and extract the main chain from it
+#' 
+#' @param sce SingleCellExperiment object input
+#' @param extract_cols The setupVdjPseutobulk transfered parameter given by user to specify the VDJ information columns
+#' @param mode_option see document of setupVdjPseudobulk for detailed explanation
+#' @import SingleCellExperiment
+#' @importFrom SummarizedExperiment colData<-
+#' @importFrom rlang abort
+#' @return SingleCellExperiment objects with column stores the information of the main VDJ information in colData slot
+.extractVdj <-  function(sce, extract_cols, mode_option){
   # generate colnames to extract
   if(is.null(extract_cols)) extract_cols <- .generateExtractName(sce, mode_option)
   # make sure the columns exist
@@ -253,7 +277,13 @@ setupVdjPseudobulk <- function(
   }
   return(list(sce = sce, main_cols = main_cols))
 }
-
+#' Generate the name of columns with given parameter
+#' 
+#' @param sce SingleCellExperiment object input
+#' @param mode_option see document of setupVdjPseudobulk for explanation
+#' @import SingleCellExperiment
+#' @importFrom SummarizedExperiment colData<-
+#' @return a vecotor of colnames we need to perform main chain extraction
 .generateExtractName <- function(sce, mode_option){
   message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
   v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) { # nocov start
@@ -281,8 +311,14 @@ setupVdjPseudobulk <- function(
   }
   return(extr_cols)
 }
-
-.generateExtractColumn <- function(sce, extract_cols, verbose){
+#' Check whether the columns with specified names exist, if not, create them with CTgene columns
+#' @param sce SingleCellExperiment object input
+#' @param extract_cols column names we aim to extract information from
+#' @import SingleCellExperiment
+#' @importFrom SummarizedExperiment colData<-
+#' @importFrom rlang abort
+#' @return SingleCellExperiment with columns containing VDJ information in the names we've specified.
+.generateExtractColumn <- function(sce, extract_cols){
   msg <- paste(extract_cols, collapse = ", ")
   if (!any(extract_cols %in% colnames(colData(sce)))) {
     if (verbose) message(sprintf(
@@ -316,9 +352,20 @@ setupVdjPseudobulk <- function(
   }
   return(sce)
 }
-
-
-.filterUnmapped <- function(sce, mode_option, check_vj_mapping, check_vdj_mapping, main_cols, check_extract_cols_mapping, remove_missing, verbose){
+#' Filter out cell with unclear mapping in VDJ information
+#' @param sce SingleCellExperiment object input
+#' @param mode_option see document of setupVdjPseudobulk for explanation
+#' @param check_vj_mapping logical vector to set whether to check V and J gene in VJ chain, passed from setupVdjPseudobulk
+#' @param check_vdj_mapping logical vector to set whether to check V, D and J gene in VDJ chain, passed from setupVdjPseudobulk
+#' @param main_cols column names in colData in which The information of main chain stores
+#' @param check_extract_cols_mapping character vector,the names of columns that needs to be checked, passed from setupVdjPseudobulk
+#' @param remove_missing option for removing the unclear mappin or just mask it, passed from setupVdjPseudobulk
+#' @include filterCells.R
+#' @import SingleCellExperiment
+#' @importFrom SummarizedExperiment colData<-
+#' @importFrom rlang abort
+#' @return filtered SingleCellExperiment object
+.filterUnmapped <- function(sce, mode_option, check_vj_mapping, check_vdj_mapping, main_cols, check_extract_cols_mapping, remove_missing){
     filter_pattern <- ",|None|No_contig"
     extr_cols <- c()
     if(is.null(check_extract_cols_mapping))
