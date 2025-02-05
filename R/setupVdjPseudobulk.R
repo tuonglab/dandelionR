@@ -124,235 +124,219 @@ setupVdjPseudobulk <- function(
     }
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
-
-    # filtering retain only productive entries based on specified mode
-    if (!already.productive) {
-        if (is.null(mode_option)) {
-            if (!is.null(productive_cols)) { # nocov start
-                msg <- paste(productive_cols, collapse = ", ")
-                if (verbose) message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
-                cnumber0 <- dim(sce)[2]
-                sce <- Reduce(function(data, p_col) {
-                    idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
-                    data[, idx]
-                }, productive_cols, init = sce)
-                cnumber1 <- dim(sce)[2]
-                filtered <- cnumber0 - cnumber1
-                if (verbose) message(sprintf("%d of cells filtered", filtered))
-            } else {
-                abort("When mode_option is NULL, the productive_cols must be specified.")
-            } # nocov end
-        } else {
-            produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(
-                productive_vdj,
-                productive_vj
-            )]
-            msg <- paste(produ_col, collapse = ", ")
-            if (verbose) message(sprintf("Checking productivity from %s ...", msg), appendLF = FALSE)
-            cnumber0 <- dim(sce)[2]
-            sce <- Reduce(function(data, p_col) {
-                idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
-                data[, idx]
-            }, produ_col, init = sce)
-            cnumber1 <- dim(sce)[2]
-            filtered <- cnumber0 - cnumber1
-            if (verbose) message(sprintf("%d of cells filtered", filtered))
-        }
-    }
+    ## filter out cells with unproductive chain
+    sce <- .filterProductivity(sce, already.productive = already.productive, verbose=verbose)
     ## retain only cells with allowed chain status
-    if (!is.null(allowed_chain_status)) {
-        if (verbose) message("checking allowed chain status...", appendLF = FALSE)
-        cnumber0 <- dim(sce)[2]
-        idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
-        if (!any(idx)) {
-            allowed_cs <- paste(allowed_chain_status, collapse = ", ")
-            current_cs <- paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")
-            abort(sprintf(
-                "Unsuitable allowed_chain_status,\n The current allowed_chain_status: %s.\n While the chain status in the dataset: %s.",
-                allowed_cs, current_cs
-            ))
-        }
-        sce <- sce[, idx]
-        cnumber1 <- dim(sce)[2]
-        filtered <- cnumber0 - cnumber1
-        if (verbose) message(sprintf("%d of cells filtered", filtered))
-    }
+    sce <- .allowedChain(sce, allowed_chain_status, verbose)
     ## subset sce by subsetby and groups
-    if (!is.null(groups) && !is.null(subsetby)) {
-        msg1 <- paste(as.character(substitute(groups))[-1], collapse = ", ")
-        msg2 <- as.character(substitute(subsetby))
-        if (verbose) message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
-        cnumber0 <- dim(sce)[2]
-        idx <- Reduce(`|`, lapply(groups, function(i) {
-            colData(sce)[[subsetby]] %in% i
-        }))
-        sce <- sce[, idx]
-        cnumber1 <- dim(sce)[2]
-        filtered <- cnumber0 - cnumber1
-        if (verbose) message(sprintf("%d of cells filtered", filtered))
-    }
+    sce <- .subsetSce(sce, subsetby, groups, verbose)
     ## extract main VDJ from specified columns
     if (verbose) message("VDJ data extraction begin:")
-    if (is.null(extract_cols)) {
-        if (verbose) message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
-        if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
-            v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) { # nocov start
-                "v_call_genotyped_" # nocov end
-            } else {
-                "v_call_"
-            }
-            prefix <- c(v_call, "d_call_", "j_call_")
-            if (!is.null(mode_option)) {
-                # can be pack as another function
-                suffix <- c("_VDJ", "_VJ")
-                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(x, mode_option, y)
-                }))
-                extr_cols <- extr_cols[extr_cols != paste0(
-                    "d_call_", mode_option,
-                    "_VJ"
-                )]
-            } else { # nocov start
-                suffix <- c("VDJ", "VJ")
-                extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
-                    paste0(x, y)
-                }))
-                extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")] # nocov end
-            }
-            msg <- paste(extr_cols, collapse = ", ")
-            if (verbose) message(sprintf("Detect whether colData %s already exist...", msg))
-            if (!any(extr_cols %in% colnames(colData(sce)))) {
-                if (verbose) message(sprintf("Creating %s colData based on column CTgene", msg))
-                splitVdj <- splitCTgene(sce)
-                if (length(splitVdj[[1]]) != length(extr_cols)) {
-                    abort(paste(
-                        "Keyerror: Automatically generated colnames's length is",
-                        length(extr_cols), ".It must have the same number with the vdj data columns, which is",
-                        length(splitVdj[[1]]), "\nYou could use parameter extract_cols to specify the columns to match the length"
-                    )) # nocov
-                } else {
-                    vdj <- lapply(seq(length(extr_cols)), function(X, sc) {
-                        vapply(X = sc, "[", X, FUN.VALUE = character(1))
-                    }, sc = splitVdj)
-                    names(vdj) <- extr_cols
-                    colData(sce) <- cbind(colData(sce), vdj)
-                }
-            } else if (!all(extr_cols %in% colnames(colData(sce)))) {
-                abort(paste(
-                    "Keyerror: Automatically generated colnames", paste0(extr_cols[!extr_cols %in%
-                        colnames(colData(sce))], collapse = ", "), "must be contained in colData",
-                    "\nYou could use parameter extract_cols to specify the columns to extract TCR"
-                )) # nocov
-            }
-            if (verbose) message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-            sce <- Reduce(function(data, ex_col) {
-                tem <- colData(data)[[ex_col]]
-                strtem <- strsplit(as.character(tem), "\\|")
-                colData(data)[[paste(ex_col, "main", sep = "_")]] <- vapply(strtem,
-                    `[`, 1,
-                    FUN.VALUE = character(1)
-                )
-                data
-            }, extr_cols, init = sce)
-            if (verbose) message("Complete.")
-        }
-    } else { # nocov start
-        msg <- paste(extract_cols, collapse = ", ")
-        if (!any(extract_cols %in% colnames(colData(sce)))) {
-            if (verbose) {
-                message(sprintf(
-                    "ColData does not exist, Creating %s colData based on column CTgene",
-                    msg
-                ))
-            }
-            splitVdj <- splitCTgene(sce)
-            if (length(splitVdj[[1]]) != length(extract_cols)) {
-                abort(paste(
-                    "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
-                        colnames(colData(sce))], collapse = ", "), "must have the same length with the vdj data, which is of the length",
-                    length(splitVdj[[1]]), "\nYou could modify parameter extract_cols to specify the columns to match the length"
-                ))
-            } else {
-                vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
-                    vapply(X = sc, "[", X, FUN.VALUE = character(1))
-                }, sc = splitVdj)
-                names(vdj) <- extract_cols
-                colData(sce) <- cbind(colData(sce), vdj)
-            }
-        } else if (!all(extract_cols %in% colnames(colData(sce)))) {
-            abort(paste(
-                "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
-                    colnames(colData(sce))], collapse = ", "), "must be contained in colData",
-                "\nYou could modify parameter extract_cols to specify the columns to extract TCR"
-            ))
-        }
-        if (verbose) message(sprintf("Extract main TCR from %s ...", msg), appendLF = FALSE)
-        sce <- Reduce(function(data, ex_col) {
-            tem <- colData(data)[[ex_col]]
-            strtem <- strsplit(as.character(tem), "\\|")
-            colData(data)[[paste(ex_col, "main", sep = "_")]] <- vapply(strtem, `[`,
-                1,
-                FUN.VALUE = character(1)
-            )
-            data
-        }, extract_cols, init = sce)
-        if (verbose) message("Complete.")
-    } # nocov end
+    sce <- .extractVdj(sce, extract_cols, mode_option)
     # remove unclear mapping
-    if (filter_unmapped) {
-        filter_pattern <- ",|None|No_contig"
-        extr_cols <- c()
-        if (!is.null(mode_option)) {
-            if (any(check_vdj_mapping)) {
-                vdj_mapping <- c("v_call", "d_call", "j_call")
-                extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping], mode_option,
-                    "VDJ_main",
-                    sep = "_"
-                ))
-            }
-            if (any(check_vj_mapping)) {
-                vj_mapping <- c("v_call", "j_call")
-                extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], mode_option,
-                    "VJ_main",
-                    sep = "_"
-                ))
-            }
-        } else {
-            if (is.null(extract_cols)) { # nocov start
-                if (any(check_vdj_mapping)) {
-                    vdj_mapping <- c("v_call", "d_call", "j_call")
-                    extr_cols <- c(extr_cols, paste(vdj_mapping[check_vdj_mapping],
-                        "VDJ_main",
-                        sep = "_"
-                    ))
-                }
-                if (any(check_vj_mapping)) {
-                    vj_mapping <- c("v_call", "j_call")
-                    extr_cols <- c(extr_cols, paste(vj_mapping[check_vj_mapping], "VJ_main",
-                        sep = "_"
-                    ))
-                }
-            } else {
-                if (!is.null(check_extract_cols_mapping)) {
-                    extr_cols <- check_extract_cols_mapping
-                }
-            } # nocov end
-        }
-        if (!is.null(extr_cols)) {
-            msg <- paste(extr_cols, collapse = ", ")
-            if (verbose) message(sprintf("Filtering cells from %s ...", msg), appendLF = FALSE)
-            cnumber0 <- dim(sce)[2]
-            sce <- Reduce(function(x, y) {
-                .filterCells(
-                    sce = x, col_n = y, filter_pattern = filter_pattern,
-                    remove_missing = remove_missing
-                )
-            }, extr_cols, init = sce)
-            cnumber1 <- dim(sce)[2]
-            filtered <- cnumber0 - cnumber1
-            if (verbose) message(sprintf("%d of cells filtered", filtered))
-        }
-    }
+    if(filter_unmapped) sce <- .filterUnmapped(sce=sce$sce, mode_option=mode_option, check_vj_mapping=check_vj_mapping, check_vdj_mapping=check_vdj_mapping, main_cols = sce$main_cols, check_extract_cols_mapping=check_extract_cols_mapping, remove_missing=remove_missing, verbose=verbose)
+    else sce <- sce$sce
     if (verbose) message(sprintf("%d of cells remain.", dim(sce)[2]))
+    return(sce)
+}
+
+.filterProductivity <- function(
+    sce, mode_option, already.productive,
+    productive_cols, productive_vj, productive_vdj, verbose){
+  # check the input 
+  if (!already.productive) {
+    if (is.null(mode_option)) {
+      if (!is.null(productive_cols)) { # nocov start
+        msg <- paste(productive_cols, collapse = ", ")
+        if (verbose) message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
+        cnumber0 <- dim(sce)[2]
+        sce <- Reduce(function(data, p_col) {
+          idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
+          data[, idx]
+        }, productive_cols, init = sce)
+        cnumber1 <- dim(sce)[2]
+        filtered <- cnumber0 - cnumber1
+        if (verbose) message(sprintf("%d of cells filtered", filtered))
+      } else {
+        abort("When mode_option is NULL, the productive_cols must be specified.")
+      } # nocov end
+    } else {
+      produ_col <- paste("productive", mode_option, c("VDJ", "VJ"), sep = "_")[c(
+        productive_vdj,
+        productive_vj
+      )]
+      msg <- paste(produ_col, collapse = ", ")
+      if (verbose) message(sprintf("Checking productivity from %s ...", msg), appendLF = FALSE)
+      cnumber0 <- dim(sce)[2]
+      sce <- Reduce(function(data, p_col) {
+        idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
+        data[, idx]
+      }, produ_col, init = sce)
+      cnumber1 <- dim(sce)[2]
+      filtered <- cnumber0 - cnumber1
+      if (verbose) message(sprintf("%d of cells filtered", filtered))
+    }
+  }
+  return(sce)
+}
+
+.allowedChain <- function(sce, allowed_chain_status, verbose){
+  ## retain only cells with allowed chain status
+  if (!is.null(allowed_chain_status)) {
+    if (verbose) message("checking allowed chain status...", appendLF = FALSE)
+    cnumber0 <- dim(sce)[2]
+    idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
+    if (!any(idx)) {
+      allowed_cs <- paste(allowed_chain_status, collapse = ", ")
+      current_cs <- paste(unique(colData(sce)[["chain_status"]]), collapse = ", ")
+      abort(sprintf(
+        "Unsuitable allowed_chain_status,\n The current allowed_chain_status: %s.\n While the chain status in the dataset: %s.",
+        allowed_cs, current_cs
+      ))
+    }
+    sce <- sce[, idx]
+    cnumber1 <- dim(sce)[2]
+    filtered <- cnumber0 - cnumber1
+    if (verbose) message(sprintf("%d of cells filtered", filtered))
+  }
+  return(sce)
+}
+
+.subsetSce <- function(sce, subsetby, groups, verbose){
+  .typeCheck(subsetby, "character")
+  .typeCheck(groups, "character")
+  if (!is.null(groups) && !is.null(subsetby)) {
+    msg1 <- paste(as.character(substitute(groups))[-1], collapse = ", ")
+    msg2 <- as.character(substitute(subsetby))
+    if (verbose) message(sprintf("Subsetting data with %s in %s ...", msg1, msg2), appendLF = FALSE)
+    cnumber0 <- dim(sce)[2]
+    idx <- Reduce(`|`, lapply(groups, function(i) {
+      colData(sce)[[subsetby]] %in% i
+    }))
+    sce <- sce[, idx]
+    cnumber1 <- dim(sce)[2]
+    filtered <- cnumber0 - cnumber1
+    if (verbose) message(sprintf("%d of cells filtered", filtered))
+  }
+  return(sce)
+}
+
+.extractVdj <-  function(sce, extract_cols=NULL, mode_option, verbose=TRUE){
+  .typeCheck(extract_cols, "character")
+  # generate colnames to extract
+  if(is.null(extract_cols)) extract_cols <- .generateExtractName(sce, mode_option)
+  # make sure the columns exist
+  sce <- .generateExtractColumn(sce, extract_cols)
+  # extract main information
+  if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))){
+    colns <- paste(extract_cols, collapse = ", ")
+    if (verbose) message(sprintf("Extract main TCR from %s ...", colns), appendLF = FALSE)
+    sce <- Reduce(function(data, ex_col) {
+      tem <- colData(data)[[ex_col]]
+      strtem <- strsplit(as.character(tem), "\\|")
+      colData(data)[[paste(ex_col, "main", sep = "_")]] <- vapply(strtem, `[`,
+                                                                  1,
+                                                                  FUN.VALUE = character(1)
+      )
+      data
+    }, extract_cols, init = sce)
+    main_cols <- paste(extract_cols, "main", sep = "_")
+    if (verbose) message("Complete.")
+  }
+  else 
+  {
+    main_cols <- colnames(colData(sce))[grep("_VDJ_main|_VJ_main", names(colData(sce)))]
+    if (verbose) warning("main VDJ information already exists, Please use parameter check_extract_cols_mapping to clarify the columns undergo filtering, rather than parameter check_v(d)j_mapping")
+  }
+  return(list(sce = sce, main_cols = main_cols))
+}
+
+.generateExtractName <- function(sce, mode_option){
+  message("Parameter extract_cols do not provided, automatically geneterate colnames for extraction.")
+  v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) { # nocov start
+    "v_call_genotyped_" # nocov end
+  } else {
+    "v_call_"
+  }
+  prefix <- c(v_call, "d_call_", "j_call_")
+  if (!is.null(mode_option)) {
+    # can be pack as another function
+    suffix <- c("_VDJ", "_VJ")
+    extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
+      paste0(x, mode_option, y)
+    }))
+    extr_cols <- extr_cols[extr_cols != paste0(
+      "d_call_", mode_option,
+      "_VJ"
+    )]
+  } else { # nocov start
+    suffix <- c("VDJ", "VJ")
+    extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
+      paste0(x, y)
+    }))
+    extr_cols <- extr_cols[extr_cols != paste0("d_call_", "VJ")] # nocov end
+  }
+  return(extr_cols)
+}
+
+.generateExtractColumn <- function(sce, extract_cols, verbose){
+  msg <- paste(extract_cols, collapse = ", ")
+  if (!any(extract_cols %in% colnames(colData(sce)))) {
+    if (verbose) message(sprintf(
+      "ColData does not exist, Creating %s colData based on column CTgene",
+      msg
+    ))
+    if(!"CTgene" %in% colnames(colData(sce)))
+    {
+      abort(paste("Both", msg, "and CTgene do not exist\n You could modify parameter extract_cols to clarify VDJ information's location"))
+    }
+    splitVdj <- splitCTgene(sce)
+    if (length(splitVdj[[1]]) != length(extract_cols)) {
+      abort(paste(
+        "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                                                    colnames(colData(sce))], collapse = ", "), "must have the same length with the vdj data, which is of the length",
+        length(splitVdj[[1]]), "\nYou could modify parameter extract_cols to specify the columns to match the length"
+      ))
+    } else {
+      vdj <- lapply(seq(length(extract_cols)), function(X, sc) {
+        vapply(X = sc, "[", X, FUN.VALUE = character(1))
+      }, sc = splitVdj)
+      names(vdj) <- extract_cols
+      colData(sce) <- cbind(colData(sce), vdj)
+    }
+  } else if (!all(extract_cols %in% colnames(colData(sce)))) {
+    abort(paste(
+      "Keyerror: Colnames", paste0(extract_cols[!extract_cols %in%
+                                                  colnames(colData(sce))], collapse = ", "), "do not exist in colData",
+      "\nYou could modify parameter extract_cols to specify the columns to extract TCR"
+    ))
+  }
+  return(sce)
+}
+
+
+.filterUnmapped <- function(sce, mode_option, check_vj_mapping, check_vdj_mapping, main_cols, check_extract_cols_mapping, remove_missing, verbose){
+    filter_pattern <- ",|None|No_contig"
+    extr_cols <- c()
+    if(is.null(check_extract_cols_mapping))
+    {
+      extr_cols <- main_cols[c(check_vdj_mapping, check_vj_mapping)]
+    } else{
+      extr_cols <- check_extract_cols_mapping
+    }
+    if (!is.null(extr_cols)) {
+        msg <- paste(extr_cols, collapse = ", ")
+        if (verbose) message(sprintf("Filtering cells from %s ...", msg), appendLF = FALSE)
+        cnumber0 <- dim(sce)[2]
+        sce <- Reduce(function(x, y) {
+            .filterCells(
+                sce = x, col_n = y, filter_pattern = filter_pattern,
+                remove_missing = remove_missing
+            )
+        }, extr_cols, init = sce)
+        cnumber1 <- dim(sce)[2]
+        filtered <- cnumber0 - cnumber1
+        if (verbose) message(sprintf("%d of cells filtered", filtered))
+    }
     return(sce)
 }
