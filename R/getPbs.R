@@ -4,6 +4,7 @@
 #' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL
 #' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo
 #' @param milo SingleCellExperiment object
+#' @param verbose logical, whether to print messages
 #' @importFrom rlang abort
 #' @importFrom stats model.matrix
 #' @importFrom Matrix Matrix

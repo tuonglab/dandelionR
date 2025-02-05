@@ -49,12 +49,12 @@
 #' @include check.R
 #' @include getPbs.R
 #' @import SingleCellExperiment
-#' @importFrom miloR Milo nhoods<-
 #' @importFrom rlang abort
 #' @importFrom methods is
 #' @importFrom Matrix t
 #' @importFrom S4Vectors SimpleList DataFrame
 #' @importFrom stats model.matrix contrasts
+#' @importFrom miloR Milo nhoods<-
 #'
 #' @export
 vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(
@@ -86,7 +86,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     if (is(milo, "Milo")) {
         pbs <- nhoods(milo)
     } else {
-        pbs <- .getPbs(pbs, col_to_bulk, milo)
+        pbs <- .getPbs(pbs, col_to_bulk, milo, verbose)
     }
     # set the column used in calculation
     if (is.null(extract_cols)) {

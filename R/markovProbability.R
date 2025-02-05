@@ -81,17 +81,17 @@ markovProbability <- function(
         multiscale <- .minMaxScale(multiscale)
     }
     # sample waypoints to construct markov chain
-    waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)
+    waypoints <- .maxMinSampling(multiscale, num_waypoints = 500, verbose = verbose)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state,
-        knn = knn, pseudotime = diffusiontime, waypoints = waypoints
+        knn = knn, pseudotime = diffusiontime, waypoints = waypoints, verbose = verbose
     )
     probabilities <- probabilities_terminal[[1]]
     terminal_state <- probabilities_terminal[[2]]
     # project probabilities from waypoints to each pseudobulk
-    probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
+    probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities, verbose)
     # store the result into milo
     new_coldata <- DataFrame(as.matrix(probabilities_proj))
     if (is.null(names(terminal_state))) {

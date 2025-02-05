@@ -34,7 +34,8 @@
 #' for mapping checks. Default is `NULL`.
 #' @param remove_missing Logical. If `TRUE`, removes cells with contigs matching the filter.
 #' If `FALSE`, masks them with uniform values. Default is `TRUE`.
-#'
+#' @param verbose Logical. Whether to print messages. Default is `TRUE`.
+
 #' @details
 #' The function performs the following preprocessing steps:
 #' - **Productivity Filtering**:

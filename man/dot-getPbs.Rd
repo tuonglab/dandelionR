@@ -12,6 +12,8 @@
 \item{col_to_bulk}{col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo}
 
 \item{milo}{SingleCellExperiment object}
+
+\item{verbose}{logical, whether to print messages}
 }
 \value{
 a cell x pseudobulk matrix
