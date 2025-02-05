@@ -125,7 +125,7 @@ setupVdjPseudobulk <- function(
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
     ## filter out cells with unproductive chain
-    sce <- .filterProductivity(sce, sce, mode_option, already.productive,
+    if(!already.productive) sce <- .filterProductivity(sce, mode_option,
                                productive_cols, productive_vj, productive_vdj, verbose=verbose)
     ## retain only cells with allowed chain status
     sce <- .allowedChain(sce, allowed_chain_status, verbose)
@@ -141,11 +141,12 @@ setupVdjPseudobulk <- function(
     return(sce)
 }
 
+#' filer out cell with unproductive chain
+#' 
 .filterProductivity <- function(
     sce, mode_option, already.productive,
     productive_cols, productive_vj, productive_vdj, verbose){
   # check the input 
-  if (!already.productive) {
     if (is.null(mode_option)) {
       if (!is.null(productive_cols)) { # nocov start
         msg <- paste(productive_cols, collapse = ", ")
@@ -177,7 +178,6 @@ setupVdjPseudobulk <- function(
       filtered <- cnumber0 - cnumber1
       if (verbose) message(sprintf("%d of cells filtered", filtered))
     }
-  }
   return(sce)
 }
 
