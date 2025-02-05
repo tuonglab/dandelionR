@@ -125,7 +125,8 @@ setupVdjPseudobulk <- function(
     .typeCheck(check_extract_cols_mapping, "character")
     .typeCheck(remove_missing, "logical")
     ## filter out cells with unproductive chain
-    sce <- .filterProductivity(sce, already.productive = already.productive, verbose=verbose)
+    sce <- .filterProductivity(sce, sce, mode_option, already.productive,
+                               productive_cols, productive_vj, productive_vdj, verbose=verbose)
     ## retain only cells with allowed chain status
     sce <- .allowedChain(sce, allowed_chain_status, verbose)
     ## subset sce by subsetby and groups
