@@ -56,11 +56,11 @@ devtools::install_github("ncborcherding/scRepertoire")
 
 ### Load the required libraries
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+<!-- ```{r, message=FALSE, warning=FALSE, include=FALSE}
 library(destiny)
 # there's a known 'error' with loading a dependency of destiny, pillar:
 # https://github.com/r-lib/pillar/pull/668
-```
+``` -->
 
 ```{r, message=FALSE, warning=FALSE}
 library(dandelionR)
@@ -72,6 +72,9 @@ library(scater)
 Due to size limitations of the package, we have provided a very trimmed down version of the demo data to ~2000 cells. The full dataset can be found here accordingly: GEX - https://developmental.cellatlas.io/fetal-immune (Lymphoid Cells) and VDJ - https://github.com/zktuong/dandelion-demo-files/tree/master/dandelion_manuscript/data/dandelion-remap
 
 Check out the other vignette for an example dataset that starts from the original `dandelion` output associated with the original [manuscript](https://www.nature.com/articles/s41587-023-01734-7).
+```{r, include=FALSE}
+vignette("vignette_reproduce_original")
+```
 
 ```{r}
 data(demo_sce)

@@ -49,7 +49,7 @@
 #' @include check.R
 #' @include getPbs.R
 #' @import SingleCellExperiment
-#' @importFrom miloR nhoods Milo
+#' @importFrom miloR Milo nhoods<-
 #' @importFrom rlang abort
 #' @importFrom methods is
 #' @importFrom Matrix t
