@@ -143,8 +143,10 @@ setupVdjPseudobulk <- function(
 
 #' filer out cell with unproductive chain
 #' 
+#' @param sce SingleCellExperiment input
+#' @param mode_option check setupVdjPseudobulk for detailed explanation
 .filterProductivity <- function(
-    sce, mode_option, already.productive,
+    sce, mode_option, 
     productive_cols, productive_vj, productive_vdj, verbose){
   # check the input 
     if (is.null(mode_option)) {
