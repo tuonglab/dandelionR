@@ -17,7 +17,7 @@
 #'   - Note: This parameter is considered only when `extract_cols = NULL`.
 #'   - If `NULL`, uses column names such as `v_call_VDJ` instead of `v_call_abT_VDJ`.
 #' @param extract_cols Character vector. Specifies column names where V(D)J information is stored. Default is `c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')`.
-#'
+#' @param verbose Logical. If `TRUE`, prints messages and warnings. Default is `TRUE`.
 #' @details
 #' This function aggregates V(D)J data into pseudobulk groups based on the following logic:
 #' - **Input Requirements**:
@@ -63,7 +63,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
                           ), mode_option = c(
                               "abT",
                               "gdT", "B"
-                          ), col_to_take = NULL, normalise = TRUE, renormalise = FALSE, min_count = 1L) {
+                          ), col_to_take = NULL, normalise = TRUE, renormalise = FALSE, min_count = 1L, verbose = TRUE) {
     # type check
     if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
         abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object") # nocov
@@ -84,7 +84,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     .typeCheck(extract_cols, "character")
     # determ the value of pbs
     if (is(milo, "Milo")) {
-        pbs <- nhoods(milo)
+        pbs <- miloR::nhoods(milo)
     } else {
         pbs <- .getPbs(pbs, col_to_bulk, milo, verbose)
     }
@@ -163,6 +163,6 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     # store pseudobulk assignment, as a sparse for storage efficiency transpose
     # as the original matrix is cells x pseudobulks
     pb.milo <- Milo(pb.sce)
-    nhoods(pb.milo) <- t(pbs)
+    miloR::nhoods(pb.milo) <- t(pbs)
     return(pb.milo)
 }
