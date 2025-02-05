@@ -1,6 +1,10 @@
 ---
 title: "Reproducing the original dandelion method/paper"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Reproducing the original dandelion method/paper}
