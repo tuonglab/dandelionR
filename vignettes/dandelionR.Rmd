@@ -60,12 +60,6 @@ devtools::install_github("ncborcherding/scRepertoire")
 
 ### Load the required libraries
 
-<!-- ```{r, message=FALSE, warning=FALSE, include=FALSE}
-library(destiny)
-# there's a known 'error' with loading a dependency of destiny, pillar:
-# https://github.com/r-lib/pillar/pull/668
-``` -->
-
 ```{r, message=FALSE, warning=FALSE}
 library(dandelionR)
 library(scRepertoire)

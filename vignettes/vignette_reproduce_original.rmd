@@ -24,12 +24,6 @@ In this vignette, we will demonstrate how to perform TCR trajectory analysis sta
 
 ## Load the required libraries
 
-<!-- ```{r, message=FALSE, warning=FALSE, include=FALSE}
-library(destiny)
-# there's a known 'error' with loading a dependency of destiny, pillar:
-# https://github.com/r-lib/pillar/pull/668
-``` -->
-
 We will also load `scRepertoire` and `scater` for the analysis.
 ```{r, message=FALSE, warning=FALSE}
 library(dandelionR)
