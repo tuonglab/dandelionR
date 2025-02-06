@@ -130,3 +130,41 @@ markovProbability <- function(
     metadata(milo) <- c(metadata(milo), list(branch.tips = terminal_state))
     return(milo)
 }
+
+
+.addColData <- function(probabilities_proj, terminal_state, milo){
+  new_coldata <- DataFrame(as.matrix(probabilities_proj))
+  if (is.null(names(terminal_state))) {
+    names(terminal_state) <- paste0("terminal_state", seq(length(terminal_state)))
+  }
+  colnames(new_coldata) <- c(names(terminal_state))
+  # prevent same name in colData
+  idx <- names(colData(milo)) %in% colnames(new_coldata)
+  if (any(idx)) { # nocov start
+    warning(paste(
+      "Name", paste(names(colData(milo))[idx], collapse = ", "),
+      "already exists in", as.character(substitute(milo))
+    ))
+    repeat {
+      answer <- readline(prompt = "Do you want to overwrite the column? (y/n): ")
+      if (answer == "n") {
+        while (any(names(colData(milo)) %in% colnames(new_coldata))) {
+          colnames(new_coldata) <- paste0(colnames(new_coldata), "_new")
+        }
+        msg <- paste(colnames(new_coldata), collapse = ", ")
+        message(sprintf("The data will stored in %s", msg))
+        break
+      } else if (answer == "y") {
+        msg <- paste(names(colData(milo))[idx], collapse = ", ")
+        message(sprintf("Overwriting %s ...", msg))
+        colData(milo) <- colData(milo)[!idx]
+        break
+      } else {
+        message("Invalid response. Please enter 'y' or 'n'.")
+      }
+    }
+  } # nocov end
+  colData(milo) <- cbind(colData(milo), new_coldata)
+  metadata(milo) <- c(metadata(milo), list(branch.tips = terminal_state))
+  return(milo)
+}
