@@ -101,69 +101,14 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
             ), all.col.n)]
         } # nocov end
     }
-    # perform matrix multiplication of pseudobulks by cell matrix by a cells by
-    # VJs matrix strat off by creating the cell by VJs matix skip the prefix
-    # stuff as the VJ genes will be unique in the columns
-    vjs0 <- data.frame(colData(milo)[extract_cols])
-    ## model.matrix need factor input
-    vjs0[] <- lapply(vjs0, function(x) {
-        if (!is.factor(x)) {
-            as.factor(x)
-        } else {
-            x # nocov
-        }
-    })
-    one_hot_encoded <- model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
-        contrasts,
-        contrasts = FALSE
-    )) # prevent reference level
-    colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-    pseudo_vdj_feature <- t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
+    # set the column used in calculation
+    extract_cols <- .determExtractColN(extract_cols, mode_option, milo) 
+    # construct feature space and normalize it
+    pseudo_vdj_feature <- .featureSpaceConstruct(milo, extract_cols, pbs)
     if (normalise) {
-        ## identify any missing calls inserted by the setup, will end with
-        ## _missing negate as we want to actually remove them later
-        define.mask <- rep(TRUE, length(colnames(pseudo_vdj_feature)))
-        define.mask[grep("_missing", colnames(pseudo_vdj_feature))] <- FALSE
-        # loop over V(D)J categories
-        for (col_n in extract_cols) {
-            # identify columns holding genes belonging to the category and then
-            # normalise the values to 1 for each pseudobulk
-            group.mask <- colnames(pseudo_vdj_feature) %in% unique(colData(milo)[[col_n]])
-            # identify the defined (non-missing) calls for the group
-            group.define.mask <- define.mask & group.mask
-            # compute sum of of non-missing values for each pseudobulk for this
-            # category and compare to the min_count
-
-            define.count <- apply(pseudo_vdj_feature[, group.define.mask], 1, sum)
-            defined.min.counts <- define.count >= min_count
-            # normalise the pseudobulks
-            pseudo_vdj_feature[, group.define.mask] <- pseudo_vdj_feature[, group.define.mask] / define.count
-            if (renormalise) { # nocov start
-                redefine.count <- apply(
-                    pseudo_vdj_feature[defined.min.counts, group.define.mask],
-                    1, sum
-                )
-                pseudo_vdj_feature[defined.min.counts, group.define.mask] <- pseudo_vdj_feature[
-                    defined.min.counts,
-                    group.define.mask
-                ] / define.count
-            } # nocov end
-            pseudo_vdj_feature[!defined.min.counts, group.define.mask] <- 0
-        }
+      pseudo_vdj_feature <- .normalizeFeatureSpace(pseudo_vdj_feature, extract_cols, min_count, renormalise, milo)
     }
-    # create colData for the new pesudobulk object milo@metadata$feature.space
-    # <- pseudo_vdj_feature
-    pbs.col <- .getPbsCol(pbs, col_to_take = col_to_take, milo = milo)
-
-    # create a new SingelCellExperiment object as result
-    pb.sce <- SingleCellExperiment(
-        assay = SimpleList(Feature_space = t(pseudo_vdj_feature)),
-        rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col
-    )
-    # store pseudobulk assignment, as a sparse for storage efficiency transpose
-    # as the original matrix is cells x pseudobulks
-    pb.milo <- Milo(pb.sce)
-    miloR::nhoods(pb.milo) <- t(pbs)
+    pb.milo <- .packFeatureSpace(pbs, col_to_take, milo, pseudo_vdj_feature)
     return(pb.milo)
 }
 
