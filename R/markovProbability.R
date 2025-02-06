@@ -97,7 +97,14 @@ markovProbability <- function(
     return(milo)
 }
 
-
+#' add the calculated probability to the colData
+#' 
+#' @param probabilities_proj the probabilities need to be stored
+#' @param terminal_state Integer. The index of the terminal state in the Markov chain, passed from markovProbability
+#' @param milo the milo object provided by user
+#' @return a Milo object with probabilties and pseudotime in its colData slot
+#' @importFrom S4Vectors DataFrame metadata metadata<-
+#' @importFrom SummarizedExperiment colData<-
 .addColData <- function(probabilities_proj, terminal_state, milo){
   new_coldata <- DataFrame(as.matrix(probabilities_proj))
   if (is.null(names(terminal_state))) {
