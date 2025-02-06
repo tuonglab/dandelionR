@@ -63,8 +63,14 @@
     return(T_)
 }
 
-
-
+#' Calculate the weight adjacent matricks of knn graph and its index 
+#' @param wp_data Multi scale data of the waypoints
+#' @param knn. Number of nearest neighbors for graph construction
+#' @keywords internal
+#' @importFrom bluster makeKNNGraph
+#' @importFrom igraph ends E<- E as_adjacency_matrix
+#' @importFrom stats dist
+#' @return a list containing the weight adjacent matrix and index
 .KNNind <- function(wp_data, knn.){
     nbrs <- makeKNNGraph(wp_data, k = knn.)
     ## calculate distance of each edge
