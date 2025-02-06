@@ -19,32 +19,9 @@
         message("Markov chain construction...")
     }
     pseudotime <- pseudotime[waypoints]
-    # construct kNN graph
-    nbrs <- makeKNNGraph(wp_data, k = knn.)
-    ## calculate distance of each edge
-    distance_m <- as.matrix(dist(wp_data))
-
-    ## Modified to remove sapply()
-    edge_indices <- ends(nbrs, igraph::E(nbrs))
-    weights <- vapply(seq_len(nrow(edge_indices)), function(i) {
-        ### Get the nodes connected by each edge
-        node1 <- as.numeric(edge_indices[i, 1])
-        node2 <- as.numeric(edge_indices[i, 2])
-        ### Use the distance matrix to get the distance between the two nodes
-        distance_m[node1, node2]
-    }, numeric(1))
-
-    E(nbrs)$weight <- weights
-
-    ## generate weighted adjacent matrix of this knn graph
-
-    KNN <- as_adjacency_matrix(nbrs, attr = "weight")
-    ## generate the index of each neighbor
-    idx <- KNN@p
-    idx_seq <- mapply(seq, (idx + 1)[-length(idx)], idx[-1])
-    ind <- lapply(idx_seq, function(x) {
-        KNN@i[x] + 1
-    })
+    KNNind <- .KNNind(wp_data, knn.)
+    KNN <- KNNind$KNN
+    ind <- KNNind$ind
     ## select Standard deviation allowing for 'back' edges
     adaptive.k <- min(c(floor(knn. / 3) - 1, 30))
     dist_ <- lapply(idx_seq, function(y) {
@@ -84,4 +61,30 @@
         giveCsparse = TRUE
     )
     return(T_)
+}
+
+
+
+.KNNind <- function(wp_data, knn.){
+    nbrs <- makeKNNGraph(wp_data, k = knn.)
+    ## calculate distance of each edge
+    distance_m <- as.matrix(dist(wp_data))
+    edge_indices <- ends(nbrs, igraph::E(nbrs))
+    weights <- vapply(seq_len(nrow(edge_indices)), function(i) {
+      ### Get the nodes connected by each edge
+      node1 <- as.numeric(edge_indices[i, 1])
+      node2 <- as.numeric(edge_indices[i, 2])
+      ### Use the distance matrix to get the distance between the two nodes
+      distance_m[node1, node2]
+    }, numeric(1))
+    E(nbrs)$weight <- weights
+    ## generate weighted adjacent matrix of this knn graph
+    KNN <- as_adjacency_matrix(nbrs, attr = "weight")
+    ## generate the index of each neighbor
+    idx <- KNN@p
+    idx_seq <- mapply(seq, (idx + 1)[-length(idx)], idx[-1])
+    ind <- lapply(idx_seq, function(x) {
+      KNN@i[x] + 1
+    })
+    return(list(KNN=KNN, ind = ind))
 }
