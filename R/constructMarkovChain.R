@@ -24,7 +24,7 @@
     ind <- KNNind$ind
     idx_seq <- KNNind$idx_seq
     ## select Standard deviation allowing for 'back' edges
-    adaptive.k <- min(c(floor(knn./3) - 1, 30))
+    adaptive.k <- min(c(floor(knn. / 3) - 1, 30))
     dist_ <- lapply(idx_seq, function(y) {
         KNN@x[y]
     })
@@ -37,30 +37,36 @@
     })
     ## Remove edges that move backwards in pseudotime except for
     ## edges that are within the computed standard deviation
-    rem_edges <- pmap(list(.x = traj_nbrs, .y = (pseudotime - adaptive.std),
-                           .z = ind), function(.x, .y, .z) {
-                             .z[.x < .y]
-                             })
+    rem_edges <- pmap(list(
+        .x = traj_nbrs, .y = (pseudotime - adaptive.std),
+        .z = ind
+    ), function(.x, .y, .z) {
+        .z[.x < .y]
+    })
     for (i in seq_len(length(waypoints))) {
         if (length(KNN[i, rem_edges[[i]]])) {
             KNN[i, rem_edges[[i]]] <- 0
         }
     }
     # determine the indice and update adjacency matrix
-    #cell_mapping <- seq_len(length(waypoints)) 
+    # cell_mapping <- seq_len(length(waypoints))
     # seems cell_mapping is not used, if there is an error them edit back
     requireNamespace("Matrix")
     ids <- Matrix::summary(KNN)
     # anisotropic Diffusion Kernel
-    aff <- exp( - (ids$x ^ 2) / (adaptive.std[ids$i] ^ 2)
-               * 0.5 - (ids$x ^ 2) / (adaptive.std[ids$j] ^ 2) * 0.5)
-    W <- Matrix::sparseMatrix(i = ids$i, j = ids$j, x = aff,
-                              dims = dim(KNN), giveCsparse = TRUE)
+    aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2)
+        * 0.5 - (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
+    W <- Matrix::sparseMatrix(
+        i = ids$i, j = ids$j, x = aff,
+        dims = dim(KNN), giveCsparse = TRUE
+    )
     # Transition matrix
     D <- apply(W, 1, sum)
     ids <- Matrix::summary(W)
-    T_ <- sparseMatrix(i = ids$i, j = ids$j, x = ids$x / D[ids$i],
-                       dims = dim(KNN), giveCsparse = TRUE)
+    T_ <- sparseMatrix(
+        i = ids$i, j = ids$j, x = ids$x / D[ids$i],
+        dims = dim(KNN), giveCsparse = TRUE
+    )
     return(T_)
 }
 
