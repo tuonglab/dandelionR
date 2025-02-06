@@ -22,6 +22,7 @@
     KNNind <- .KNNind(wp_data, knn.)
     KNN <- KNNind$KNN
     ind <- KNNind$ind
+    idx_seq <- KNNind$idx_seq
     ## select Standard deviation allowing for 'back' edges
     adaptive.k <- min(c(floor(knn. / 3) - 1, 30))
     dist_ <- lapply(idx_seq, function(y) {
@@ -92,5 +93,5 @@
     ind <- lapply(idx_seq, function(x) {
       KNN@i[x] + 1
     })
-    return(list(KNN=KNN, ind = ind))
+    return(list(KNN=KNN, ind = ind, idx_seq = idx_seq))
 }
