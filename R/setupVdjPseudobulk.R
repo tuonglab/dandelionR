@@ -147,6 +147,7 @@ setupVdjPseudobulk <- function(
 #' @param mode_option check setupVdjPseudobulk for detailed explanation
 #' @param productive_vj If `TRUE`, retains cells where the main VJ chain is productive.
 #' @param productive_vdj If `TRUE`, retains cells where the main VDJ chain is productive.
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return SingleCellExperiment object after filtering on producive chain
@@ -192,6 +193,7 @@ setupVdjPseudobulk <- function(
 #' 
 #' @param sce SingleCellExperiment object input
 #' @param allowed_chain_status the chain needs to be retain, passed from setupVdjPseudobulk
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return SingleCellExperiment object with allowed chain status
@@ -221,6 +223,7 @@ setupVdjPseudobulk <- function(
 #' @param sce SingleCellExperiment object input
 #' @param subsetby subsetby Character. Name of a `colData` column for subsetting. given by setupVdjPsudobulk.
 #' @param groups Character vector. Specifies the subset condition for filtering. given by setupVdjPsudobulk.
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return subsetted SingleCellExperiment object
@@ -245,6 +248,7 @@ setupVdjPseudobulk <- function(
 #' @param sce SingleCellExperiment object input
 #' @param extract_cols The setupVdjPseutobulk transfered parameter given by user to specify the VDJ information columns
 #' @param mode_option see document of setupVdjPseudobulk for detailed explanation
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @importFrom rlang abort
@@ -281,6 +285,7 @@ setupVdjPseudobulk <- function(
 #' 
 #' @param sce SingleCellExperiment object input
 #' @param mode_option see document of setupVdjPseudobulk for explanation
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @return a vecotor of colnames we need to perform main chain extraction
@@ -314,6 +319,7 @@ setupVdjPseudobulk <- function(
 #' Check whether the columns with specified names exist, if not, create them with CTgene columns
 #' @param sce SingleCellExperiment object input
 #' @param extract_cols column names we aim to extract information from
+#' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @importFrom rlang abort
@@ -360,6 +366,7 @@ setupVdjPseudobulk <- function(
 #' @param main_cols column names in colData in which The information of main chain stores
 #' @param check_extract_cols_mapping character vector,the names of columns that needs to be checked, passed from setupVdjPseudobulk
 #' @param remove_missing option for removing the unclear mappin or just mask it, passed from setupVdjPseudobulk
+#' @keywords internal
 #' @include filterCells.R
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-

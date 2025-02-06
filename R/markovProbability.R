@@ -102,6 +102,7 @@ markovProbability <- function(
 #' @param probabilities_proj the probabilities need to be stored
 #' @param terminal_state Integer. The index of the terminal state in the Markov chain, passed from markovProbability
 #' @param milo the milo object provided by user
+#' @keywords internal
 #' @return a Milo object with probabilties and pseudotime in its colData slot
 #' @importFrom S4Vectors DataFrame metadata metadata<-
 #' @importFrom SummarizedExperiment colData<-
