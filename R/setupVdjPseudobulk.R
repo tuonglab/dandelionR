@@ -2,6 +2,7 @@
 #'
 #' This function preprocesses single-cell V(D)J sequencing data for
 #' pseudobulk analysis. It filters data based on productivity and chain status,
+#' subsets data, extracts main V(D)J genes, and removes unmapped entries.
 #'
 #' @param sce A `SingleCellExperiment` object. V(D)J data should be contained
 #'  in `colData` for filtering.
