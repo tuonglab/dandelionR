@@ -141,6 +141,9 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
     mode_option <- match.arg(mode_option)
+    .typeCheck(productive_cols, "character")
+    .typeCheck(productive_vdj, "logical")
+    .typeCheck(productive_vj, "logical")
     .typeCheck(extract_cols, "character")
     .typeCheck(filter_unmapped, "logical")
     ## filter out cells with unproductive chain
@@ -186,9 +189,6 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @return SingleCellExperiment object after filtering on producive chain
 .filterProductivity <- function(sce, mode_option, productive_cols,
                                 productive_vj, productive_vdj) {
-    .typeCheck(productive_cols, "character")
-    .typeCheck(productive_vdj, "logical")
-    .typeCheck(productive_vj, "logical")
     # check the input
     if (is.null(mode_option)) {
         if (!is.null(productive_cols)) {
@@ -206,8 +206,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
                 data[, idx]
             }, productive_cols, init = sce)
             cnumber1 <- dim(sce)[2]
-            filtered <- cnumber0 - cnumber1
-            message(sprintf("%d of cells filtered", filtered))
+            message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
         } else {
             abort(
                 "When mode_option is NULL, the productive_cols must be specified."
@@ -234,12 +233,10 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             data[, idx]
         }, produ_col, init = sce)
         cnumber1 <- dim(sce)[2]
-        filtered <- cnumber0 - cnumber1
-        message(sprintf("%d of cells filtered", filtered))
+        message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
     }
     return(sce)
 }
-
 #' filtering cell without allowed chain status
 #'
 #' @param sce SingleCellExperiment object input
@@ -415,24 +412,21 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         ))
         if (!"CTgene" %in% colnames(colData(sce))) {
             abort(sprintf(paste0(
-                "Both %s and CTgene do not exist\n ",
-                "You could modifyparameter extract_cols ",
-                "to clarify VDJ information's location"
+                "Both %s and CTgene do not exist\n You could modifyparameter ",
+                "extract_cols to clarify VDJ information's location"
             ), msg))
         }
         splitVdj <- splitCTgene(sce)
         if (length(splitVdj[[1]]) != length(extract_cols)) {
             abort(sprintf(
                 paste0(
-                    "Keyerror: Colnames %s must have the same ",
-                    "length with the vdj data which is of the ",
-                    "length %d\nYou could modify parameter ",
-                    "extract_cols to specify the columns ",
+                    "Keyerror: Colnames %s must have the same length with the ",
+                    "vdj data which is of the length %d\nYou could modify ",
+                    "parameter 'extract_cols' to specify the columns ",
                     "to match the length"
                 ),
                 paste0(
-                    extract_cols[!extract_cols %in%
-                        colnames(colData(sce))],
+                    extract_cols[!extract_cols %in% colnames(colData(sce))],
                     collapse = ", "
                 ),
                 length(splitVdj[[1]])
@@ -447,9 +441,9 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     } else if (!all(extract_cols %in% colnames(colData(sce)))) {
         abort(sprintf(
             paste0(
-                "Keyerror: Colnames %s do not exist in colData\n ",
-                "You could modify parameter extract_cols to ",
-                "specify the columns to extract TCR"
+                "Keyerror: Colnames %s do not exist in colData\n You could ",
+                "modify parameter extract_cols to specify the columns ",
+                "to extract TCR"
             ),
             paste0(
                 extract_cols[!extract_cols %in% colnames(colData(sce))],
