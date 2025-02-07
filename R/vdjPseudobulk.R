@@ -99,6 +99,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     return(pb.milo)
 }
 
+
 #' determine the names of columns in the colData where the main VDJ information stores
 #'
 #' @param extract_cols names of columns in the colData where the main VDJ information stores, passed from vdjPseudobulk
@@ -123,6 +124,8 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     }
     return(extract_cols)
 }
+
+
 #' Construct VDJ feature space
 #'
 #' perform matrix multiplication of pseudobulks by cell matrix by a cells by
@@ -136,6 +139,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #' @importFrom S4Vectors DataFrame
 #' @importFrom stats model.matrix contrasts
 #' @importFrom Matrix t
+#' @return constructed feature space
 .featureSpaceConstruct <- function(milo, extract_cols, pbs) {
     vjs0 <- data.frame(colData(milo)[extract_cols])
     ## model.matrix need factor input
@@ -154,6 +158,8 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     pseudo_vdj_feature <- t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
     return(pseudo_vdj_feature)
 }
+
+
 #' Normalize Feature Space, make sure the sum of each V, D, and J gene within a pseudobulk equals to 1
 #'
 #' @param pseudo_vdj_feature constructed feature space, passed from vdjPseudobulk

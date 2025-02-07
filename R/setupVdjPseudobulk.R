@@ -197,11 +197,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     if (is.null(mode_option)) {
         if (!is.null(productive_cols)) { # nocov start
             msg <- paste(productive_cols, collapse = ", ")
-            if (verbose) {
-                message(sprintf("Checking productivity from %s ..."),
-                    appendLF = FALSE
-                )
-            }
+            if (verbose) message(sprintf("Checking productivity from %s ..."), appendLF = FALSE)
             cnumber0 <- dim(sce)[2]
             sce <- Reduce(function(data, p_col) {
                 idx <- substr(colData(data)[[p_col]],
@@ -213,10 +209,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             cnumber1 <- dim(sce)[2]
             if (verbose) message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
         } else {
-            abort(sprintf(
-                "When mode_option is NULL, the productive_cols %s",
-                "must be specified."
-            ))
+            abort(sprintf("When mode_option is NULL, the productive_cols %s must be specified."))
         } # nocov end
     } else {
         if (is.null(productive_cols)) {
@@ -231,9 +224,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         }
         msg <- paste(produ_col, collapse = ", ")
         if (verbose) {
-            message(sprintf("Checking productivity from %s ...", msg),
-                appendLF = FALSE
-            )
+            message(sprintf("Checking productivity from %s ...", msg), appendLF = FALSE)
         }
         cnumber0 <- dim(sce)[2]
         sce <- Reduce(function(data, p_col) {
@@ -245,6 +236,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     }
     return(sce)
 }
+
 #' filtering cell without allowed chain status
 #'
 #' @param sce SingleCellExperiment object input
@@ -268,8 +260,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             )
             abort(sprintf(
                 paste0(
-                    "Unsuitable `allowed_chain_status`,\n ",
-                    "The current `allowed_chain_status`: %s.\n ",
+                    "Unsuitable allowed_chain_status,\n ",
+                    "The current allowed_chain_status: %s.\n ",
                     "While the chain status in the dataset: %s."
                 ),
                 allowed_cs, current_cs
@@ -363,8 +355,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         if (verbose) {
             warning(
                 "main VDJ information already exists,",
-                "Instead of using `check_v(d)j_mapping`, please use",
-                "the argument `check_extract_cols_mapping`",
+                "Instead of using 'check_v(d)j_mapping', please use",
+                "the argument 'check_extract_cols_mapping'",
                 "to clarify the columns undergo filtering."
             )
         }
@@ -433,7 +425,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         }
         if (!"CTgene" %in% colnames(colData(sce))) {
             abort(sprintf(paste0(
-                "Both %s and CTgene do not exist\n You could modifyparameter ",
+                "Both %s and CTgene do not exist\n You could modify parameter ",
                 "extract_cols to clarify VDJ information's location"
             ), msg))
         }
@@ -441,15 +433,11 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         if (length(splitVdj[[1]]) != length(extract_cols)) {
             abort(sprintf(
                 paste0(
-                    "Keyerror: Colnames %s must have the same length with the ",
-                    "vdj data which is of the length %d\nYou could modify ",
-                    "parameter 'extract_cols' to specify the columns ",
-                    "to match the length"
+                    "Colnames %s must have the same length with the ",
+                    "vdj data, which is of length %d.\n Modify ",
+                    "`extract_cols`` to specify the TCR columns."
                 ),
-                paste0(
-                    extract_cols[!extract_cols %in% colnames(colData(sce))],
-                    collapse = ", "
-                ),
+                paste0(extract_cols[!extract_cols %in% colnames(colData(sce))], collapse = ", "),
                 length(splitVdj[[1]])
             ))
         } else {
@@ -462,9 +450,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     } else if (!all(extract_cols %in% colnames(colData(sce)))) {
         abort(sprintf(
             paste0(
-                "Keyerror: Colnames %s do not exist in colData\n You could ",
-                "modify parameter extract_cols to specify the columns ",
-                "to extract TCR"
+                "Colnames %s do not exist in colData.\n Use",
+                "`extract_cols` to specify the TCR columns."
             ),
             paste0(
                 extract_cols[!extract_cols %in% colnames(colData(sce))],

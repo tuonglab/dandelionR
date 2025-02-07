@@ -13,6 +13,9 @@
 
 \item{pbs}{cell x pseudobulk adjacent matrix}
 }
+\value{
+constructed feature space
+}
 \description{
 perform matrix multiplication of pseudobulks by cell matrix by a cells by
 VJs matrix straight off by creating the cell by VJs matrix and skip the prefix
