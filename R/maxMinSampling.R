@@ -2,22 +2,21 @@
 #'
 #' function for max min sampling of waypoints
 #'
-#' @param data data matrix along which to sample the waypoints, usually diffusion components
+#' @param datas data matrix along which to sample the waypoints, usually diffusion components
 #' @param num_waypoints number of waypoints to sample
 #' @param verbose logical, print progress
 #' @keywords internal
 #' @return Series reprenting the sampled waypoints
-.maxMinSampling <- function(data, num_waypoints, verbose = TRUE) {
-    if (verbose) message("Sampling and flocking waypoints...")
-
-    no.iterations <- as.integer(num_waypoints / ncol(data))
+.maxMinSampling <- function(datas, num_waypoints) {
+    message("Sampling and flocking waypoints...")
+    no.iterations <- as.integer(num_waypoints / ncol(datas))
     waypoints <- c()
     # Sample along each componet
     waypoints <- Reduce(function(waypoints, ind){
       waypoints <- .waypiontsPerCol(waypoints = waypoints, ind = ind,
-                                    data = data, no.iterations = no.iterations)
+                                    datas = datas, no.iterations = no.iterations)
       return(waypoints)
-    }, colnames(data), waypoints)
+    }, colnames(datas), waypoints)
     waypoints <- unique(waypoints)
     return(waypoints)
 }
@@ -27,13 +26,13 @@
 #' 
 #' @param waypoints integer vector used to store waypoints
 #' @param ind columns' colnames
-#' @param data scaled diffusionmap
+#' @param datas scaled diffusionmap
 #' @keywords internal
 #' @return a numeric vector containing waypoints' index
-.waypiontsPerCol <- function(waypoints, ind, data, no.iterations)
+.waypiontsPerCol <- function(waypoints, ind, datas, no.iterations)
 {
-  N <- nrow(data)
-  vecs <- data[, ind]
+  N <- nrow(datas)
+  vecs <- datas[, ind]
   iter.set <- sample(seq_len(N), 1)
   dists <- matrix(0, nrow = N, ncol = no.iterations)
   dists[, 1] <- abs(vecs - vecs[iter.set])
@@ -65,7 +64,7 @@
   # new waypoint: where the maxium of the minimum distane locate
   new.wp <- which.max(min_dists)
   iter.set <- c(iter.set, new.wp)
-  dists[, k + 1] <- abs(vecs - data[new.wp, ind])
+  dists[, k + 1] <- abs(vecs - datas[new.wp, ind])
   return(list(iter.set = iter.set, dists = dists))
 }
 
