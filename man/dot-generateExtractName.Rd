@@ -4,12 +4,14 @@
 \alias{.generateExtractName}
 \title{Generate the name of columns with given parameter}
 \usage{
-.generateExtractName(sce, mode_option)
+.generateExtractName(sce, mode_option, verbose)
 }
 \arguments{
 \item{sce}{SingleCellExperiment object input}
 
 \item{mode_option}{see document of setupVdjPseudobulk for explanation}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 a vecotor of colnames we need to perform main chain extraction

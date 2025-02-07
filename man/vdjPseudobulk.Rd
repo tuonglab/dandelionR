@@ -21,90 +21,62 @@ vdjPseudobulk(
 \arguments{
 \item{milo}{A \code{Milo} or \code{SingleCellExperiment} object containing V(D)J data.}
 
-\item{pbs}{Optional. A binary matrix with cells as rows and pseudobulk groups
-as columns.
+\item{pbs}{Optional. A binary matrix with cells as rows and pseudobulk groups as columns.
 \itemize{
 \item If \code{milo} is a \code{Milo} object, this parameter is not required.
-\item If \code{milo} is a \code{SingleCellExperiment} object, either \code{pbs} or
-\code{col_to_bulk} must be provided.
+\item If \code{milo} is a \code{SingleCellExperiment} object, either \code{pbs} or \code{col_to_bulk} must be provided.
 }}
 
-\item{col_to_bulk}{Optional character or character vector.
-Specifies \code{colData} column(s) to generate \code{pbs}. If multiple columns are
-provided, they will be combined.
-Default is \code{NULL}.
+\item{col_to_bulk}{Optional character or character vector. Specifies \code{colData} column(s) to generate \code{pbs}. If multiple columns are provided, they will be combined. Default is \code{NULL}.
 \itemize{
 \item If \code{milo} is a \code{Milo} object, this parameter is not required.
-\item If \code{milo} is a \code{SingleCellExperiment} object, either \code{pbs} or
-\code{col_to_bulk} must be provided.
+\item If \code{milo} is a \code{SingleCellExperiment} object, either \code{pbs} or \code{col_to_bulk} must be provided.
 }}
 
-\item{extract_cols}{Character vector. Specifies column names where
-V(D)J information is stored. Default is \code{`c('v_call_abT_VDJ_main',
- 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')`.}}
+\item{extract_cols}{Character vector. Specifies column names where V(D)J information is stored. Default is \code{c('v_call_abT_VDJ_main', 'j_call_abT_VDJ_main', 'v_call_abT_VJ_main', 'j_call_abT_VJ_main')}.}
 
-\item{mode_option}{Character. Specifies the mode for extracting V(D)J genes.
-Must be one of \code{c('B', 'abT', 'gdT')}. Default is \code{'abT'}.
+\item{mode_option}{Character. Specifies the mode for extracting V(D)J genes. Must be one of \code{c('B', 'abT', 'gdT')}. Default is \code{'abT'}.
 \itemize{
 \item Note: This parameter is considered only when \code{extract_cols = NULL}.
-\item If \code{NULL}, uses column names such as \code{v_call_VDJ} instead of
-\code{v_call_abT_VDJ}.
+\item If \code{NULL}, uses column names such as \code{v_call_VDJ} instead of \code{v_call_abT_VDJ}.
 }}
 
-\item{col_to_take}{Optional character or vector of characters.
-Specifies names of colData of milo that need to identify
-the most common value for each pseudobulk
-Default is \code{NULL}.}
+\item{col_to_take}{Optional character or vector of characters. Specifies names of colData of milo that need to identify the most common value for each pseudobulk Default is \code{NULL}.}
 
-\item{normalise}{Logical. If \code{TRUE}, scales the counts of each V(D)J
-gene group to 1 for each pseudobulk. Default is \code{TRUE}.}
+\item{normalise}{Logical. If \code{TRUE}, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is \code{TRUE}.}
 
-\item{renormalise}{Logical. If \code{TRUE}, rescales the counts of each V(D)J gene
-group to 1 for each pseudobulk after removing 'missing' calls.
-Useful when \code{setupVdjPseudobulk()} was run with \code{remove_missing = FALSE}.
-Default is \code{FALSE}.}
+\item{renormalise}{Logical. If \code{TRUE}, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when \code{setupVdjPseudobulk()} was run with \code{remove_missing = FALSE}. Default is \code{FALSE}.}
 
-\item{min_count}{Integer. Sets pseudobulk counts in V(D)J gene groups
-with fewer than this many non-missing calls to 0.
-Relevant when \code{normalise = TRUE}.
-Default is \code{1}.}
+\item{min_count}{Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when \code{normalise = TRUE}. Default is \code{1}.}
+
+\item{verbose}{Logical. If \code{TRUE}, prints messages and warnings. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment object
 }
 \description{
-This function creates a pseudobulk V(D)J feature space from
-single-cell data, aggregating V(D)J information into pseudobulk groups.
-It supports input as
-either a \code{Milo} object or a \code{SingleCellExperiment} object.
+This function creates a pseudobulk V(D)J feature space from single-cell data, aggregating V(D)J information into pseudobulk groups. It supports input as either a \code{Milo} object or a \code{SingleCellExperiment} object.
 }
 \details{
-This function aggregates V(D)J data into pseudobulk groups based on
-the following logic:
+This function aggregates V(D)J data into pseudobulk groups based on the following logic:
 \itemize{
 \item \strong{Input Requirements}:
 \itemize{
-\item If \code{milo} is a \code{Milo} object, neither \code{pbs} nor
-\code{col_to_bulk} is required.
-\item If \code{milo} is a \code{SingleCellExperiment} object, the user must provide
-either \code{pbs} or \code{col_to_bulk}.
+\item If \code{milo} is a \code{Milo} object, neither \code{pbs} nor \code{col_to_bulk} is required.
+\item If \code{milo} is a \code{SingleCellExperiment} object, the user must provide either \code{pbs} or \code{col_to_bulk}.
 }
 \item \strong{Normalization}:
 \itemize{
-\item When \code{normalise = TRUE}, scales V(D)J counts to 1 for
-each pseudobulk group.
-\item When \code{renormalise = TRUE}, rescales the counts after
-removing 'missing' calls.
+\item When \code{normalise = TRUE}, scales V(D)J counts to 1 for each pseudobulk group.
+\item When \code{renormalise = TRUE}, rescales the counts after removing 'missing' calls.
 }
 \item \strong{Mode Selection}:
 \itemize{
-\item If \code{extract_cols = NULL}, the function relies on \code{mode_option} to
-determine which V(D)J columns to extract.
+\item If \code{extract_cols = NULL}, the function relies on \code{mode_option} to determine which V(D)J columns to extract.
 }
 \item \strong{Filtering}:
 \itemize{
-\item Uses \code{min_count} to filter pseudobulks with insufficient counts for
-V(D)J groups.
+\item Uses \code{min_count} to filter pseudobulks with insufficient counts for V(D)J groups.
 }
 }
 }
@@ -116,13 +88,8 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object,
-    k = 50, d = 20,
-    reduced.dim = "X_scvi"
-)
-milo_object <- miloR::makeNhoods(milo_object,
-    reduced_dims = "X_scvi", d = 20
-)
+milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct pseudobulked VDJ feature space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")

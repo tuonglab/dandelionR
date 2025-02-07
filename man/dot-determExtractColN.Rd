@@ -2,25 +2,21 @@
 % Please edit documentation in R/vdjPseudobulk.R
 \name{.determExtractColN}
 \alias{.determExtractColN}
-\title{determ the names of columns in the colData where
-the main VDJ information stores}
+\title{determ the names of columns in the colData where the main VDJ information stores}
 \usage{
 .determExtractColN(extract_cols, mode_option, milo)
 }
 \arguments{
-\item{extract_cols}{names of columns in the colData where
-the main VDJ information stores, passed from vdjPseudobulk}
+\item{extract_cols}{names of columns in the colData where the main VDJ information stores, passed from vdjPseudobulk}
 
 \item{mode_option}{Specifies the mode for extracting V(D)J genes}
 
 \item{milo}{Milo or SingleCellExperiment object provided by user}
 }
 \value{
-a character vector stores the names of columns in the colData where
-the main VDJ information stores
+a character vector stores the names of columns in the colData where the main VDJ information stores
 }
 \description{
-determ the names of columns in the colData where
-the main VDJ information stores
+determ the names of columns in the colData where the main VDJ information stores
 }
 \keyword{internal}

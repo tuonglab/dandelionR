@@ -9,14 +9,12 @@
 \arguments{
 \item{pbs}{dgeMatrix, cell x pseudobulk binary matrix}
 
-\item{col_to_take}{character vector, names of colData of milo that need to
-be processed}
+\item{col_to_take}{character vector, names of colData of milo that need to be processed}
 
 \item{milo}{Milo or SingleCellExperiment object}
 }
 \value{
-pbs_col, a DataFrame which will be passed to the new
-SingleCellExperiment object as colData of vdj x pseudobulk assays
+pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object as colData of vdj x pseudobulk assays
 }
 \description{
 Helper function to create the new pseudobulk object's coldata.

@@ -52,7 +52,7 @@
     ids <- Matrix::summary(KNN)
     # anisotropic Diffusion Kernel
     aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2) * 0.5 -
-                   (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
+        (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
     W <- Matrix::sparseMatrix(
         i = ids$i, j = ids$j, x = aff,
         dims = dim(KNN), giveCsparse = TRUE

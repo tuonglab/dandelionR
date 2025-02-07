@@ -4,13 +4,15 @@
 \alias{.allowedChain}
 \title{filtering cell without allowed chain status}
 \usage{
-.allowedChain(sce, allowed_chain_status)
+.allowedChain(sce, allowed_chain_status, verbose)
 }
 \arguments{
 \item{sce}{SingleCellExperiment object input}
 
 \item{allowed_chain_status}{the chain needs to be retain, passed from
 setupVdjPseudobulk}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment object with allowed chain status

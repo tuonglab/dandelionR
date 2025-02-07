@@ -9,9 +9,7 @@
 \arguments{
 \item{pbs}{cell x pseudobulk adjacent matrix}
 
-\item{col_to_take}{Optional character or vector of characters.
-Specifies names of colData of milo that need to identify the most
-common value for each pseudobulk}
+\item{col_to_take}{Optional character or vector of characters. Specifies names of colData of milo that need to identify the most common value for each pseudobulk}
 
 \item{milo}{Milo or SingleCellExperiment object provided by user}
 

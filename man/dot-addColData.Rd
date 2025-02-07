@@ -4,15 +4,16 @@
 \alias{.addColData}
 \title{add the calculated probability to the colData}
 \usage{
-.addColData(probabilities_proj, terminal_state, milo)
+.addColData(probabilities_proj, terminal_state, milo, verbose = TRUE)
 }
 \arguments{
 \item{probabilities_proj}{the probabilities need to be stored}
 
-\item{terminal_state}{Integer. The index of the terminal state in
-the Markov chain, passed from markovProbability}
+\item{terminal_state}{Integer. The index of the terminal state in the Markov chain, passed from markovProbability}
 
 \item{milo}{the milo object provided by user}
+
+\item{verbose}{logical, print warnings. Default is \code{TRUE}.}
 }
 \value{
 a Milo object with probabilties and pseudotime in its colData slot

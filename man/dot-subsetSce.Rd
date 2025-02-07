@@ -4,7 +4,7 @@
 \alias{.subsetSce}
 \title{Subset sce with given parameter}
 \usage{
-.subsetSce(sce, subsetby, groups)
+.subsetSce(sce, subsetby, groups, verbose)
 }
 \arguments{
 \item{sce}{SingleCellExperiment object input}
@@ -14,6 +14,8 @@ subsetting. given by setupVdjPsudobulk.}
 
 \item{groups}{Character vector. Specifies the subset condition for filtering.
 given by setupVdjPsudobulk.}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 subsetted SingleCellExperiment object

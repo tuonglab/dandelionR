@@ -13,6 +13,7 @@
 #' @param n_eigs integer, default is NULL. Number of eigen vectors to use.
 #' - If is not specified, the number of eigen vectors will be determined using
 #'  the eigen gap.
+#' @param verbose Logical. If `TRUE`, print progress. Default is `TRUE`.
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
@@ -63,7 +64,7 @@
 markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
-    num_waypoints = 500, n_eigs = NULL) {
+    num_waypoints = 500, n_eigs = NULL, verbose = TRUE) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
@@ -83,7 +84,7 @@ markovProbability <- function(
         multiscale <- .minMaxScale(multiscale)
     }
     # sample waypoints to construct markov chain
-    waypoints <- .maxMinSampling(datas = multiscale, num_waypoints = 500)
+    waypoints <- .maxMinSampling(datas = multiscale, num_waypoints = 500, verbose = verbose)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
@@ -95,7 +96,7 @@ markovProbability <- function(
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities, verbose)
     # store the result into milo
-    milo <- .addColData(probabilities_proj, terminal_state, milo)
+    milo <- .addColData(probabilities_proj, terminal_state, milo, verbose)
     return(milo)
 }
 
@@ -104,11 +105,12 @@ markovProbability <- function(
 #' @param probabilities_proj the probabilities need to be stored
 #' @param terminal_state Integer. The index of the terminal state in the Markov chain, passed from markovProbability
 #' @param milo the milo object provided by user
+#' @param verbose logical, print warnings. Default is `TRUE`.
 #' @keywords internal
 #' @return a Milo object with probabilties and pseudotime in its colData slot
 #' @importFrom S4Vectors DataFrame metadata metadata<-
 #' @importFrom SummarizedExperiment colData<-
-.addColData <- function(probabilities_proj, terminal_state, milo) {
+.addColData <- function(probabilities_proj, terminal_state, milo, verbose = TRUE) {
     new_coldata <- DataFrame(as.matrix(probabilities_proj))
     if (is.null(names(terminal_state))) {
         names(terminal_state) <- paste0("terminal_state", seq(length(terminal_state)))
@@ -117,10 +119,12 @@ markovProbability <- function(
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)
     if (any(idx)) { # nocov start
-        warning(paste(
-            "Name", paste(names(colData(milo))[idx], collapse = ", "),
-            "already exists in", as.character(substitute(milo))
-        ))
+        if (verbose) {
+            warning(paste(
+                "Name", paste(names(colData(milo))[idx], collapse = ", "),
+                "already exists in", as.character(substitute(milo))
+            ))
+        }
         repeat {
             answer <- readline(prompt = "Do you want to overwrite the column? (y/n): ")
             if (answer == "n") {

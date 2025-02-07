@@ -11,7 +11,8 @@
   check_vdj_mapping,
   main_cols,
   check_extract_cols_mapping,
-  remove_missing
+  remove_missing,
+  verbose
 )
 }
 \arguments{
@@ -33,6 +34,8 @@ needs to be checked, passed from setupVdjPseudobulk}
 
 \item{remove_missing}{option for removing the unclear mappin or just mask it,
 passed from setupVdjPseudobulk}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 filtered SingleCellExperiment object

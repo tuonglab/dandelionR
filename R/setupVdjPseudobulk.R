@@ -138,7 +138,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
                                check_vj_mapping = c(TRUE, TRUE),
                                check_vdj_mapping = c(TRUE, FALSE, TRUE),
                                check_extract_cols_mapping = NULL,
-                               remove_missing = TRUE) {
+                               remove_missing = TRUE,
+                               verbose = TRUE) {
     # check if the data type is correct
     .classCheck(sce, "SingleCellExperiment")
     mode_option <- match.arg(mode_option)
@@ -151,7 +152,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     if (!already.productive) {
         sce <- .filterProductivity(
             sce, mode_option, productive_cols,
-            productive_vj, productive_vdj
+            productive_vj, productive_vdj, verbose
         )
     }
     ## retain only cells with allowed chain status
@@ -160,18 +161,19 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     sce <- .subsetSce(sce, subsetby, groups, verbose)
     ## extract main VDJ from specified columns
     if (verbose) message("VDJ data extraction begin:")
-    sce <- .extractVdj(sce, extract_cols, mode_option)
+    sce <- .extractVdj(sce, extract_cols, mode_option, verbose)
     # remove unclear mapping
     if (filter_unmapped) {
-        sce <- .filterUnmapped(sce$sce, mode_option, check_vj_mapping,
+        sce <- .filterUnmapped(
+            sce$sce, mode_option, check_vj_mapping,
             check_vdj_mapping,
-            main_cols = sce$main_cols,
-            check_extract_cols_mapping, remove_missing
+            sce$main_cols,
+            check_extract_cols_mapping, remove_missing, verbose
         )
     } else {
         sce <- sce$sce
     }
-    message(sprintf("%d of cells remain.", dim(sce)[2]))
+    if (verbose) message(sprintf("%d of cells remain.", dim(sce)[2]))
     return(sce)
 }
 
@@ -183,20 +185,23 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #'  productive.
 #' @param productive_vdj If `TRUE`, retains cells where the main VDJ chain is
 #'  productive.
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @include check.R
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return SingleCellExperiment object after filtering on producive chain
 .filterProductivity <- function(sce, mode_option, productive_cols,
-                                productive_vj, productive_vdj) {
+                                productive_vj, productive_vd, verbose) {
     # check the input
     if (is.null(mode_option)) {
         if (!is.null(productive_cols)) { # nocov start
             msg <- paste(productive_cols, collapse = ", ")
-            message(sprintf("Checking productivity from %s ..."),
-                appendLF = FALSE
-            )
+            if (verbose) {
+                message(sprintf("Checking productivity from %s ..."),
+                    appendLF = FALSE
+                )
+            }
             cnumber0 <- dim(sce)[2]
             sce <- Reduce(function(data, p_col) {
                 idx <- substr(colData(data)[[p_col]],
@@ -206,7 +211,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
                 data[, idx]
             }, productive_cols, init = sce)
             cnumber1 <- dim(sce)[2]
-            message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
+            if (verbose) message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
         } else {
             abort(sprintf(
                 "When mode_option is NULL, the productive_cols %s",
@@ -225,16 +230,18 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             produ_col <- productive_cols
         }
         msg <- paste(produ_col, collapse = ", ")
-        message(sprintf("Checking productivity from %s ...", msg),
-            appendLF = FALSE
-        )
+        if (verbose) {
+            message(sprintf("Checking productivity from %s ...", msg),
+                appendLF = FALSE
+            )
+        }
         cnumber0 <- dim(sce)[2]
         sce <- Reduce(function(data, p_col) {
             idx <- substr(colData(data)[[p_col]], start = 1, stop = 1) == "T"
             data[, idx]
         }, produ_col, init = sce)
         cnumber1 <- dim(sce)[2]
-        message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
+        if (verbose) message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
     }
     return(sce)
 }
@@ -243,14 +250,15 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @param sce SingleCellExperiment object input
 #' @param allowed_chain_status the chain needs to be retain, passed from
 #'  setupVdjPseudobulk
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return SingleCellExperiment object with allowed chain status
-.allowedChain <- function(sce, allowed_chain_status) {
+.allowedChain <- function(sce, allowed_chain_status, verbose) {
     ## retain only cells with allowed chain status
     if (!is.null(allowed_chain_status)) {
-        message("checking allowed chain status...", appendLF = FALSE)
+        if (verbose) message("checking allowed chain status...", appendLF = FALSE)
         cnumber0 <- dim(sce)[2]
         idx <- colData(sce)[["chain_status"]] %in% allowed_chain_status
         if (!any(idx)) {
@@ -270,7 +278,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
         filtered <- cnumber0 - cnumber1
-        message(sprintf("%d of cells filtered", filtered))
+        if (verbose) message(sprintf("%d of cells filtered", filtered))
     }
     return(sce)
 }
@@ -281,19 +289,22 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #'  subsetting. given by setupVdjPsudobulk.
 #' @param groups Character vector. Specifies the subset condition for filtering.
 #'  given by setupVdjPsudobulk.
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom rlang abort
 #' @return subsetted SingleCellExperiment object
-.subsetSce <- function(sce, subsetby, groups) {
+.subsetSce <- function(sce, subsetby, groups, verbose) {
     .typeCheck(subsetby, "character")
     .typeCheck(groups, "character")
     if (!is.null(groups) && !is.null(subsetby)) {
         msg1 <- paste(as.character(substitute(groups))[-1], collapse = ", ")
         msg2 <- as.character(substitute(subsetby))
-        message(sprintf("Subsetting data with %s in %s ...", msg1, msg2),
-            appendLF = FALSE
-        )
+        if (verbose) {
+            message(sprintf("Subsetting data with %s in %s ...", msg1, msg2),
+                appendLF = FALSE
+            )
+        }
         cnumber0 <- dim(sce)[2]
         idx <- Reduce(`|`, lapply(groups, function(i) {
             colData(sce)[[subsetby]] %in% i
@@ -301,7 +312,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         sce <- sce[, idx]
         cnumber1 <- dim(sce)[2]
         filtered <- cnumber0 - cnumber1
-        message(sprintf("%d of cells filtered", filtered))
+        if (verbose) message(sprintf("%d of cells filtered", filtered))
     }
     return(sce)
 }
@@ -313,13 +324,14 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #'  to specify the VDJ information columns
 #' @param mode_option see document of setupVdjPseudobulk for
 #'  detailed explanation
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @importFrom rlang abort
 #' @return SingleCellExperiment objects with column stores the information of
 #'  the main VDJ information in colData slot
-.extractVdj <- function(sce, extract_cols, mode_option) {
+.extractVdj <- function(sce, extract_cols, mode_option, verbose) {
     # generate colnames to extract
     if (is.null(extract_cols)) {
         extract_cols <- .generateExtractName(sce, mode_option)
@@ -329,9 +341,11 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     # extract main information
     if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
         colns <- paste(extract_cols, collapse = ", ")
-        message(sprintf("Extract main TCR from %s ...", colns),
-            appendLF = FALSE
-        )
+        if (verbose) {
+            message(sprintf("Extract main TCR from %s ...", colns),
+                appendLF = FALSE
+            )
+        }
         sce <- Reduce(function(data, ex_col) {
             tem <- colData(data)[[ex_col]]
             strtem <- strsplit(as.character(tem), "\\|")
@@ -340,18 +354,20 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             data
         }, extract_cols, init = sce)
         main_cols <- paste(extract_cols, "main", sep = "_")
-        message("Complete.")
+        if (verbose) message("Complete.")
     } else {
         main_cols <- colnames(colData(sce))[grep(
             "_VDJ_main|_VJ_main",
             names(colData(sce))
         )]
-        warning(
-            "main VDJ information already exists,",
-            "Please use parameter check_extract_cols_mapping to",
-            "clarify the columns undergo filtering, rather than",
-            "parameter check_v(d)j_mapping"
-        )
+        if (verbose) {
+            warning(
+                "main VDJ information already exists,",
+                "Please use parameter check_extract_cols_mapping to",
+                "clarify the columns undergo filtering, rather than",
+                "parameter check_v(d)j_mapping"
+            )
+        }
     }
     return(list(sce = sce, main_cols = main_cols))
 }
@@ -359,12 +375,13 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #'
 #' @param sce SingleCellExperiment object input
 #' @param mode_option see document of setupVdjPseudobulk for explanation
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @return a vecotor of colnames we need to perform main chain extraction
-.generateExtractName <- function(sce, mode_option) {
-    message("Parameter extract_cols do not provided, automatically geneterate
+.generateExtractName <- function(sce, mode_option, verbose) {
+    if (verbose) message("Parameter extract_cols do not provided, automatically geneterate
             colnames for extraction.")
     v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
         # nocov start
@@ -398,19 +415,22 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' with CTgene columns
 #' @param sce SingleCellExperiment object input
 #' @param extract_cols column names we aim to extract information from
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @importFrom rlang abort
 #' @return SingleCellExperiment with columns containing VDJ information in the
 #' names we've specified.
-.generateExtractColumn <- function(sce, extract_cols) {
+.generateExtractColumn <- function(sce, extract_cols, verbose) {
     msg <- paste(extract_cols, collapse = ", ")
     if (!any(extract_cols %in% colnames(colData(sce)))) {
-        message(sprintf(
-            "ColData does not exist, Creating %s %s",
-            msg, "colData based on column CTgene"
-        ))
+        if (verbose) {
+            message(sprintf(
+                "ColData does not exist, Creating %s %s",
+                msg, "colData based on column CTgene"
+            ))
+        }
         if (!"CTgene" %in% colnames(colData(sce))) {
             abort(sprintf(paste0(
                 "Both %s and CTgene do not exist\n You could modifyparameter ",
@@ -467,6 +487,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #'  needs to be checked, passed from setupVdjPseudobulk
 #' @param remove_missing option for removing the unclear mappin or just mask it,
 #' passed from setupVdjPseudobulk
+#' @param verbose logical, print messages. Default is `TRUE`.
 #' @keywords internal
 #' @include filterCells.R
 #' @import SingleCellExperiment
@@ -475,7 +496,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @return filtered SingleCellExperiment object
 .filterUnmapped <- function(sce, mode_option, check_vj_mapping,
                             check_vdj_mapping, main_cols,
-                            check_extract_cols_mapping, remove_missing) {
+                            check_extract_cols_mapping, remove_missing, verbose) {
     .typeCheck(check_vj_mapping, "logical")
     if (length(check_vj_mapping) != 2) {
         abort(sprintf(

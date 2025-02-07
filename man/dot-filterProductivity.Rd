@@ -9,7 +9,8 @@
   mode_option,
   productive_cols,
   productive_vj,
-  productive_vdj
+  productive_vd,
+  verbose
 )
 }
 \arguments{
@@ -19,6 +20,8 @@
 
 \item{productive_vj}{If \code{TRUE}, retains cells where the main VJ chain is
 productive.}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 
 \item{productive_vdj}{If \code{TRUE}, retains cells where the main VDJ chain is
 productive.}

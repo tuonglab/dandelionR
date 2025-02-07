@@ -14,52 +14,42 @@ markovProbability(
   pseudotime_key = "pseudotime",
   scale_components = TRUE,
   num_waypoints = 500,
-  n_eigs = NULL
+  n_eigs = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{milo}{A \code{Milo} or \code{SingleCellExperiment} object. This object should
-have pseudotime stored in \code{colData}, which will be used to
-calculate probabilities. If pseudotime is available in \code{milo},
-it takes precedence over the value
-provided through the \code{diffusiontime} parameter.}
+\item{milo}{A \code{Milo} or \code{SingleCellExperiment} object. This object should have pseudotime stored in \code{colData}, which will be used to calculate probabilities. If pseudotime is available in \code{milo}, it takes precedence over the value provided through the \code{diffusiontime} parameter.}
 
-\item{diffusionmap}{A \code{DiffusionMap} object corresponding to
-the \code{milo} object. Used for Markov chain construction.}
+\item{diffusionmap}{A \code{DiffusionMap} object corresponding to the \code{milo} object. Used for Markov chain construction.}
 
-\item{terminal_state}{Integer. The index of the terminal state in
-the Markov chain.}
+\item{terminal_state}{Integer. The index of the terminal state in the Markov chain.}
 
 \item{root_cell}{Integer. The index of the root state in the Markov chain.}
 
-\item{knn}{Integer. The number of nearest neighbors for graph construction.
-Default is \code{30L}.}
+\item{knn}{Integer. The number of nearest neighbors for graph construction. Default is \code{30L}.}
 
-\item{diffusiontime}{Numeric vector. If pseudotime is not stored in \code{milo},
-this parameter can be used to provide pseudotime values to the function.}
+\item{diffusiontime}{Numeric vector. If pseudotime is not stored in \code{milo}, this parameter can be used to provide pseudotime values to the function.}
 
-\item{pseudotime_key}{Character. The name of the column in \code{colData} that
-contains the inferred pseudotime.}
+\item{pseudotime_key}{Character. The name of the column in \code{colData} that contains the inferred pseudotime.}
 
-\item{scale_components}{Logical. If \code{TRUE}, the components will be scaled
-before constructing the Markov chain. Default is \code{FALSE}.}
+\item{scale_components}{Logical. If \code{TRUE}, the components will be scaled before constructing the Markov chain. Default is \code{FALSE}.}
 
-\item{num_waypoints}{Integer. The number of waypoints to sample when
-constructing the Markov chain. Default is \code{500L}.}
+\item{num_waypoints}{Integer. The number of waypoints to sample when constructing the Markov chain. Default is \code{500L}.}
 
 \item{n_eigs}{integer, default is NULL. Number of eigen vectors to use.
 \itemize{
 \item If is not specified, the number of eigen vectors will be determined using
 the eigen gap.
 }}
+
+\item{verbose}{Logical. If \code{TRUE}, print progress. Default is \code{TRUE}.}
 }
 \value{
-milo or SinglCellExperiment object with pseudotime, probabilities in
-its colData
+milo or SinglCellExperiment object with pseudotime, probabilities in its colData
 }
 \description{
-This function preprocesses data, constructs a Markov chain, and calculates
-transition probabilities based on pseudotime information.
+This function preprocesses data, constructs a Markov chain, and calculates transition probabilities based on pseudotime information.
 }
 \examples{
 data(sce_vdj)
@@ -70,14 +60,8 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 # Build Milo Object
 set.seed(100)
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object,
-    k = 50, d = 20,
-    reduced.dim = "X_scvi"
-)
-milo_object <- miloR::makeNhoods(milo_object,
-    reduced_dims = "X_scvi",
-    d = 20
-)
+milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Construct Pseudobulked VDJ Feature Space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")

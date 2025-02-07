@@ -5,12 +5,14 @@
 \title{Check whether the columns with specified names exist, if not, create them
 with CTgene columns}
 \usage{
-.generateExtractColumn(sce, extract_cols)
+.generateExtractColumn(sce, extract_cols, verbose)
 }
 \arguments{
 \item{sce}{SingleCellExperiment object input}
 
 \item{extract_cols}{column names we aim to extract information from}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment with columns containing VDJ information in the

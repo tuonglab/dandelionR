@@ -5,7 +5,7 @@
 \title{Specify the columns which store VDJ information, and extract the main chain
 from it}
 \usage{
-.extractVdj(sce, extract_cols, mode_option)
+.extractVdj(sce, extract_cols, mode_option, verbose)
 }
 \arguments{
 \item{sce}{SingleCellExperiment object input}
@@ -15,6 +15,8 @@ to specify the VDJ information columns}
 
 \item{mode_option}{see document of setupVdjPseudobulk for
 detailed explanation}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment objects with column stores the information of
