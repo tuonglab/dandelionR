@@ -14,7 +14,8 @@
     waypoints <- c()
     # Sample along each componet
     waypoints <- Reduce(function(waypoints, ind){
-      waypoints <- .waypiontsPerCol(waypoints = waypoints, ind = ind, data = data)
+      waypoints <- .waypiontsPerCol(waypoints = waypoints, ind = ind,
+                                    data = data, no.iterations = no.iterations)
       return(waypoints)
     }, colnames(data), waypoints)
     waypoints <- unique(waypoints)
@@ -29,7 +30,7 @@
 #' @param data scaled diffusionmap
 #' @keywords internal
 #' @return a numeric vector containing waypoints' index
-.waypiontsPerCol <- function(waypoints, ind, data)
+.waypiontsPerCol <- function(waypoints, ind, data, no.iterations)
 {
   N <- nrow(data)
   vecs <- data[, ind]
