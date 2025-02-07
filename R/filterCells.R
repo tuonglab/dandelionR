@@ -18,12 +18,14 @@
 #' @keywords internal
 #' @importFrom rlang abort
 #' @return filtered SingleCellExperiment object according to the parameter.
-.filterCells <- function(sce, col_n, filter_pattern = ",|None|No_contig",
-                         remove_missing = TRUE) {
+.filterCells <- function(
+    sce, col_n,
+    filter_pattern = ",|None|No_contig",
+    remove_missing = TRUE) {
     if (ncol(sce) < 1) {
         abort(sprintf(
-            "None column remains, please check whether %s",
-            "the filtering option is correct."
+            "None column remains, please check whether %s
+                the filtering option is correct."
         ))
     }
     # find filter pattern hits in our column of interest

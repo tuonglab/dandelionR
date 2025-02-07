@@ -14,7 +14,9 @@
 #' @importFrom destiny eigenvectors eigenvalues
 #' @importFrom stats sd
 #' @return each pseudobulk's probabilites
-projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, verbose = TRUE) {
+projectProbability <- function(
+    diffusionmap, waypoints, probabilities, t = 1,
+    verbose = TRUE) {
     if (verbose) {
         message("Project probabilites from waypoints to each pseudobulk...")
     }
@@ -34,8 +36,8 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
     D_diffusion <- Reduce(function(dfm_j, j) {
         dfm_j <- Reduce(function(dfm_i, i) {
             .calDif(dfm_i, i,
-                j = j, eigenvector = eigenvectors,
-                lambda_t = lambda_t, K = K
+                j = j, eigenvector = eigenvectors, lambda_t =
+                    lambda_t, K = K
             )
         }, seq_len(n), init = dfm_j)
         dfm_j

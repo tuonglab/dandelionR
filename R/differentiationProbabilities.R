@@ -38,27 +38,27 @@ differentiationProbabilities <- function(
     }, x = abs_states_idx, init = T_)
     if (verbose) {
         message(
-            "Computing fundamental matrix and ",
-            "absorption probabilities..."
+            c(
+                "Computing fundamental matrix and ",
+                "absorption probabilities..."
+            )
         )
     }
-    # Transition states
     trans_states_idx <- which(!(waypoints %in% terminal_states))
-    # Q matrix
     Q <- T_[-abs_states_idx, -abs_states_idx]
-    # Fundamental matrix
     mat <- diag(dim(Q)[[1]]) - Q
     N <- tryCatch(solve(mat), error = function(e) {
         if (verbose) {
             warning(
-                "Matrix generated is singular or nearly singular;",
-                " using pseudo-inverse to construct fundamental matrix.\n",
+                c(
+                    "Matrix generated is singular or nearly singular;",
+                    " using pseudo-inverse to construct fundamental matrix.\n"
+                )
             )
         }
         ginv(as.matrix(mat))
     })
     R <- T_[trans_states_idx, abs_states_idx]
-    # absorbing probabilities:
     probabilities <- N %*% R
     if (dim(probabilities)[[2]] > 1) {
         probabilities@x[probabilities@x < 0] <- 0

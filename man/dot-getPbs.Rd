@@ -7,9 +7,11 @@
 .getPbs(pbs, col_to_bulk, milo, verbose = TRUE)
 }
 \arguments{
-\item{pbs}{pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL}
+\item{pbs}{pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks
+matrix or NULL}
 
-\item{col_to_bulk}{col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo}
+\item{col_to_bulk}{col_to_bulk parameter provided by vdjPseudobulk(),
+column's name of colData from milo}
 
 \item{milo}{SingleCellExperiment object}
 
@@ -19,6 +21,7 @@
 a cell x pseudobulk matrix
 }
 \description{
-Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking.
+Helper function to ensure we have cells by pseudobulks matrix which we can
+use for pseudobulking.
 }
 \keyword{internal}

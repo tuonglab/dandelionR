@@ -36,9 +36,9 @@ Default is an empty string (\code{''}).}
 subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 }
 \description{
-This function projects pseudotime and branch probabilities from pseudobulk (\code{pb.milo})
-data to single-cell resolution (\code{milo}). The results are stored in the \code{colData} of
-the \code{milo} object.
+This function projects pseudotime and branch probabilities from pseudobulk
+data to single-cell resolution (\code{milo}). The results are stored in the
+\code{colData} of the \code{milo} object.
 }
 \examples{
 data(sce_vdj)

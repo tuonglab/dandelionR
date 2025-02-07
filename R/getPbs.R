@@ -1,8 +1,11 @@
 #' .getPbs
 #'
-#' Helper function to ensure we have cells by pseudobulks matrix which we can use for pseudobulking.
-#' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks matrix or NULL
-#' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(), column's name of colData from milo
+#' Helper function to ensure we have cells by pseudobulks matrix which we can
+#' use for pseudobulking.
+#' @param pbs pbs parameter provided by vdjPseudobulk(),  cells by pseudobulks
+#' matrix or NULL
+#' @param col_to_bulk col_to_bulk parameter provided by vdjPseudobulk(),
+#' column's name of colData from milo
 #' @param milo SingleCellExperiment object
 #' @param verbose logical, whether to print messages
 #' @importFrom rlang abort
@@ -25,7 +28,7 @@
     if (!is.null(col_to_bulk)) {
         msg <- paste0(col_to_bulk, collapse = ", ")
         if (verbose) {
-            message(sprintf("Generating pseudobulks according to colData %s ...", msg),
+            message(sprintf("Generating pseudobulks according to %s ...", msg),
                 appendLF = FALSE
             )
         }
@@ -34,7 +37,10 @@
         })
         names(tobulk) <- col_to_bulk
         tobulk <- as.data.frame(tobulk)
-        tobulk <- as.data.frame(apply(tobulk, 1, paste, collapse = ",", simplify = FALSE))
+        tobulk <- as.data.frame(apply(tobulk, 1, paste,
+            collapse = ",",
+            simplify = FALSE
+        ))
         tobulk <- model.matrix(~ t(tobulk) - 1)
         colnames(tobulk) <- gsub("t\\(tobulk\\)", "", colnames(tobulk))
         tobulk <- Matrix(tobulk, sparse = TRUE)
@@ -50,13 +56,15 @@
 #'
 #' Helper function to create the new pseudobulk object's coldata.
 #' @param pbs dgeMatrix, cell x pseudobulk binary matrix
-#' @param col_to_take character vector, names of colData of milo that need to be processed
+#' @param col_to_take character vector, names of colData of milo that need to
+#' be processed
 #' @param milo Milo or SingleCellExperiment object
 #' @importFrom Matrix t
 #' @importFrom S4Vectors DataFrame
 #' @importFrom stats model.matrix contrasts
 #' @keywords internal
-#' @return pbs_col, a DataFrame which will be passed to the new SingleCellExperiment object as colData of vdj x pseudobulk assays
+#' @return pbs_col, a DataFrame which will be passed to the new
+#' SingleCellExperiment object as colData of vdj x pseudobulk assays
 .getPbsCol <- function(pbs, col_to_take, milo) {
     # prepare per-pseudobulk calls of specified metadata columns
     if (!is.null(col_to_take)) {

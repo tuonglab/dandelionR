@@ -28,16 +28,16 @@ Probabilities to Single Cells.
 \section{Vignettes}{
 
 See the package vignettes for detailed workflows:
-\code{vignette("dandelionR")}
+\code{vignette('dandelionR')}
 }
 
 \section{Installation}{
 
 To install from Bioconductor, use:
 \preformatted{
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("dandelionR")
+if (!requireNamespace('BiocManager', quietly = TRUE))
+    install.packages('BiocManager')
+BiocManager::install('dandelionR')
 }
 }
 

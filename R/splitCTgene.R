@@ -10,7 +10,9 @@ splitCTgene <- function(sce) {
     # split with '_'
     CTgene <- lapply(CTgene, strsplit, split = "_")
     # split with '.'
-    CTgene <- lapply(CTgene, function(x) lapply(x, strsplit, split = "[.]"))
+    CTgene <- lapply(CTgene, function(x) {
+        lapply(x, strsplit, split = "[.]")
+    })
     CTgene <- .collapse_nested_list(CTgene)
     # this is a list containing `ncol()` sublists,
     # where each sublist contains two character vectors: the first represent
@@ -46,7 +48,8 @@ formatVdj <- function(gene_list) {
 chainAssign <- function(vec, num) {
     if (length(vec) == (num + 1)) {
         chains <- vec[seq_len(num)]
-    } else if (all(vec == "NA")) { # nocov start
+    } else if (all(vec == "NA")) {
+        # nocov start
         chains <- rep("None", num)
     } else {
         abort # nocov end
