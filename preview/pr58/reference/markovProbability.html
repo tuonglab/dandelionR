@@ -52,7 +52,8 @@
 <span>  diffusiontime <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pseudotime_key <span class="op">=</span> <span class="st">"pseudotime"</span>,</span>
 <span>  scale_components <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  num_waypoints <span class="op">=</span> <span class="fl">500</span></span>
+<span>  num_waypoints <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  n_eigs <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,6 +95,12 @@
 
 <dt id="arg-num-waypoints">num_waypoints<a class="anchor" aria-label="anchor" href="#arg-num-waypoints"></a></dt>
 <dd><p>Integer. The number of waypoints to sample when constructing the Markov chain. Default is <code>500L</code>.</p></dd>
+
+
+<dt id="arg-n-eigs">n_eigs<a class="anchor" aria-label="anchor" href="#arg-n-eigs"></a></dt>
+<dd><p>integer, default is NULL. Number of eigen vectors to use.</p><ul><li><p>If is not specified, the number of eigen vectors will be determined using
+the eigen gap.</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
