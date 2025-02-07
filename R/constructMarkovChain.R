@@ -38,14 +38,13 @@
     ## Remove edges that move backwards in pseudotime except for
     ## edges that are within the computed standard deviation
     rem_edges <- pmap(list(
-        .x = traj_nbrs, .y = (pseudotime - adaptive.std),
-        .z = ind
+        .x = traj_nbrs, .y = (pseudotime - adaptive.std), .z = ind
     ), function(.x, .y, .z) {
         .z[.x < .y]
     })
-    KNN <- Reduce(function(Knn, i){ 
-      Knn <-.removeEdge(Knn, i, rem_edges = rem_edges)
-      Knn
+    KNN <- Reduce(function(Knn, i) {
+        Knn <- .removeEdge(Knn, i, rem_edges = rem_edges)
+        Knn
     }, seq_len(length(waypoints)), init = KNN)
     # determine the indice and update adjacency matrix
     # cell_mapping <- seq_len(length(waypoints))
@@ -104,17 +103,15 @@
 
 #' function used in Reduce to remove KNN's backward edges except for
 #'  edges that are within the computed standard deviation
-#'  
+#'
 #' @param Knn weight KNN adjacent matrix
 #' @param i the iteration number
 #' @param rem_edges the edges that need to be removes
 #' @keywords internal
 #' @return an updated matrix after one round of iteration
-.removeEdge <- function(Knn, i, rem_edges)
-{
-  if(length(Knn[i, rem_edges[[i]]]))
-  {
-    Knn[i, rem_edges[[i]]]<-0
-  }
-  return(Knn)
+.removeEdge <- function(Knn, i, rem_edges) {
+    if (length(Knn[i, rem_edges[[i]]])) {
+        Knn[i, rem_edges[[i]]] <- 0
+    }
+    return(Knn)
 }

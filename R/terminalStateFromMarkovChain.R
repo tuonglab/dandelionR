@@ -39,17 +39,19 @@
     }))
     # Nearest diffusion map boundaries
     terminal_states <- c()
-    terminal_states <- Reduce(function(term, i){
-      .determTerminal(terminal_states = term, i = i,
-                      dm_boudaries = dm_boudaries, wp_data = wp_data)
-      return(terminal_states)
+    terminal_states <- Reduce(function(term, i) {
+        .determTerminal(
+            terminal_states = term, i = i,
+            dm_boudaries = dm_boudaries, wp_data = wp_data
+        )
+        return(terminal_states)
     }, cells, terminal_states)
     unique(waypoints[terminal_states])
 }
 
 #' .determTerminal
-#' 
-#' function in Reduce to provide waypoints 
+#'
+#' function in Reduce to provide waypoints
 #' @param terminal_states integer vector to store the generated waypoint index
 #' @param i iteration index
 #' @param dm_boudaries index of the maxium or minium value of
@@ -57,10 +59,8 @@
 #' @param wp_data Multi scale data of the waypoints
 #' @keywords internal
 #' @return integer vector store the index of waypoints serve as terminal state
-.determTerminal <-  function(terminal_states, i, dm_boudaries, wp_data)
-{
-  dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
-  terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
-  return(terminal_states)
+.determTerminal <- function(terminal_states, i, dm_boudaries, wp_data) {
+    dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
+    terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
+    return(terminal_states)
 }
-
