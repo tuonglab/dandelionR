@@ -268,8 +268,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             )
             abort(sprintf(
                 paste0(
-                    "Unsuitable allowed_chain_status,\n ",
-                    "The current allowed_chain_status: %s.\n ",
+                    "Unsuitable `allowed_chain_status`,\n ",
+                    "The current `allowed_chain_status`: %s.\n ",
                     "While the chain status in the dataset: %s."
                 ),
                 allowed_cs, current_cs
@@ -363,9 +363,9 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
         if (verbose) {
             warning(
                 "main VDJ information already exists,",
-                "Please use parameter check_extract_cols_mapping to",
-                "clarify the columns undergo filtering, rather than",
-                "parameter check_v(d)j_mapping"
+                "Instead of using `check_v(d)j_mapping`, please use",
+                "the argument `check_extract_cols_mapping`",
+                "to clarify the columns undergo filtering."
             )
         }
     }
@@ -381,7 +381,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @importFrom SummarizedExperiment colData<-
 #' @return a vecotor of colnames we need to perform main chain extraction
 .generateExtractName <- function(sce, mode_option, verbose) {
-    if (verbose) message("Parameter extract_cols do not provided, automatically geneterate
+    if (verbose) message("extract_cols not specified, automatically generate
             colnames for extraction.")
     v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
         # nocov start
