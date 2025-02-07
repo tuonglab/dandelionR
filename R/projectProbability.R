@@ -28,7 +28,7 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
     # Calculate the pairwise diffusion distance
     D_diffusion <- Reduce(function(dfm_j,j) {
       dfm_j <- Reduce(function(dfm_i, i){
-        .calDif(dfm, i, j = j, eigenvectors = eigenvectors, lambda_t = lambda_t, K = K)
+        .calDif(dfm_i, i, j = j, eigenvectors = eigenvectors, lambda_t = lambda_t, K = K)
       }, seq_len(n), init = dfm_j)
       dfm_j
     }, seq_len(n), init = D_diffusion)
