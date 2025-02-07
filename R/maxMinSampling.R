@@ -8,7 +8,7 @@
 #' @param verbose logical, print progress
 #' @keywords internal
 #' @return Series reprenting the sampled waypoints
-.maxMinSampling <- function(datas, num_waypoints, verbose) {
+.maxMinSampling <- function(datas, num_waypoints, verbose = TRUE) {
     if (verbose) message("Sampling and flocking waypoints...")
     no.iterations <- as.integer(num_waypoints / ncol(datas))
     waypoints <- c()

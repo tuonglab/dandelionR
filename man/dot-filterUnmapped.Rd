@@ -12,7 +12,7 @@
   main_cols,
   check_extract_cols_mapping,
   remove_missing,
-  verbose
+  verbose = TRUE
 )
 }
 \arguments{

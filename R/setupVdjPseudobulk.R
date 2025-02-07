@@ -334,10 +334,10 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 .extractVdj <- function(sce, extract_cols, mode_option, verbose) {
     # generate colnames to extract
     if (is.null(extract_cols)) {
-        extract_cols <- .generateExtractName(sce, mode_option)
+        extract_cols <- .generateExtractName(sce, mode_option, verbose)
     }
     # make sure the columns exist
-    sce <- .generateExtractColumn(sce, extract_cols)
+    sce <- .generateExtractColumn(sce, extract_cols, verbose)
     # extract main information
     if (!length(grep("_VDJ_main|_VJ_main", names(colData(sce))))) {
         colns <- paste(extract_cols, collapse = ", ")
@@ -496,7 +496,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @return filtered SingleCellExperiment object
 .filterUnmapped <- function(sce, mode_option, check_vj_mapping,
                             check_vdj_mapping, main_cols,
-                            check_extract_cols_mapping, remove_missing, verbose) {
+                            check_extract_cols_mapping, remove_missing, verbose = TRUE) {
     .typeCheck(check_vj_mapping, "logical")
     if (length(check_vj_mapping) != 2) {
         abort(sprintf(

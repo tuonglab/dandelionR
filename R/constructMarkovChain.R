@@ -48,8 +48,7 @@
     # determine the indice and update adjacency matrix
     # cell_mapping <- seq_len(length(waypoints))
     # seems cell_mapping is not used, if there is an error them edit back
-    requireNamespace("Matrix")
-    ids <- Matrix::summary(KNN)
+    ids <- summary(KNN)
     # anisotropic Diffusion Kernel
     aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2) * 0.5 -
         (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
@@ -59,7 +58,7 @@
     )
     # Transition matrix
     D <- apply(W, 1, sum)
-    ids <- Matrix::summary(W)
+    ids <- summary(W)
     T_ <- sparseMatrix(
         i = ids$i, j = ids$j, x = ids$x / D[ids$i],
         dims = dim(KNN), giveCsparse = TRUE

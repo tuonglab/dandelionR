@@ -146,7 +146,6 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
             x # nocov
         }
     })
-    requireNamespace("stats")
     one_hot_encoded <- model.matrix(~ . - 1, data = vjs0, contrasts.arg = lapply(vjs0,
         contrasts,
         contrasts = FALSE
