@@ -10,15 +10,23 @@ Welcome to `dandelionR`!
 
 It provides all the necessary tools to interface with [`scRepertoire`](https://github.com/ncborcherding/scRepertoire) and a custom implementation of absorbing markov chain for pseudotime inference, inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python package.
 
-## Installation
+## Installation from Bioconductor
+
+You can install `dandelionR` from Bioconductor with:
+
+```R
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("dandelionR")
+```
+
+## Installation from GitHub
 
 You can install `dandelionR` from GitHub with:
 
 ```R
 if (!requireNamespace("devtools", quietly = TRUE))
     install.packages("devtools")
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
 devtools::install_github('tuonglab/dandelionR', dependencies = TRUE)
 ```
 

@@ -5,6 +5,7 @@
 #' @param knn. Number of nearest neighbors for graph construction
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to
+#' @param verbose whether to print messages
 #' construct markov chain
 #' @keywords internal
 #' @importFrom bluster makeKNNGraph
@@ -13,8 +14,10 @@
 #' @importFrom purrr pmap
 #' @importFrom stats dist
 #' @return transition matrix of the markov chain
-.constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints) {
-    message("Markov chain construction...")
+.constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints, verbose = TRUE) {
+    if (verbose) {
+        message("Markov chain construction...")
+    }
     pseudotime <- pseudotime[waypoints]
     # construct kNN graph
     nbrs <- makeKNNGraph(wp_data, k = knn.)
@@ -68,15 +71,14 @@
     }
     # determine the indice and update adjacency matrix
     cell_mapping <- seq_len(length(waypoints))
-    requireNamespace("Matrix")
-    ids <- Matrix::summary(KNN)
+    ids <- summary(KNN)
     # anisotropic Diffusion Kernel
     aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2) * 0.5 - (ids$x^2) / (adaptive.std[ids$j]^2) *
         0.5)
-    W <- Matrix::sparseMatrix(i = ids$i, j = ids$j, x = aff, dims = dim(KNN), giveCsparse = TRUE)
+    W <- sparseMatrix(i = ids$i, j = ids$j, x = aff, dims = dim(KNN), giveCsparse = TRUE)
     # Transition matrix
     D <- apply(W, 1, sum)
-    ids <- Matrix::summary(W)
+    ids <- summary(W)
     T_ <- sparseMatrix(
         i = ids$i, j = ids$j, x = ids$x / D[ids$i], dims = dim(KNN),
         giveCsparse = TRUE

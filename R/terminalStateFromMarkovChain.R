@@ -4,14 +4,15 @@
 #' @param wp_data Multi scale data of the waypoints
 #' @param pseudotime numeric vector, pseudotime of each pseudobulk
 #' @param waypoints integer vector, waypoint selected to construct markov chain.
+#' @param verbose Boolean, whether to print messages/warnings.
 #' @keywords internal
 #' @importFrom igraph graph_from_adjacency_matrix components
 #' @importFrom purrr map
 #' @importFrom stats median qnorm
 #' @importFrom spam nearest.dist
 #' @return terminal_state
-.terminalStateFromMarkovChain <- function(Transmat, wp_data, pseudotime, waypoints) {
-    message("No terminal state provided, identification of terminal states....")
+.terminalStateFromMarkovChain <- function(Transmat, wp_data, pseudotime, waypoints, verbose = TRUE) {
+    if (verbose) message("No terminal state provided, identification of terminal states....")
     # Identify terminal states dm_boundaries
     n <- min(dim(Transmat))
     ei <- eigen(t(Transmat))
@@ -42,5 +43,5 @@
         dists <- nearest.dist(wp_data[dm_boudaries, ], wp_data[i, , drop = FALSE])
         terminal_states <- c(terminal_states, dm_boudaries[which.max(dists@entries)])
     }
-    unique(waypoints[terminal_states])
+    return(unique(waypoints[terminal_states]))
 }

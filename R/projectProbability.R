@@ -6,11 +6,14 @@
 #' @param waypoints Integer vector. Indices of the waypoints used in the Markov chain.
 #' @param probabilities Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.
 #' @param t Numeric. The diffusion time to be used in the projection.
+#' @param verbose Boolean, whether to print messages/warnings.
 #' @importFrom destiny eigenvectors eigenvalues
 #' @importFrom stats sd
 #' @return each pseudobulk's probabilites
-projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1) {
-    message("Project probabilites from waypoints to each pseudobulk...")
+projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, verbose = TRUE) {
+    if (verbose) {
+        message("Project probabilites from waypoints to each pseudobulk...")
+    }
     # Extract eigenvalues and eigenvectors from the DiffusionMap
     eigenvalues <- eigenvalues(diffusionmap) # vector of eigenvalues
     eigenvectors <- eigenvectors(diffusionmap) # matrix of eigenvectors (each column is an eigenvector)
@@ -32,8 +35,7 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1) {
     # `D_diffusion` is now the diffusion distance matrix
     Dif <- D_diffusion[, waypoints]
     D_ravel <- as.vector(Dif)
-    requireNamespace("stats")
-    sdv <- stats::sd(D_ravel) * 1.06 * (length(D_ravel)^(-1 / 5))
+    sdv <- sd(D_ravel) * 1.06 * (length(D_ravel)^(-1 / 5))
     W <- exp(-0.5 * ((Dif / sdv)^2))
     W <- W / apply(W, 1, sum)
     prob <- W %*% probabilities

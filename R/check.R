@@ -8,7 +8,6 @@
 #' @importFrom methods is
 #' @return whether or not the input is the correct class
 .classCheck <- function(input, must) {
-    requireNamespace("methods")
     if (is.null(input)) {
         return()
     }
@@ -32,7 +31,6 @@
 #' @importFrom BiocGenerics type
 #' @return whether or not the input is the correct type
 .typeCheck <- function(input, must) {
-    requireNamespace("methods")
     if (is.null(input)) {
         return()
     }

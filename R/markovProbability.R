@@ -10,6 +10,7 @@
 #' @param pseudotime_key Character. The name of the column in `colData` that contains the inferred pseudotime.
 #' @param scale_components Logical. If `TRUE`, the components will be scaled before constructing the Markov chain. Default is `FALSE`.
 #' @param num_waypoints Integer. The number of waypoints to sample when constructing the Markov chain. Default is `500L`.
+#' @param verbose Boolean, whether to print messages/warnings.
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
@@ -60,7 +61,7 @@
 markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
-    num_waypoints = 500) {
+    num_waypoints = 500, verbose = TRUE) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
@@ -80,17 +81,17 @@ markovProbability <- function(
         multiscale <- .minMaxScale(multiscale)
     }
     # sample waypoints to construct markov chain
-    waypoints <- .maxMinSampling(multiscale, num_waypoints = 500)
+    waypoints <- .maxMinSampling(multiscale, num_waypoints = 500, verbose = verbose)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state,
-        knn = knn, pseudotime = diffusiontime, waypoints = waypoints
+        knn = knn, pseudotime = diffusiontime, waypoints = waypoints, verbose = verbose
     )
     probabilities <- probabilities_terminal[[1]]
     terminal_state <- probabilities_terminal[[2]]
     # project probabilities from waypoints to each pseudobulk
-    probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities)
+    probabilities_proj <- projectProbability(diffusionmap, waypoints, probabilities, verbose)
     # store the result into milo
     new_coldata <- DataFrame(as.matrix(probabilities_proj))
     if (is.null(names(terminal_state))) {
@@ -100,10 +101,12 @@ markovProbability <- function(
     # prevent same name in colData
     idx <- names(colData(milo)) %in% colnames(new_coldata)
     if (any(idx)) { # nocov start
-        warning(paste(
-            "Name", paste(names(colData(milo))[idx], collapse = ", "),
-            "already exists in", as.character(substitute(milo))
-        ))
+        if (verbose) {
+            warning(paste(
+                "Name", paste(names(colData(milo))[idx], collapse = ", "),
+                "already exists in", as.character(substitute(milo))
+            ))
+        }
         repeat {
             answer <- readline(prompt = "Do you want to overwrite the column? (y/n): ")
             if (answer == "n") {
@@ -111,11 +114,11 @@ markovProbability <- function(
                     colnames(new_coldata) <- paste0(colnames(new_coldata), "_new")
                 }
                 msg <- paste(colnames(new_coldata), collapse = ", ")
-                message(sprintf("The data will stored in %s", msg))
+                if (verbose) message(sprintf("The data will stored in %s", msg))
                 break
             } else if (answer == "y") {
                 msg <- paste(names(colData(milo))[idx], collapse = ", ")
-                message(sprintf("Overwriting %s ...", msg))
+                if (verbose) message(sprintf("Overwriting %s ...", msg))
                 colData(milo) <- colData(milo)[!idx]
                 break
             } else {

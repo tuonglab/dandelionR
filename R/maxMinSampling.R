@@ -4,10 +4,12 @@
 #'
 #' @param data data matrix along which to sample the waypoints, usually diffusion components
 #' @param num_waypoints number of waypoints to sample
+#' @param verbose logical, print progress
 #' @keywords internal
 #' @return Series reprenting the sampled waypoints
-.maxMinSampling <- function(data, num_waypoints) {
-    message("Sampling and flocking waypoints...")
+.maxMinSampling <- function(data, num_waypoints, verbose = TRUE) {
+    if (verbose) message("Sampling and flocking waypoints...")
+
     no.iterations <- as.integer(num_waypoints / ncol(data))
     waypoints <- c()
     # Sample along each componet
@@ -28,4 +30,5 @@
         waypoints <- c(waypoints, iter.set)
     }
     waypoints <- unique(waypoints)
+    return(waypoints)
 }

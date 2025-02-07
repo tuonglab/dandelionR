@@ -19,7 +19,8 @@ setupVdjPseudobulk(
   check_vj_mapping = c(TRUE, TRUE),
   check_vdj_mapping = c(TRUE, FALSE, TRUE),
   check_extract_cols_mapping = NULL,
-  remove_missing = TRUE
+  remove_missing = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -72,6 +73,8 @@ for mapping checks. Default is \code{NULL}.}
 
 \item{remove_missing}{Logical. If \code{TRUE}, removes cells with contigs matching the filter.
 If \code{FALSE}, masks them with uniform values. Default is \code{TRUE}.}
+
+\item{verbose}{Logical. Whether to print messages. Default is \code{TRUE}.}
 }
 \value{
 filtered SingleCellExperiment object

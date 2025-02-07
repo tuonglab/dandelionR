@@ -37,10 +37,8 @@
 miloUmap <- function(
     milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean",
     min_dist = 0.3, ...) {
-    requireNamespace("miloR")
-    requireNamespace("igraph")
     # get the graph's adjacency matrix
-    graphm <- as_adjacency_matrix(miloR::graph(milo))
+    graphm <- as_adjacency_matrix(graph(milo))
     # inherit the names of each row
     rownames(graphm) <- rownames(colData(milo))
     colnames(graphm) <- rownames(colData(milo))
@@ -50,5 +48,5 @@ miloUmap <- function(
         ...
     )
     reducedDim(milo, slot_name) <- pos
-    milo
+    return(milo)
 }

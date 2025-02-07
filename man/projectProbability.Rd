@@ -4,7 +4,13 @@
 \alias{projectProbability}
 \title{Project Probabilities from Markov Chain to Pseudobulks}
 \usage{
-projectProbability(diffusionmap, waypoints, probabilities, t = 1)
+projectProbability(
+  diffusionmap,
+  waypoints,
+  probabilities,
+  t = 1,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{diffusionmap}{diffusion map, used to reconstruct diffustion distance matrix}
@@ -14,6 +20,8 @@ projectProbability(diffusionmap, waypoints, probabilities, t = 1)
 \item{probabilities}{Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.}
 
 \item{t}{Numeric. The diffusion time to be used in the projection.}
+
+\item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
 each pseudobulk's probabilites

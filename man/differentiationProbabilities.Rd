@@ -9,7 +9,8 @@ differentiationProbabilities(
   terminal_states = NULL,
   knn = 30L,
   pseudotime,
-  waypoints
+  waypoints,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ differentiationProbabilities(
 \item{pseudotime}{Numeric vector. Pseudotime ordering of cells.}
 
 \item{waypoints}{Integer vector. Indices of selected waypoints used to construct the Markov chain.}
+
+\item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
 A numeric matrix or data frame containing branch probabilities for each waypoint.

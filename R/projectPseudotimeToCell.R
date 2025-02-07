@@ -15,6 +15,7 @@
 #' is `"pseudotime"`.
 #' @param suffix Character. A suffix to be added to the new column names in `colData`.
 #' Default is an empty string (`''`).
+#' @param verbose Boolean, whether to print messages/warnings.
 #'
 #' @examples
 #' data(sce_vdj)
@@ -61,12 +62,12 @@
 #' )
 #'
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
-#' @import miloR
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
+#' @importFrom miloR nhoods<-
 #' @importFrom S4Vectors metadata
 #' @export
-projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "") {
+projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "", verbose = TRUE) {
     if (is.null(term_states)) {
         if (is.null(metadata(pb_milo)$branch.tips)) # nocov start
             {
@@ -76,14 +77,16 @@ projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotim
             term_states <- metadata(pb_milo)$branch.tips
         }
     }
-    nhood <- nhoods(pb_milo) # peudobulk x cells
+    nhood <- miloR::nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood
-    nhoodsum <- apply(nhoods(pb_milo), 2, sum)
+    nhoodsum <- apply(miloR::nhoods(pb_milo), 2, sum)
     cdata <- milo[, nhoodsum > 0]
-    message(sprintf(
-        "%d number of cells removed due to not belonging to any neighbourhood",
-        sum(nhoodsum == 0)
-    ))
+    if (verbose) {
+        message(sprintf(
+            "%d number of cells removed due to not belonging to any neighbourhood",
+            sum(nhoodsum == 0)
+        ))
+    }
     # for each cell pesudotime_mean is the average of the pseudobulks the cell
     # is in, weighted by 1/ neighbourhood size
     nhoods_cdata <- nhood[, nhoodsum > 0]
@@ -93,5 +96,5 @@ projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotim
         list(as.vector(x %*% y / apply(y, 2, sum)))
     }, y = nhoods_cdata_norm, FUN.VALUE = list(double()))
     colData(cdata) <- cbind(colData(cdata), new_col)
-    cdata
+    return(cdata)
 }

@@ -7,6 +7,7 @@
 #' @param knn Integer. Number of nearest neighbors for graph construction. Default is `30L`.
 #' @param pseudotime Numeric vector. Pseudotime ordering of cells.
 #' @param waypoints Integer vector. Indices of selected waypoints used to construct the Markov chain.
+#' @param verbose Boolean, whether to print messages/warnings.
 #' @return A numeric matrix or data frame containing branch probabilities for each waypoint.
 #' @importFrom Matrix solve
 #' @importFrom MASS ginv
@@ -14,13 +15,13 @@
 #' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
     wp_data, terminal_states = NULL, knn = 30L,
-    pseudotime, waypoints) {
-    T_ <- .constructMarkovChain(wp_data, knn, pseudotime, waypoints)
+    pseudotime, waypoints, verbose = TRUE) {
+    T_ <- .constructMarkovChain(wp_data, knn, pseudotime, waypoints, verbose)
     # identify terminal states if not specified
     if (is.null(terminal_states)) {
         terminal_states <- .terminalStateFromMarkovChain(
             T_, wp_data, pseudotime,
-            waypoints
+            waypoints, verbose
         )
     }
     abs_states_idx <- which(waypoints %in% terminal_states)
@@ -29,7 +30,9 @@ differentiationProbabilities <- function(
         matri[x, x] <- 1
         matri
     }, x = abs_states_idx, init = T_)
-    message("Computing fundamental matrix and absorption probabilities...")
+    if (verbose) {
+        message("Computing fundamental matrix and absorption probabilities...")
+    }
     # Transition states
     trans_states_idx <- which(!(waypoints %in% terminal_states))
     # Q matrix
@@ -40,9 +43,11 @@ differentiationProbabilities <- function(
         {
             solve(mat)
         },
-        error = function(cnd) {
-            warning("Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix")
-            warning("Or you can re-run this function to reconstruct the markov chain")
+        error = function(e) {
+            if (verbose) {
+                warning("Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix.")
+                warning("Or you can re-run this function to reconstruct the markov chain")
+            }
             ginv(as.matrix(mat))
         }
     )

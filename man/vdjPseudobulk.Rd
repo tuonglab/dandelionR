@@ -14,7 +14,8 @@ vdjPseudobulk(
   col_to_take = NULL,
   normalise = TRUE,
   renormalise = FALSE,
-  min_count = 1L
+  min_count = 1L,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ vdjPseudobulk(
 \item{renormalise}{Logical. If \code{TRUE}, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when \code{setupVdjPseudobulk()} was run with \code{remove_missing = FALSE}. Default is \code{FALSE}.}
 
 \item{min_count}{Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when \code{normalise = TRUE}. Default is \code{1}.}
+
+\item{verbose}{Logical. If \code{TRUE}, prints messages and warnings. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment object

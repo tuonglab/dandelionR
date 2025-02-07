@@ -1,6 +1,10 @@
 ---
 title: "Reproducing the original dandelion method/paper"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Reproducing the original dandelion method/paper}
@@ -19,12 +23,6 @@ library(BiocStyle)
 In this vignette, we will demonstrate how to perform TCR trajectory analysis starting from data that has already been processed by `dandelion` in python. This is to demonstrate that the original method/results in the `dandelion` paper can be reproduced.
 
 ## Load the required libraries
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-library(destiny)
-# there's a known 'error' with loading a dependency of destiny, pillar:
-# https://github.com/r-lib/pillar/pull/668
-```
 
 We will also load `scRepertoire` and `scater` for the analysis.
 ```{r, message=FALSE, warning=FALSE}
