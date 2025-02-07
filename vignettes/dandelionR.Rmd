@@ -5,6 +5,10 @@ output:
     toc: true
     toc_depth: 2
     number_sections: true
+knitr:
+  opts_chunk:
+    dev: 'png'
+    fig.align: 'left'
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Single-cell Immune Repertoire Trajectory Analysis Starting From scRepertoire}

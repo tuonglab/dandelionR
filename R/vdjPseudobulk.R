@@ -54,7 +54,7 @@
 #' @importFrom Matrix t
 #' @importFrom S4Vectors SimpleList DataFrame
 #' @importFrom stats model.matrix contrasts
-#' @importFrom miloR Milo
+#' @importFrom miloR Milo nhoods<-
 #'
 #' @export
 vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(
@@ -84,7 +84,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     .typeCheck(extract_cols, "character")
     # determ the value of pbs
     if (is(milo, "Milo")) {
-        pbs <- miloR::nhoods(milo)
+        pbs <- nhoods(milo)
     } else {
         pbs <- .getPbs(pbs, col_to_bulk, milo, verbose)
     }
@@ -222,7 +222,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #' @return Milo object with VDJ feature space stored in its assay
 #' @include getPbs.R
 #' @import SingleCellExperiment
-#' @importFrom miloR Milo
+#' @importFrom miloR Milo nhoods<-
 #' @importFrom rlang abort
 #' @importFrom Matrix t
 #' @importFrom S4Vectors SimpleList DataFrame

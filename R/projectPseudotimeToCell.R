@@ -65,6 +65,7 @@
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
 #' @importFrom S4Vectors metadata
+#' @importFrom miloR nhoods<-
 #' @export
 projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "", verbose = TRUE) {
     if (is.null(term_states)) {
@@ -76,9 +77,9 @@ projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotim
             term_states <- metadata(pb_milo)$branch.tips
         }
     }
-    nhood <- miloR::nhoods(pb_milo) # peudobulk x cells
+    nhood <- nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood
-    nhoodsum <- apply(miloR::nhoods(pb_milo), 2, sum)
+    nhoodsum <- apply(nhoods(pb_milo), 2, sum)
     cdata <- milo[, nhoodsum > 0]
     if (verbose) {
         message(sprintf(
