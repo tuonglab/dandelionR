@@ -30,8 +30,8 @@ demo dataset derived from Suo et al., 2024, \emph{Nature Biotechnology}.\cr
 This dataset is used in vignettes to demonstrate workflows for
 V(D)J analysis.\cr
 For details, see the original publication at
-\url{https://www.nature.com/articles/s41587-023-01734-7}.\cr The original
-files are available at
+\url{https://www.nature.com/articles/s41587-023-01734-7}.\cr
+The original files are available at
 \url{https://github.com/zktuong/dandelion-demo-files}.
 }
 \examples{

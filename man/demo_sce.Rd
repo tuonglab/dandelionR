@@ -18,8 +18,8 @@ Cell type annotations.
 }
 }
 \item{\code{int_colData}}{
-A \code{DataFrame} containing additional assay metadata important for furthe
-r analysis. Includes:
+A \code{DataFrame} containing additional assay metadata important for further
+analysis. Includes:
 \itemize{
 \item{\code{X_scvi}}: A dimensionality reduction matrix from the scVI
 model.
@@ -41,9 +41,8 @@ Suo et al., 2024, \emph{Nature Biotechnology}.\cr
 This dataset is used in vignettes to demonstrate workflows for V(D)J
 analysis.\cr For details, see the original
 publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
-The original Lymphoid cells data in
-h5ad format is available at \url{https://developmental.cellatlas.io/
-fetal-immune}.
+The original Lymphoid cells data in h5ad format is available at
+\url{https://developmental.cellatlas.io/fetal-immune}.
 }
 \examples{
 data(demo_sce)

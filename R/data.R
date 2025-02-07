@@ -1,9 +1,9 @@
 #' Example Dataset for V(D)J Analysis
 #'
 #' The `sce_vdj` object is a down-sampled demo dataset derived from
-#'  Suo et al., 2024, *Nature Biotechnology*. \cr
+#' Suo et al., 2024, *Nature Biotechnology*. \cr
 #' This dataset is used in vignettes to demonstrate workflows for V(D)J
-#'  analysis. \cr For details, see the original
+#' analysis. \cr For details, see the original
 #' publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
 #'
 #' @docType data
@@ -64,13 +64,12 @@
 #' Example SCE Dataset that does not contain V(D)J information
 #'
 #' The `demo_sce` object is a down-sampled demo dataset derived from
-#'  Suo et al., 2024, *Nature Biotechnology*.\cr
+#' Suo et al., 2024, *Nature Biotechnology*.\cr
 #' This dataset is used in vignettes to demonstrate workflows for V(D)J
-#'  analysis.\cr For details, see the original
+#' analysis.\cr For details, see the original
 #' publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
-#' The original Lymphoid cells data in
-#' h5ad format is available at \url{https://developmental.cellatlas.io/
-#' fetal-immune}.
+#' The original Lymphoid cells data in h5ad format is available at
+#' \url{https://developmental.cellatlas.io/fetal-immune}.
 #'
 #' @docType data
 #' @usage data(demo_sce)
@@ -87,8 +86,8 @@
 #'     }
 #'   }
 #'   \item{\code{int_colData}}{
-#'     A `DataFrame` containing additional assay metadata important for furthe
-#'     r analysis. Includes:
+#'     A `DataFrame` containing additional assay metadata important for further
+#'     analysis. Includes:
 #'     \itemize{
 #'       \item{\code{X_scvi}}: A dimensionality reduction matrix from the scVI
 #'        model.
@@ -106,13 +105,13 @@
 #' Example AIRR Dataset for V(D)J Analysis
 #'
 #' The `demo_airr` object is a list of AIRR data frames from a down-sampled
-#'  demo dataset derived from Suo et al., 2024, *Nature Biotechnology*.\cr
+#' demo dataset derived from Suo et al., 2024, *Nature Biotechnology*.\cr
 #' This dataset is used in vignettes to demonstrate workflows for
-#'  V(D)J analysis.\cr
+#' V(D)J analysis.\cr
 #' For details, see the original publication at
-#'  \url{https://www.nature.com/articles/s41587-023-01734-7}.\cr The original
-#'   files are available at
-#'  \url{https://github.com/zktuong/dandelion-demo-files}.
+#' \url{https://www.nature.com/articles/s41587-023-01734-7}.\cr
+#' The original files are available at
+#' \url{https://github.com/zktuong/dandelion-demo-files}.
 #'
 #' @docType data
 #' @usage data(demo_airr)
@@ -129,7 +128,7 @@
 #' }
 #'
 #' @source Suo et al., 2024, *Nature Biotechnology*. \cr
-#'  \url{https://www.nature.com/articles/s41587-023-01734-7}.
+#' \url{https://www.nature.com/articles/s41587-023-01734-7}.
 #' @examples
 #' data(demo_airr)
 "demo_airr"
