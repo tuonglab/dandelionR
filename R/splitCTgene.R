@@ -11,6 +11,7 @@ splitCTgene <- function(sce) {
     # split with '.'
     CTgene <- lapply(CTgene, function(x) lapply(x, strsplit, split = "[.]"))
     CTgene <- .collapse_nested_list(CTgene)
+    return(CTgene)
     # names(CTgene) <- NULL # this is a list containing `ncol()` sublists,
     # where each sublist contains two character vectors: the first represent
     # TRA the second represent TRB
@@ -59,21 +60,12 @@ chainAssign <- function(vec, num) {
 #' @keywords internal
 #' @return collapsed list
 .collapse_nested_list <- function(input_list) {
-    lapply(input_list, function(sublist) {
-        if (is.list(sublist)) {
-            # Check if all elements are also lists
-            all_are_lists <- TRUE
-            for (item in sublist) {
-                if (!is.list(item)) { # nocov start
-                    all_are_lists <- FALSE
-                    break
-                } # nocov end
-            }
-            # If all elements are lists, unlist one level
-            if (all_are_lists) {
-                return(unlist(sublist, recursive = FALSE))
-            }
-        }
-        return(sublist) # nocov
-    })
+  all_are_lists <- all(vapply(input_list, function(sublist){
+    all(vapply(sublist, is.list, FUN.VALUE = logical(1))) & is.list(sublist)
+  }, FUN.VALUE = logical(1)))
+  # If all elements are lists, unlist one level
+  if (all_are_lists) {
+    return(.collapse_nested_list(unlist(input_list, recursive = FALSE)))
+  }
+  return(input_list) # nocov
 }
