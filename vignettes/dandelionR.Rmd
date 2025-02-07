@@ -55,6 +55,7 @@ devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
 
 In a standard analysis workflow in R, users probably choose to read in their 
 VDJ data with [scRepertoire](https://github.com/ncborcherding/scRepertoire). 
+
 In this vignette, we will demonstrate how to perform TCR trajectory analysis 
 starting from 'raw' data i.e. just a standard single-cell gene expression data 
 (stored in `SingleCellExperiment`) and VDJ data (in AIRR format).
@@ -83,14 +84,17 @@ library(scater)
 Due to size limitations of the package, we have provided a very trimmed down 
 version of the demo data to ~2000 cells. The full dataset can be found here 
 accordingly: 
-GEX - https://developmental.cellatlas.io/fetal-immune 
-(Lymphoid Cells) 
-and VDJ - https://github.com/zktuong/dandelion-demo-files/ 
-is in the dandelion_manuscript/data/dandelion-remap folder.
+
+GEX (Lymphoid Cells) - https://developmental.cellatlas.io/fetal-immune 
+
+VDJ - https://github.com/zktuong/dandelion-demo-files/ 
+
+The VDJ data is in the dandelion_manuscript/data/dandelion-remap folder.
 
 Check out the other vignette for an example dataset that starts from the 
 original `dandelion` output associated with the original 
 [manuscript](https://www.nature.com/articles/s41587-023-01734-7).
+
 ```{r, include=FALSE}
 vignette("vignette_reproduce_original")
 ```

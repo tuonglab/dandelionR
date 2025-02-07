@@ -36,9 +36,10 @@ library(scater)
 ```
 
 ## Load data
-First, we will load the demo data. This is a down-sampled dataset from the 
-[Suo et al 2024](https://www.nature.com/articles/s41587-023-01734-7) 
-paper. It contains 10,000 cells with the TCR information and the dimensionality 
+First, we will load the demo data. This is a down-sampled dataset from
+[Suo et al 2024](https://www.nature.com/articles/s41587-023-01734-7).
+
+It contains 10,000 cells with the TCR information and the dimensionality 
 reduced data (scVI) that we need for this tutorial. The gene expression matrix 
 is not required for this tutorial so it is not included in the demo data. We 
 will show in a separate tutorial how to start with data from `scRepertoire`.
