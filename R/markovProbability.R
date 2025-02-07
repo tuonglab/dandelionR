@@ -83,7 +83,7 @@ markovProbability <- function(
         multiscale <- .minMaxScale(multiscale)
     }
     # sample waypoints to construct markov chain
-    waypoints <- .maxMinSampling(multiscale, num_waypoints = 500, verbose = verbose)
+    waypoints <- .maxMinSampling(datas = multiscale, num_waypoints = 500)
     waypoints <- unique(c(root_cell, waypoints, terminal_state))
     # calculate probabilities
     probabilities_terminal <- differentiationProbabilities(multiscale[waypoints, ],
