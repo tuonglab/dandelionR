@@ -10,7 +10,9 @@
 #' @param pseudotime_key Character. The name of the column in `colData` that contains the inferred pseudotime.
 #' @param scale_components Logical. If `TRUE`, the components will be scaled before constructing the Markov chain. Default is `FALSE`.
 #' @param num_waypoints Integer. The number of waypoints to sample when constructing the Markov chain. Default is `500L`.
-#' @param verbose Boolean, whether to print messages/warnings.
+#' @param n_eigs integer, default is NULL. Number of eigen vectors to use.
+#' - If is not specified, the number of eigen vectors will be determined using
+#'  the eigen gap.
 #' @examples
 #' data(sce_vdj)
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
@@ -61,7 +63,7 @@
 markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime", scale_components = TRUE,
-    num_waypoints = 500, verbose = TRUE) {
+    num_waypoints = 500, n_eigs = NULL) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
@@ -76,7 +78,7 @@ markovProbability <- function(
     }
 
     # scale data
-    multiscale <- .determineMultiscaleSpace(diffusionmap)
+    multiscale <- .determineMultiscaleSpace(diffusionmap, n_eigs = n_eigs)
     if (scale_components) {
         multiscale <- .minMaxScale(multiscale)
     }
