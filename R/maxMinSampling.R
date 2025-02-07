@@ -38,7 +38,7 @@
   dists[, 1] <- abs(vecs - vecs[iter.set])
   iterdists <- list(iter.set = iter.set, dists = dists)
   iterdists<- Reduce(function(iterdists,k){
-    .findNewWaypoints(iterdists, k, vec = vecs, ind = ind)
+    .findNewWaypoints(iterdists, k, vecs = vecs, ind = ind, datas = datas)
   }, seq_len(no.iterations-1), iterdists)
   waypoints <- c(waypoints, iterdists$iter.set)
   return(waypoints)
@@ -55,7 +55,7 @@
 #' @param ind colnames
 #' @keywords internal
 #' @return a list containing updated distance matrix and new waypoints
-.findNewWaypoints <- function(iterdists, k, vecs, ind)
+.findNewWaypoints <- function(iterdists, k, vecs, ind, datas)
 {
   iter.set <- iterdists$iter.set
   dists <- iterdists$dists
