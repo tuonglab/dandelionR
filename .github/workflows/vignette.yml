@@ -125,7 +125,9 @@ jobs:
           pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
           # Report deployed site URL
-          deployed_url <- file.path(pkg$meta$url, subdir)
+          url="https://tuonglab.github.io/dandelionR/"
+          # deployed_url <- file.path(pkg$meta$url, subdir)
+          deployed_url <- file.path(url, subdir)
           cat(sprintf('url=%s', deployed_url), file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
 
       - name: Notify pkgdown deployment
