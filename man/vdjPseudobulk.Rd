@@ -41,7 +41,7 @@ vdjPseudobulk(
 \item If \code{NULL}, uses column names such as \code{v_call_VDJ} instead of \code{v_call_abT_VDJ}.
 }}
 
-\item{col_to_take}{Optional character or list of characters. Specifies \code{obs} column(s) to identify the most common value for each pseudobulk. Default is \code{NULL}.}
+\item{col_to_take}{Optional character or vector of characters. Specifies names of colData of milo that need to identify the most common value for each pseudobulk Default is \code{NULL}.}
 
 \item{normalise}{Logical. If \code{TRUE}, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is \code{TRUE}.}
 

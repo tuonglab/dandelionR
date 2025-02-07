@@ -61,25 +61,49 @@
     # prepare per-pseudobulk calls of specified metadata columns
     if (!is.null(col_to_take)) {
         pbs.col <- DataFrame()
-        for (anno_col in col_to_take) {
-            fa <- as.factor(colData(milo)[[anno_col]])
-            fa <- data.frame(fa)
-            anno.dummies <- model.matrix(~ . - 1, data = fa, contrasts.arg = lapply(fa,
-                contrasts,
-                contrasts = FALSE
-            ))
-            anno.count <- Matrix::t(pbs) %*% anno.dummies # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
-            anno.sum <- apply(anno.count, 1, sum)
-            anno.frac <- anno.count / anno.sum
-            anno.frac <- as.matrix(anno.frac)
-            anno.frac <- DataFrame(anno.frac)
-            colnames(anno.frac) <- colnames(anno.dummies)
-            pbs.col[anno_col] <- colnames(anno.frac)[apply(anno.frac, 1, which.max)]
-            pbs.col[paste0(anno_col, "_fraction")] <- apply(anno.frac, 1, max)
-        }
+        pbs.col<-Reduce(function(pbs.col, anno_col){
+          pbs.col<-.getPbsPerCol(pbs.col, anno_col, milo, pbs)
+          return(pbs.col)
+          }, col_to_take, pbs.col)
     }
     # report the number of cells for each pseudobulk ensure pbs is an array so
     # that it sums into a vector that can go in easily
     pbs.col["cell_count"] <- apply(pbs, 2, sum)
     return(pbs.col)
 }
+
+
+
+#' .getPbsPerCol
+#' 
+#' function used in Reduce to get the PbsCol
+#' @param pbs.col DataFrame object used to store the result of each iteration
+#' @param anno_col colname where to generate the metadata from
+#' @param milo milo or SingleCellExperiment objects provided by user
+#' @param pbs dgeMatrix, cell x pseudobulk binary matrix
+#' @importFrom Matrix t
+#' @importFrom S4Vectors DataFrame
+#' @importFrom stats model.matrix contrasts
+#' @keywords internal
+#' @return DataFrame object, serve as part of metadata of the new milo object
+.getPbsPerCol <- function(pbs.col, anno_col, milo, pbs)
+{
+  fa <- as.factor(colData(milo)[[anno_col]])
+  fa <- data.frame(fa)
+  anno.dummies <- model.matrix(~ . - 1, data = fa,
+                               contrasts.arg = lapply(fa,
+                                                      contrasts,
+                                                      contrasts = FALSE
+                               ))
+  anno.count <- Matrix::t(pbs) %*% anno.dummies 
+  # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
+  anno.sum <- apply(anno.count, 1, sum)
+  anno.frac <- anno.count / anno.sum
+  anno.frac <- as.matrix(anno.frac)
+  anno.frac <- DataFrame(anno.frac)
+  colnames(anno.frac) <- colnames(anno.dummies)
+  pbs.col[anno_col] <- colnames(anno.frac)[apply(anno.frac, 1, which.max)]
+  pbs.col[paste0(anno_col, "_fraction")] <- apply(anno.frac, 1, max)
+  return(pbs.col)
+}
+

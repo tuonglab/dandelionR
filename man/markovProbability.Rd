@@ -14,7 +14,7 @@ markovProbability(
   pseudotime_key = "pseudotime",
   scale_components = TRUE,
   num_waypoints = 500,
-  verbose = TRUE
+  n_eigs = NULL
 )
 }
 \arguments{
@@ -36,7 +36,11 @@ markovProbability(
 
 \item{num_waypoints}{Integer. The number of waypoints to sample when constructing the Markov chain. Default is \code{500L}.}
 
-\item{verbose}{Boolean, whether to print messages/warnings.}
+\item{n_eigs}{integer, default is NULL. Number of eigen vectors to use.
+\itemize{
+\item If is not specified, the number of eigen vectors will be determined using
+the eigen gap.
+}}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in its colData

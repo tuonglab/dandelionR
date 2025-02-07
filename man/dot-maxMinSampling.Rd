@@ -4,10 +4,10 @@
 \alias{.maxMinSampling}
 \title{.maxMinSampling}
 \usage{
-.maxMinSampling(data, num_waypoints, verbose = TRUE)
+.maxMinSampling(datas, num_waypoints)
 }
 \arguments{
-\item{data}{data matrix along which to sample the waypoints, usually diffusion components}
+\item{datas}{data matrix along which to sample the waypoints, usually diffusion components}
 
 \item{num_waypoints}{number of waypoints to sample}
 

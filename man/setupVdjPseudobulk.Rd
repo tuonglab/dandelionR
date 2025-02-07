@@ -24,54 +24,73 @@ setupVdjPseudobulk(
 )
 }
 \arguments{
-\item{sce}{A \code{SingleCellExperiment} object. V(D)J data should be contained in \code{colData} for filtering.}
+\item{sce}{A \code{SingleCellExperiment} object. V(D)J data should be contained
+in \code{colData} for filtering.}
 
-\item{mode_option}{Optional character. Specifies the mode for extracting V(D)J genes.
+\item{mode_option}{Optional character. Specifies the mode for extracting
+V(D)J genes.
 If \code{NULL}, \code{extract_cols} must be specified. Default is \code{NULL}.}
 
-\item{already.productive}{Logical. Whether the data has already been filtered for productivity.
+\item{already.productive}{Logical. Whether the data has already been filtered
+for productivity.
 If \code{TRUE}, skips productivity filtering. Default is \code{FALSE}.}
 
-\item{productive_cols}{Character vector. Names of \code{colData} columns used for productivity filtering.
+\item{productive_cols}{Character vector. Names of \code{colData} columns used for
+productivity filtering.
 Default is \code{NULL}.}
 
-\item{productive_vj}{Logical. If \code{TRUE}, retains cells where the main VJ chain is productive.
+\item{productive_vj}{Logical. If \code{TRUE}, retains cells where the main
+VJ chain is productive.
 Default is \code{TRUE}.}
 
-\item{productive_vdj}{Logical. If \code{TRUE}, retains cells where the main VDJ chain is productive.
+\item{productive_vdj}{Logical. If \code{TRUE}, retains cells where the
+main VDJ chain is productive.
 Default is \code{TRUE}.}
 
-\item{allowed_chain_status}{Character vector. Specifies chain statuses to retain. Valid options
+\item{allowed_chain_status}{Character vector. Specifies chain statuses to
+retain. Valid options
 include \code{c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ', 'Orphan VDJ-exception')}. Default is \code{NULL}.}
 
-\item{subsetby}{Character. Name of a \code{colData} column for subsetting. Default is \code{NULL}.}
+\item{subsetby}{Character. Name of a \code{colData} column for subsetting.
+Default is \code{NULL}.}
 
-\item{groups}{Character vector. Specifies the subset condition for filtering. Default is \code{NULL}.}
+\item{groups}{Character vector. Specifies the subset condition for filtering.
+Default is \code{NULL}.}
 
-\item{extract_cols}{Character vector. Names of \code{colData} columns where V(D)J information is
+\item{extract_cols}{Character vector. Names of \code{colData} columns where V(D)J
+information is
 stored, used instead of the standard columns. Default is \code{NULL}.}
 
-\item{filter_unmapped}{Logic. Whether to filter unmapped data. Default is TRUE.}
+\item{filter_unmapped}{Logic. Whether to filter unmapped data. Default
+is TRUE.}
 
-\item{check_vj_mapping}{Logic vector. Whether to check for VJ mapping. Default
-is \code{c(TRUE, TRUE)}.
+\item{check_vj_mapping}{Logic vector. Whether to check for VJ mapping.
+Default is \code{c(TRUE, TRUE)}.
 \itemize{
-\item If the first element is TRUE, function will filter the unmapped data in V gene of the VJ chain
-\item If the second element is TRUE, function will filter the unmapped data in J gene of the VJ chain
+\item If the first element is TRUE, function will filter the unmapped data in V
+gene of the VJ chain
+\item If the second element is TRUE, function will filter the unmapped data in J
+gene of the VJ chain
 }}
 
-\item{check_vdj_mapping}{Logic vector. Specifies columns to check for VDJ mapping. Default
+\item{check_vdj_mapping}{Logic vector. Specifies columns to check for
+VDJ mapping. Default
 is \verb{c(TRUE, FALSE, 'TRUE)}.
 \itemize{
-\item If the first element is TRUE, function will filter the unmapped data in V gene of the VDJ chain
-\item If the second element is TRUE, function will filter the unmapped data in D gene of the VDJ chain
-\item If the third element is TRUE, function will filter the unmapped data in J gene of the VDJ chain
+\item If the first element is TRUE, function will filter the unmapped data in V
+gene of the VDJ chain
+\item If the second element is TRUE, function will filter the unmapped data in D
+gene of the VDJ chain
+\item If the third element is TRUE, function will filter the unmapped data in J
+gene of the VDJ chain
 }}
 
-\item{check_extract_cols_mapping}{Character vector. Specifies columns related to \code{extract_cols}
+\item{check_extract_cols_mapping}{Character vector. Specifies columns related
+to \code{extract_cols}
 for mapping checks. Default is \code{NULL}.}
 
-\item{remove_missing}{Logical. If \code{TRUE}, removes cells with contigs matching the filter.
+\item{remove_missing}{Logical. If \code{TRUE}, removes cells with contigs matching
+the filter.
 If \code{FALSE}, masks them with uniform values. Default is \code{TRUE}.}
 
 \item{verbose}{Logical. Whether to print messages. Default is \code{TRUE}.}
@@ -80,8 +99,9 @@ If \code{FALSE}, masks them with uniform values. Default is \code{TRUE}.}
 filtered SingleCellExperiment object
 }
 \description{
-This function preprocesses single-cell V(D)J sequencing data for pseudobulk analysis. It filters data based
-on productivity and chain status, subsets data, extracts main V(D)J genes, and removes unmapped entries.
+This function preprocesses single-cell V(D)J sequencing data for
+pseudobulk analysis. It filters data based on productivity and chain status,
+subsets data, extracts main V(D)J genes, and removes unmapped entries.
 }
 \details{
 The function performs the following preprocessing steps:
@@ -89,20 +109,28 @@ The function performs the following preprocessing steps:
 \item \strong{Productivity Filtering}:
 \itemize{
 \item Skipped if \code{already.productive = TRUE}.
-\item Filters cells based on productivity using \code{productive_cols} or standard \code{colData} columns named \verb{productive_\{mode_option\}_\{type\}} (where \code{type} is 'VDJ' or 'VJ').
+\item Filters cells based on productivity using \code{productive_cols} or standard
+\code{colData} columns named \verb{productive_\{mode_option\}_\{type\}} (where \code{type}
+is 'VDJ' or 'VJ').
 \item \emph{mode_option}
 \itemize{
-\item function will check colData(s) named \verb{productive_\{mode_option\}_\{type\}}, where type should be 'VDJ' or 'VJ' or both, depending on values of productive_vj and productive_vdj.
-\item If set as \code{NULl}, the function needs the option 'extract_cols' to be specified
+\item function will check colData(s) named
+\verb{productive_\{mode_option\}_\{type\}}, where type should be 'VDJ' or 'VJ'
+or both, depending on values of productive_vj and productive_vdj.
+\item If set as \code{NULl}, the function needs the option 'extract_cols' to be
+specified
 }
 \item \emph{productive_cols}
 \itemize{
-\item must be be specified when productivity filtering is need to conduct and mode_option is NULL.
-\item where VDJ/VJ information is stored so that this will be used instead of the standard columns.
+\item must be be specified when productivity filtering is need to conduct
+and mode_option is NULL.
+\item where VDJ/VJ information is stored so that this will be used
+instead of the standard columns.
 }
 \item \emph{productive_vj, productive_vdj}
 \itemize{
-\item If \code{TRUE}, cell will only be kept if the main V(D)J chain is productive
+\item If \code{TRUE}, cell will only be kept if the main V(D)J chain
+is productive
 }
 }
 \item \strong{Chain Status Filtering}:
@@ -116,12 +144,14 @@ The function performs the following preprocessing steps:
 }
 \item \strong{Main V(D)J Extraction}:
 \itemize{
-\item Uses \code{extract_cols} to specify custom columns for extracting V(D)J information.
+\item Uses \code{extract_cols} to specify custom columns for
+extracting V(D)J information.
 }
 \item \strong{Unmapped Data Filtering}:
 \itemize{
 \item decided to removes or masks cells based on \code{filter_unmapped}.
-\item Checks specific columns for unclear mappings using \code{check_vj_mapping}, \code{check_vdj_mapping}, or \code{check_extract_cols_mapping}.
+\item Checks specific columns for unclear mappings using \code{check_vj_mapping},
+\code{check_vdj_mapping}, or \code{check_extract_cols_mapping}.
 \item \emph{filter_unmapped}
 \itemize{
 \item pattern to be filtered from object.
@@ -129,16 +159,21 @@ The function performs the following preprocessing steps:
 }
 \item \emph{check_vj_mapping, check_vdj_mapping}
 \itemize{
-\item only \code{colData} specified by these arguments (\code{check_vj_mapping} and \code{check_vdj_mapping}) will be checked for unclear mappings
+\item only \code{colData} specified by these arguments
+(\code{check_vj_mapping} and \code{check_vdj_mapping}) will be checked
+for unclear mappings
 }
 \item \emph{check_extract_cols_mapping, related to extract_cols}
 \itemize{
-\item Only \code{colData} specified by the argument will be checked for unclear mapping, the colData should first specified by extract_cols
+\item Only \code{colData} specified by the argument will be checked for
+unclear mapping, the colData should first specified by extract_cols
 }
 \item remove_missing
 \itemize{
-\item If \code{TRUE}, will remove cells with contigs matching the filter from the object.
-\item If \code{FALSE}, will mask them with a uniform value dependent on the column name.
+\item If \code{TRUE}, will remove cells with contigs matching the filter from the
+object.
+\item If \code{FALSE}, will mask them with a uniform value dependent on
+the column name.
 }
 }
 }
