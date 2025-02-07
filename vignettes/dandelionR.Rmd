@@ -1,6 +1,5 @@
 ---
-title: "Single-cell Immune Repertoire Trajectory Analysis 
-Starting From scRepertoire"
+title: "Starting From scRepertoire"
 output:
   BiocStyle::html_document:
     toc: true
@@ -12,8 +11,7 @@ knitr:
     fig.align: 'left'
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{Single-cell Immune Repertoire Trajectory Analysis 
-  Starting From scRepertoire}
+  %\VignetteIndexEntry{Starting From scRepertoire}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
