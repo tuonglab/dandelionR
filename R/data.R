@@ -121,9 +121,7 @@
 #'     List of `DataFrames` containing the standardised AIRR data for
 #'      each sample. \cr
 #'     For information of AIRR rearrangements, see the AIRR Community
-#'      standards at
-#'     \url{https://docs.airr-community.org/en/
-#'     stable/datarep/rearrangements.html}.
+#'      standards at \url{https://docs.airr-community.org/}.
 #'   }
 #' }
 #'
