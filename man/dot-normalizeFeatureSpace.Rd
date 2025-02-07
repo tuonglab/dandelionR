@@ -2,7 +2,7 @@
 % Please edit documentation in R/vdjPseudobulk.R
 \name{.normalizeFeatureSpace}
 \alias{.normalizeFeatureSpace}
-\title{Normalize Feature Space, make sure the sum of each V, D, and J gene within a pseudobulk equals to 1}
+\title{Normalize Feature Space}
 \usage{
 .normalizeFeatureSpace(
   pseudo_vdj_feature,
@@ -13,13 +13,13 @@
 )
 }
 \arguments{
-\item{pseudo_vdj_feature}{constructed feature space, passed from vdjPseudobulk}
+\item{pseudo_vdj_feature}{constructed feature space}
 
 \item{extract_cols}{names of columns to extract the VDJ information}
 
 \item{min_count}{the minim count of a V/D/J gene}
 
-\item{renormalize}{Whether to renormalize the matrix after set the gene below min_count to 0}
+\item{renormalize}{Whether to renormalize the matrix}
 
 \item{milo}{Milo or SingleCellExperiment object provided by user}
 }
@@ -27,6 +27,6 @@
 normalized VDJ feature space
 }
 \description{
-Normalize Feature Space, make sure the sum of each V, D, and J gene within a pseudobulk equals to 1
+Make sure the sum of each V, D, and J gene within a pseudobulk equals to 1
 }
 \keyword{internal}

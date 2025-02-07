@@ -17,8 +17,6 @@
 constructed feature space
 }
 \description{
-perform matrix multiplication of pseudobulks by cell matrix by a cells by
-VJs matrix straight off by creating the cell by VJs matrix and skip the prefix
-stuff as the VJ genes will be unique in the columns
+Construct VDJ feature space
 }
 \keyword{internal}
