@@ -34,7 +34,7 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
     D_diffusion <- Reduce(function(dfm_j, j) {
         dfm_j <- Reduce(function(dfm_i, i) {
             .calDif(dfm_i, i,
-                j = j, eigenvectors = eigenvectors,
+                j = j, eigenvector = eigenvectors,
                 lambda_t = lambda_t, K = K
             )
         }, seq_len(n), init = dfm_j)
@@ -51,7 +51,7 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
 }
 
 
-#' function help to reconstruct diffustion distance using Reduce
+#' function help to reconstruct diffusion distance using Reduce
 #'
 #' @param dfm an nrow(eigenvectors) x nrow(eigenvectors) matrix
 #'  need to be filled with diffusion distance with iteration
@@ -62,8 +62,8 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
 #' @param K The number of the eigenvectors to be used in calculation
 #' @keywords internal
 #' @return updated diffusion distance matrix after one iteration
-.calDif <- function(dfm, i, j, eigenvectors, lambda_t, K) {
-    diff <- eigenvectors[i, seq_len(K)] - eigenvectors[j, seq_len(K)]
+.calDif <- function(dfm, i, j, eigenvector, lambda_t, K) {
+    diff <- eigenvector[i, seq_len(K)] - eigenvector[j, seq_len(K)]
     dfm[i, j] <- sqrt(sum(lambda_t * (diff^2)))
     dfm
 }

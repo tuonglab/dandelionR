@@ -12,10 +12,10 @@ the former iterations and the distance matrix used to find waypoints}
 
 \item{k}{the iteration number}
 
-\item{ind}{colnames}
-
-\item{vec}{a numeric vector used to calculate distance of waypoints to
+\item{vecs}{a numeric vector used to calculate distance of waypoints to
 each points}
+
+\item{ind}{colnames}
 }
 \value{
 a list containing updated distance matrix and new waypoints

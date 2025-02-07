@@ -52,7 +52,7 @@
 #' @param iterdists a list containing both waypoints deteted in
 #'  the former iterations and the distance matrix used to find waypoints
 #' @param k the iteration number
-#' @param vec a numeric vector used to calculate distance of waypoints to
+#' @param vecs a numeric vector used to calculate distance of waypoints to
 #'  each points
 #' @param ind colnames
 #' @keywords internal
