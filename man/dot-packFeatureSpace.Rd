@@ -2,7 +2,7 @@
 % Please edit documentation in R/vdjPseudobulk.R
 \name{.packFeatureSpace}
 \alias{.packFeatureSpace}
-\title{Pack the normalized featuer space into new Milo object}
+\title{Pack the normalized feature space into new Milo object}
 \usage{
 .packFeatureSpace(pbs, col_to_take, milo, pseudo_vdj_feature)
 }

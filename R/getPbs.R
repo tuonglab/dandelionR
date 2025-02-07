@@ -96,7 +96,7 @@
             contrasts = FALSE
         )
     )
-    anno.count <- Matrix::t(pbs) %*% anno.dummies
+    anno.count <- t(pbs) %*% anno.dummies
     # t(cell x  pseudo)   %*% (cell x element) = pseudo x element
     anno.sum <- apply(anno.count, 1, sum)
     anno.frac <- anno.count / anno.sum

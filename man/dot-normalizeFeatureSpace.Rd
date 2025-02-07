@@ -8,7 +8,7 @@
   pseudo_vdj_feature,
   extract_cols,
   min_count,
-  renormalise,
+  renormalize,
   milo
 )
 }
@@ -19,7 +19,7 @@
 
 \item{min_count}{the minim count of a V/D/J gene}
 
-\item{renormalise}{Whether to renormalise the matrix after set the gene below min_count to 0}
+\item{renormalize}{Whether to renormalize the matrix after set the gene below min_count to 0}
 
 \item{milo}{Milo or SingleCellExperiment object provided by user}
 }

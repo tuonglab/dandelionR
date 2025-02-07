@@ -52,7 +52,7 @@
     # anisotropic Diffusion Kernel
     aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2) * 0.5 -
         (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
-    W <- Matrix::sparseMatrix(
+    W <- sparseMatrix(
         i = ids$i, j = ids$j, x = aff,
         dims = dim(KNN), giveCsparse = TRUE
     )
@@ -77,7 +77,7 @@
     nbrs <- makeKNNGraph(wp_data, k = knn.)
     ## calculate distance of each edge
     distance_m <- as.matrix(dist(wp_data))
-    edge_indices <- ends(nbrs, igraph::E(nbrs))
+    edge_indices <- ends(nbrs, E(nbrs))
     weights <- vapply(seq_len(nrow(edge_indices)), function(i) {
         ### Get the nodes connected by each edge
         node1 <- as.numeric(edge_indices[i, 1])

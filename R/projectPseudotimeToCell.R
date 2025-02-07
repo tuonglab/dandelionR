@@ -64,7 +64,6 @@
 #' @return subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
 #' @import SingleCellExperiment
 #' @importFrom SummarizedExperiment colData<-
-#' @importFrom miloR nhoods<-
 #' @importFrom S4Vectors metadata
 #' @export
 projectPseudotimeToCell <- function(milo, pb_milo, term_states = NULL, pseudotime_key = "pseudotime", suffix = "", verbose = TRUE) {

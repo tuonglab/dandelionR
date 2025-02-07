@@ -2,7 +2,7 @@
 % Please edit documentation in R/vdjPseudobulk.R
 \name{.determExtractColN}
 \alias{.determExtractColN}
-\title{determ the names of columns in the colData where the main VDJ information stores}
+\title{determine the names of columns in the colData where the main VDJ information stores}
 \usage{
 .determExtractColN(extract_cols, mode_option, milo)
 }
@@ -17,6 +17,6 @@
 a character vector stores the names of columns in the colData where the main VDJ information stores
 }
 \description{
-determ the names of columns in the colData where the main VDJ information stores
+determine the names of columns in the colData where the main VDJ information stores
 }
 \keyword{internal}

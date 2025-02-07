@@ -11,7 +11,7 @@
 #'   - If `milo` is a `SingleCellExperiment` object, either `pbs` or `col_to_bulk` must be provided.
 #' @param col_to_take Optional character or vector of characters. Specifies names of colData of milo that need to identify the most common value for each pseudobulk Default is `NULL`.
 #' @param normalise Logical. If `TRUE`, scales the counts of each V(D)J gene group to 1 for each pseudobulk. Default is `TRUE`.
-#' @param renormalise Logical. If `TRUE`, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when `setupVdjPseudobulk()` was run with `remove_missing = FALSE`. Default is `FALSE`.
+#' @param renormalize Logical. If `TRUE`, rescales the counts of each V(D)J gene group to 1 for each pseudobulk after removing 'missing' calls. Useful when `setupVdjPseudobulk()` was run with `remove_missing = FALSE`. Default is `FALSE`.
 #' @param min_count Integer. Sets pseudobulk counts in V(D)J gene groups with fewer than this many non-missing calls to 0. Relevant when `normalise = TRUE`. Default is `1`.
 #' @param mode_option Character. Specifies the mode for extracting V(D)J genes. Must be one of `c('B', 'abT', 'gdT')`. Default is `'abT'`.
 #'   - Note: This parameter is considered only when `extract_cols = NULL`.
@@ -25,7 +25,7 @@
 #'   - If `milo` is a `SingleCellExperiment` object, the user must provide either `pbs` or `col_to_bulk`.
 #' - **Normalization**:
 #'   - When `normalise = TRUE`, scales V(D)J counts to 1 for each pseudobulk group.
-#'   - When `renormalise = TRUE`, rescales the counts after removing 'missing' calls.
+#'   - When `renormalize = TRUE`, rescales the counts after removing 'missing' calls.
 #' - **Mode Selection**:
 #'   - If `extract_cols = NULL`, the function relies on `mode_option` to determine which V(D)J columns to extract.
 #' - **Filtering**:
@@ -54,7 +54,7 @@
 #' @importFrom Matrix t
 #' @importFrom S4Vectors SimpleList DataFrame
 #' @importFrom stats model.matrix contrasts
-#' @importFrom miloR Milo nhoods<-
+#' @importFrom miloR Milo
 #'
 #' @export
 vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c(
@@ -63,7 +63,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
                           ), mode_option = c(
                               "abT",
                               "gdT", "B"
-                          ), col_to_take = NULL, normalise = TRUE, renormalise = FALSE, min_count = 1L, verbose = TRUE) {
+                          ), col_to_take = NULL, normalise = TRUE, renormalize = FALSE, min_count = 1L, verbose = TRUE) {
     # type check
     if (!is(milo, "Milo") && !is(milo, "SingleCellExperiment")) {
         abort("Uncompatible data type, \nmilo msut be either Milo or SingleCellExperiment object") # nocov
@@ -76,7 +76,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
         abort("Inappropriate argument value: \ncol_to_take should within the name of coldata of milo") # nocov
     }
     .typeCheck(normalise, "logical")
-    .typeCheck(renormalise, "logical")
+    .typeCheck(renormalize, "logical")
     .typeCheck(min_count, "numeric")
     min_count <- as.integer(min_count)
     .typeCheck(mode_option, "character")
@@ -93,13 +93,13 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     # construct feature space and normalize it
     pseudo_vdj_feature <- .featureSpaceConstruct(milo, extract_cols, pbs)
     if (normalise) {
-        pseudo_vdj_feature <- .normalizeFeatureSpace(pseudo_vdj_feature, extract_cols, min_count, renormalise, milo)
+        pseudo_vdj_feature <- .normalizeFeatureSpace(pseudo_vdj_feature, extract_cols, min_count, renormalize, milo)
     }
     pb.milo <- .packFeatureSpace(pbs, col_to_take, milo, pseudo_vdj_feature)
     return(pb.milo)
 }
 
-#' determ the names of columns in the colData where the main VDJ information stores
+#' determine the names of columns in the colData where the main VDJ information stores
 #'
 #' @param extract_cols names of columns in the colData where the main VDJ information stores, passed from vdjPseudobulk
 #' @param mode_option  Specifies the mode for extracting V(D)J genes
@@ -126,7 +126,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #' Construct VDJ feature space
 #'
 #' perform matrix multiplication of pseudobulks by cell matrix by a cells by
-#' VJs matrix strat off by creating the cell by VJs matix skip the prefix
+#' VJs matrix straight off by creating the cell by VJs matrix and skip the prefix
 #' stuff as the VJ genes will be unique in the columns
 #' @param milo Milo or SingleCellExperiment object provided by user
 #' @param extract_cols columns of names where to extract the VDJ information
@@ -151,7 +151,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
         contrasts = FALSE
     )) # prevent reference level
     colnames(one_hot_encoded) <- gsub("^[^.]*\\main", "", colnames(one_hot_encoded))
-    pseudo_vdj_feature <- Matrix::t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
+    pseudo_vdj_feature <- t(t(one_hot_encoded) %*% pbs) #  an dgeMatrix with dim pseudobulk x vdj
     return(pseudo_vdj_feature)
 }
 #' Normalize Feature Space, make sure the sum of each V, D, and J gene within a pseudobulk equals to 1
@@ -159,17 +159,17 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #' @param pseudo_vdj_feature constructed feature space, passed from vdjPseudobulk
 #' @param extract_cols names of columns to extract the VDJ information
 #' @param min_count the minim count of a V/D/J gene
-#' @param renormalise Whether to renormalise the matrix after set the gene below min_count to 0
+#' @param renormalize Whether to renormalize the matrix after set the gene below min_count to 0
 #' @param milo Milo or SingleCellExperiment object provided by user
 #' @keywords internal
 #' @return normalized VDJ feature space
-.normalizeFeatureSpace <- function(pseudo_vdj_feature, extract_cols, min_count, renormalise, milo) {
+.normalizeFeatureSpace <- function(pseudo_vdj_feature, extract_cols, min_count, renormalize, milo) {
     ## identify any missing calls inserted by the setup, will end with
     ## _missing negate as we want to actually remove them later
     define.mask <- rep(TRUE, length(colnames(pseudo_vdj_feature)))
     define.mask[grep("_missing", colnames(pseudo_vdj_feature))] <- FALSE
     # loop over V(D)J categories
-    pseudo_vdj_feature <- Reduce(function(psef, col_n) .NormalizePerVDJ(psef, col_n, renormalise = renormalise, define.mask = define.mask, milo = milo, min_count = min_count), extract_cols, init = pseudo_vdj_feature)
+    pseudo_vdj_feature <- Reduce(function(psef, col_n) .normalizePerVDJ(psef, col_n, renormalize = renormalize, define.mask = define.mask, milo = milo, min_count = min_count), extract_cols, init = pseudo_vdj_feature)
     return(pseudo_vdj_feature)
 }
 
@@ -178,14 +178,14 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #'
 #' @param pseudo_vdj_feature constructed feature space, passed from vdjPseudobulk
 #' @param col_n name of column to extract the VDJ information
-#' @param renormalise Whether to renormalise the matrix after set the gene below min_count to 0
-#' @param define.mask logical vector determin whether the V/D/J gene should be mask when normalizing
+#' @param renormalize Whether to renormalize the matrix after set the gene below min_count to 0
+#' @param define.mask logical vector determine whether the V/D/J gene should be mask when normalizing
 #' @param milo Milo or SingleCellExperiment object provided by user
 #' @param min_count the minim count of a V/D/J gene
 #' @keywords internal
 #' @import SingleCellExperiment
 #' @return feature space normalized on specifed V/D/J gene
-.NormalizePerVDJ <- function(pseudo_vdj_feature, col_n, renormalise, define.mask, milo, min_count) {
+.normalizePerVDJ <- function(pseudo_vdj_feature, col_n, renormalize, define.mask, milo, min_count) {
     # identify columns holding genes belonging to the category and then
     # normalise the values to 1 for each pseudobulk
     group.mask <- colnames(pseudo_vdj_feature) %in% unique(colData(milo)[[col_n]])
@@ -197,7 +197,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     defined.min.counts <- define.count >= min_count
     # normalise the pseudobulks
     pseudo_vdj_feature[, group.define.mask] <- pseudo_vdj_feature[, group.define.mask] / define.count
-    if (renormalise) { # nocov start
+    if (renormalize) { # nocov start
         redefine.count <- apply(
             pseudo_vdj_feature[defined.min.counts, group.define.mask],
             1, sum
@@ -211,13 +211,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
     return(pseudo_vdj_feature)
 }
 
-
-
-
-
-
-
-#' Pack the normalized featuer space into new Milo object
+#' Pack the normalized feature space into new Milo object
 #'
 #' The metadata will derived from the original milo
 #' @param pbs cell x pseudobulk adjacent matrix
@@ -228,7 +222,7 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 #' @return Milo object with VDJ feature space stored in its assay
 #' @include getPbs.R
 #' @import SingleCellExperiment
-#' @importFrom miloR nhoods Milo
+#' @importFrom miloR Milo
 #' @importFrom rlang abort
 #' @importFrom Matrix t
 #' @importFrom S4Vectors SimpleList DataFrame
@@ -239,12 +233,12 @@ vdjPseudobulk <- function(milo, pbs = NULL, col_to_bulk = NULL, extract_cols = c
 
     # create a new SingelCellExperiment object as result
     pb.sce <- SingleCellExperiment(
-        assay = SimpleList(Feature_space = Matrix::t(pseudo_vdj_feature)),
+        assay = SimpleList(Feature_space = t(pseudo_vdj_feature)),
         rowData = DataFrame(row.names = colnames(pseudo_vdj_feature)), colData = pbs.col
     )
     # store pseudobulk assignment, as a sparse for storage efficiency transpose
     # as the original matrix is cells x pseudobulks
     pb.milo <- Milo(pb.sce)
-    nhoods(pb.milo) <- Matrix::t(pbs)
+    nhoods(pb.milo) <- t(pbs)
     return(pb.milo)
 }

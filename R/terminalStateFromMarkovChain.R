@@ -22,8 +22,8 @@
     dm_boudaries <- unique(apply(Transmat, 2, which.max), apply(Transmat, 2, which.min))
     ranks <- abs(Re(vecs[, which.max(Re(vals)), drop = FALSE]))
     # cutoff and intersection with the boundary cells
-    cutoff <- stats::qnorm(0.9999, mean = stats::median(ranks), sd = stats::median(abs(ranks -
-        stats::median(ranks))))
+    cutoff <- qnorm(0.9999, mean = median(ranks), sd = median(abs(ranks -
+        median(ranks))))
     # connect components of cells beyond cutoff
     cells <- which(ranks > cutoff)
     # Find connected components
