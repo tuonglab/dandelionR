@@ -50,6 +50,7 @@ Imports:
 Suggests:
     BiocStyle,
     knitr,
+    rmarkdown,
     RColorBrewer,
     scater,
     scRepertoire,
