@@ -10,7 +10,10 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::buildGraph(milo_object,
+    k = 50, d = 20,
+    reduced.dim = "X_scvi"
+)
 milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 # Construct Pseudobulked VDJ Feature Space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
@@ -43,10 +46,18 @@ test_that("projectPseudotimeToCell works correctly", {
 # Additional tests for edge cases
 test_that("projectPseudotimeToCell cannot work without pseudotime column", {
     # Test with wrong column
-    expect_error(projectPseudotimeToCell(milo_object, pb.milo, branch.tips, pseudotime_key = "wrong_pseudotime"), "subscript contains invalid names")
+    expect_error(
+        projectPseudotimeToCell(milo_object, pb.milo, branch.tips,
+            pseudotime_key = "wrong_pseudotime"
+        ),
+        "subscript contains invalid names"
+    )
     # Test with missing pseudotime
     colData(pb.milo)$pseudotime <- NULL
-    expect_error(projectPseudotimeToCell(milo_object, pb.milo, branch.tips), "subscript contains invalid names")
+    expect_error(
+        projectPseudotimeToCell(milo_object, pb.milo, branch.tips),
+        "subscript contains invalid names"
+    )
 })
 
 # Test for projectPseudotimeToCell without term_states

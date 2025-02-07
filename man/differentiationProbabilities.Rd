@@ -14,21 +14,26 @@ differentiationProbabilities(
 )
 }
 \arguments{
-\item{wp_data}{A multi-scale data matrix or data frame representing the waypoints.}
+\item{wp_data}{A multi-scale data matrix or data frame representing
+the waypoints.}
 
-\item{terminal_states}{Integer vector. Indices of the terminal states. Default is \code{NULL}.}
+\item{terminal_states}{Integer vector. Indices of the terminal states.
+Default is \code{NULL}.}
 
-\item{knn}{Integer. Number of nearest neighbors for graph construction. Default is \code{30L}.}
+\item{knn}{Integer. Number of nearest neighbors for graph construction.
+Default is \code{30L}.}
 
 \item{pseudotime}{Numeric vector. Pseudotime ordering of cells.}
 
-\item{waypoints}{Integer vector. Indices of selected waypoints used to construct the Markov chain.}
-
-\item{verbose}{Boolean, whether to print messages/warnings.}
+\item{waypoints}{Integer vector. Indices of selected waypoints used to
+construct the Markov chain.}
 }
 \value{
-A numeric matrix or data frame containing branch probabilities for each waypoint.
+A numeric matrix or data frame containing branch probabilities for
+each waypoint.
 }
 \description{
-This function calculates branch probabilities for differentiation trajectories based on a Markov chain constructed from waypoint data and pseudotime ordering.
+This function calculates branch probabilities for
+differentiation trajectories based on a Markov chain constructed from
+waypoint data and pseudotime ordering.
 }

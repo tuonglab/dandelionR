@@ -23,7 +23,8 @@
 #' Default is `TRUE`.
 #' @param allowed_chain_status Character vector. Specifies chain statuses to
 #'  retain. Valid options
-#' include `c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ', 'Orphan VDJ-exception')`. Default is `NULL`.
+#' include\code{`c('single pair', 'Extra pair', 'Extra pair-exception',
+#' 'Orphan VDJ', 'Orphan VDJ-exception')`}. Default is `NULL`.
 #' @param subsetby Character. Name of a `colData` column for subsetting.
 #'  Default is `NULL`.
 #' @param groups Character vector. Specifies the subset condition for filtering.
@@ -208,9 +209,10 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
             cnumber1 <- dim(sce)[2]
             message(sprintf("%d of cells filtered", cnumber0 - cnumber1))
         } else {
-            abort(
-                "When mode_option is NULL, the productive_cols must be specified."
-            )
+            abort(sprintf(
+                "When mode_option is NULL, the productive_cols %s",
+                "must be specified."
+            ))
         } # nocov end
     } else {
         if (is.null(productive_cols)) {
@@ -407,8 +409,8 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
     msg <- paste(extract_cols, collapse = ", ")
     if (!any(extract_cols %in% colnames(colData(sce)))) {
         message(sprintf(
-            "ColData does not exist, Creating %s colData based on column CTgene",
-            msg
+            "ColData does not exist, Creating %s %s",
+            msg, "colData based on column CTgene"
         ))
         if (!"CTgene" %in% colnames(colData(sce))) {
             abort(sprintf(paste0(

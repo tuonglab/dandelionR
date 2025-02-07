@@ -10,7 +10,10 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
+milo_object <- miloR::buildGraph(milo_object,
+    k = 50, d = 20,
+    reduced.dim = "X_scvi"
+)
 milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
 
 # Test for vdjPseudobulk
@@ -24,5 +27,8 @@ test_that("vdjPseudobulk works correctly with Milo object", {
 })
 
 test_that("vdjPseudobulk doesn't work with just any sce object", {
-    expect_error(vdjPseudobulk(sce_vdj, col_to_bulk = "anno_lvl_2_final_clean"), "object 'pbs.col' not found")
+    expect_error(
+        vdjPseudobulk(sce_vdj, col_to_bulk = "anno_lvl_2_final_clean"),
+        "object 'pbs.col' not found"
+    )
 })

@@ -23,13 +23,16 @@ miloUmap(
 
 \item{n_neighbors}{integer, with default 50L.
 \itemize{
-\item the size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation.
-\item Here, the goal is to create large enough neighborhoods to capture the local manifold structure to allow for hypersampling.
+\item the size of local neighborhood (in terms of number of
+neighboring sample points) used for manifold approximation.
+\item Here, the goal is to create large enough neighborhoods to capture
+the local manifold structure to allow for hypersampling.
 }}
 
 \item{metric}{character, with default 'euclidean'
 \itemize{
-\item the choice of metric used to measure distance to find nearest neighbors. Default is 'euclidean'.
+\item the choice of metric used to measure distance to find nearest neighbors.
+Default is 'euclidean'.
 }}
 
 \item{min_dist}{numeric, with default 0.3
@@ -54,8 +57,10 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
-milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20,
+ reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object,
+ reduced_dims = "X_scvi", d = 20)
 
 # Construct UMAP on Milo Neighbor Graph
 milo_object <- miloUmap(milo_object)

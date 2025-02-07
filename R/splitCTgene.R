@@ -1,6 +1,7 @@
 #' Split the V(D)J genes from `CTgene` column and store them separately.
 #'
-#' @param sce SingleCellExperiment object after conducting scRepertoire::combineTCR()
+#' @param sce SingleCellExperiment object after conducting
+#'  scRepertoire::combineTCR()
 #' @keywords internal
 #' @return list contain vector of VJ & VDJ genes from each cell
 #' @importFrom SummarizedExperiment colData<-

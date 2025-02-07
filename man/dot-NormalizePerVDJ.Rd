@@ -14,13 +14,16 @@
 )
 }
 \arguments{
-\item{pseudo_vdj_feature}{constructed feature space, passed from vdjPseudobulk}
+\item{pseudo_vdj_feature}{constructed feature space, passed
+from vdjPseudobulk}
 
 \item{col_n}{name of column to extract the VDJ information}
 
-\item{renormalise}{Whether to renormalise the matrix after set the gene below min_count to 0}
+\item{renormalise}{Whether to renormalise the matrix after set
+the gene below min_count to 0}
 
-\item{define.mask}{logical vector determin whether the V/D/J gene should be mask when normalizing}
+\item{define.mask}{logical vector determin whether the V/D/J gene should
+be mask when normalizing}
 
 \item{milo}{Milo or SingleCellExperiment object provided by user}
 

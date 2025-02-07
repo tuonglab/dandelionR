@@ -1,10 +1,14 @@
 #' Project Probabilities from Markov Chain to Pseudobulks
 #'
-#' This function projects probabilities calculated from a Markov chain onto each pseudobulk based on a diffusion distance matrix.
+#' This function projects probabilities calculated from a Markov chain onto
+#'  each pseudobulk based on a diffusion distance matrix.
 #'
-#' @param diffusionmap diffusion map, used to reconstruct diffustion distance matrix
-#' @param waypoints Integer vector. Indices of the waypoints used in the Markov chain.
-#' @param probabilities Numeric vector. Probabilities associated with the waypoints, calculated from the Markov chain.
+#' @param diffusionmap diffusion map, used to reconstruct
+#'  diffustion distance matrix
+#' @param waypoints Integer vector. Indices of the waypoints used in
+#'  the Markov chain.
+#' @param probabilities Numeric vector. Probabilities associated with
+#'  the waypoints, calculated from the Markov chain.
 #' @param t Numeric. The diffusion time to be used in the projection.
 #' @param verbose Boolean, whether to print messages/warnings.
 #' @importFrom destiny eigenvectors eigenvalues
@@ -16,7 +20,8 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
     }
     # Extract eigenvalues and eigenvectors from the DiffusionMap
     eigenvalues <- eigenvalues(diffusionmap) # vector of eigenvalues
-    eigenvectors <- eigenvectors(diffusionmap) # matrix of eigenvectors (each column is an eigenvector)
+    # matrix of eigenvectors (each column is an eigenvector)
+    eigenvectors <- eigenvectors(diffusionmap)
     # Set diffusion time `t` and the number of components `K` to use
     t <- 1 # diffusion time
     K <- min(length(eigenvalues), ncol(eigenvectors)) # use available components
@@ -28,7 +33,10 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
     # Calculate the pairwise diffusion distance
     D_diffusion <- Reduce(function(dfm_j, j) {
         dfm_j <- Reduce(function(dfm_i, i) {
-            .calDif(dfm_i, i, j = j, eigenvectors = eigenvectors, lambda_t = lambda_t, K = K)
+            .calDif(dfm_i, i,
+                j = j, eigenvectors = eigenvectors,
+                lambda_t = lambda_t, K = K
+            )
         }, seq_len(n), init = dfm_j)
         dfm_j
     }, seq_len(n), init = D_diffusion)

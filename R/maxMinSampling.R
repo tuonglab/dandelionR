@@ -2,7 +2,8 @@
 #'
 #' function for max min sampling of waypoints
 #'
-#' @param datas data matrix along which to sample the waypoints, usually diffusion components
+#' @param datas data matrix along which to sample the waypoints, usually
+#'  diffusion components
 #' @param num_waypoints number of waypoints to sample
 #' @param verbose logical, print progress
 #' @keywords internal

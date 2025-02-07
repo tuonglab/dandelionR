@@ -2,7 +2,8 @@
 % Please edit documentation in R/terminalStateFromMarkovChain.R
 \name{.terminalStateFromMarkovChain}
 \alias{.terminalStateFromMarkovChain}
-\title{Determine terminal states using Markov chain if terminal states are not provided.}
+\title{Determine terminal states using Markov chain if terminal states
+are not provided.}
 \usage{
 .terminalStateFromMarkovChain(
   Transmat,
@@ -27,6 +28,7 @@
 terminal_state
 }
 \description{
-Determine terminal states using Markov chain if terminal states are not provided.
+Determine terminal states using Markov chain if terminal states
+are not provided.
 }
 \keyword{internal}

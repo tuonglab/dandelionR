@@ -49,7 +49,8 @@ Default is \code{TRUE}.}
 
 \item{allowed_chain_status}{Character vector. Specifies chain statuses to
 retain. Valid options
-include \code{c('single pair', 'Extra pair', 'Extra pair-exception', 'Orphan VDJ', 'Orphan VDJ-exception')}. Default is \code{NULL}.}
+include\code{`c('single pair', 'Extra pair', 'Extra pair-exception',
+'Orphan VDJ', 'Orphan VDJ-exception')`}. Default is \code{NULL}.}
 
 \item{subsetby}{Character. Name of a \code{colData} column for subsetting.
 Default is \code{NULL}.}

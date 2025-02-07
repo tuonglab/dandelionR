@@ -8,23 +8,31 @@
 A \code{SingleCellExperiment} object with the following slots:
 \describe{
 \item{\code{list}}{
-List of \code{DataFrames} containing the standardised AIRR data for each sample.
-For information of AIRR rearrangements, see the AIRR Community standards at
-\url{https://docs.airr-community.org/en/stable/datarep/rearrangements.html}.
+List of \code{DataFrames} containing the standardised AIRR data for
+each sample. \cr
+For information of AIRR rearrangements, see the AIRR Community
+standards at
+\url{https://docs.airr-community.org/en/
+    stable/datarep/rearrangements.html}.
 }
 }
 }
 \source{
-Suo et al., 2024, \emph{Nature Biotechnology}. \url{https://www.nature.com/articles/s41587-023-01734-7}.
+Suo et al., 2024, \emph{Nature Biotechnology}. \cr
+\url{https://www.nature.com/articles/s41587-023-01734-7}.
 }
 \usage{
 data(demo_airr)
 }
 \description{
-The \code{demo_airr} object is a list of AIRR data frames from a down-sampled demo dataset derived from Suo et al.,
-2024, \emph{Nature Biotechnology}. This dataset is used in vignettes to demonstrate workflows for V(D)J analysis.
-For details, see the original publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The
-original files are available at \url{https://github.com/zktuong/dandelion-demo-files}.
+The \code{demo_airr} object is a list of AIRR data frames from a down-sampled
+demo dataset derived from Suo et al., 2024, \emph{Nature Biotechnology}.\cr
+This dataset is used in vignettes to demonstrate workflows for
+V(D)J analysis.\cr
+For details, see the original publication at
+\url{https://www.nature.com/articles/s41587-023-01734-7}.\cr The original
+files are available at
+\url{https://github.com/zktuong/dandelion-demo-files}.
 }
 \examples{
 data(demo_airr)

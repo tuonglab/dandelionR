@@ -14,31 +14,36 @@ projectPseudotimeToCell(
 )
 }
 \arguments{
-\item{milo}{A \code{SingleCellExperiment} or \code{Milo} object. Represents single-cell data where
-pseudotime and branch probabilities will be projected.}
+\item{milo}{A \code{SingleCellExperiment} or \code{Milo} object. Represents single-cell
+data where pseudotime and branch probabilities will be projected.}
 
-\item{pb_milo}{A pseudobulk \code{Milo} object. Contains aggregated branch probabilities and
+\item{pb_milo}{A pseudobulk \code{Milo} object. Contains aggregated
+branch probabilities and
 pseudotime information to be transferred to single cells.}
 
-\item{term_states}{A named vector of terminal states, with branch probabilities to be
+\item{term_states}{A named vector of terminal states, with
+branch probabilities to be
 transferred. The names should correspond to branches of interest.}
 
-\item{pseudotime_key}{Character. The column name in \code{colData} of \code{pb_milo} that contains
-the  pseudotime information which was used in the \code{markovProbability} function. Default
-is \code{"pseudotime"}.}
+\item{pseudotime_key}{Character. The column name in \code{colData} of \code{pb_milo}
+that contains the  pseudotime information which was used in
+the \code{markovProbability} function. Default is \code{"pseudotime"}.}
 
-\item{suffix}{Character. A suffix to be added to the new column names in \code{colData}.
+\item{suffix}{Character. A suffix to be added to the new column names
+in \code{colData}.
 Default is an empty string (\code{''}).}
 
 \item{verbose}{Boolean, whether to print messages/warnings.}
 }
 \value{
-subset of milo or SingleCellExperiment object where cell that do not belong to any neighbourhood are removed and projected pseudotime information stored colData
+subset of milo or SingleCellExperiment object where cell that
+do not belong to any neighbourhood are removed and projected pseudotime
+information stored colData
 }
 \description{
-This function projects pseudotime and branch probabilities from pseudobulk (\code{pb.milo})
-data to single-cell resolution (\code{milo}). The results are stored in the \code{colData} of
-the \code{milo} object.
+This function projects pseudotime and branch probabilities from pseudobulk
+(\code{pb.milo}) data to single-cell resolution (\code{milo}). The results are stored
+in the \code{colData} of the \code{milo} object.
 }
 \examples{
 data(sce_vdj)
@@ -49,8 +54,10 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 # Build Milo Object
 set.seed(100)
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
-milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20,
+ reduced.dim = "X_scvi")
+milo_object <- miloR::makeNhoods(milo_object,
+ reduced_dims = "X_scvi", d = 20)
 
 # Construct Pseudobulked VDJ Feature Space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")

@@ -7,7 +7,8 @@
 .maxMinSampling(datas, num_waypoints)
 }
 \arguments{
-\item{datas}{data matrix along which to sample the waypoints, usually diffusion components}
+\item{datas}{data matrix along which to sample the waypoints, usually
+diffusion components}
 
 \item{num_waypoints}{number of waypoints to sample}
 

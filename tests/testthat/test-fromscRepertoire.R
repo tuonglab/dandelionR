@@ -28,5 +28,8 @@ test_that("setupVdjPseudobulk works correctly", {
 
     expect_true(is(result, "SingleCellExperiment"))
     expect_true(ncol(result) <= ncol(sce))
-    expect_true(all(colData(result)$anno_lvl_2_final_clean %in% c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T")))
+    expect_true(all(colData(result)$anno_lvl_2_final_clean %in% c(
+        "CD8+T",
+        "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T"
+    )))
 })

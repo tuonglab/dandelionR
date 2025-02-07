@@ -67,7 +67,6 @@
     )
     return(T_)
 }
-
 #' Calculate the weight adjacent matricks of knn graph and its index
 #' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
