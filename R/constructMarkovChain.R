@@ -43,11 +43,10 @@
     ), function(.x, .y, .z) {
         .z[.x < .y]
     })
-    for (i in seq_len(length(waypoints))) {
-        if (length(KNN[i, rem_edges[[i]]])) {
-            KNN[i, rem_edges[[i]]] <- 0
-        }
-    }
+    KNN <- Reduce(function(Knn, i){ 
+      Knn <-.removeEdge(Knn, i, rem_edges = rem_edges)
+      Knn
+    }, seq_len(length(waypoints)), init = KNN)
     # determine the indice and update adjacency matrix
     # cell_mapping <- seq_len(length(waypoints))
     # seems cell_mapping is not used, if there is an error them edit back
@@ -101,4 +100,21 @@
         KNN@i[x] + 1
     })
     return(list(KNN = KNN, ind = ind, idx_seq = idx_seq))
+}
+
+#' function used in Reduce to remove KNN's backward edges except for
+#'  edges that are within the computed standard deviation
+#'  
+#' @param Knn weight KNN adjacent matrix
+#' @param i the iteration number
+#' @param rem_edges the edges that need to be removes
+#' @keywords internal
+#' @return an updated matrix after one round of iteration
+.removeEdge <- function(Knn, i, rem_edges)
+{
+  if(length(Knn[i, rem_edges[[i]]]))
+  {
+    Knn[i, rem_edges[[i]]]<-0
+  }
+  return(Knn)
 }
