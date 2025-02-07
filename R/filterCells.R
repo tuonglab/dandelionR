@@ -24,8 +24,8 @@
     remove_missing = TRUE) {
     if (ncol(sce) < 1) {
         abort(sprintf(
-            "None column remains, please check whether %s
-                the filtering option is correct."
+            "None column remains, please check whether the %s
+                filtering option is correct."
         ))
     }
     # find filter pattern hits in our column of interest
