@@ -14,8 +14,12 @@
 .terminalStateFromMarkovChain <- function(
     Transmat, wp_data, pseudotime,
     waypoints, verbose) {
-    if (verbose) message("No terminal state provided, identification of
-    terminal states....")
+    if (verbose) {
+        message(c(
+            "No terminal state provided, identification of",
+            " terminal states...."
+        ))
+    }
     # Identify terminal states dm_boundaries
     n <- min(dim(Transmat))
     ei <- eigen(t(Transmat))

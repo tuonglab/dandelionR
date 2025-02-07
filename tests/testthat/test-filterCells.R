@@ -40,10 +40,10 @@ test_that(".filterCells handles edge cases", {
     )))
     expect_error(
         .filterCells(empty_sce, "VDJ"),
-        sprintf(
-            "None column remains, please check whether the %s
-                filtering option is correct."
-        )
+        sprintf(paste(
+            "None column remains, please check whether the",
+            "filtering option is correct."
+        ))
     )
 
     # Test with no matching filter pattern

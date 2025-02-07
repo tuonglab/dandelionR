@@ -52,7 +52,7 @@ differentiationProbabilities <- function(
             warning(
                 c(
                     "Matrix generated is singular or nearly singular;",
-                    " using pseudo-inverse to construct fundamental matrix.\n"
+                    " using pseudo-inverse to construct fundamental matrix."
                 )
             )
         }

@@ -23,10 +23,10 @@
     filter_pattern = ",|None|No_contig",
     remove_missing = TRUE) {
     if (ncol(sce) < 1) {
-        abort(sprintf(
-            "None column remains, please check whether the %s
-                filtering option is correct."
-        ))
+        abort(sprintf(paste(
+            "None column remains, please check whether the",
+            "filtering option is correct."
+        )))
     }
     # find filter pattern hits in our column of interest
     temp <- colData(sce)[col_n]

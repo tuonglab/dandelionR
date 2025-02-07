@@ -381,8 +381,12 @@ setupVdjPseudobulk <- function(
 #' @importFrom SummarizedExperiment colData<-
 #' @return a vecotor of colnames we need to perform main chain extraction
 .generateExtractName <- function(sce, mode_option, verbose) {
-    if (verbose) message("extract_cols not specified, automatically generate
-            colnames for extraction.")
+    if (verbose) {
+        message(c(
+            "extract_cols not specified, automatically generate",
+            " colnames for extraction."
+        ))
+    }
     v_call <- if ("v_call_genotyped_VDJ" %in% colnames(colData(sce))) {
         # nocov start
         "v_call_genotyped_" # nocov end
@@ -432,19 +436,19 @@ setupVdjPseudobulk <- function(
             ))
         }
         if (!"CTgene" %in% colnames(colData(sce))) {
-            abort(sprintf(
-                "Both %s and CTgene do not exist\n You could modify parameter
-                extract_cols to clarify VDJ information's location", msg
-            ))
+            abort(sprintf(paste(
+                "Both %s and CTgene do not exist\n You could modify parameter",
+                "extract_cols to clarify VDJ information's location"
+            ), msg))
         }
         splitVdj <- splitCTgene(sce)
         if (length(splitVdj[[1]]) != length(extract_cols)) {
             abort(
-                sprintf(
-                    "Colnames %s must have the same length with the
-                    vdj data, which is of length %d.\n Modify
-                    `extract_cols`` to specify the TCR columns."
-                ),
+                sprintf(paste(
+                    "Colnames %s must have the same length with the",
+                    "vdj data, which is of length %d.\n Modify",
+                    "`extract_cols`` to specify the TCR columns."
+                )),
                 paste0(extract_cols[!extract_cols %in% colnames(colData(sce))],
                     collapse = ", "
                 ),
