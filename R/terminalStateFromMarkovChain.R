@@ -40,12 +40,12 @@
     # Nearest diffusion map boundaries
     terminal_states <- c()
     terminal_states <- Reduce(function(term, i) {
-        .determTerminal(
+        terminal_states <- .determTerminal(
             terminal_states = term, i = i,
             dm_boudaries = dm_boudaries, wp_data = wp_data
         )
         return(terminal_states)
-    }, cells, terminal_states)
+    }, cells, init = terminal_states)
     unique(waypoints[terminal_states])
 }
 
