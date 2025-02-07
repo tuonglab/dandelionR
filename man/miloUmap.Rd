@@ -57,10 +57,13 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20,
- reduced.dim = "X_scvi")
+milo_object <- miloR::buildGraph(milo_object,
+    k = 50, d = 20,
+    reduced.dim = "X_scvi"
+)
 milo_object <- miloR::makeNhoods(milo_object,
- reduced_dims = "X_scvi", d = 20)
+    reduced_dims = "X_scvi", d = 20
+)
 
 # Construct UMAP on Milo Neighbor Graph
 milo_object <- miloUmap(milo_object)

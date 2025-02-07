@@ -192,8 +192,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
                                 productive_vj, productive_vdj) {
     # check the input
     if (is.null(mode_option)) {
-        if (!is.null(productive_cols)) {
-            # nocov start
+        if (!is.null(productive_cols)) { # nocov start
             msg <- paste(productive_cols, collapse = ", ")
             message(sprintf("Checking productivity from %s ..."),
                 appendLF = FALSE

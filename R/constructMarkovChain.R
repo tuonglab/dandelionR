@@ -43,8 +43,7 @@
         .z[.x < .y]
     })
     KNN <- Reduce(function(Knn, i) {
-        Knn <- .removeEdge(Knn, i, rem_edges = rem_edges)
-        Knn
+        return(.removeEdge(Knn, i, rem_edges = rem_edges))
     }, seq_len(length(waypoints)), init = KNN)
     # determine the indice and update adjacency matrix
     # cell_mapping <- seq_len(length(waypoints))
@@ -52,8 +51,8 @@
     requireNamespace("Matrix")
     ids <- Matrix::summary(KNN)
     # anisotropic Diffusion Kernel
-    aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2)
-        * 0.5 - (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
+    aff <- exp(-(ids$x^2) / (adaptive.std[ids$i]^2) * 0.5 -
+                   (ids$x^2) / (adaptive.std[ids$j]^2) * 0.5)
     W <- Matrix::sparseMatrix(
         i = ids$i, j = ids$j, x = aff,
         dims = dim(KNN), giveCsparse = TRUE

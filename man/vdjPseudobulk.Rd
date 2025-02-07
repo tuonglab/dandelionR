@@ -73,7 +73,9 @@ Default is \code{1}.}
 SingleCellExperiment object
 }
 \description{
-This function creates a pseudobulk V(D)J feature space from single-cell data, aggregating V(D)J information into pseudobulk groups. It supports input as
+This function creates a pseudobulk V(D)J feature space from
+single-cell data, aggregating V(D)J information into pseudobulk groups.
+It supports input as
 either a \code{Milo} object or a \code{SingleCellExperiment} object.
 }
 \details{
@@ -114,10 +116,13 @@ sce_vdj <- setupVdjPseudobulk(sce_vdj,
 )
 # Build Milo Object
 milo_object <- miloR::Milo(sce_vdj)
-milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20,
- reduced.dim = "X_scvi")
+milo_object <- miloR::buildGraph(milo_object,
+    k = 50, d = 20,
+    reduced.dim = "X_scvi"
+)
 milo_object <- miloR::makeNhoods(milo_object,
- reduced_dims = "X_scvi", d = 20)
+    reduced_dims = "X_scvi", d = 20
+)
 
 # Construct pseudobulked VDJ feature space
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")

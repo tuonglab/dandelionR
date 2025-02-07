@@ -9,7 +9,8 @@
 \arguments{
 \item{probabilities_proj}{the probabilities need to be stored}
 
-\item{terminal_state}{Integer. The index of the terminal state in the Markov chain, passed from markovProbability}
+\item{terminal_state}{Integer. The index of the terminal state in
+the Markov chain, passed from markovProbability}
 
 \item{milo}{the milo object provided by user}
 }

@@ -93,7 +93,6 @@ Next, we will construct the pseudobulked VDJ feature space using the neighbourho
 ```{r}
 pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 
-# pbs = milo_object@nhoods
 pb.milo <- runPCA(pb.milo, assay.type = "Feature_space")
 ```
 

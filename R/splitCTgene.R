@@ -12,7 +12,7 @@ splitCTgene <- function(sce) {
     # split with '.'
     CTgene <- lapply(CTgene, function(x) lapply(x, strsplit, split = "[.]"))
     CTgene <- .collapse_nested_list(CTgene)
-    # names(CTgene) <- NULL # this is a list containing `ncol()` sublists,
+    # this is a list containing `ncol()` sublists,
     # where each sublist contains two character vectors: the first represent
     # TRA the second represent TRB
     CTgene <- lapply(CTgene, formatVdj)
