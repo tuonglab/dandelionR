@@ -57,6 +57,6 @@ projectProbability <- function(diffusionmap, waypoints, probabilities, t = 1, ve
 .calDif <- function(dfm, i, j, eigenvectors, lambda_t, K)
 {
   diff <- eigenvectors[i, seq_len(K)] - eigenvectors[j, seq_len(K)]
-  D_diffusion[i, j] <- sqrt(sum(lambda_t * (diff^2)))
-  D_diffusion
+  dfm[i, j] <- sqrt(sum(lambda_t * (diff^2)))
+  dfm
 }
