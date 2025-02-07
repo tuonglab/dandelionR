@@ -192,7 +192,7 @@ setupVdjPseudobulk <- function(sce, mode_option = c("abT", "gdT", "B"),
 #' @importFrom rlang abort
 #' @return SingleCellExperiment object after filtering on producive chain
 .filterProductivity <- function(sce, mode_option, productive_cols,
-                                productive_vj, productive_vd, verbose) {
+                                productive_vj, productive_vdj, verbose) {
     # check the input
     if (is.null(mode_option)) {
         if (!is.null(productive_cols)) { # nocov start

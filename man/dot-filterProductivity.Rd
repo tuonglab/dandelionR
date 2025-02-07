@@ -9,7 +9,7 @@
   mode_option,
   productive_cols,
   productive_vj,
-  productive_vd,
+  productive_vdj,
   verbose
 )
 }
@@ -21,10 +21,10 @@
 \item{productive_vj}{If \code{TRUE}, retains cells where the main VJ chain is
 productive.}
 
-\item{verbose}{logical, print messages. Default is \code{TRUE}.}
-
 \item{productive_vdj}{If \code{TRUE}, retains cells where the main VDJ chain is
 productive.}
+
+\item{verbose}{logical, print messages. Default is \code{TRUE}.}
 }
 \value{
 SingleCellExperiment object after filtering on producive chain
