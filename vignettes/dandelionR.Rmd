@@ -42,16 +42,20 @@ encounter any problems or have any suggestions for improvement.
 
 ## Installation
 
-You can install `dandelionR` from GitHub with:
+You can install `dandelionR` with:
+
+### Bioconductor
 ```{r, eval = FALSE}
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
-}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-if (!requireNamespace("scater", quietly = TRUE)) { # only for the tutorial
-    BiocManager::install("scater")
+BiocManager::install("dandelionR)
+```
+
+### Development version (GitHub)
+```{r, eval = FALSE}
+if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")
 }
 devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
 ```
@@ -63,10 +67,13 @@ In this vignette, we will demonstrate how to perform TCR trajectory analysis
 starting from 'raw' data i.e. just a standard single-cell gene expression data 
 (stored in `SingleCellExperiment`) and VDJ data (in AIRR format).
 
-Install `scRepertoire` if you haven't already.
+Install `scater` and `scRepertoire` if you haven't already.
 ```{r, eval = FALSE}
+# only for the tutorial
+if (!requireNamespace("scater", quietly = TRUE)) {
+    BiocManager::install("scater")
+}
 if (!requireNamespace("scRepertoire", quietly = TRUE)) {
-    # only for the tutorial
     BiocManager::install("scRepertoire")
 }
 # or
