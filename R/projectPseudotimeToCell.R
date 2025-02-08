@@ -45,7 +45,7 @@
 #' pca <- t(as.matrix(SingleCellExperiment::reducedDim(pb.milo, type = "PCA")))
 #' branch.tips <- c(which.min(pca[, 2]), which.max(pca[, 2]))
 #' names(branch.tips) <- c("CD8+T", "CD4+T")
-#' root <- which.max(pca[, 1])
+#' root <- which.min(pca[, 1])
 #'
 #' # Construct Diffusion Map
 #' dm <- destiny::DiffusionMap(t(pca), n_pcs = 10, n_eigs = 5)
