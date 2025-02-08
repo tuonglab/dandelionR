@@ -1,23 +1,29 @@
 #' Compute Branch Probabilities Using Markov Chain
 #'
-#' This function calculates branch probabilities for differentiation trajectories based on a Markov chain constructed from waypoint data and pseudotime ordering.
+#' This function calculates branch probabilities for differentiation
+#' trajectories based on a Markov chain constructed from waypoint data and
+#' pseudotime ordering.
 #'
-#' @param wp_data A multi-scale data matrix or data frame representing the waypoints.
-#' @param terminal_states Integer vector. Indices of the terminal states. Default is `NULL`.
-#' @param knn Integer. Number of nearest neighbors for graph construction. Default is `30L`.
+#' @param wp_data A multi-scale data matrix or data frame representing the
+#' waypoints.
+#' @param terminal_states Integer vector. Indices of the terminal states.
+#' Default is `NULL`.
+#' @param knn Integer. Number of nearest neighbors for graph construction.
+#' Default is `30L`.
 #' @param pseudotime Numeric vector. Pseudotime ordering of cells.
-#' @param waypoints Integer vector. Indices of selected waypoints used to construct the Markov chain.
+#' @param waypoints Integer vector. Indices of selected waypoints used to
+#' construct the Markov chain.
 #' @param verbose Boolean, whether to print messages/warnings.
-#' @return A numeric matrix or data frame containing branch probabilities for each waypoint.
+#' @return A numeric matrix or data frame containing branch probabilities
+#' for each waypoint.
 #' @importFrom Matrix solve
 #' @importFrom MASS ginv
 #' @include constructMarkovChain.R
 #' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
-    wp_data, terminal_states = NULL, knn = 30L,
-    pseudotime, waypoints, verbose = TRUE) {
+    wp_data, terminal_states = NULL,
+    knn = 30L, pseudotime, waypoints, verbose = TRUE) {
     T_ <- .constructMarkovChain(wp_data, knn, pseudotime, waypoints, verbose)
-    # identify terminal states if not specified
     if (is.null(terminal_states)) {
         terminal_states <- .terminalStateFromMarkovChain(
             T_, wp_data, pseudotime,
@@ -28,31 +34,31 @@ differentiationProbabilities <- function(
     T_[abs_states_idx, ] <- 0
     T_ <- Reduce(function(matri, x) {
         matri[x, x] <- 1
-        matri
+        return(matri)
     }, x = abs_states_idx, init = T_)
     if (verbose) {
-        message("Computing fundamental matrix and absorption probabilities...")
+        message(
+            c(
+                "Computing fundamental matrix and ",
+                "absorption probabilities..."
+            )
+        )
     }
-    # Transition states
     trans_states_idx <- which(!(waypoints %in% terminal_states))
-    # Q matrix
     Q <- T_[-abs_states_idx, -abs_states_idx]
-    # Fundamental matrix
     mat <- diag(dim(Q)[[1]]) - Q
-    N <- tryCatch(
-        {
-            solve(mat)
-        },
-        error = function(e) {
-            if (verbose) {
-                warning("Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix.")
-                warning("Or you can re-run this function to reconstruct the markov chain")
-            }
-            ginv(as.matrix(mat))
+    N <- tryCatch(solve(mat), error = function(e) {
+        if (verbose) {
+            warning(
+                c(
+                    "Matrix generated is singular or nearly singular;",
+                    " using pseudo-inverse to construct fundamental matrix."
+                )
+            )
         }
-    )
+        ginv(as.matrix(mat))
+    })
     R <- T_[trans_states_idx, abs_states_idx]
-    # absorbing probabilities:
     probabilities <- N %*% R
     if (dim(probabilities)[[2]] > 1) {
         probabilities@x[probabilities@x < 0] <- 0

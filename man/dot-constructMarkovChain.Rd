@@ -4,7 +4,7 @@
 \alias{.constructMarkovChain}
 \title{.constructMarkovChain}
 \usage{
-.constructMarkovChain(wp_data, knn., pseudotime, waypoints, verbose = TRUE)
+.constructMarkovChain(wp_data, knn., pseudotime, waypoints, vb)
 }
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}
@@ -15,8 +15,7 @@
 
 \item{waypoints}{integer vector, index of selected waypoint used to}
 
-\item{verbose}{whether to print messages
-construct markov chain}
+\item{vb}{whether to print messages}
 }
 \value{
 transition matrix of the markov chain

@@ -47,7 +47,10 @@ test_that("setupVdjPseudobulk handles allowed_chain_status correctly", {
     expect_true(all(colData(result)$chain_status == "Single pair"))
 })
 
-test_that("setupVdjPseudobulk throws error when no cells match allowed_chain_status", {
+test_that(sprintf(
+    "setupVdjPseudobulk throws error when no cells match %s",
+    "allowed_chain_status"
+), {
     expect_error(setupVdjPseudobulk(
         sce = sce_vdj,
         mode_option = "abT",

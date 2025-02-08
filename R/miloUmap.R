@@ -7,10 +7,13 @@
 #' @param slot_name character, with default 'UMAP_knngraph'.
 #'  - The slot name in reduceDim where the result store
 #' @param n_neighbors integer, with default 50L.
-#'  - the size of local neighborhood (in terms of number of neighboring sample points) used for manifold approximation.
-#'  - Here, the goal is to create large enough neighborhoods to capture the local manifold structure to allow for hypersampling.
+#'  - the size of local neighborhood (in terms of number of
+#'   neighboring sample points) used for manifold approximation.
+#'  - Here, the goal is to create large enough neighborhoods to capture
+#'   the local manifold structure to allow for hypersampling.
 #' @param metric character, with default 'euclidean'
-#'  - the choice of metric used to measure distance to find nearest neighbors. Default is 'euclidean'.
+#'  - the choice of metric used to measure distance to find nearest neighbors.
+#'   Default is 'euclidean'.
 #' @param min_dist numeric, with default 0.3
 #'  - the minimum distance between points in the low dimensional space
 #' @param ... other parameters passed to uwot::umap
@@ -22,8 +25,13 @@
 #' )
 #' # Build Milo Object
 #' milo_object <- miloR::Milo(sce_vdj)
-#' milo_object <- miloR::buildGraph(milo_object, k = 50, d = 20, reduced.dim = "X_scvi")
-#' milo_object <- miloR::makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20)
+#' milo_object <- miloR::buildGraph(milo_object,
+#'     k = 50, d = 20,
+#'     reduced.dim = "X_scvi"
+#' )
+#' milo_object <- miloR::makeNhoods(milo_object,
+#'     reduced_dims = "X_scvi", d = 20
+#' )
 #'
 #' # Construct UMAP on Milo Neighbor Graph
 #' milo_object <- miloUmap(milo_object)

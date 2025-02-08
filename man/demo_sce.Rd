@@ -8,7 +8,8 @@
 A \code{SingleCellExperiment} object with the following slots:
 \describe{
 \item{\code{colData}}{
-A minimall \code{DataFrame} containing metadata about each sample, corresponding to \code{obs} in AnnData (Python).
+A minimall \code{DataFrame} containing metadata about each sample,
+corresponding to \code{obs} in AnnData (Python).
 The following columns are relevant for vignette usage:
 \describe{
 \item{\code{anno_lvl_2_final_clean}}{
@@ -17,25 +18,31 @@ Cell type annotations.
 }
 }
 \item{\code{int_colData}}{
-A \code{DataFrame} containing additional assay metadata important for further analysis. Includes:
+A \code{DataFrame} containing additional assay metadata important for further
+analysis. Includes:
 \itemize{
-\item{\code{X_scvi}}: A dimensionality reduction matrix from the scVI model.
+\item{\code{X_scvi}}: A dimensionality reduction matrix from the scVI
+model.
 \item{\code{UMAP}}: A UMAP reduction matrix.
 }
 }
 }
 }
 \source{
-Suo et al., 2024, \emph{Nature Biotechnology}. \url{https://www.nature.com/articles/s41587-023-01734-7}.
+Suo et al., 2024, \emph{Nature Biotechnology}. \cr
+\url{https://www.nature.com/articles/s41587-023-01734-7}.
 }
 \usage{
 data(demo_sce)
 }
 \description{
-The \code{demo_sce} object is a down-sampled demo dataset derived from Suo et al., 2024, \emph{Nature Biotechnology}.
-This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original
-publication at \url{https://www.nature.com/articles/s41587-023-01734-7}. The original Lymphoid cells data in
-h5ad format is available at \url{https://developmental.cellatlas.io/fetal-immune}.
+The \code{demo_sce} object is a down-sampled demo dataset derived from
+Suo et al., 2024, \emph{Nature Biotechnology}.\cr
+This dataset is used in vignettes to demonstrate workflows for V(D)J
+analysis.\cr For details, see the original
+publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
+The original Lymphoid cells data in h5ad format is available at
+\url{https://developmental.cellatlas.io/fetal-immune}.
 }
 \examples{
 data(demo_sce)

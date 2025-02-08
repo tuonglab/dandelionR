@@ -8,11 +8,13 @@
 A \code{SingleCellExperiment} object with the following slots:
 \describe{
 \item{\code{colData}}{
-A \code{DataFrame} containing metadata about each sample, corresponding to \code{obs} in AnnData (Python).
+A \code{DataFrame} containing metadata about each sample, corresponding
+to \code{obs} in AnnData (Python).
 The following columns are relevant for vignette usage:
 \describe{
 \item{\code{productive_(mode)_VDJ}, \code{productive_(mode)_VJ}}{
-Factors indicating whether the heavy or light chain is productive. \code{mode} refers to the
+Factors indicating whether the heavy or light chain is
+productive. \code{mode} refers to the
 extraction mode for V(D)J genes and can be one of:
 \itemize{
 \item{\code{'abT'}}: TCR alpha-beta
@@ -21,11 +23,14 @@ extraction mode for V(D)J genes and can be one of:
 }
 }
 \item{\code{Gene segment fields}}{
-Gene segment annotations with column names in the format \code{(v/d/j)_call_(mode)_(VDJ/VJ)}.
+Gene segment annotations with column names in the format
+\code{(v/d/j)_call_(mode)_(VDJ/VJ)}.
 Examples include:
 \itemize{
-\item{\code{v_call_abT_VDJ}}: V gene for TCR alpha-beta VDJ recombination
-\item{\code{d_call_abT_VJ}}: D gene for TCR alpha-beta VJ recombination
+\item{\code{v_call_abT_VDJ}}: V gene for TCR alpha-beta
+VDJ recombination
+\item{\code{d_call_abT_VJ}}: D gene for TCR alpha-beta
+VJ recombination
 }
 }
 \item{\code{chain_status}}{
@@ -37,23 +42,28 @@ Cell type annotations.
 }
 }
 \item{\code{int_colData}}{
-A \code{DataFrame} containing additional assay metadata important for further analysis. Includes:
+A \code{DataFrame} containing additional assay metadata important for further
+analysis. Includes:
 \itemize{
-\item{\code{X_scvi}}: A dimensionality reduction matrix from the scVI model.
+\item{\code{X_scvi}}: A dimensionality reduction matrix from the
+scVI model.
 \item{\code{UMAP}}: A UMAP reduction matrix.
 }
 }
 }
 }
 \source{
-Suo et al., 2024, \emph{Nature Biotechnology}. \url{https://www.nature.com/articles/s41587-023-01734-7}.
+Suo et al., 2024, \emph{Nature Biotechnology}.\cr
+\url{https://www.nature.com/articles/s41587-023-01734-7}.
 }
 \usage{
 data(sce_vdj)
 }
 \description{
-The \code{sce_vdj} object is a down-sampled demo dataset derived from Suo et al., 2024, \emph{Nature Biotechnology}.
-This dataset is used in vignettes to demonstrate workflows for V(D)J analysis. For details, see the original
+The \code{sce_vdj} object is a down-sampled demo dataset derived from
+Suo et al., 2024, \emph{Nature Biotechnology}. \cr
+This dataset is used in vignettes to demonstrate workflows for V(D)J
+analysis. \cr For details, see the original
 publication at \url{https://www.nature.com/articles/s41587-023-01734-7}.
 }
 \examples{

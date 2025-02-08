@@ -7,7 +7,8 @@
 splitCTgene(sce)
 }
 \arguments{
-\item{sce}{SingleCellExperiment object after conducting scRepertoire::combineTCR()}
+\item{sce}{SingleCellExperiment object after conducting
+scRepertoire::combineTCR()}
 }
 \value{
 list contain vector of VJ & VDJ genes from each cell

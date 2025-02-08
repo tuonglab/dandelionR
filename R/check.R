@@ -13,8 +13,8 @@
     }
     if (!is(input, must)) {
         abort(sprintf(
-            "The '%s' must be %s, not %s", as.character(substitute(input)),
-            must, class(input)
+            "The '%s' must be %s, not %s",
+            as.character(substitute(input)), must, class(input)
         ))
     }
 }
@@ -36,8 +36,8 @@
     }
     if (!is(input, must)) {
         abort(sprintf(
-            "The '%s' must be %s, not %s", as.character(substitute(input)),
-            must, type(input)
+            "The '%s' must be %s, not %s",
+            as.character(substitute(input)), must, type(input)
         ))
     }
 }

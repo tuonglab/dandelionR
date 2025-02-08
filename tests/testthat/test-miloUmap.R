@@ -23,7 +23,10 @@ sce <- setupVdjPseudobulk(sce,
 # Build Milo Object
 milo_object <- Milo(sce)
 milo_object <- buildGraph(milo_object, k = 30, d = 20, reduced.dim = "X_scvi")
-milo_object <- makeNhoods(milo_object, reduced_dims = "X_scvi", d = 20, prop = 0.3)
+milo_object <- makeNhoods(milo_object,
+    reduced_dims = "X_scvi", d = 20,
+    prop = 0.3
+)
 
 # Test for miloUmap
 test_that("miloUmap works correctly", {

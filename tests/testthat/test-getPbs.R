@@ -25,14 +25,23 @@ test_that(".getPbs works correctly with col_to_bulk provided", {
 
     expect_true(is(result, "Matrix"))
     expect_equal(dim(result), c(10, 4))
-    expect_equal(colnames(result), c("A,control", "A,treated", "B,control", "B,treated"))
+    expect_equal(colnames(result), c(
+        "A,control", "A,treated",
+        "B,control", "B,treated"
+    ))
 })
 
 test_that(".getPbs throws error when both pbs and col_to_bulk are NULL", {
-    expect_error(.getPbs(NULL, NULL, sce), "You must specify 'pbs' or 'col_to_bulk'.")
+    expect_error(
+        .getPbs(NULL, NULL, sce),
+        "You must specify 'pbs' or 'col_to_bulk'."
+    )
 })
 
 test_that(".getPbs throws error when both pbs and col_to_bulk are provided", {
     pbs <- Matrix::Matrix(matrix(1, nrow = 10, ncol = 2), sparse = TRUE)
-    expect_error(.getPbs(pbs, c("sample_type", "condition"), sce), "You must specify 'pbs' or 'col_to_bulk', not both.")
+    expect_error(
+        .getPbs(pbs, c("sample_type", "condition"), sce),
+        "You must specify 'pbs' or 'col_to_bulk', not both."
+    )
 })
