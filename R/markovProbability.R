@@ -26,8 +26,9 @@
 #'  the eigen gap.
 #' @param verbose Logical. If `TRUE`, print progress. Default is `TRUE`.
 #' @examples
-#' \donttest{
 #' data(sce_vdj)
+#' # downsample to just 1000 cells
+#' sce_vdj <- sce_vdj[, sample(1:ncol(sce_vdj), 1000)]
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE,
 #'     allowed_chain_status = c("Single pair", "Extra pair")
@@ -67,7 +68,6 @@
 #'     root_cell = root,
 #'     pseudotime_key = "pseudotime"
 #' )
-#' }
 #' @return milo or SinglCellExperiment object with pseudotime, probabilities in
 #' its colData
 #' @include determMultiscaleSpace.R

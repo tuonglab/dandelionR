@@ -44,6 +44,8 @@ data to single-cell resolution (\code{milo}). The results are stored in the
 }
 \examples{
 data(sce_vdj)
+# downsample to just 1000 cells
+sce_vdj <- sce_vdj[, sample(1:ncol(sce_vdj), 1000)]
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE,
     allowed_chain_status = c("Single pair", "Extra pair")
