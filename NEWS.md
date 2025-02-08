@@ -1,4 +1,8 @@
-# dandelionR Version 0.99.5 (2025-02-08)
+# dandelion Version 1.0.0
+
+Bioconductor version.
+
+# dandelionR Version 0.99.7 (2025-02-08)
 
 Updated to address Bioconductor submission review comments.
 https://github.com/tuonglab/dandelionR/issues/56
