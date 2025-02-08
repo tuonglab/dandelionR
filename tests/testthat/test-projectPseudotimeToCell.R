@@ -4,6 +4,8 @@ library(SingleCellExperiment)
 # Mock data for testing
 set.seed(100)
 data(sce_vdj)
+# downsample to first 2000 cells to speed up the testing.
+sce_vdj <- sce_vdj[, 1:2000]
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE,
     allowed_chain_status = c("Single pair", "Extra pair")
@@ -20,11 +22,11 @@ pb.milo <- vdjPseudobulk(milo_object, col_to_take = "anno_lvl_2_final_clean")
 pb.milo <- scater::runPCA(pb.milo, assay.type = "Feature_space")
 # Define root and branch tips
 pca <- t(as.matrix(SingleCellExperiment::reducedDim(pb.milo, type = "PCA")))
-branch.tips <- c(189, 198) # which.min(pca[, 2]) and which.max(pca[, 2])
+branch.tips <- c(which.min(pca[, 2]), which.max(pca[, 2]))
 names(branch.tips) <- c("CD8+T", "CD4+T")
-root <- 177
+root <- which.max(pca[, 1])
 # Construct Diffusion Map
-dm <- destiny::DiffusionMap(t(pca), n_pcs = 50, n_eigs = 10)
+dm <- destiny::DiffusionMap(t(pca), n_pcs = 10, n_eigs = 5)
 dif.pse <- destiny::DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
 pb.milo <- markovProbability(
     milo = pb.milo,
