@@ -2,9 +2,6 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  vignette_from_scRepertoire: vignette_from_scRepertoire.html
+  dandelionR: dandelionR.html
   vignette_reproduce_original: vignette_reproduce_original.html
-last_built: 2025-01-13T04:03Z
-urls:
-  reference: https://tuonglab.github.io/dandelionR/reference
-  article: https://tuonglab.github.io/dandelionR/articles
+last_built: 2025-02-08T02:16Z
