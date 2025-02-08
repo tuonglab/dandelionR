@@ -9,9 +9,6 @@ knitr:
   opts_chunk:
     dev: 'png'
     fig.align: 'left'
-author:
-  - Jiawei Yu
-  - Kelvin Tuong
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Starting From scRepertoire}
