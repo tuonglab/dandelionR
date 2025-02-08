@@ -20,7 +20,7 @@
 #' @examples
 #' data(sce_vdj)
 #' # downsample to just 1000 cells
-#' sce_vdj <- sce_vdj[, sample(1:ncol(sce_vdj), 1000)]
+#' sce_vdj <- sce_vdj[, 1:1000]
 #' sce_vdj <- setupVdjPseudobulk(sce_vdj,
 #'     already.productive = FALSE,
 #'     allowed_chain_status = c("Single pair", "Extra pair")
