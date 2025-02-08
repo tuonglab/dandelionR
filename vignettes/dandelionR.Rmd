@@ -49,7 +49,7 @@ You can install `dandelionR` with:
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-BiocManager::install("dandelionR)
+BiocManager::install("dandelionR")
 ```
 
 ### Development version (GitHub)

@@ -64,6 +64,7 @@ This function preprocesses data, constructs a Markov chain, and calculates
 transition probabilities based on pseudotime information.
 }
 \examples{
+\donttest{
 data(sce_vdj)
 sce_vdj <- setupVdjPseudobulk(sce_vdj,
     already.productive = FALSE,
@@ -104,5 +105,5 @@ pb.milo <- markovProbability(
     root_cell = root,
     pseudotime_key = "pseudotime"
 )
-
+}
 }
