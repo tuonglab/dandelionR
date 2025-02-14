@@ -98,6 +98,11 @@ VDJ - https://github.com/zktuong/dandelion-demo-files/
 
 The VDJ data is in the dandelion_manuscript/data/dandelion-remap folder.
 
+```{r}
+data(demo_sce)
+data(demo_airr)
+```
+
 Check out the other vignette for an example dataset that starts from the 
 original `dandelion` output associated with the original 
 [manuscript](https://www.nature.com/articles/s41587-023-01734-7).
@@ -106,12 +111,7 @@ original `dandelion` output associated with the original
 vignette("vignette_reproduce_original")
 ```
 
-```{r}
-data(demo_sce)
-data(demo_airr)
-```
-
-We will set the seed so that the plots and results are consistent.
+We will also set the seed so that the plots and results are consistent.
 ```{r}
 set.seed(123)
 ```
