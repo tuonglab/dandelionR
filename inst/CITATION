@@ -5,9 +5,11 @@ bibentry(
       person("Jiawei", "Yu"),
       person("Nicholas", "Borcherding"),
       person("Zewen Kelvin", "Tuong")),
-  journal = "TBC",
+  journal = "bioRxiv",
   year     = "2025",
-  textVersion = "Yu J, Borcherding N, Tuong ZK. DandelionR: Single-cell immune repertoire trajectory analysis in R."  
+  doi      = "10.1101/2025.02.04.636146",
+  url      = "https://www.biorxiv.org/content/10.1101/2025.02.04.636146v1.full",
+  textVersion = "Yu J, Borcherding N, Tuong ZK. 2025. dandelionR: Single-cell immune repertoire trajectory analysis in R. bioRxiv 2025.02.04.636146; doi: https://doi.org/10.1101/2025.02.04.636146"  
 )
 
 bibentry(
