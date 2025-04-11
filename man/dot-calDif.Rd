@@ -2,17 +2,12 @@
 % Please edit documentation in R/projectProbability.R
 \name{.calDif}
 \alias{.calDif}
-\title{function help to reconstruct diffusion distance using Reduce}
+\title{function help to calculate the diffusion distance}
 \usage{
-.calDif(dfm, i, j, eigenvector, lambda_t, K)
+.calDif(idx, eigenvector, lambda_t, K)
 }
 \arguments{
-\item{dfm}{an nrow(eigenvectors) x nrow(eigenvectors) matrix
-need to be filled with diffusion distance with iteration}
-
-\item{i}{integer the row selected in this iteration}
-
-\item{j}{integer the col selected in this iteration}
+\item{idx}{integer the index of the calculated value}
 
 \item{eigenvector}{numeric vector, the eigenvector from diffusion map}
 
@@ -24,6 +19,6 @@ need to be filled with diffusion distance with iteration}
 updated diffusion distance matrix after one iteration
 }
 \description{
-function help to reconstruct diffusion distance using Reduce
+function help to calculate the diffusion distance
 }
 \keyword{internal}
