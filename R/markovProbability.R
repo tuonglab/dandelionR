@@ -108,7 +108,8 @@ markovProbability <- function(
         datas = multiscale, num_waypoints = 500,
         verbose = verbose
     )
-    waypoints <- unique(c(root_cell, waypoints, terminal_state))
+    unique_waypoint <- setdiff(unique(c(root_cell, waypoints)),terminal_state)
+    waypoints <- c(unique_waypoint, terminal_state)
     # calculate probabilities
     prob_term <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state, knn = knn, pseudotime = diffusiontime,
