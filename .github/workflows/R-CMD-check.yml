@@ -42,7 +42,13 @@ jobs:
       - name: Install macos dependencies
         if: ${{ matrix.config.os == 'macos-latest' }}
         run: |
-          brew install gsl
+          brew install gettext libomp gsl
+          mkdir -p ~/.R
+          echo 'PKG_CPPFLAGS=-I/opt/homebrew/opt/gettext/include -I/opt/homebrew/opt/libomp/include' >> ~/.R/Makevars
+          echo 'PKG_LIBS=-L/opt/homebrew/opt/gettext/lib -L/opt/homebrew/opt/libomp/lib -lomp' >> ~/.R/Makevars
+          echo 'CFLAGS+=-Xclang -fopenmp' >> ~/.R/Makevars
+          echo 'LDFLAGS+=-L/opt/homebrew/opt/libomp/lib -lomp' >> ~/.R/Makevars
+          echo 'CPPFLAGS+=-I/opt/homebrew/opt/libomp/include' >> ~/.R/Makevars
 
       - name: Get R version
         id: R

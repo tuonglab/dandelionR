@@ -45,7 +45,8 @@ projectProbability <- function(
     W <- exp(-0.5 * ((Dif / sdv)^2))
     W <- W / apply(W, 1, sum)
     prob <- W %*% probabilities
-    return(prob = prob)
+    message("Complete.")
+    return(prob)
 }
 
 
