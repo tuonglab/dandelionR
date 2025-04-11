@@ -53,7 +53,7 @@ chainAssign <- function(vec, num) {
         chains <- rep("None", num)
     } else {
         abort(paste("Multiple chains detected. Please set `removeMulti = TRUE`", 
-            "when using `combineTCR()`.") # nocov end
+            "when using `combineTCR()`.")) # nocov end
     }
     return(chains)
 }
