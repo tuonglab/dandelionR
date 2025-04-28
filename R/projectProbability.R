@@ -33,8 +33,10 @@ projectProbability <- function(
     n <- nrow(eigenvectors)
     index_pairs <- which(upper.tri(matrix(1, n, n)), arr.ind = TRUE)
     # Calculate the pairwise diffusion distance
-    distances <- apply(index_pairs, 1, .calDif, lambda_t = lambda_t,
-                       eigenvector = eigenvectors, K = K)
+    distances <- apply(index_pairs, 1, .calDif,
+        lambda_t = lambda_t,
+        eigenvector = eigenvectors, K = K
+    )
     D_diffusion <- matrix(0, n, n)
     D_diffusion[upper.tri(D_diffusion)] <- distances
     D_diffusion <- D_diffusion + t(D_diffusion)
@@ -64,7 +66,3 @@ projectProbability <- function(
     diff <- eigenvector[i, seq_len(K)] - eigenvector[j, seq_len(K)]
     sqrt(sum(lambda_t * diff^2))
 }
-
-
-
-

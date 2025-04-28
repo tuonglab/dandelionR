@@ -107,7 +107,7 @@ markovProbability <- function(
         datas = multiscale, num_waypoints = 500,
         verbose = verbose
     )
-    unique_waypoint <- setdiff(unique(c(root_cell, waypoints)),terminal_state)
+    unique_waypoint <- setdiff(unique(c(root_cell, waypoints)), terminal_state)
     waypoints <- c(unique_waypoint, terminal_state)
     # calculate probabilities
     prob_term <- differentiationProbabilities(multiscale[waypoints, ],
@@ -119,7 +119,8 @@ markovProbability <- function(
     # project probabilities from waypoints to each pseudobulk
     probabilities_proj <- projectProbability(
         diffusionmap, waypoints,
-        probabilities, verbose = verbose
+        probabilities,
+        verbose = verbose
     )
     # store the result into milo
     milo <- .addColData(probabilities_proj, terminal_state, milo, verbose)

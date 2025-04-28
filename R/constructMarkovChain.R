@@ -18,11 +18,11 @@
                                   pseudotime, waypoints, vb, use_RANN) {
     if (vb) message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
-    KNNind <- if(use_RANN) {
-      .RANNinx(wp_data, knn.)
-      } else {
+    KNNind <- if (use_RANN) {
+        .RANNinx(wp_data, knn.)
+    } else {
         .KNNind(wp_data, knn.)
-        }
+    }
     KNN <- KNNind$KNN
     ind <- KNNind$ind
     ## select Standard deviation allowing for 'back' edges
@@ -119,8 +119,9 @@
 #' @return a list containing the weight adjacent matrix and index
 .RANNinx <- function(wp_data, knn.) {
     RAKNN <- nn2(wp_data, k = knn.)
-    row_indices <- rep(1:nrow(RAKNN[["nn.dists"]]),
-                       times = ncol(RAKNN[["nn.dists"]]))
+    row_indices <- rep(seq_len(nrow(RAKNN[["nn.dists"]])),
+        times = ncol(RAKNN[["nn.dists"]])
+    )
     col_indices <- as.vector(RAKNN[["nn.idx"]])
     x_values <- as.vector(RAKNN[["nn.dists"]])
     KNN <- sparseMatrix(
@@ -129,8 +130,11 @@
         x = x_values
     )
     ## generate the index of each neighbor
-    ind <- split(as.vector(RAKNN[["nn.idx"]]), 
-                 rep(1:nrow(RAKNN[["nn.idx"]]), 
-                     times = ncol(RAKNN[["nn.idx"]])))
+    ind <- split(
+        as.vector(RAKNN[["nn.idx"]]),
+        rep(1:nrow(RAKNN[["nn.idx"]]),
+            times = ncol(RAKNN[["nn.idx"]])
+        )
+    )
     return(list(KNN = KNN, ind = ind, idx_seq = idx_seq))
 }

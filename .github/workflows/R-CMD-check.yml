@@ -57,6 +57,11 @@ jobs:
           echo "version=$(head -1 VERSION | awk '{print $3}')" >> $GITHUB_OUTPUT
           rm VERSION
         shell: bash -l {0}
+        
+        - name: Pre-install BiocParallel binary
+        run: |
+        Rscript -e 'install.packages("BiocManager")'
+        Rscript -e 'BiocManager::install("BiocParallel", ask=FALSE, update=FALSE)'
 
       - name: Get Bioconductor version
         id: BIOC
