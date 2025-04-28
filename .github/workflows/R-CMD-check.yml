@@ -63,9 +63,10 @@ jobs:
         Rscript -e 'install.packages("BiocManager")'
         Rscript -e 'BiocManager::install("BiocParallel", version = "3.18", ask=FALSE, update=FALSE)'
         
-        - name: Install dependencies
+        - name: Install immApex and scRepertoire
         run: |
-        install.packages("scRepertoire")
+        remotes::install_github("ncborcherding/immApex")
+        remotes::install_github("ncborcherding/scRepertoire")
 
       - name: Get Bioconductor version
         id: BIOC
