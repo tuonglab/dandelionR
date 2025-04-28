@@ -18,7 +18,11 @@
                                   pseudotime, waypoints, vb, use_RANN) {
     if (vb) message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
-    KNNind <- if(use_RANN) .RANNinx(wp_data, knn.) else .KNNind(wp_data, knn.)
+    KNNind <- if(use_RANN) {
+      .RANNinx(wp_data, knn.)
+      } else {
+        .KNNind(wp_data, knn.)
+        }
     KNN <- KNNind$KNN
     ind <- KNNind$ind
     ## select Standard deviation allowing for 'back' edges

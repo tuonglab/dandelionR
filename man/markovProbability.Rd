@@ -15,7 +15,8 @@ markovProbability(
   scale_components = TRUE,
   num_waypoints = 500,
   n_eigs = NULL,
-  verbose = TRUE
+  verbose = TRUE,
+  use_RANN = FALSE
 )
 }
 \arguments{

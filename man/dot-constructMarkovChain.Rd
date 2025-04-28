@@ -4,7 +4,7 @@
 \alias{.constructMarkovChain}
 \title{.constructMarkovChain}
 \usage{
-.constructMarkovChain(wp_data, knn., pseudotime, waypoints, vb)
+.constructMarkovChain(wp_data, knn., pseudotime, waypoints, vb, use_RANN)
 }
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}

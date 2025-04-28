@@ -10,7 +10,8 @@ differentiationProbabilities(
   knn = 30L,
   pseudotime,
   waypoints,
-  verbose = TRUE
+  verbose = TRUE,
+  use_RANN = FALSE
 )
 }
 \arguments{
