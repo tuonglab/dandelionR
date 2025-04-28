@@ -14,16 +14,16 @@
 #' @importFrom purrr pmap
 #' @importFrom stats dist
 #' @return transition matrix of the markov chain
-.constructMarkovChain <- function(wp_data, knn., pseudotime, waypoints, vb) {
+.constructMarkovChain <- function(wp_data, knn.,
+                                  pseudotime, waypoints, vb, use_RANN) {
     if (vb) message("Markov chain construction...")
     pseudotime <- pseudotime[waypoints]
-    KNNind <- .KNNind(wp_data, knn.)
+    KNNind <- if(use_RANN) .RANNinx(wp_data, knn.) else .KNNind(wp_data, knn.)
     KNN <- KNNind$KNN
     ind <- KNNind$ind
-    idx_seq <- KNNind$idx_seq
     ## select Standard deviation allowing for 'back' edges
     adaptive.k <- min(c(floor(knn. / 3) - 1, 30))
-    dist_ <- lapply(idx_seq, function(y) KNN@x[y])
+    dist_ <- lapply(ind, function(y) KNN@x[y])
     dist_sort <- lapply(dist_, sort, decreasing = TRUE)
     adaptive.std <- vapply(dist_sort, "[", adaptive.k, FUN.VALUE = double(1))
     # Directed graph construction pseudotime position of all the
@@ -60,7 +60,7 @@
     return(T_)
 }
 
-#' Calculate the weight adjacent matricks of knn graph and its index
+#' Calculate the weighted adjacency matrix of knn graph and its index
 #' @param wp_data Multi scale data of the waypoints
 #' @param knn. Number of nearest neighbors for graph construction
 #' @keywords internal
@@ -85,12 +85,9 @@
     ## generate weighted adjacent matrix of this knn graph
     KNN <- as_adjacency_matrix(nbrs, attr = "weight")
     ## generate the index of each neighbor
-    idx <- KNN@p
-    idx_seq <- mapply(seq, (idx + 1)[-length(idx)], idx[-1])
-    ind <- lapply(idx_seq, function(x) {
-        KNN@i[x] + 1
-    })
-    return(list(KNN = KNN, ind = ind, idx_seq = idx_seq))
+    knn_summary <- summary(KNN)
+    ind <- split(knn_summary$j, knn_summary$i)
+    return(list(KNN = KNN, ind = ind))
 }
 
 #' function used in Reduce to remove KNN's backward edges except for
@@ -106,4 +103,30 @@
         Knn[i, rem_edges[[i]]] <- 0
     }
     return(Knn)
+}
+
+#' Calculate the weight adjacent matricks of knn graph and its index using RANN
+#' @param wp_data Multi scale data of the waypoints
+#' @param knn. Number of nearest neighbors for graph construction
+#' @keywords internal
+#' @importFrom RANN nn2
+#' @importFrom Matrix sparseMatrix
+#' @importFrom stats dist
+#' @return a list containing the weight adjacent matrix and index
+.RANNinx <- function(wp_data, knn.) {
+    RAKNN <- nn2(wp_data, k = knn.)
+    row_indices <- rep(1:nrow(RAKNN[["nn.dists"]]),
+                       times = ncol(RAKNN[["nn.dists"]]))
+    col_indices <- as.vector(RAKNN[["nn.idx"]])
+    x_values <- as.vector(RAKNN[["nn.dists"]])
+    KNN <- sparseMatrix(
+        i = row_indices,
+        j = col_indices,
+        x = x_values
+    )
+    ## generate the index of each neighbor
+    ind <- split(as.vector(RAKNN[["nn.idx"]]), 
+                 rep(1:nrow(RAKNN[["nn.idx"]]), 
+                     times = ncol(RAKNN[["nn.idx"]])))
+    return(list(KNN = KNN, ind = ind, idx_seq = idx_seq))
 }

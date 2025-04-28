@@ -84,7 +84,7 @@ markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime",
     scale_components = TRUE, num_waypoints = 500, n_eigs = NULL,
-    verbose = TRUE) {
+    verbose = TRUE, use_RANN = FALSE) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
@@ -97,7 +97,6 @@ markovProbability <- function(
     } else {
         diffusiontime <- milo[[pseudotime_key]] # nocov
     }
-
     # scale data
     multiscale <- .determineMultiscaleSpace(diffusionmap, n_eigs = n_eigs)
     if (scale_components) {
@@ -111,10 +110,9 @@ markovProbability <- function(
     unique_waypoint <- setdiff(unique(c(root_cell, waypoints)),terminal_state)
     waypoints <- c(unique_waypoint, terminal_state)
     # calculate probabilities
-    #return(list(mul_wp = multiscale[waypoints, ], waypoints = waypoints))
     prob_term <- differentiationProbabilities(multiscale[waypoints, ],
         terminal_states = terminal_state, knn = knn, pseudotime = diffusiontime,
-        waypoints = waypoints, verbose = verbose
+        waypoints = waypoints, verbose = verbose, use_RANN = use_RANN
     )
     probabilities <- prob_term[[1]]
     terminal_state <- prob_term[[2]]
