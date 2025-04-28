@@ -62,6 +62,10 @@ jobs:
         run: |
         Rscript -e 'install.packages("BiocManager")'
         Rscript -e 'BiocManager::install("BiocParallel", version = "3.18", ask=FALSE, update=FALSE)'
+        
+        - name: Install dependencies
+        run: |
+        install.packages("scRepertoire")
 
       - name: Get Bioconductor version
         id: BIOC
@@ -73,7 +77,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, scRepertoire
+          extra-packages: any::rcmdcheck
 
       - uses: r-lib/actions/check-r-package@v2
 

@@ -136,5 +136,5 @@
             times = ncol(RAKNN[["nn.idx"]])
         )
     )
-    return(list(KNN = KNN, ind = ind, idx_seq = idx_seq))
+    return(list(KNN = KNN, ind = ind))
 }
