@@ -19,7 +19,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest }
-          - { os: macos-latest } # disabling until https://github.com/r-lib/actions/issues/950 is resolved
+          # - { os: macos-latest } # disabling because biocParallel is not compiling 29/04/2025
           - { os: windows-latest }
     runs-on: ${{ matrix.config.os }}
     env:
@@ -57,11 +57,11 @@ jobs:
           echo "version=$(head -1 VERSION | awk '{print $3}')" >> $GITHUB_OUTPUT
           rm VERSION
         shell: bash -l {0}
-        
+
       # - name: Pre-install BiocParallel binary
       #   run: |
       #     Rscript -e 'install.packages("BiocManager")'
-          
+
       # - name: Install immApex and scRepertoire
       #   run: |
       #     Rscript -e 'remotes::install_github("ncborcherding/immApex")'
@@ -103,7 +103,6 @@ jobs:
         if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
         with:
           packages: covr
-
 
       - name: Test coverage
         if: steps.check_permissions.outputs.has_permission == 'true' && matrix.config.os == 'ubuntu-latest'
