@@ -32,7 +32,7 @@ jobs:
         uses: grimbough/bioc-actions/setup-bioc@v1
         id: install-r
         with:
-          bioc-version: devel
+          bioc-version: release
 
       - name: Install ubuntu dependencies
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
@@ -58,15 +58,14 @@ jobs:
           rm VERSION
         shell: bash -l {0}
         
-      - name: Pre-install BiocParallel binary
-        run: |
-          Rscript -e 'install.packages("BiocManager")'
-          Rscript -e 'BiocManager::install("BiocParallel", version = "3.18", ask=FALSE, update=FALSE)'
+      # - name: Pre-install BiocParallel binary
+      #   run: |
+      #     Rscript -e 'install.packages("BiocManager")'
           
-      - name: Install immApex and scRepertoire
-        run: |
-          Rscript -e 'remotes::install_github("ncborcherding/immApex")'
-          remotes::install_github("ncborcherding/scRepertoire")
+      # - name: Install immApex and scRepertoire
+      #   run: |
+      #     Rscript -e 'remotes::install_github("ncborcherding/immApex")'
+      #     remotes::install_github("ncborcherding/scRepertoire")
 
       - name: Get Bioconductor version
         id: BIOC
