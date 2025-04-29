@@ -4,7 +4,7 @@
 \alias{.constructMarkovChain}
 \title{.constructMarkovChain}
 \usage{
-.constructMarkovChain(wp_data, knn., pseudotime, waypoints, vb)
+.constructMarkovChain(wp_data, knn., pseudotime, waypoints, vb, use_RANN)
 }
 \arguments{
 \item{wp_data}{Multi scale data of the waypoints}
@@ -16,6 +16,10 @@
 \item{waypoints}{integer vector, index of selected waypoint used to}
 
 \item{vb}{whether to print messages}
+
+\item{use_RANN}{parameter to make user choose
+whether to use RANN to construct Markov chain,
+or keep using bluster}
 }
 \value{
 transition matrix of the markov chain

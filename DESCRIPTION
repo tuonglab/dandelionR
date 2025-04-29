@@ -46,7 +46,8 @@ Imports:
     spam,
     stats,
     SummarizedExperiment,
-    uwot
+    uwot,
+    RANN
 Suggests:
     BiocStyle,
     knitr,

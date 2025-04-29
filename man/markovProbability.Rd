@@ -15,7 +15,8 @@ markovProbability(
   scale_components = TRUE,
   num_waypoints = 500,
   n_eigs = NULL,
-  verbose = TRUE
+  verbose = TRUE,
+  use_RANN = FALSE
 )
 }
 \arguments{
@@ -54,6 +55,10 @@ the eigen gap.
 }}
 
 \item{verbose}{Logical. If \code{TRUE}, print progress. Default is \code{TRUE}.}
+
+\item{use_RANN}{parameter to make user choose
+whether to use RANN to construct Markov chain,
+or keep using bluster}
 }
 \value{
 milo or SinglCellExperiment object with pseudotime, probabilities in

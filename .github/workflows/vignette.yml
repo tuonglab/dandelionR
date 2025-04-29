@@ -52,17 +52,17 @@ jobs:
         uses: grimbough/bioc-actions/setup-bioc@v1
         id: install-r
         with:
-          bioc-version: devel
+          bioc-version: release
 
       - name: Install ubuntu dependencies
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update && sudo apt-get install -y libgsl-dev
 
-      - name: Install macos dependencies
-        if: ${{ matrix.config.os == 'macos-latest' }}
-        run: |
-          brew install gsl
+      # - name: Install macos dependencies
+      #   if: ${{ matrix.config.os == 'macos-latest' }}
+      #   run: |
+      #     brew install gsl
 
       - name: Get R version
         id: R
@@ -83,10 +83,10 @@ jobs:
         with:
           extra-packages: pkgdown
 
-      - name: Install scRepertoire from github
-        run: |
-          Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
-        shell: bash -l {0}
+      # - name: Install scRepertoire from github
+      #   run: |
+      #     Rscript -e 'remotes::install_github("ncborcherding/scRepertoire")'
+      #   shell: bash -l {0}
 
       # - name: Install specific version of pillar to avoid weird error message
       #   run: |
