@@ -6,6 +6,9 @@
 #' @param pseudotime pseudotime ordering of cells
 #' @param waypoints integer vector, index of selected waypoint used to
 #' @param vb whether to print messages
+#' @param use_RANN parameter to make user choose 
+#' whether to use RANN to construct Markov chain, 
+#' or keep using bluster
 #'
 #' @keywords internal
 #' @importFrom bluster makeKNNGraph

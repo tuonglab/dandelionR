@@ -25,6 +25,9 @@
 #' - If is not specified, the number of eigen vectors will be determined using
 #'  the eigen gap.
 #' @param verbose Logical. If `TRUE`, print progress. Default is `TRUE`.
+#' @param use_RANN parameter to make user choose 
+#' whether to use RANN to construct Markov chain, 
+#' or keep using bluster
 #' @examples
 #' data(sce_vdj)
 #' # downsample to first 2000 cells
