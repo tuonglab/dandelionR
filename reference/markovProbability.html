@@ -57,7 +57,8 @@ transition probabilities based on pseudotime information.</p>
 <span>  scale_components <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  num_waypoints <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  n_eigs <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use_RANN <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -119,6 +120,12 @@ the eigen gap.</p></li>
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, print progress. Default is <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-use-rann">use_RANN<a class="anchor" aria-label="anchor" href="#arg-use-rann"></a></dt>
+<dd><p>parameter to make user choose
+whether to use RANN to construct Markov chain,
+or keep using bluster</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -193,6 +200,7 @@ its colData</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling and flocking waypoints...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Markov chain construction...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Computing fundamental matrix and absorption probabilities...</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Matrix generated is singular or nearly singular; using pseudo-inverse to construct fundamental matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Project probabilites from waypoints to each pseudobulk...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Complete.</span>
 </code></pre></div>
@@ -206,7 +214,7 @@ its colData</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer></div>
