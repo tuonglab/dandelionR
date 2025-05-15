@@ -10,7 +10,8 @@ differentiationProbabilities(
   knn = 30L,
   pseudotime,
   waypoints,
-  verbose = TRUE
+  verbose = TRUE,
+  use_RANN = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ Default is \code{30L}.}
 construct the Markov chain.}
 
 \item{verbose}{Boolean, whether to print messages/warnings.}
+
+\item{use_RANN}{parameter to make user choose
+whether to use RANN to construct Markov chain,
+or keep using bluster}
 }
 \value{
 A numeric matrix or data frame containing branch probabilities
