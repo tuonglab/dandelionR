@@ -16,6 +16,9 @@
 #'   Default is 'euclidean'.
 #' @param min_dist numeric, with default 0.3
 #'  - the minimum distance between points in the low dimensional space
+#' @param use_graph Logical, default TRUE.
+#'   - Whether to run UMAP on the graph adjacency matrix (TRUE) as in Dandelion,
+#'     or directly on the latent space (FALSE) for faster performance.
 #' @param ... other parameters passed to uwot::umap
 #' @examples
 #' data(sce_vdj)
@@ -46,12 +49,19 @@
 #' @export
 miloUmap <- function(
     milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean",
-    min_dist = 0.3, ...) {
-    # get the graph's adjacency matrix
-    graphm <- as_adjacency_matrix(graph(milo))
-    # inherit the names of each row
-    rownames(graphm) <- rownames(colData(milo))
-    colnames(graphm) <- rownames(colData(milo))
+    min_dist = 0.3, use_graph = TRUE,...) {
+    if(use_graph)
+    {
+      # get the graph's adjacency matrix
+      graphm <- as_adjacency_matrix(graph(milo), sparse = TRUE)
+      # inherit the names of each row
+      rownames(graphm) <- rownames(colData(milo))
+      colnames(graphm) <- rownames(colData(milo))
+    }
+    else
+    {
+      graph <- reducedDim(milo_object, "X_scvi")
+    }
     # conduct umap
     pos <- umap(graphm,
         n_neighbors = n_neighbors, metric = metric, min_dist = min_dist,
