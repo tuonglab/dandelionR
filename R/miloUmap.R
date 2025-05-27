@@ -60,7 +60,7 @@ miloUmap <- function(
     }
     else
     {
-      graph <- reducedDim(milo_object, "X_scvi")
+      graphm <- reducedDim(milo_object, "X_scvi")
     }
     # conduct umap
     pos <- umap(graphm,
