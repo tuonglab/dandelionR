@@ -1,3 +1,7 @@
+# dandelionR Version 1.0.1 (2025-06-16)
+
+Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search.
+
 # dandelionR Version 0.99.11 (2025-02-28)
 
 Updates to README to include citation to bioRxiv preprint.

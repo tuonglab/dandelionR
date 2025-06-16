@@ -14,6 +14,9 @@
 #' @param waypoints Integer vector. Indices of selected waypoints used to
 #' construct the Markov chain.
 #' @param verbose Boolean, whether to print messages/warnings.
+#' @param use_RANN parameter to make user choose 
+#' whether to use RANN to construct Markov chain, 
+#' or keep using bluster
 #' @return A numeric matrix or data frame containing branch probabilities
 #' for each waypoint.
 #' @importFrom Matrix solve
@@ -22,8 +25,11 @@
 #' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
     wp_data, terminal_states = NULL,
-    knn = 30L, pseudotime, waypoints, verbose = TRUE) {
-    T_ <- .constructMarkovChain(wp_data, knn, pseudotime, waypoints, verbose)
+    knn = 30L, pseudotime, waypoints, verbose = TRUE, use_RANN = TRUE) {
+    T_ <- .constructMarkovChain(
+        wp_data, knn, pseudotime,
+        waypoints, verbose, use_RANN
+    )
     if (is.null(terminal_states)) {
         terminal_states <- .terminalStateFromMarkovChain(
             T_, wp_data, pseudotime,

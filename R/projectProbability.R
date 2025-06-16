@@ -31,17 +31,15 @@ projectProbability <- function(
     lambda_t <- (eigenvalues[seq_len(K)])^(2 * t)
     # Initialize an empty matrix for the diffusion distances
     n <- nrow(eigenvectors)
-    D_diffusion <- matrix(0, nrow = n, ncol = n)
+    index_pairs <- which(upper.tri(matrix(1, n, n)), arr.ind = TRUE)
     # Calculate the pairwise diffusion distance
-    D_diffusion <- Reduce(function(dfm_j, j) {
-        dfm_j <- Reduce(function(dfm_i, i) {
-            .calDif(dfm_i, i,
-                j = j, eigenvector = eigenvectors, lambda_t =
-                    lambda_t, K = K
-            )
-        }, seq_len(n), init = dfm_j)
-        dfm_j
-    }, seq_len(n), init = D_diffusion)
+    distances <- apply(index_pairs, 1, .calDif,
+        lambda_t = lambda_t,
+        eigenvector = eigenvectors, K = K
+    )
+    D_diffusion <- matrix(0, n, n)
+    D_diffusion[upper.tri(D_diffusion)] <- distances
+    D_diffusion <- D_diffusion + t(D_diffusion)
     # `D_diffusion` is now the diffusion distance matrix
     Dif <- D_diffusion[, waypoints]
     D_ravel <- as.vector(Dif)
@@ -49,23 +47,22 @@ projectProbability <- function(
     W <- exp(-0.5 * ((Dif / sdv)^2))
     W <- W / apply(W, 1, sum)
     prob <- W %*% probabilities
+    if (verbose) message("Complete.")
     return(prob)
 }
 
 
-#' function help to reconstruct diffusion distance using Reduce
+#' function help to calculate the diffusion distance
 #'
-#' @param dfm an nrow(eigenvectors) x nrow(eigenvectors) matrix
-#'  need to be filled with diffusion distance with iteration
-#' @param i integer the row selected in this iteration
-#' @param j integer the col selected in this iteration
+#' @param idx integer the index of the calculated value
 #' @param eigenvector numeric vector, the eigenvector from diffusion map
 #' @param lambda_t eigenvalues to the power of t(diffusion time)
 #' @param K The number of the eigenvectors to be used in calculation
 #' @keywords internal
 #' @return updated diffusion distance matrix after one iteration
-.calDif <- function(dfm, i, j, eigenvector, lambda_t, K) {
+.calDif <- function(idx, eigenvector, lambda_t, K) {
+    i <- idx[1]
+    j <- idx[2]
     diff <- eigenvector[i, seq_len(K)] - eigenvector[j, seq_len(K)]
-    dfm[i, j] <- sqrt(sum(lambda_t * (diff^2)))
-    dfm
+    sqrt(sum(lambda_t * diff^2))
 }

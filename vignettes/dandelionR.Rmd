@@ -47,7 +47,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 # The following initializes usage of Bioc devel
-BiocManager::install(version="devel")
+BiocManager::install(version = "devel")
 
 BiocManager::install("dandelionR")
 ```
@@ -256,7 +256,8 @@ root <- which.max(pca[1, ])
 ```{r, warning = FALSE}
 library(destiny)
 # Run diffusion map on the PCA
-dm <- DiffusionMap(t(pca), n_pcs = 10, n_eigs = 10)
+feature_space <- t(assay(pb.milo, "Feature_space"))
+dm <- DiffusionMap(as.matrix(feature_space), n_pcs = 50, n_eigs = 10)
 ```
 
 ### Compute diffusion pseudotime on diffusion map
