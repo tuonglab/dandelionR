@@ -87,7 +87,8 @@ markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime",
     scale_components = TRUE, num_waypoints = 500, n_eigs = NULL,
-    verbose = TRUE, use_RANN = FALSE) {
+    verbose = TRUE, use_RANN = TRUE
+) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
