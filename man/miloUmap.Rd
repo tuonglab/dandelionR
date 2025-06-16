@@ -10,6 +10,7 @@ miloUmap(
   n_neighbors = 50L,
   metric = "euclidean",
   min_dist = 0.3,
+  use_graph = TRUE,
   ...
 )
 }
@@ -38,6 +39,12 @@ Default is 'euclidean'.
 \item{min_dist}{numeric, with default 0.3
 \itemize{
 \item the minimum distance between points in the low dimensional space
+}}
+
+\item{use_graph}{Logical, default TRUE.
+\itemize{
+\item Whether to run UMAP on the graph adjacency matrix (TRUE) as in Dandelion,
+or directly on the latent space (FALSE) for faster performance.
 }}
 
 \item{...}{other parameters passed to uwot::umap}
