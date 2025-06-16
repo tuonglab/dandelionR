@@ -25,7 +25,7 @@
 #' @include terminalStateFromMarkovChain.R
 differentiationProbabilities <- function(
     wp_data, terminal_states = NULL,
-    knn = 30L, pseudotime, waypoints, verbose = TRUE, use_RANN = FALSE) {
+    knn = 30L, pseudotime, waypoints, verbose = TRUE, use_RANN = TRUE) {
     T_ <- .constructMarkovChain(
         wp_data, knn, pseudotime,
         waypoints, verbose, use_RANN
