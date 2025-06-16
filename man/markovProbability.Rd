@@ -16,7 +16,7 @@ markovProbability(
   num_waypoints = 500,
   n_eigs = NULL,
   verbose = TRUE,
-  use_RANN = FALSE
+  use_RANN = TRUE
 )
 }
 \arguments{

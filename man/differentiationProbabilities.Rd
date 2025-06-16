@@ -11,7 +11,7 @@ differentiationProbabilities(
   pseudotime,
   waypoints,
   verbose = TRUE,
-  use_RANN = FALSE
+  use_RANN = TRUE
 )
 }
 \arguments{
