@@ -14,8 +14,8 @@
 #' @param waypoints Integer vector. Indices of selected waypoints used to
 #' construct the Markov chain.
 #' @param verbose Boolean, whether to print messages/warnings.
-#' @param use_RANN parameter to make user choose 
-#' whether to use RANN to construct Markov chain, 
+#' @param use_RANN parameter to make user choose
+#' whether to use RANN to construct Markov chain,
 #' or keep using bluster
 #' @return A numeric matrix or data frame containing branch probabilities
 #' for each waypoint.

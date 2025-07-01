@@ -25,8 +25,8 @@
 #' - If is not specified, the number of eigen vectors will be determined using
 #'  the eigen gap.
 #' @param verbose Logical. If `TRUE`, print progress. Default is `TRUE`.
-#' @param use_RANN parameter to make user choose 
-#' whether to use RANN to construct Markov chain, 
+#' @param use_RANN parameter to make user choose
+#' whether to use RANN to construct Markov chain,
 #' or keep using bluster
 #' @examples
 #' data(sce_vdj)
@@ -87,8 +87,7 @@ markovProbability <- function(
     milo, diffusionmap, terminal_state = NULL, root_cell, knn = 30L,
     diffusiontime = NULL, pseudotime_key = "pseudotime",
     scale_components = TRUE, num_waypoints = 500, n_eigs = NULL,
-    verbose = TRUE, use_RANN = TRUE
-) {
+    verbose = TRUE, use_RANN = TRUE) {
     if (is.null(milo[[pseudotime_key]])) {
         if (is.null(diffusiontime)) { # nocov start
             abort(paste(
