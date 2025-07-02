@@ -1,6 +1,15 @@
-# dandelionR Version 1.0.1 (2025-06-16)
+# dandelionR Version 1.1.2 (2025-06-16)
+
+Update citation to include the DOI for the manuscript published in CSBJ!
+
+# dandelionR Version 1.1.1 (2025-06-16)
 
 Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search.
+Sync changes to Bioconductor 3.22 development version.
+
+# dandelionR Version 1.0.0
+
+Bioconductor 3.21 release version.
 
 # dandelionR Version 0.99.11 (2025-02-28)
 

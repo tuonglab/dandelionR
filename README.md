@@ -44,14 +44,14 @@ This is a work in progress, so please feel free to open an issue if you encounte
 
 ## Citation
 
-If you use `dandelionR` in your work, you can cite our manuscript on bioRxiv:
+If you use `dandelionR` in your work, you can cite our manuscript published in the [Computational and Structural Biotechnology Journal](https://authors.elsevier.com/sd/article/S2001-0370(25)00263-6):
 
 ```
-Yu, J., Borcherding, N. & Tuong, Z.K.. (2025) DandelionR: Single-cell immune repertoire trajectory analysis in R. bioRxiv 2025.02.04.636146. https://doi.org/10.1101/2025.02.04.636146
+Yu, J., Xu, X., Borcherding, N., Tuong, Z.K. dandelionR: Single-cell immune repertoire trajectory analysis in R. Comput. Struct. Biotechnol. J. (2025). doi:10.1016/j.csbj.2025.06.047.
 ```
 
 Please also cite the original `dandelion` paper:
 
 ```
-Suo, C. et al. Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins. Nat. Biotechnol. 42, 40-51 (2024). https://doi.org:10.1038/s41587-023-01734-7
+Suo, C. et al. Dandelion uses the single-cell adaptive immune receptor repertoire to explore lymphocyte developmental origins. Nat. Biotechnol. 42, 40-51 (2024). doi:10.1038/s41587-023-01734-7
 ```

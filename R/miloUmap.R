@@ -49,18 +49,15 @@
 #' @export
 miloUmap <- function(
     milo, slot_name = "UMAP_knngraph", n_neighbors = 50L, metric = "euclidean",
-    min_dist = 0.3, use_graph = TRUE,...) {
-    if(use_graph)
-    {
-      # get the graph's adjacency matrix
-      graphm <- as_adjacency_matrix(graph(milo), sparse = TRUE)
-      # inherit the names of each row
-      rownames(graphm) <- rownames(colData(milo))
-      colnames(graphm) <- rownames(colData(milo))
-    }
-    else
-    {
-      graphm <- reducedDim(milo_object, "X_scvi")
+    min_dist = 0.3, use_graph = TRUE, ...) {
+    if (use_graph) {
+        # get the graph's adjacency matrix
+        graphm <- as_adjacency_matrix(graph(milo), sparse = TRUE)
+        # inherit the names of each row
+        rownames(graphm) <- rownames(colData(milo))
+        colnames(graphm) <- rownames(colData(milo))
+    } else {
+        graphm <- reducedDim(milo_object, "X_scvi")
     }
     # conduct umap
     pos <- umap(graphm,

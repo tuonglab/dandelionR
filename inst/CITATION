@@ -1,15 +1,16 @@
 bibentry(
   bibtype  = "Article",
-  title    = "DandelionR: Single-cell immune repertoire trajectory analysis in R",
+  title    = "dandelionR: Single-cell immune repertoire trajectory analysis in R",
   author   = c(
       person("Jiawei", "Yu"),
+      person("Xiaohan", "Xu"),
       person("Nicholas", "Borcherding"),
       person("Zewen Kelvin", "Tuong")),
-  journal = "bioRxiv",
+  journal = "Computational and Structural Biotechnology Journal",
   year     = "2025",
-  doi      = "10.1101/2025.02.04.636146",
-  url      = "https://www.biorxiv.org/content/10.1101/2025.02.04.636146v1.full",
-  textVersion = "Yu J, Borcherding N, Tuong ZK. 2025. dandelionR: Single-cell immune repertoire trajectory analysis in R. bioRxiv 2025.02.04.636146; doi: https://doi.org/10.1101/2025.02.04.636146"  
+  doi      = "10.1016/j.csbj.2025.06.047",
+  url      = "https://authors.elsevier.com/sd/article/S2001-0370(25)00263-6",
+  textVersion = "Yu J, Xu X, Borcherding N, Tuong ZK. 2025. dandelionR: Single-cell immune repertoire trajectory analysis in R. Comput. Struct. Biotechnol. J. (2025); doi:10.1016/j.csbj.2025.06.047"  
 )
 
 bibentry(
