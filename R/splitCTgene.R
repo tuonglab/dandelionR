@@ -31,8 +31,8 @@ formatVdj <- function(gene_list) {
         vj <- rep("None", 2)
         vdj <- rep("None", 3)
     } else {
-        vj <- chainAssign(gene_list[[1]], 2)
-        vdj <- chainAssign(gene_list[[2]], 3)
+        vj <- chainAssign(gene_list[[1]], num = 2, min_len = 2, max_len = 3)
+        vdj <- chainAssign(gene_list[[2]], num = 3, min_len = 3, max_len = 4)
     }
     return(append(vj, vdj))
 }
@@ -42,11 +42,14 @@ formatVdj <- function(gene_list) {
 #'
 #' @param vec vector of V(D)J genes to assign to the right chain.
 #' @param num number of genes to return. should be 2(vj) or 3(vdj)
+#' @param min_len minimum length of the vector to account for missing constant gene.
+#' @param max_len maximum length of the vector to account for multiple chains.
 #' @keywords internal
 #' @return list contain vector of VJ + VDJ of the cell input
 #' @importFrom rlang abort
-chainAssign <- function(vec, num) {
-    if (length(vec) <= (num + 1)) {
+chainAssign <- function(vec, num, min_len, max_len) {
+    vec_len <- length(vec)
+    if (vec_len >= min_len && vec_len <= max_len) {
         chains <- vec[seq_len(num)]
     } else if (all(vec == "NA")) {
         # nocov start

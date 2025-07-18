@@ -396,7 +396,7 @@ setupVdjPseudobulk <- function(
     prefix <- c(v_call, "d_call_", "j_call_")
     if (!is.null(mode_option)) {
         # can be pack as another function
-        suffix <- c("_VDJ", "_VJ")
+        suffix <- c("_VJ", "_VDJ")
         extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
             paste0(x, mode_option, y)
         }))
@@ -406,7 +406,7 @@ setupVdjPseudobulk <- function(
         )]
     } else {
         # nocov start
-        suffix <- c("VDJ", "VJ")
+        suffix <- c("VJ", "VDJ")
         extr_cols <- as.vector(outer(prefix, suffix, function(x, y) {
             paste0(x, y)
         }))
