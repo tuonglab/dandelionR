@@ -387,18 +387,18 @@ pseudobulked VDJ feature space.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pb.milo</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: Milo </span></span>
-<span><span class="co">## dim: 178 64 </span></span>
+<span><span class="co">## dim: 178 61 </span></span>
 <span><span class="co">## metadata(0):</span></span>
 <span><span class="co">## assays(1): Feature_space</span></span>
 <span><span class="co">## rownames(178): TRBV1*01 TRBV10-1*01 ... TRAJ8*01 TRAJ9*01</span></span>
 <span><span class="co">## rowData names(0):</span></span>
-<span><span class="co">## colnames(64): 179 93 ... 269 125</span></span>
+<span><span class="co">## colnames(61): 148 94 ... 377 68</span></span>
 <span><span class="co">## colData names(3): anno_lvl_2_final_clean</span></span>
 <span><span class="co">##   anno_lvl_2_final_clean_fraction cell_count</span></span>
 <span><span class="co">## reducedDimNames(0):</span></span>
 <span><span class="co">## mainExpName: NULL</span></span>
 <span><span class="co">## altExpNames(0):</span></span>
-<span><span class="co">## nhoods dimensions(2): 64 382</span></span>
+<span><span class="co">## nhoods dimensions(2): 61 392</span></span>
 <span><span class="co">## nhoodCounts dimensions(2): 1 1</span></span>
 <span><span class="co">## nhoodDistances dimension(1): 0</span></span>
 <span><span class="co">## graph names(0):</span></span>
@@ -431,8 +431,8 @@ computation.</p>
 <span><span class="co"># the bottom-most cell</span></span>
 <span><span class="va">branch.tips</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">branch.tips</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span></span>
-<span><span class="co"># define the start of our trajectory as the left-most cell</span></span>
-<span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># define the start of our trajectory as the right-most cell</span></span>
+<span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pca</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="construct-diffusion-map">Construct diffusion map<a class="anchor" aria-label="anchor" href="#construct-diffusion-map"></a>
@@ -484,20 +484,20 @@ columns.</p>
 <pre><code><span><span class="co">## DataFrame with 6 rows and 6 columns</span></span>
 <span><span class="co">##     anno_lvl_2_final_clean anno_lvl_2_final_clean_fraction cell_count</span></span>
 <span><span class="co">##                &lt;character&gt;                       &lt;numeric&gt;  &lt;numeric&gt;</span></span>
-<span><span class="co">## 179              faDP(P)_T                        0.605263         38</span></span>
-<span><span class="co">## 93                 faCD8+T                        0.750000         48</span></span>
-<span><span class="co">## 75               faDP(Q)_T                        0.907407         54</span></span>
-<span><span class="co">## 279              faDP(Q)_T                        0.913793         58</span></span>
-<span><span class="co">## 277                faCD4+T                        0.936170         47</span></span>
-<span><span class="co">## 375              faDP(P)_T                        0.632653         49</span></span>
+<span><span class="co">## 148                faCD4+T                        0.776316         76</span></span>
+<span><span class="co">## 94                 faCD8+T                        0.750000         48</span></span>
+<span><span class="co">## 195                faCD4+T                        0.633333         60</span></span>
+<span><span class="co">## 285              faDP(Q)_T                        0.931034         58</span></span>
+<span><span class="co">## 118                faCD4+T                        0.697917         96</span></span>
+<span><span class="co">## 213                faCD8+T                        0.791667         48</span></span>
 <span><span class="co">##     pseudotime     CD8+T     CD4+T</span></span>
 <span><span class="co">##      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span></span>
-<span><span class="co">## 179   0.434371  0.223894  0.776106</span></span>
-<span><span class="co">## 93    3.014084  0.286206  0.713794</span></span>
-<span><span class="co">## 75    1.576755  0.223309  0.776691</span></span>
-<span><span class="co">## 279   1.402184  0.223360  0.776640</span></span>
-<span><span class="co">## 277   2.831863  0.223669  0.776331</span></span>
-<span><span class="co">## 375   0.000000  0.223483  0.776517</span></span></code></pre>
+<span><span class="co">## 148    4.54268  0.304706  0.695294</span></span>
+<span><span class="co">## 94     4.69050  0.386659  0.613341</span></span>
+<span><span class="co">## 195    4.39084  0.299751  0.700249</span></span>
+<span><span class="co">## 285    2.25760  0.314288  0.685712</span></span>
+<span><span class="co">## 118    4.53199  0.304670  0.695330</span></span>
+<span><span class="co">## 213    4.78851  0.391825  0.608175</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-branch-probabilities">Visualising branch probabilities<a class="anchor" aria-label="anchor" href="#visualising-branch-probabilities"></a>
