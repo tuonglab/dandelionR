@@ -46,7 +46,7 @@ formatVdj <- function(gene_list) {
 #' @return list contain vector of VJ + VDJ of the cell input
 #' @importFrom rlang abort
 chainAssign <- function(vec, num) {
-    if (length(vec) == (num + 1)) {
+    if (length(vec) <= (num + 1)) {
         chains <- vec[seq_len(num)]
     } else if (all(vec == "NA")) {
         # nocov start
