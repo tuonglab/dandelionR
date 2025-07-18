@@ -38,7 +38,8 @@ test_that("markovProbability works correctly with terminal states as NULL", {
         terminal_state = NULL,
         diffusiontime = dif.pse[[paste0("DPT", root)]],
         root_cell = root,
-        pseudotime_key = "pseudotime"
+        pseudotime_key = "pseudotime",
+        knn=11, # why 11?
     )
     expect_true(is(pb.milo, "Milo"))
     expect_true("pseudotime" %in% colnames(colData(pb.milo)))
@@ -53,7 +54,8 @@ test_that("markovProbability works correctly with only one terminal state", {
         terminal_state = as.numeric(branch.tips[1]),
         diffusiontime = dif.pse[[paste0("DPT", root)]],
         root_cell = root,
-        pseudotime_key = "pseudotime"
+        pseudotime_key = "pseudotime",
+        knn=11, # why 11?
     )
     expect_true(is(pb.milo, "Milo"))
     expect_true("pseudotime" %in% colnames(colData(pb.milo)))
