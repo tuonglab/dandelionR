@@ -521,7 +521,7 @@ setupVdjPseudobulk <- function(
     filter_pattern <- ",|None|No_contig"
     extr_cols <- c()
     if (is.null(check_extract_cols_mapping)) {
-        extr_cols <- main_cols[c(check_vdj_mapping, check_vj_mapping)]
+        extr_cols <- main_cols[c(check_vj_mapping, check_vdj_mapping)]
     } else {
         extr_cols <- check_extract_cols_mapping
     }
