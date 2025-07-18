@@ -1,3 +1,7 @@
+# dandelionR Version 1.1.3 (2025-07-18)
+
+Bug fixes to ensure compatibility with scRepertoire.
+
 # dandelionR Version 1.1.2 (2025-06-16)
 
 Update citation to include the DOI for the manuscript published in CSBJ!

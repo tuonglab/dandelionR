@@ -4,12 +4,16 @@
 \alias{chainAssign}
 \title{Assign the V(D)J gene to the right chain.}
 \usage{
-chainAssign(vec, num)
+chainAssign(vec, num, min_len, max_len)
 }
 \arguments{
 \item{vec}{vector of V(D)J genes to assign to the right chain.}
 
 \item{num}{number of genes to return. should be 2(vj) or 3(vdj)}
+
+\item{min_len}{minimum length of the vector to account for missing constant gene.}
+
+\item{max_len}{maximum length of the vector to account for multiple chains.}
 }
 \value{
 list contain vector of VJ + VDJ of the cell input
