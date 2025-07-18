@@ -142,8 +142,8 @@ pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
 # the bottom-most cell
 branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
 names(branch.tips) <- c("CD8+T", "CD4+T")
-# define the start of our trajectory as the right-most cell
-root <- which.max(pca[1, ])
+# define the start of our trajectory as the left-most cell
+root <- which.min(pca[1, ])
 ```
 
 ### Construct diffusion map
