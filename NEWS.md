@@ -1,6 +1,6 @@
 # dandelionR Version 1.1.3 (2025-07-18)
 
-Bug fixes to ensure compatibility with scRepertoire.
+Bug fixes to ensure compatibility with scRepertoire. Sync changes to Bioconductor 3.22 development version.
 
 # dandelionR Version 1.1.2 (2025-06-16)
 
@@ -8,8 +8,15 @@ Update citation to include the DOI for the manuscript published in CSBJ!
 
 # dandelionR Version 1.1.1 (2025-06-16)
 
-Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search.
-Sync changes to Bioconductor 3.22 development version.
+Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search. Sync changes to Bioconductor 3.22 development version.
+
+# dandelionR Version 1.0.2 (2025-07-22)
+
+Fix a bug causing wrong VDJ gene columns to be populated. Sync changes to Bioconductor 3.21 release version.
+
+# dandelionR Version 1.0.1 (2025-06-16)
+
+Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search. Sync changes to Bioconductor 3.21 release version.
 
 # dandelionR Version 1.0.0
 
