@@ -1,3 +1,7 @@
+# dandelionR Version 1.0.1 (2025-07-22)
+
+Fix a bug causing wrong VDJ gene columns to be populated.
+
 # dandelionR Version 1.0.1 (2025-06-16)
 
 Updates to default method to use `RANN` instead of `bluster` for nearest neighbor search.
