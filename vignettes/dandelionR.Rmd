@@ -317,7 +317,7 @@ is inverse of the size of the pseudobulk.
 
 ## Project pseudobulk data to each cell
 ```{r}
-cdata <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips)
+cdata <- projectPseudotimeToCell(milo_object, pb.milo, value_key = c("pseudotime", "CD8+T", "CD4+T"))
 ```
 
 ## Visualise the trajectory data on a per cell basis
