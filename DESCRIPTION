@@ -50,6 +50,7 @@ Imports:
     RANN
 Suggests:
     BiocStyle,
+    DelayedMatrixStats,
     knitr,
     rmarkdown,
     RColorBrewer,
