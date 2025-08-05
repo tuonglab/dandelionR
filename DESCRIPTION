@@ -55,6 +55,7 @@ Suggests:
     RColorBrewer,
     scater,
     scRepertoire,
+    slingshot,
     testthat
 VignetteBuilder: knitr
 URL: https://www.github.com/tuonglab/dandelionR/
