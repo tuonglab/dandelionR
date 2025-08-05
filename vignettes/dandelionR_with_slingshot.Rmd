@@ -1,5 +1,5 @@
 ---
-title: "Single-cell immune repertoire trajectory analysis with dandelionR"
+title: "Single-cell immune repertoire trajectory analysis with dandelionR with slingshot"
 output:
   BiocStyle::html_document:
     toc: true
@@ -234,101 +234,80 @@ pb.milo <- runPCA(pb.milo, assay.type = "Feature_space", ncomponents = 20)
 plotPCA(pb.milo, color_by = "anno_lvl_2_final_clean")
 ```
 
-## TCR trajectory inference using Absorbing Markov Chain
-
-In the original `dandelion` python package, the trajectory inference is done 
-using the `palantir` package. Here, we implement the absorbing markov chain 
-approach in dandelionR to infer the trajectory, leveraging on `destiny` for 
-diffusion map computation.
-
-### Define root and branch tips
+## TCR trajectory inference using Slingshot
+In the original dandelion Python package, trajectory inference is performed using the palantir package.
+Here, we instead use the Slingshot package.
 ```{r}
-# extract the PCA matrix
-pca <- t(as.matrix(reducedDim(pb.milo, type = "PCA")))
-# define the CD8 terminal cell as the top-most cell and CD4 terminal cell as
-# the bottom-most cell
-branch.tips <- c(which.max(pca[2, ]), which.min(pca[2, ]))
-names(branch.tips) <- c("CD8+T", "CD4+T")
-# define the start of our trajectory as the right-most cell
-root <- which.max(pca[1, ])
+library(slingshot)
 ```
 
-### Construct diffusion map
-```{r, warning = FALSE}
-library(destiny)
-# Run diffusion map on the PCA
-feature_space <- t(assay(pb.milo, "Feature_space"))
-dm <- DiffusionMap(as.matrix(feature_space), n_pcs = 50, n_eigs = 10)
-```
-
-### Compute diffusion pseudotime on diffusion map
+### input
+Slingshot requires a matrix representing cells in a reduced-dimensional space and a vector of cluster labels.
+Here, we use PCA for dimensionality reduction and the column anno_lvl_2_final_clean from colData as the cluster labels.
 ```{r}
-dif.pse <- DPT(dm, tips = c(root, branch.tips), w_width = 0.1)
+table(colData(pb.milo)[["anno_lvl_2_final_clean"]])
 ```
 
-```{r, message=FALSE}
-# the root is automatically called DPT + index of the root cell
-DPTroot <- paste0("DPT", root)
-# store pseudotime in milo object
-pb.milo$pseudotime <- dif.pse[[DPTroot]]
-# set the colours for pseudotime
-pal <- colorRampPalette(rev((RColorBrewer::brewer.pal(9, "RdYlBu"))))(255)
-plotPCA(pb.milo, color_by = "pseudotime") +
-    scale_colour_gradientn(colours = pal)
-```
+Some clusters have too few cells, so we use a smaller number of PCA dimensions to avoid potential singularity of the covariance matrix.
 
-# Markov chain construction on the pseudobulk VDJ feature space
-This step will compute the Markov chain probabilities on the pseudobulk VDJ 
-feature space. It will return the branch probabilities in the `colData` and 
-the column name corresponds to the branch tips defined earlier.
 ```{r}
-pb.milo <- markovProbability(
-    milo = pb.milo,
-    diffusionmap = dm,
-    terminal_state = branch.tips,
-    root_cell = root,
-    pseudotime_key = "pseudotime",
-    knn = 30
-)
+reducedDim(pb.milo, "PCA10") <- reducedDim(pb.milo, "PCA")[,1:10]
 ```
 
-Inspect the `pb.milo` object to see the newly added columns.
+### run slingshot
 ```{r}
-head(colData(pb.milo))
+pb.milo <- slingshot(pb.milo, clusterLabels=colData(pb.milo)[["anno_lvl_2_final_clean"]], reducedDim = 'PCA10', start.clus = "faDP(P)_T", end.clus = c("faCD4+T", "faCD8+T"))
 ```
 
-# Visualising branch probabilities
+```{r}
+library(Seurat)
+library(fields)
+```
+# Visualization
+pseudotime of each lineage, if the pseudobulk is with value NA, it will not appear on the phage.
 
-With the Markov chain probabilities computed, we can visualise the branch 
-probabilities towards CD4+ or CD8+ T-cell fate on the PCA plot.
-```{r, message=FALSE}
-plotPCA(pb.milo, color_by = "CD8+T") + scale_color_gradientn(colors = pal)
-plotPCA(pb.milo, color_by = "CD4+T") + scale_color_gradientn(colors = pal)
+```{r}
+colors <-  rainbow(50, alpha = 1)
+colors <- colorRampPalette(c("blue", "red"))(50)
+plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_1,breaks=50)], pch=16, asp = 1)
+lines(SlingshotDataSet(pb.milo), lwd=2, col = 'black')
+image.plot(legend.only = TRUE, 
+           zlim = range(pb.milo$slingPseudotime_1, na.rm = TRUE),  
+           col = colors,  
+           legend.lab = "Pseudotime")  
+```
+```{r}
+plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_2,breaks=50)], pch=16, asp = 1)
+lines(SlingshotDataSet(pb.milo), lwd=2, col = 'black')
+image.plot(legend.only = TRUE, 
+           zlim = range(pb.milo$slingPseudotime_2, na.rm = TRUE),  
+           col = colors,  
+           legend.lab = "Pseudotime")  
 ```
 
 # Transfer
-
-The next step is to project the pseudotime and the branch probability 
+The next step is to project the pseudotime 
 information from the pseudobulks back to each cell in the dataset. If the cell 
 do not belong to any of the pseudobulk, it will be removed. If a cell belongs 
 to multiple pseudobulk samples, its value should be calculated as a weighted 
 average of the corresponding values from each pseudobulk, where each weight 
 is inverse of the size of the pseudobulk.
-
+Pseudobulks with NA values are excluded during the projection. If all pseudobulks associated with a cell have NA values, the projected value for that cell will also be NA.
 ## Project pseudobulk data to each cell
 ```{r}
-cdata <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips)
+cdata <- projectPseudotimeToCell(milo_object, pb.milo, value_key = c("slingPseudotime_1", "slingPseudotime_2"))
 ```
 
 ## Visualise the trajectory data on a per cell basis
+The cell with NA value will in grey.
 ```{r, message=FALSE}
+pal <- colorRampPalette(rev((RColorBrewer::brewer.pal(9, "RdYlBu"))))(255)
 plotUMAP(cdata, color_by = "anno_lvl_2_final_clean", dimred = "UMAP_knngraph")
-plotUMAP(cdata, color_by = "pseudotime", dimred = "UMAP_knngraph") +
+plotUMAP(cdata, color_by = "slingPseudotime_1", dimred = "UMAP_knngraph") +
     scale_color_gradientn(colors = pal)
-plotUMAP(cdata, color_by = "CD4+T", dimred = "UMAP_knngraph") +
+plotUMAP(cdata, color_by = "slingPseudotime_2", dimred = "UMAP_knngraph") +
     scale_color_gradientn(colors = pal)
-plotUMAP(cdata, color_by = "CD8+T", dimred = "UMAP_knngraph") +
-    scale_color_gradientn(colors = pal)
+
 ```
 
 And that's it! We have successfully inferred the trajectory of the T-cells in 
