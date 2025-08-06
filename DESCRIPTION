@@ -55,6 +55,7 @@ Suggests:
     RColorBrewer,
     scater,
     scRepertoire,
+    DelayedMatrixStats,
     slingshot,
     testthat
 VignetteBuilder: knitr
