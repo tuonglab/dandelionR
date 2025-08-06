@@ -50,6 +50,7 @@ Imports:
     RANN
 Suggests:
     BiocStyle,
+    fields,
     knitr,
     rmarkdown,
     RColorBrewer,
