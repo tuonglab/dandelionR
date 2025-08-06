@@ -263,6 +263,7 @@ pb.milo <- slingshot(pb.milo, clusterLabels=colData(pb.milo)[["anno_lvl_2_final_
 pseudotime of each lineage, if the pseudobulk is with value NA, it will not appear on the phage.
 
 ```{r}
+library(fields)
 colors <-  rainbow(50, alpha = 1)
 colors <- colorRampPalette(c("blue", "red"))(50)
 plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_1,breaks=50)], pch=16, asp = 1)
@@ -270,7 +271,7 @@ lines(SlingshotDataSet(pb.milo), lwd=2, col = 'black')
 image.plot(legend.only = TRUE, 
            zlim = range(pb.milo$slingPseudotime_1, na.rm = TRUE),  
            col = colors,  
-           legend.lab = "Pseudotime")  
+           legend.lab = "Pseudotime")
 ```
 ```{r}
 plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_2,breaks=50)], pch=16, asp = 1)
