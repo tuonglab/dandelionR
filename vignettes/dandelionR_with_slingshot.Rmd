@@ -259,10 +259,6 @@ reducedDim(pb.milo, "PCA10") <- reducedDim(pb.milo, "PCA")[,1:10]
 pb.milo <- slingshot(pb.milo, clusterLabels=colData(pb.milo)[["anno_lvl_2_final_clean"]], reducedDim = 'PCA10', start.clus = "faDP(P)_T", end.clus = c("faCD4+T", "faCD8+T"))
 ```
 
-```{r}
-library(Seurat)
-library(fields)
-```
 # Visualization
 pseudotime of each lineage, if the pseudobulk is with value NA, it will not appear on the phage.
 
