@@ -1,0 +1,11 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  dandelionR_with_slingshot: dandelionR_with_slingshot.html
+  dandelionR: dandelionR.html
+  vignette_reproduce_original: vignette_reproduce_original.html
+last_built: 2025-08-06T12:36Z
+urls:
+  reference: https:/tuonglab.github.io/dandelionR/preview/pr75/reference
+  article: https:/tuonglab.github.io/dandelionR/preview/pr75/articles
