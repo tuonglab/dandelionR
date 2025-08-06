@@ -74,7 +74,12 @@
 projectPseudotimeToCell <- function(
     milo, pb_milo, value_key = NULL, suffix = "", verbose = TRUE) {
     if (is.null(value_key)) {
-      abort("Please specify the column name(s) of the value(s) to be projected back.")
+        abort("Please specify the column name(s) of the value(s) to be projected back.")
+    }
+    else if (!all(value_key %in% colnames(pb_milo))){
+        missing_value <- value_key[!(value_key %in% colnames(pb_milo))]
+        abort(sprintf("value %s do(es) not exist in pseudobulk `Milo` object.",
+                  paste(missing_value, collapse = ", ")))
     }
     nhood <- miloR::nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood

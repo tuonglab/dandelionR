@@ -38,7 +38,7 @@ pb.milo <- markovProbability(
 )
 # Test for projectPseudotimeToCell
 test_that("projectPseudotimeToCell works correctly", {
-    result <- projectPseudotimeToCell(milo_object, pb.milo, branch.tips)
+    result <- projectPseudotimeToCell(milo_object, pb.milo, value_key = c("pseudotime", "CD4+T", "CD8+T"))
 
     expect_true(is(result, "SingleCellExperiment"))
     expect_true("pseudotime" %in% colnames(colData(result)))
@@ -49,23 +49,15 @@ test_that("projectPseudotimeToCell works correctly", {
 test_that("projectPseudotimeToCell cannot work without pseudotime column", {
     # Test with wrong column
     expect_error(
-        projectPseudotimeToCell(milo_object, pb.milo, branch.tips,
-            pseudotime_key = "wrong_pseudotime"
+        projectPseudotimeToCell(milo_object, pb.milo, value_key = c("wrong_pseudotime", "CD4+T", "CD8+T"),
         ),
-        "subscript contains invalid names"
+        "value .* do\\(es\\) not exist in pseudobulk `Milo` object."
     )
-    # Test with missing pseudotime
-    colData(pb.milo)$pseudotime <- NULL
+    # Test with missing value_key
+    value_keys <- NULL
     expect_error(
-        projectPseudotimeToCell(milo_object, pb.milo, branch.tips),
-        "subscript contains invalid names"
+        projectPseudotimeToCell(milo_object, pb.milo, value_key = value_keys),
+        "Please specify the column name\\(s\\) of the value\\(s\\) to be projected back\\."
     )
 })
 
-# Test for projectPseudotimeToCell without term_states
-test_that("projectPseudotimeToCell works correctly with term_states", {
-    result <- projectPseudotimeToCell(milo_object, pb.milo, term_states = NULL)
-    expect_true(is(result, "SingleCellExperiment"))
-    expect_true("pseudotime" %in% colnames(colData(result)))
-    expect_true(all(c("CD8+T", "CD4+T") %in% colnames(colData(result))))
-})
