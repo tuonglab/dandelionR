@@ -121,7 +121,7 @@ projectPseudotimeToCell <- function(
 #' @return Numeric vector of projected values at cell level.
 project_single_value <- function(x, y, value_name, verbose = TRUE) {
     na_idx <- is.na(x)
-    if (any(na_idx)) {
+    if (any(na_idx)) { # nocov
         if (all(na_idx)) {
             abort(paste("All values for", value_name, "are NA."))
         }
