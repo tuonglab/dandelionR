@@ -75,11 +75,12 @@ projectPseudotimeToCell <- function(
     milo, pb_milo, value_key = NULL, suffix = "", verbose = TRUE) {
     if (is.null(value_key)) {
         abort("Please specify the column name(s) of the value(s) to be projected back.")
-    }
-    else if (!all(value_key %in% colnames(pb_milo))){
+    } else if (!all(value_key %in% colnames(pb_milo))) {
         missing_value <- value_key[!(value_key %in% colnames(pb_milo))]
-        abort(sprintf("value %s do(es) not exist in pseudobulk `Milo` object.",
-                  paste(missing_value, collapse = ", ")))
+        abort(sprintf(
+            "value %s do(es) not exist in pseudobulk `Milo` object.",
+            paste(missing_value, collapse = ", ")
+        ))
     }
     nhood <- miloR::nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood
@@ -104,8 +105,8 @@ projectPseudotimeToCell <- function(
             project_single_value(x, nhoods_cdata_norm, value_name, verbose)
         },
         colData(pb_milo)[, col_list]@listData,
-        col_list,                     
-        SIMPLIFY = FALSE              
+        col_list,
+        SIMPLIFY = FALSE
     )
     colData(cdata) <- cbind(colData(cdata), new_col)
     return(cdata)
@@ -130,19 +131,21 @@ project_single_value <- function(x, y, value_name, verbose = TRUE) {
         col_sums <- Matrix::colSums(modi_y)
         zero_cols <- sum(col_sums == 0)
         if (verbose) {
-            message(sprintf("%d cells do not have projected values for %s because their neighbour(s) value is NA",
-                    zero_cols, value_name))
+            message(sprintf(
+                "%d cells do not have projected values for %s because their neighbour(s) value is NA",
+                zero_cols, value_name
+            ))
         }
     } else {
         modi_y <- y
     }
     col_sums <- Matrix::colSums(modi_y)
-    col_sums[col_sums == 0] <- NA 
+    col_sums[col_sums == 0] <- NA
     na_cols <- is.na(col_sums)
     inv_col_sums <- 1 / col_sums
     weights <- modi_y %*% Matrix::Diagonal(x = inv_col_sums)
     # return projection result
     result <- as.vector(x %*% weights)
-    result[na_cols] <- NA 
+    result[na_cols] <- NA
     result
 }

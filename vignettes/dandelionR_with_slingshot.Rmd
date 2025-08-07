@@ -1,5 +1,5 @@
 ---
-title: "Single-cell immune repertoire trajectory analysis with dandelionR with slingshot"
+title: "Single-cell immune repertoire trajectory analysis with dandelionR and slingshot"
 output:
   BiocStyle::html_document:
     toc: true
@@ -11,7 +11,7 @@ knitr:
     fig.align: 'left'
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteIndexEntry{Single-cell immune repertoire trajectory analysis with dandelionR}
+  %\VignetteIndexEntry{Single-cell immune repertoire trajectory analysis with dandelionR and slingshot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,96 +22,26 @@ library(BiocStyle)
 
 # Foreword
 
-Welcome to `dandelionR`!
+In this vignette, we will demonstrate how to perform TCR trajectory analysis
+using the `dandelionR` package in conjunction with `slingshot`.
 
-`dandelionR` is an R package for performing single-cell immune repertoire
-trajectory analysis,  based on the original python implementation in 
-[dandelion](https://www.github.com/zktuong/dandelion). 
-
-It provides all the necessary tools to interface with
-[scRepertoire](https://github.com/ncborcherding/scRepertoire) 
-and a custom implementation of absorbing markov chain for pseudotime inference, 
-inspired based on the [palantir](https://github.com/dpeerlab/Palantir) python 
-package.
-
-This is a work in progress, so please feel free to open an issue if you 
-encounter any problems or have any suggestions for improvement.
-
-# Installation
-
-You can install `dandelionR` with:
-
-## Bioconductor
+# Installing slinshot
 ```{r, eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-# The following initializes usage of Bioc devel
-BiocManager::install(version = "devel")
-
-BiocManager::install("dandelionR")
-```
-
-## Development version (GitHub)
-```{r, eval = FALSE}
-if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
+if (!requireNamespace("slinghot", quietly = TRUE)) {
+    BiocManager::install("slingshot")
 }
-devtools::install_github("tuonglab/dandelionR", dependencies = TRUE)
 ```
-
-In a standard analysis workflow in R, users probably choose to read in their 
-VDJ data with [scRepertoire](https://github.com/ncborcherding/scRepertoire). 
-
-In this vignette, we will demonstrate how to perform TCR trajectory analysis 
-starting from 'raw' data i.e. just a standard single-cell gene expression data 
-(stored in `SingleCellExperiment`) and VDJ data (in AIRR format).
-
-Install `scater` and `scRepertoire` if you haven't already.
-```{r, eval = FALSE}
-# only for the tutorial
-if (!requireNamespace("scater", quietly = TRUE)) {
-    BiocManager::install("scater")
-}
-if (!requireNamespace("scRepertoire", quietly = TRUE)) {
-    BiocManager::install("scRepertoire")
-}
-# or
-devtools::install_github("ncborcherding/scRepertoire")
-```
-
-# Usage
-
-## Load the required libraries
+## Load the required libraries and data
 
 ```{r, message=FALSE, warning=FALSE}
 library(dandelionR)
 library(scRepertoire)
 library(scater)
-```
 
-## Load the demo data
-Due to size limitations of the package, we have provided a very trimmed down 
-version of the demo data to ~2000 cells. The full dataset can be found here 
-accordingly: 
-
-GEX (Lymphoid Cells) - https://developmental.cellatlas.io/fetal-immune 
-
-VDJ - https://github.com/zktuong/dandelion-demo-files/ 
-
-The VDJ data is in the dandelion_manuscript/data/dandelion-remap folder.
-
-```{r}
-data(demo_sce)
-data(demo_airr)
-```
-
-Check out the other vignette for an example dataset that starts from the 
-original `dandelion` output associated with the original 
-[manuscript](https://www.nature.com/articles/s41587-023-01734-7).
-
-```{r}
-vignette("vignette_reproduce_original")
+data(sce_vdj)
 ```
 
 We will also set the seed so that the plots and results are consistent.
@@ -119,68 +49,20 @@ We will also set the seed so that the plots and results are consistent.
 set.seed(123)
 ```
 
-# Use `scRepertoire` to load the VDJ data
-For the trajectory analysis work here, we are focusing on the main productive 
-TCR chains. Therefore we will flag `filterMulti = TRUE`, which will keep the 
-selection of the 2 corresponding chains with the highest expression for a 
-single barcode. For more details, refer to `scRepertoire`'s 
-[docs](https://www.borch.dev/uploads/screpertoire/reference/combinetcr).
-
+## Setup the data as per the other vignettes
+We will use the full `SingleCellExperiment` object `sce_vdj` that contains enough cells to demonstrate the trajectory analysis with `slingshot`.
 ```{r}
-contig.list <- loadContigs(input = demo_airr, format = "AIRR")
-
-# Format to `scRepertoire`'s requirements and some light filtering
-combined.TCR <- combineTCR(contig.list,
-    removeNA = TRUE,
-    removeMulti = FALSE,
-    filterMulti = TRUE
+sce_vdj <- setupVdjPseudobulk(sce_vdj,
+    already.productive = FALSE,
+    allowed_chain_status = c(
+        "Single pair", "Extra pair",
+        "Extra pair-exception", "Orphan VDJ",
+        "Orphan VDJ-exception"
+    )
 )
+
+plotUMAP(sce_vdj, color_by = "anno_lvl_2_final_clean")
 ```
-
-## Merging VDJ data with gene expression data
-Next we will combine the gene expression data with the VDJ data to create a 
-`SingleCellExperiment` object.
-```{r}
-sce <- combineExpression(combined.TCR, demo_sce)
-```
-
-# Initiate `dandelionR` workflow
-Here, the data is ready to be used for the pseudobulk and trajectory analysis 
-workflow in `dandelionR`.
-
-Because this is a alpha-beta TCR data, we will set the `mode_option` to "abT". 
-This will append `abT` to the relevant columns holding the VDJ gene 
-information. If you are going to try other types of VDJ data e.g. BCR, you 
-should set `mode_option` to "B" instead. And this argument should be 
-consistently set with the `vdjPseudobulk` function later.
-
-Since the TCR data is already filtered for productive chains in `combineTCR`, 
-we will set `already.productive = TRUE` and can keep `allowed_chain_status` 
-as `NULL`.
-
-We will also subset the data to only include the main T-cell types: CD8+T, 
-CD4+T, ABT(ENTRY), DP(P)_T, DP(Q)_T.
-```{r}
-sce <- setupVdjPseudobulk(sce,
-    mode_option = "abT",
-    already.productive = TRUE,
-    subsetby = "anno_lvl_2_final_clean",
-    groups = c("CD8+T", "CD4+T", "ABT(ENTRY)", "DP(P)_T", "DP(Q)_T")
-)
-```
-
-The main output of this function is a `SingleCellExperiment` object with the 
-relevant VDJ information appended to the `colData`, particularly the columns 
-with the `_main` suffix e.g. `v_call_abT_VJ_main`, `j_call_abT_VJ_main` etc.
-```{r}
-head(colData(sce))
-```
-
-Visualise the UMAP of the filtered data.
-```{r}
-plotUMAP(sce, color_by = "anno_lvl_2_final_clean")
-```
-
 
 ## Milo object and neighbourhood graph construction
 We will use miloR to create the pseudobulks based on the gene expression data. 
@@ -189,7 +71,7 @@ we can sample the representative neighbours to form the objects.
 
 ```{r, warning = FALSE}
 library(miloR)
-milo_object <- Milo(sce)
+milo_object <- Milo(sce_vdj)
 milo_object <- buildGraph(milo_object, k = 30, d = 20, reduced.dim = "X_scvi")
 milo_object <- makeNhoods(milo_object,
     reduced_dims = "X_scvi", d = 20,
@@ -248,15 +130,9 @@ Here, we use PCA for dimensionality reduction and the column anno_lvl_2_final_cl
 table(colData(pb.milo)[["anno_lvl_2_final_clean"]])
 ```
 
-Some clusters have too few cells, so we use a smaller number of PCA dimensions to avoid potential singularity of the covariance matrix.
-
-```{r}
-reducedDim(pb.milo, "PCA10") <- reducedDim(pb.milo, "PCA")[,1:10]
-```
-
 ### run slingshot
 ```{r}
-pb.milo <- slingshot(pb.milo, clusterLabels=colData(pb.milo)[["anno_lvl_2_final_clean"]], reducedDim = 'PCA10', start.clus = "faDP(P)_T", end.clus = c("faCD4+T", "faCD8+T"))
+pb.milo <- slingshot(pb.milo, clusterLabels = colData(pb.milo)[["anno_lvl_2_final_clean"]], reducedDim = "PCA", start.clus = "faDP(P)_T", end.clus = c("faCD4+T", "faCD8+T"))
 ```
 
 # Visualization
@@ -264,22 +140,26 @@ pseudotime of each lineage, if the pseudobulk is with value NA, it will not appe
 
 ```{r}
 library(fields)
-colors <-  rainbow(50, alpha = 1)
-colors <- colorRampPalette(c("blue", "red"))(50)
-plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_1,breaks=50)], pch=16, asp = 1)
-lines(SlingshotDataSet(pb.milo), lwd=2, col = 'black')
-image.plot(legend.only = TRUE, 
-           zlim = range(pb.milo$slingPseudotime_1, na.rm = TRUE),  
-           col = colors,  
-           legend.lab = "Pseudotime")
+# make a color palette from blue to red
+colors <- colorRampPalette(rev(c("#d7191c", "#fdae61", "#ffffbf", "#abd9e9", "#2c7bb6")))(50)
+plot(reducedDims(pb.milo)$PCA, col = colors[cut(pb.milo$slingPseudotime_1, breaks = 50)], pch = 16, asp = 1)
+lines(SlingshotDataSet(pb.milo), lwd = 2, col = "black")
+image.plot(
+    legend.only = TRUE,
+    zlim = range(pb.milo$slingPseudotime_1, na.rm = TRUE),
+    col = colors,
+    legend.lab = "Pseudotime"
+)
 ```
 ```{r}
-plot(reducedDims(pb.milo)$PCA,  col = colors[cut(pb.milo$slingPseudotime_2,breaks=50)], pch=16, asp = 1)
-lines(SlingshotDataSet(pb.milo), lwd=2, col = 'black')
-image.plot(legend.only = TRUE, 
-           zlim = range(pb.milo$slingPseudotime_2, na.rm = TRUE),  
-           col = colors,  
-           legend.lab = "Pseudotime")  
+plot(reducedDims(pb.milo)$PCA, col = colors[cut(pb.milo$slingPseudotime_2, breaks = 50)], pch = 16, asp = 1)
+lines(SlingshotDataSet(pb.milo), lwd = 2, col = "black")
+image.plot(
+    legend.only = TRUE,
+    zlim = range(pb.milo$slingPseudotime_2, na.rm = TRUE),
+    col = colors,
+    legend.lab = "Pseudotime"
+)
 ```
 
 # Transfer
@@ -304,11 +184,10 @@ plotUMAP(cdata, color_by = "slingPseudotime_1", dimred = "UMAP_knngraph") +
     scale_color_gradientn(colors = pal)
 plotUMAP(cdata, color_by = "slingPseudotime_2", dimred = "UMAP_knngraph") +
     scale_color_gradientn(colors = pal)
-
 ```
 
 And that's it! We have successfully inferred the trajectory of the T-cells in 
-this dataset!
+this dataset with `slingshot`!
 
 # Session info
 

@@ -49,8 +49,7 @@ test_that("projectPseudotimeToCell works correctly", {
 test_that("projectPseudotimeToCell cannot work without pseudotime column", {
     # Test with wrong column
     expect_error(
-        projectPseudotimeToCell(milo_object, pb.milo, value_key = c("wrong_pseudotime", "CD4+T", "CD8+T"),
-        ),
+        projectPseudotimeToCell(milo_object, pb.milo, value_key = c("wrong_pseudotime", "CD4+T", "CD8+T"), ),
         "value .* do\\(es\\) not exist in pseudobulk `Milo` object."
     )
     # Test with missing value_key
@@ -60,4 +59,3 @@ test_that("projectPseudotimeToCell cannot work without pseudotime column", {
         "Please specify the column name\\(s\\) of the value\\(s\\) to be projected back\\."
     )
 })
-

@@ -18,8 +18,8 @@ You can install `dandelionR` from Bioconductor with:
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-# The following initializes usage of Bioc devel
-BiocManager::install(version="devel")
+# If installing from Bioc devel, do this first:
+# BiocManager::install(version="devel")
 
 BiocManager::install("dandelionR")
 ```

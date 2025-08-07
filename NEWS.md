@@ -1,3 +1,7 @@
+# dandelionR Version 1.1.4 (2025-08-07)
+
+Add vignette on how to use `dandelionR` with `slingshot` for trajectory inference. Sync changes to Bioconductor 3.22 development version.
+
 # dandelionR Version 1.1.3 (2025-07-18)
 
 Bug fixes to ensure compatibility with scRepertoire. Sync changes to Bioconductor 3.22 development version.
