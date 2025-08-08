@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dandelionR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/vignette_reproduce_original.html">Reproducing the original dandelion method/paper</a></li>
+<li><a class="dropdown-item" href="../articles/dandelionR_with_slingshot.html">Single-cell immune repertoire trajectory analysis with dandelionR and slingshot</a></li>
+    <li><a class="dropdown-item" href="../articles/vignette_reproduce_original.html">Reproducing the original dandelion method/paper</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -58,7 +59,7 @@
 
       <h1>Single-cell immune repertoire trajectory analysis with dandelionR</h1>
             
-            <h4 data-toc-skip class="date">2025-07-21</h4>
+            <h4 data-toc-skip class="date">2025-08-08</h4>
       
 
       <div class="d-none name"><code>dandelionR.Rmd</code></div>
@@ -526,7 +527,7 @@ pseudobulk.</p>
 <h3 id="project-pseudobulk-data-to-each-cell">Project pseudobulk data to each cell<a class="anchor" aria-label="anchor" href="#project-pseudobulk-data-to-each-cell"></a>
 </h3>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projectPseudotimeToCell.html">projectPseudotimeToCell</a></span><span class="op">(</span><span class="va">milo_object</span>, <span class="va">pb.milo</span>, <span class="va">branch.tips</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/projectPseudotimeToCell.html">projectPseudotimeToCell</a></span><span class="op">(</span><span class="va">milo_object</span>, <span class="va">pb.milo</span>, value_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pseudotime"</span>, <span class="st">"CD8+T"</span>, <span class="st">"CD4+T"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="visualise-the-trajectory-data-on-a-per-cell-basis">Visualise the trajectory data on a per cell basis<a class="anchor" aria-label="anchor" href="#visualise-the-trajectory-data-on-a-per-cell-basis"></a>
@@ -578,15 +579,15 @@ T-cells in this dataset!</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] destiny_3.22.0              miloR_2.4.1                </span></span>
-<span><span class="co">##  [3] edgeR_4.6.3                 limma_3.64.1               </span></span>
+<span><span class="co">##  [3] edgeR_4.6.3                 limma_3.64.3               </span></span>
 <span><span class="co">##  [5] scater_1.36.0               scuttle_1.18.0             </span></span>
 <span><span class="co">##  [7] SingleCellExperiment_1.30.1 SummarizedExperiment_1.38.1</span></span>
 <span><span class="co">##  [9] Biobase_2.68.0              GenomicRanges_1.60.0       </span></span>
-<span><span class="co">## [11] GenomeInfoDb_1.44.0         IRanges_2.42.0             </span></span>
+<span><span class="co">## [11] GenomeInfoDb_1.44.1         IRanges_2.42.0             </span></span>
 <span><span class="co">## [13] S4Vectors_0.46.0            BiocGenerics_0.54.0        </span></span>
 <span><span class="co">## [15] generics_0.1.4              MatrixGenerics_1.20.0      </span></span>
 <span><span class="co">## [17] matrixStats_1.5.0           scRepertoire_2.4.0         </span></span>
-<span><span class="co">## [19] ggplot2_3.5.2               dandelionR_1.1.3           </span></span>
+<span><span class="co">## [19] ggplot2_3.5.2               dandelionR_1.1.4           </span></span>
 <span><span class="co">## [21] BiocStyle_2.36.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -600,8 +601,8 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [22] ggraph_2.2.1            nnet_7.3-20             pracma_2.4.4           </span></span>
 <span><span class="co">##  [25] tweenr_2.0.3            evmix_2.12              GenomeInfoDbData_1.2.14</span></span>
 <span><span class="co">##  [28] ggrepel_0.9.6           irlba_2.3.5.1           listenv_0.9.1          </span></span>
-<span><span class="co">##  [31] iNEXT_3.0.1             MatrixModels_0.5-4      RSpectra_0.16-2        </span></span>
-<span><span class="co">##  [34] parallelly_1.45.0       pkgdown_2.1.3           codetools_0.2-20       </span></span>
+<span><span class="co">##  [31] iNEXT_3.0.2             MatrixModels_0.5-4      RSpectra_0.16-2        </span></span>
+<span><span class="co">##  [34] parallelly_1.45.1       pkgdown_2.1.3           codetools_0.2-20       </span></span>
 <span><span class="co">##  [37] smoother_1.3            DelayedArray_0.34.1     ggforce_0.5.0          </span></span>
 <span><span class="co">##  [40] tidyselect_1.2.1        UCSC.utils_1.4.0        farver_2.1.2           </span></span>
 <span><span class="co">##  [43] ScaledMatrix_1.16.0     viridis_0.6.5           jsonlite_2.0.0         </span></span>
@@ -609,7 +610,7 @@ T-cells in this dataset!</p>
 <span><span class="co">##  [49] progressr_0.15.1        Formula_1.2-5           survival_3.8-3         </span></span>
 <span><span class="co">##  [52] ggalluvial_0.12.5       systemfonts_1.2.3       tools_4.5.1            </span></span>
 <span><span class="co">##  [55] ragg_1.4.0              stringdist_0.9.15       Rcpp_1.1.0             </span></span>
-<span><span class="co">##  [58] glue_1.8.0              gridExtra_2.3           SparseArray_1.8.0      </span></span>
+<span><span class="co">##  [58] glue_1.8.0              gridExtra_2.3           SparseArray_1.8.1      </span></span>
 <span><span class="co">##  [61] laeken_0.5.3            xfun_0.52               ranger_0.17.0          </span></span>
 <span><span class="co">##  [64] TTR_0.24.4              ggthemes_5.1.0          dplyr_1.1.4            </span></span>
 <span><span class="co">##  [67] withr_3.0.2             numDeriv_2016.8-1.1     BiocManager_1.30.26    </span></span>
@@ -639,9 +640,9 @@ T-cells in this dataset!</p>
 <span><span class="co">## [139] viridisLite_0.4.2       BiocParallel_1.42.1     assertthat_0.2.1       </span></span>
 <span><span class="co">## [142] gsl_2.1-8               quantreg_6.1            Matrix_1.7-3           </span></span>
 <span><span class="co">## [145] RcppHNSW_0.6.0          RcppEigen_0.3.4.0.2     patchwork_1.3.1        </span></span>
-<span><span class="co">## [148] future_1.58.0           statmod_1.5.0           evd_2.3-7.1            </span></span>
+<span><span class="co">## [148] future_1.67.0           statmod_1.5.0           evd_2.3-7.1            </span></span>
 <span><span class="co">## [151] igraph_2.1.4            memoise_2.0.1           bslib_0.9.0            </span></span>
-<span><span class="co">## [154] DEoptimR_1.1-3-1        ggplot.multistats_1.0.1</span></span></code></pre>
+<span><span class="co">## [154] DEoptimR_1.1-4          ggplot.multistats_1.0.1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
