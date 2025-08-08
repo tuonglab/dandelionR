@@ -7,8 +7,7 @@
 projectPseudotimeToCell(
   milo,
   pb_milo,
-  term_states = NULL,
-  pseudotime_key = "pseudotime",
+  value_key = NULL,
   suffix = "",
   verbose = TRUE
 )
@@ -20,12 +19,8 @@ data where pseudotime and branch probabilities will be projected.}
 \item{pb_milo}{A pseudobulk \code{Milo} object. Contains aggregated branch
 probabilities and pseudotime information to be transferred to single cells.}
 
-\item{term_states}{Named vector of terminal states, with branch probabilities
-to be transferred. The names should correspond to branches of interest.}
-
-\item{pseudotime_key}{Character. The column name in \code{colData} of \code{pb_milo}
-that contains the pseudotime information which was used in the
-\code{markovProbability} function. Default is \code{"pseudotime"}.}
+\item{value_key}{Character. The column name in \code{colData} of \code{pb_milo}
+that contains the value that is needed to be projected back. Default is \code{NULL}.}
 
 \item{suffix}{Character. A suffix to be added to the new column names in
 \code{colData}. Default is an empty string (\code{''}).}
@@ -89,8 +84,7 @@ pb.milo <- markovProbability(
 projected_milo <- projectPseudotimeToCell(
     milo_object,
     pb.milo,
-    branch.tips,
-    pseudotime_key = "pseudotime"
+    value_key = c("pseudotime", "CD8+T", "CD4+T")
 )
 
 }

@@ -8,11 +8,8 @@
 #' data where pseudotime and branch probabilities will be projected.
 #' @param pb_milo A pseudobulk `Milo` object. Contains aggregated branch
 #' probabilities and pseudotime information to be transferred to single cells.
-#' @param term_states Named vector of terminal states, with branch probabilities
-#' to be transferred. The names should correspond to branches of interest.
-#' @param pseudotime_key Character. The column name in `colData` of `pb_milo`
-#' that contains the pseudotime information which was used in the
-#' `markovProbability` function. Default is `"pseudotime"`.
+#' @param value_key Character. The column name in `colData` of `pb_milo`
+#' that contains the value that is needed to be projected back. Default is `NULL`.
 #' @param suffix Character. A suffix to be added to the new column names in
 #' `colData`. Default is an empty string (`''`).
 #' @param verbose Boolean, whether to print messages/warnings.
@@ -64,8 +61,7 @@
 #' projected_milo <- projectPseudotimeToCell(
 #'     milo_object,
 #'     pb.milo,
-#'     branch.tips,
-#'     pseudotime_key = "pseudotime"
+#'     value_key = c("pseudotime", "CD8+T", "CD4+T")
 #' )
 #'
 #' @return subset of milo or SingleCellExperiment object where cell that do not
@@ -76,22 +72,15 @@
 #' @importFrom S4Vectors metadata
 #' @export
 projectPseudotimeToCell <- function(
-    milo, pb_milo, term_states = NULL,
-    pseudotime_key = "pseudotime", suffix = "", verbose = TRUE) {
-    if (is.null(term_states)) {
-        if (is.null(metadata(pb_milo)$branch.tips)) # nocov start
-            {
-                abort(
-                    c(
-                        "Parameter Error: Please provide term_state, ",
-                        "which should align with parameter terminal_state in ",
-                        "function markovProbability"
-                    )
-                )
-            } # nocov end
-        else {
-            term_states <- metadata(pb_milo)$branch.tips
-        }
+    milo, pb_milo, value_key = NULL, suffix = "", verbose = TRUE) {
+    if (is.null(value_key)) {
+        abort("Please specify the column name(s) of the value(s) to be projected back.")
+    } else if (!all(value_key %in% colnames(colData(pb_milo)))) {
+        missing_value <- value_key[!(value_key %in% colnames(colData(pb_milo)))]
+        abort(sprintf(
+            "value %s do(es) not exist in pseudobulk `Milo` object.",
+            paste(missing_value, collapse = ", ")
+        ))
     }
     nhood <- miloR::nhoods(pb_milo) # peudobulk x cells
     # leave out cells that do not blongs to any neighbourhood
@@ -110,13 +99,53 @@ projectPseudotimeToCell <- function(
     # is in, weighted by 1/ neighbourhood size
     nhoods_cdata <- nhood[, nhoodsum > 0]
     nhoods_cdata_norm <- nhoods_cdata / apply(nhoods_cdata, 1, sum)
-    col_list <- c(
-        paste0(pseudotime_key, suffix),
-        paste0(names(term_states), suffix)
+    col_list <- value_key
+    new_col <- mapply(
+        function(x, value_name) {
+            project_single_value(x, nhoods_cdata_norm, value_name, verbose)
+        },
+        colData(pb_milo)[, col_list]@listData,
+        col_list,
+        SIMPLIFY = FALSE
     )
-    new_col <- vapply(colData(pb_milo)[, col_list]@listData, function(x, y) {
-        list(as.vector(x %*% y / apply(y, 2, sum)))
-    }, y = nhoods_cdata_norm, FUN.VALUE = list(double()))
     colData(cdata) <- cbind(colData(cdata), new_col)
     return(cdata)
+}
+
+#' Function to project pseudobulk-level values to single-cell level
+#'
+#' @param x Numeric vector, pseudobulk-level value to be projected.
+#' @param y Matrix (pseudobulk x cell), used to project x back to cell level.
+#' @param value_name Character, name of the value being projected.
+#' @param verbose Boolean, whether to print messages/warnings.
+#' @return Numeric vector of projected values at cell level.
+project_single_value <- function(x, y, value_name, verbose = TRUE) {
+    na_idx <- is.na(x)
+    if (any(na_idx)) { # nocov
+        if (all(na_idx)) {
+            abort(paste("All values for", value_name, "are NA."))
+        }
+        # exclude pseudobulk with NA value
+        x <- x[!na_idx]
+        modi_y <- y[!na_idx, , drop = FALSE]
+        col_sums <- Matrix::colSums(modi_y)
+        zero_cols <- sum(col_sums == 0)
+        if (verbose) {
+            message(sprintf(
+                "%d cells do not have projected values for %s because their neighbour(s) value is NA",
+                zero_cols, value_name
+            ))
+        }
+    } else {
+        modi_y <- y
+    }
+    col_sums <- Matrix::colSums(modi_y)
+    col_sums[col_sums == 0] <- NA
+    na_cols <- is.na(col_sums)
+    inv_col_sums <- 1 / col_sums
+    weights <- modi_y %*% Matrix::Diagonal(x = inv_col_sums)
+    # return projection result
+    result <- as.vector(x %*% weights)
+    result[na_cols] <- NA
+    result
 }
